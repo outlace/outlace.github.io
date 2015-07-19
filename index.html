@@ -774,7 +774,7 @@ This line is our <b>mating</b> process, and it's probably the most complicated p
 <p>Basically np.repeat() will duplicate our 20x3 matrix to create a 80x3 matrix. We already populated the first 20 elements of nextPop with the winners from last generation. Now we want to populate the last 80 elements with their offspring.</p>
 <blockquote><p><code>np.random.permutation(np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0))</code></p>
 </blockquote>
-<p>Now we just use np.random.permutation() to shuffle the columns of this next 80x3 matrix. This is how we accomplish the crossover functional. Imagine we have a 3x3 matrix (2 solutions) like this:<br /> <code>np.array([[1,2,3],[4,5,6],[7,8,9]])</code> , when we run the permutation function, it will change it something like:<br /> <code>np.array([[7,5,3],[1,8,9],[4,2,3]])</code>
+<p>Now we just use np.random.permutation() to shuffle the columns of this next 80x3 matrix. This is how we accomplish the crossover functional. Imagine we have a 3x3 matrix (3 solutions) like this:<br /> <code>np.array([[1,2,3],[4,5,6],[7,8,9]])</code> , when we run the permutation function, it will change it something like:<br /> <code>np.array([[7,5,3],[1,8,9],[4,2,3]])</code>
 <br />Go look at the numpy documentation to learn more about permutation if you still don't understand how it's working here.</p>
 
 </div>
