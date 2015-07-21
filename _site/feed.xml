@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Quantitative Journey</title>
+    <description>My experiences in learning quantitative applications</description>
+    <link>http://titusrevised.github.io</link>
+    <atom:link href="http://titusrevised.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Simple Genetic Algorithm In 15 Lines Of Python</title>
+        <description></description>
+        <pubDate>Wed, 15 Jul 2015 00:00:00 -0700</pubDate>
+        <link>http://titusrevised.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</link>
+        <guid isPermaLink="true">http://titusrevised.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</guid>
+      </item>
+    
+  </channel>
+</rss>
