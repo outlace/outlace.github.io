@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-user: titusrevised
+user: outlace
 
 Hi. I'm a self-taught programmer who works in the healthcare/biology field
 and also involved in web-development side projects.
@@ -16,4 +16,4 @@ attempting to teach myself the basics and will share my journey on this blog.
 
 ### Contact me
 
-[titusrevised@gmail.com](mailto:titusrevised@gmail.com)
+[outlacedev@gmail.com](mailto:outlacedev@gmail.com)

@@ -1,70 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Simple Genetic Algorithm In 15 Lines Of Python – Δ ℚuantitative √ourney – ∑ My experiences in learning quantitative applications</title>
-
-        <meta charset="utf-8" />
-    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
-
-    
-    <meta name="description" content="Beginner tutorial on writing a genetic algorithm to train a simple 2-layer feed-forward neural network. (Ok, I admit it, the "15 lines" is a gimmick)" />
-    <meta property="og:description" content="Beginner tutorial on writing a genetic algorithm to train a simple 2-layer feed-forward neural network. (Ok, I admit it, the "15 lines" is a gimmick)" />
-    
-    <meta name="author" content="Δ ℚuantitative √ourney" />
-
-    
-    <meta property="og:title" content="Simple Genetic Algorithm In 15 Lines Of Python" />
-    <meta property="twitter:title" content="Simple Genetic Algorithm In 15 Lines Of Python" />
-    
-
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <link rel="stylesheet" type="text/css" href="/style.css" />
-    <link rel="alternate" type="application/rss+xml" title="Δ ℚuantitative √ourney - ∑ My experiences in learning quantitative applications" href="/feed.xml" />
-
-    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
-  </head>
-
-  <body>
-    <div class="wrapper-masthead">
-      <div class="container">
-        <header class="masthead clearfix">
-          <a href="/" class="site-avatar"><img src="/images/machine-learning.jpg" /></a>
-
-          <div class="site-info">
-            <h1 class="site-name"><a href="/">Δ ℚuantitative √ourney</a></h1>
-            <p class="site-description">∑ My experiences in learning quantitative applications</p>
-          </div>
-
-          <nav>
-            <a href="/">Blog</a>
-            <a href="/about">About</a>
-          </nav>
-        </header>
-      </div>
-    </div>
-
-    <div id="main" role="main" class="container">
-      <style>
-  .container {
-    max-width: 90vw;
-  }
-</style>
-
-<article class="post">
-  <h1>Simple Genetic Algorithm In 15 Lines Of Python</h1>
-
-  <div class="entry">
-    <!DOCTYPE html>
-<html>
 <head>
 
 <meta charset="utf-8" />
-<title>Mini GA and NN</title>
+<title>FoxRabbitPopulationDynamics</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -190,14 +129,14 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  }
-  div.output_wrapper {
+  } 
+  div.output_wrapper { 
     display: block;
-    page-break-inside: avoid;
+    page-break-inside: avoid; 
   }
-  div.output {
+  div.output { 
     display: block;
-    page-break-inside: avoid;
+    page-break-inside: avoid; 
   }
 }
 </style>
@@ -233,798 +172,14 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><h1>Genetic Algorithm in 15 lines of Python code</h1></p>
-<h4>A simple yet effective genetic algorithm implementation used to train a neural network in 15 lines of code.</h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p style="font-size:smaller;"><b>Disclaimer: </b> I am not a machine learning expert by any means, I mostly do web development, so this is not my forte at all, but I have enjoyed messing around writing basic neural nets and genetic algorithms and am just trying to share what little I've learned to other neophytes out there.</p>
-<p><b>Summary:</b>
-This is a spinoff of a really great tutorial called "A Neural Network in 11 lines of Python" found here: &lt; <a target="_blank" href="http://iamtrask.github.io/2015/07/12/basic-python-network/"> http://iamtrask.github.io/2015/07/12/basic-python-network/ </a> &gt; So please go through that article first otherwise this may not make any sense. <br />
-Here I will show you how I wrote a basic genetic algorithm (GA) that finds an optimal set of weights to train the neural network. I'm not going to go into detail about what a genetic algorithm is, so if you're already not familiar with them, please do some googling.
-<p style="font-size:small;">By the way, GAs are generally much slower than good ol' gradient descent, but I think applying GAs to a simple neural net is a more fun way to learn it. Also, GAs may be good for finding an optimal set of <em>hyperparameters</em> for a neural net (e.g. the net architecture).</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3>Just Give Me The Code:</h3>
-<span style="font-size:small">Scroll to the very bottom to see a longer, more readable version.</span>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre style="white-space:nowrap; overflow-x:scroll;"><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span><br />
-<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span><br />
-<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><br />
-<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><br />
-<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span><br />
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span><br />
-	<span class="n" style="margin-left: 5em;">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span><br />
-	<span class="n" style="margin-left: 5em;">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <br />
-	<span class="k" style="margin-left: 5em;">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span><br />
-		<span class="n" style="margin-left: 10em;">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span><br />
-		<span class="n" style="margin-left: 10em;">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><br />
-		<span class="n" style="margin-left: 10em;">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span><br />
-	<span class="n" style="margin-left: 5em;">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span><br />
-	<span class="n" style="margin-left: 5em;">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span><br />
-	<span class="n" style="margin-left: 5em;">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span><br />
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><br />Ok, so I'm assuming that code is completely not helpful at this point, and in fact, it won't even run if you tried to copy and paste and run it because you also need the code for the Neural Network, which I stored in a separate file and imported. And yes... "15 lines of code" is stretching the truth, you have to scroll to the right just to see some of the lines. But anyway. Let's first talk about the general steps in implementing a genetic algorithm and then we'll break down the code line by line, add in some print() statements to see what's going on, and maybe even make some fancy graphs.<p>Essentially, a genetic algorithm is a search algorithm that will hopefully find an optimal solution through a process that simulates natural selection and evolution. Here's the overall flow for how they work:</p></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li>We generate a population of random potential solutions</li>
-<li>Then we iterate through this population and assess the fitness of (i.e. how good of a solution) each solution</li>
-<li>We prefentially select solutions with higher fitness to survive and make it to the next generation.
-Solutions with higher fitness have a higher probability of being selected</li>
-<li>These "winner" solutions then "mate" and produce offspring solutions. For example, if our solutions are simply
-vectors of integers, then mating vector1 with vector2 involves taking a few elements from vector1 and combining it with a few elements of vector2 to make a new offspring vector of the same dimensions. Vector1: [1 2 3], Vector2: [4 5 6]. Vector1 mates with Vector2 to produce [4 5 3] and [1 2 6]</li>
-<li>So now we have a new population with the top solutions from the last generation along with new offspring solutions, at this point, we will iterate over our solutions and randomly mutate some of them to make sure to introduce new "genetic diversity" into every generation to prevent premature convergence on a local optimum.</li>
-<li>Repeat this process for X number of generations or until we have a sufficiently good solution</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As a quick review, the iamtrask article shows you how to implement a really simple 2-layer (1 input layer, 1 output layer) neural network that is trained to solve this problem:</p>
-<p><table class="tg" style="width: 234px; margin-right: 65vw;">
-  <tbody><tr>
-    <th class="tg-5rcs" colspan="3">Inputs</th>
-    <th class="tg-5rcs">Output</th>
-  </tr>
-  <tr>
-    <td class="tg-4kyz">0</td>
-    <td class="tg-4kyz">0</td>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">0</td>
-  </tr>
-  <tr>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">1</td>
-  </tr>
-  <tr>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">0</td>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">1</td>
-  </tr>
-  <tr>
-    <td class="tg-4kyz">0</td>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">1</td>
-    <td class="tg-4kyz">0</td>
-  </tr>
-</tbody></table>
-</p></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As you can see, the output simply depends on whether the first input is a 1 or not. The 2nd input is irrelevant and the 3rd input is our bias (explained elsewhere).</p>
-<p>If you train the 2-layer neural net (thus one set of weights) using gradient descent using the implementation in the iamtrask article, you will get a set of weights close to this:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<blockquote><p>[[ 9.67299303],[-0.2078435],[-4.62963669]]</p>
-</blockquote>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>And if you calculate the cost using these weights (the cost function is a simple difference between expected and actual output values), you get...</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<blockquote><p>Cost: 0.0557587344696</p>
-</blockquote>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Pretty low right? Now just to jump ahead a bit, when I tuned the genetic algorithm and ran it a couple of times, it found a completely different set of weights:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<blockquote><p>[[  3.09686945e+05  -7.88485054e-03  -1.67477116e+03]]
-<br />Cost: 0.0</p>
-</blockquote>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Obviously these weights resulted in a significantly lower cost (better fitness). In all honesty however, for this simplistic problem, the difference in cost is pretty inconsequential. In more complex problems, a cost that low is probably resulting in overfitting. Not to mention, genetic algorithms almost certainly will take longer to converge than gradient descent. But let's ignore all those details, we just want to build a genetic algorithm because they're cool.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Before I jump into the details of the genetic algorithm, I want to revisit the neural net. Here's the code for the neural net I implemented, which is an adaptation from the one by iamtrask:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">math</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c">#training data X</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span> <span class="c">#training data Y</span>
-<span class="n">syn0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="c">#randomize intial weights (Theta)</span>
-
-<span class="k">def</span> <span class="nf">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span> <span class="c">#this runs our net and returns the output</span>
-	<span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span> <span class="c">#our cost function, simply determines the arithmetic difference between the expected y and our actual y</span>
-	<span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
-	<span class="n">hThetaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
-	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">hThetaX</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">x</span><span class="p">))</span> <span class="c">#Just our run-of-the-mill sigmoid function</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>You should be able to figure this out if you've run through the iamtrask article or already have an understanding of neural nets. Just a note: I call the weights Theta. Let's go ahead and run this network just to make sure it's working right.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">syn0</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.31364485])</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We expect to get about [ 0 ] for an input of [0,1,1], but obviously when we use random weights, that's not likely to happen. Let's try again with those weights I got from doing gradient descent (not shown here).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">optimal_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">9.67299303</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.2078435</span><span class="p">],[</span><span class="o">-</span><span class="mf">4.62963669</span><span class="p">]])</span>
-<span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.00786466])</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As you can see, we get a value pretty close to 0, as expected. Nice. Okay, so now let's try the weights I got from running the genetic algorithm.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">optimal_theta_ga</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.09686945e+05</span><span class="p">,</span><span class="o">-</span><span class="mf">7.88485054e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.67477116e+03</span><span class="p">])</span>
-<span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta_ga</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/IPython/kernel/__main__.py:14: RuntimeWarning: overflow encountered in exp
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>0.0</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Wow! The result we get here is so close to zero we get an overflow warning. Just ignore that, the point is, the error/cost is really, really low. (Again, this is not necessarily a good thing...becauase of potential overfitting, but for this particular problem, overfitting is fine). Just to make things really clear, let's take a look at what these weights are doing diagramatically.</p>
-<div>
-<img src="/images/NNDiagram1.png" width="200px" style="display:inline-block;" /><img style="display:inline-block;"  src="/images/NNDiagram2.png" width="200px" />
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>So as you can see on the right, whenever the bottom (left-most) input is 1, a really, really big number gets sent over to our sigmoid function, which will of course return something very close to 1.</p>
-<p>Alright, so enough about the neural network. Let's go line by line with the genetic algorithm (skipping imports).</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c">#These are just some parameters for the GA, defined below in order:</span>
-<span class="c"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Nothing too interesting there, but just noting that params[3] (solution length) refers to the number of elements in each individual solution. Since our solutions are weights to the 2-layer neural net, each solution is a 3 element vector (numpy array). Also need to note the last parameter, params[4] refers to how many solutions we will pick as winners from each generation to populate the new generation. So out of total population of 100, every generation we will preferentially pick the top 20 solutions, populate the new generation with them and their offspring.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The top line is the most important here. Basically we're creating a matrix 100x3 with an initial population of random solutions. We're using the np.arange() function to create a bunch of values -15, -14.99, -14.89....15  in order in a long array, then we use np.random.choice() to randomly choose 100x3 = 300 of them to build the 100x3 matrix of initial solutions. This isn't the most computationally efficient way to do things, but I've found it works really well. This is certainly not the only way to do it, and I encourage you to mess around with different ways to intialize your population. It turns out this step is really important to how well it does. If your initial population is not well randomized and not very diverse, you won't get good results.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>params[2] is our number of generations, so this is our main, outer loop to go through the whole flow each generation.
-Our first step is to calculate the cost/error of each solution (there's 100) and add it to a matrix called <b>fitVec</b>. Each element of fitVec is an array consisting of the index of the solution in curPop and its cost, e.g. [0, 2.54] means that the 0th element in curPop (first solution) has an error of 2.54</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We initialize a new matrix called <b>winners</b>; this will hold our winning solutions temporarily until we move them to the next generation.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we're in a loop to populate the winners matrix. We use np.random.choice() to randomly pick params[4]/2 (20/2=10) solutions. We're gonna use a <b>tournament style selection</b> process where we randomly choose a subset of our population, and then pick the best solution from that subset and add it to our winners array. Obviously higher fitness (lower error) solutions have a higher chance of making it to the winners array, but we don't just pick the top 20 solutions because we want to maintain some genetic diversity in each generation, so have a few higher error solutions is generally a good thing.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>So the array 'selected' contains 10 random solutions (actually the indices to 10 solutions) from our population. Now we reference fitVec to find the actual elements, use np.argmin() to pick the one with the smallest error/cost and assign the index of that winning element to a variable, 'wnr'</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Then we reference the winner in curPop, the array of all solutions of the current generation, and copy it to our 'winners' array.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>nextPop is the array containing all the solutions for the next generation. We populate the first 20 elements of nextPop with our winning solutions from 'winners' array.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Okay, yeah this is a really long line and it's not very readable. I kind of cheated to make this all in 15 lines.
-This line is our <b>mating</b> process, and it's probably the most complicated part of a genetic algorithm. Let's start with the core of this nasty line. <br /></p>
-<blockquote><p><code>np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0)</code> <br /></p>
-</blockquote>
-<p>Basically np.repeat() will duplicate our 20x3 matrix to create a 80x3 matrix. We already populated the first 20 elements of nextPop with the winners from last generation. Now we want to populate the last 80 elements with their offspring.</p>
-<blockquote><p><code>np.random.permutation(np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0))</code></p>
-</blockquote>
-<p>Now we just use np.random.permutation() to shuffle the columns of this next 80x3 matrix. This is how we accomplish the crossover functional. Imagine we have a 3x3 matrix (3 solutions) like this:<br /> <code>np.array([[1,2,3],[4,5,6],[7,8,9]])</code> , when we run the permutation function, it will change it something like:<br /> <code>np.array([[7,5,3],[1,8,9],[4,2,3]])</code>
-<br />Go look at the numpy documentation to learn more about permutation if you still don't understand how it's working here.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>	<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Ahh. Our last line of code! This is our <b>mutation</b> process. I'm using a list comprehension to build a matrix of the same dimensions as nextPop, but filled with 1s. However, with a probability of params[1] (our mutation rate), we randomly "mutate" some of the elements. Our mutation is basically using a random value from numpy.random.normal() instead of 1. So we end up with a matrix like this (I've shrunk it to 10x3 to make it fit here and changed the mutation rate to 20% so you can see more mutated elements):</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.20</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[19]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>matrix([[ 1.        ,  1.        , -0.274611  ],
-        [ 1.        ,  1.        ,  1.        ],
-        [ 1.        ,  1.        ,  1.        ],
-        [ 1.        ,  0.05055137,  1.98058061],
-        [ 1.        ,  2.62563321,  1.        ],
-        [ 1.        ,  1.        ,  3.35454534],
-        [ 1.        ,  1.        ,  1.        ],
-        [ 1.        ,  1.        , -1.96160288],
-        [ 1.        ,  1.        ,  1.0381105 ],
-        [-0.64245344,  2.04278346,  1.        ]])</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Then we multiply this matrix (element-wise multiplication) to our nextPop matrix. Most of the time we're multiplying each element in nextPop by 1, so leaving them unchanged, but sometimes we multiply by one of the mutated values and thus will randomly change some elements in nextPop. This adds genetic diversity to our next generation. So now we've filled up nextPop with a new generation of higher fitness solutions. We just repeat this process for how ever many generations we defined in params.</p>
-<p><h4>Alright, so we're done! That's it! We made a genetic algorithm that trains a neural network, cool!</h4></p>
-<p>...Okay, yeah technically we did, but let's actually watch it do something. Here we go...</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
-<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span> <span class="c">#initialize current population to random values within range</span>
-<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="c">#1st col is indices, 2nd col is cost</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span> <span class="c">#iterate through num generations</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c">#Create vec of all errors from cost function</span>
-	<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(Gen: #%s) Total error: %s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])))</span>
-	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c">#20x2</span>
-	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c">#for n in range(10)</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c">#populate new gen with winners</span>
-	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c">#Populate the rest of the generation with offspring of mating pairs</span>
-	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c">#randomly mutate part of the population</span>
-	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
-
-<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">Cost:%s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;When X = </span><span class="se">\n</span><span class="s">%s </span><span class="se">\n</span><span class="s">hThetaX = </span><span class="se">\n</span><span class="s">%s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>(Gen: #0) Total error: 360.621647726
-
-(Gen: #1) Total error: 164.147038902
-
-(Gen: #2) Total error: 42.1044097511
-
-(Gen: #3) Total error: 24.2327815785
-
-(Gen: #4) Total error: 17.0591462061
-
-(Gen: #5) Total error: 11.0531107277
-
-(Gen: #6) Total error: 14.4015531463
-
-(Gen: #7) Total error: 21.6185558409
-
-(Gen: #8) Total error: 12.6716347732
-
-(Gen: #9) Total error: 13.5456215099
-
-Best Sol&apos;n:
-[[ 139.26240253    2.64168216   -8.3325537 ]]
-Cost:0.00721156902032
-When X =
-[[0 1]
- [1 1]
- [0 0]
- [1 0]]
-hThetaX =
-[[ 0.]
- [ 1.]
- [ 0.]
- [ 1.]]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><h3>Sweet!</h3>
-Looks like it converged, finding a solution with a cost of only 0.007, pretty close to the error of the solution found with gradient descent. Notice I only ran it for 10 generations 1) because clearly that's all it takes and 2) because I didn't want a 20 page long document here.</p>
-<p><h2>Where to go from here?</h2>
-First off, thanks. If you made it this far, I must've done something right. <br />
-But if you want to do more, then I really encourage you to play around with the parameters, maybe change up the neural network, or change the neural network cost function, etc and see what happens. The best way to learn is to get your hands dirty. Keep in mind this GA was kind of hard-wired for our little neural net by iamtrask, but if you understand the concepts and methods, you should be able to adapt it to more complex problems.
-</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3>Bonus! Let's graph the population errors vs the generation #</h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">PyDSTool</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
@@ -1035,33 +190,109 @@ But if you want to do more, then I really encourage you to play around with the 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
-<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span> <span class="c">#initialize current population to random values within range</span>
-<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="c">#1st col is indices, 2nd col is cost</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span> <span class="c">#iterate through num generations</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c">#Create vec of all errors from cost function</span>
-	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
-	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c">#20x2</span>
-	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c">#for n in range(10)</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c">#populate new gen with winners</span>
-	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c">#Populate the rest of the generation with offspring of mating pairs</span>
-	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c">#randomly mutate part of the population</span>
-	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">icdict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;R&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s">&#39;F&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span> <span class="c">#initial conditions</span>
+<span class="n">pardict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mf">0.1</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">:</span><span class="mf">0.005</span><span class="p">,</span><span class="s">&#39;d&#39;</span><span class="p">:</span><span class="mf">0.00004</span><span class="p">,</span><span class="s">&#39;g&#39;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">}</span> <span class="c">#parameters</span>
+</pre></div>
 
-<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">Cost:%s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;When X = </span><span class="se">\n</span><span class="s">%s </span><span class="se">\n</span><span class="s">hThetaX = </span><span class="se">\n</span><span class="s">%s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">r_rhs</span> <span class="o">=</span> <span class="s">&#39;a*R*(1-R/b) - c*R*F&#39;</span>
+<span class="n">f_rhs</span> <span class="o">=</span> <span class="s">&#39;d*R*F - g*F&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">vardict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;R&#39;</span><span class="p">:</span> <span class="n">r_rhs</span><span class="p">,</span> <span class="s">&#39;F&#39;</span><span class="p">:</span> <span class="n">f_rhs</span><span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">DSargs</span> <span class="o">=</span> <span class="n">args</span><span class="p">()</span>                   <span class="c"># create an empty object instance of the args class, call it DSargs</span>
+<span class="n">DSargs</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;RabbitFoxes&#39;</span>       <span class="c"># name our model</span>
+<span class="n">DSargs</span><span class="o">.</span><span class="n">ics</span> <span class="o">=</span> <span class="n">icdict</span>               <span class="c"># assign the icdict to the ics attribute</span>
+<span class="n">DSargs</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">pardict</span>             <span class="c"># assign the pardict to the pars attribute</span>
+<span class="n">DSargs</span><span class="o">.</span><span class="n">tdata</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">]</span>            <span class="c"># declare how long we expect to integrate for</span>
+<span class="n">DSargs</span><span class="o">.</span><span class="n">varspecs</span> <span class="o">=</span> <span class="n">vardict</span>         <span class="c"># assign the vardict dictionary to the &#39;varspecs&#39; attribute of DSargs</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">DS</span> <span class="o">=</span> <span class="n">Generator</span><span class="o">.</span><span class="n">Vode_ODEsystem</span><span class="p">(</span><span class="n">DSargs</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[105]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">traj</span> <span class="o">=</span> <span class="n">DS</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">)</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="s">&#39;t&#39;</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="s">&#39;R&#39;</span><span class="p">],</span> <span class="s">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Rabbits&#39;</span><span class="p">)</span> <span class="c">#rabbits BLUE</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;R&quot;&#39;</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="s">&#39;t&#39;</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="s">&#39;F&#39;</span><span class="p">],</span> <span class="s">&#39;r-&#39;</span> <span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&#39;Foxes&#39;</span><span class="p">)</span> <span class="c">#foxes RED</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+<span class="c">#fox_label = mpatches.Patch(color=&#39;red&#39;, label=&#39;Foxes&#39;)</span>
+<span class="c">#rabbit_label = mpatches.Patch(color=&#39;blue&#39;, label=&#39;Rabbits&#39;)</span>
+<span class="c">#plt.legend(handles=[fox_label, rabbit_label])</span>
+<span class="c"># ask matplotlib for the plotted objects and their labels</span>
+<span class="n">lines</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">lines2</span><span class="p">,</span> <span class="n">labels2</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lines</span> <span class="o">+</span> <span class="n">lines2</span><span class="p">,</span> <span class="n">labels</span> <span class="o">+</span> <span class="n">labels2</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1072,137 +303,347 @@ But if you want to do more, then I really encourage you to play around with the 
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Best Sol&apos;n:
-[[ 625.07750262  -48.12579247 -532.48348958]]
-Cost:1.11272735801e-231
-When X =
-[[0 1]
- [1 1]
- [0 0]
- [1 0]]
-hThetaX =
-[[ 0.]
- [ 1.]
- [ 0.]
- [ 1.]]
-</pre>
-</div>
+<div class="output_area"><div class="prompt output_prompt">Out[106]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.legend.Legend at 0x10b122208&gt;</pre>
 </div>
 
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/brandonbrown/Desktop/Projects/MiniGAandNN/NeuralNet.py:15: RuntimeWarning: overflow encountered in exp
-  def sigmoid(x): return 1 / (1 + np.exp(- x))
-</pre>
-</div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-LWfQS1LL/X8e/85GQ5DVkwAAAABJRU5ErkJggg==
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -1213,249 +654,12 @@ LWfQS1LL/X8e/85GQ5DVkwAAAABJRU5ErkJggg==
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Looks like we converge after just <b>4</b> generations! Also notice we get these little bumps in error every 10 generations or so, likely due to a particularly dramatic mutation round.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Ok-so-that-was-some-nasty-code,-here's-a-more-readable-version:">Ok so that was some nasty code, here's a more readable version:<a class="anchor-link" href="#Ok-so-that-was-some-nasty-code,-here's-a-more-readable-version:">¶</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
-<span class="c"># [Init pop (pop=100), mut rate (=10%), num generations (5), chromosome/solution length (3), # winners/per gen]</span>
-<span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span>
-<span class="c">#initialize current population to random values within range</span>
-<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span><span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">initPop</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="c">#1st col is indices, 2nd col is cost</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numGen</span><span class="p">):</span> <span class="c">#iterate through num generations</span>
-    <span class="c">#Create vector of all errors from cost function for each solution</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">initPop</span><span class="p">)])</span>
-	<span class="nb">print</span><span class="p">(</span><span class="s">"(Gen: #%s) Total error: %s</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])))</span>
-	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
-	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numWin</span><span class="p">,</span> <span class="n">solLen</span><span class="p">))</span> <span class="c">#10x3</span>
-	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c">#for n in range(10)</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">numWin</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c">#populate new gen with winners</span>
-	<span class="n">duplicWin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))),</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span> <span class="c">#for each col in winners (3 cols)</span>
-        <span class="c">#Duplicate winners (10x3 matrix) 9 times to create a 90x3 matrix, then shuffle columns</span>
-		<span class="n">numDups</span> <span class="o">=</span> <span class="p">((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span> <span class="c">#num times to duplicate, needs to fill rest of nextPop</span>
-		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="n">numDups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="c">#duplicate each col</span>
-		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">])</span> <span class="c">#shuffle each col ("crossover")</span>
-    <span class="c">#Populate the rest of the generation with offspring of mating pairs</span>
-	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">)</span>
-    <span class="c">#Create a mutation matrix, mostly 1s, but some elements are random numbers from a normal distribution</span>
-	<span class="n">mutMatrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">rn</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">mutRate</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
-    <span class="c">#randomly mutate part of the population by multiplying nextPop by our mutation matrix</span>
-	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mutMatrix</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Total cost/err'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Generation #'</span><span class="p">)</span>
-<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">"Best Sol'n:</span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">Cost:%s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">"When X = </span><span class="se">\n</span><span class="s">%s </span><span class="se">\n</span><span class="s">hThetaX = </span><span class="se">\n</span><span class="s">%s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>(Gen: #0) Total error: 2392.48567828
-
-(Gen: #1) Total error: 311.795154816
-
-(Gen: #2) Total error: 239.481842378
-
-(Gen: #3) Total error: 106.005440241
-
-(Gen: #4) Total error: 45.2453789328
-
-Best Sol'n:
-[[ 23.44515757  -2.32        -9.78      ]]
-Cost:0.000138407123392
-When X =
-[[0 1]
- [1 1]
- [0 0]
- [1 0]]
-hThetaX =
-[[ 0.]
- [ 1.]
- [ 0.]
- [ 1.]]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-">
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre>
+<div class=" highlight hl-ipython3"><pre> 
 </pre></div>
 
 </div>
@@ -1466,55 +670,4 @@ RkRE1JLAiIiIWhIYERFRSwIjIiJqSWBEREQt/x92UoqsyN97jAAAAABJRU5ErkJggg==
     </div>
   </div>
 </body>
-</html>
-
-  </div>
-
-  <div class="date">
-    Written on July 15, 2015
-  </div>
-
-  
-</article>
-
-    </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          
-<a href="mailto:titusrevised@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/titusrevised"><i class="svg-icon github"></i></a>
-
-
-
-
-
-
-
-
-        </footer>
-      </div>
-    </div>
-
-    
-	<!-- Google Analytics -->
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		ga('create', 'UA-65266622-1', 'auto');
-		ga('send', 'pageview', {
-		  'page': '/Simple-Genetic-Algorithm-in-15-lines-of-Python/',
-		  'title': 'Simple Genetic Algorithm In 15 Lines Of Python'
-		});
-	</script>
-	<!-- End Google Analytics -->
-
-
-  </body>
 </html>
