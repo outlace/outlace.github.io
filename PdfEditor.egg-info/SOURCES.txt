@@ -1,5 +1,0 @@
-PdfEditor.egg-info/PKG-INFO
-PdfEditor.egg-info/SOURCES.txt
-PdfEditor.egg-info/dependency_links.txt
-PdfEditor.egg-info/requires.txt
-PdfEditor.egg-info/top_level.txt
