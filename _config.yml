@@ -18,10 +18,10 @@ avatar: /images/machine-learning.jpg
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
-  email: titusrevised@gmail.com
+  email: outlacedev@gmail.com
   facebook:
   flickr:
-  github: titusrevised
+  github: outlace
   instagram:
   linkedin:
   pinterest:
@@ -41,7 +41,7 @@ google_analytics: UA-65266622-1
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url: http://titusrevised.github.io
+url: http://outlace.github.io
 
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
