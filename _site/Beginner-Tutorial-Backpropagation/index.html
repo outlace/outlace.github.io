@@ -233,15 +233,7 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Beginning-Tutorial:-Backpropagation-and-Gradient-Descent">Beginning Tutorial: Backpropagation and Gradient Descent<a class="anchor-link" href="#Beginning-Tutorial:-Backpropagation-and-Gradient-Descent">&#182;</a></h1>
-</div>
-</div>
-</div>
+
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -554,7 +546,7 @@ Let's formalize this: When we start with a random x and compute it's deriative $
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you might imagine, when we use gradient descent for a neural network, things get a lot more complicated. Not because gradient descent gets more complicated, it still ends up just being a matter of taking small steps downhill, it's that we need that pesky derivative in order to use gradient descent, and the derivative of a neural network cost function (with respect to its weights) is pretty intense. It's not a matter of just analytically solving $f(x)=x^2, f'(x)=2x$ , because the output of a neural net has many nested or "inner" functions, if you will. That's why someone discovered backpropagation. Backpropagation is simply a method of finding the derivative of the neural net's cost function (with respect to its weights) without having to do crazy math.</p>
 <p>
-Also unlike our toy math problem above, a neural network may have many weights. We need to find the optimal value for each individual weight to lower the cost for our entire neural net output. This requires taking the partial derivative of the cost/error function with respect to a single weight, and then running gradient descent for each individual weight. Thus, for any individual weight $W_j$, $weight_{new} = W_j - \alpha*\frac{\partial C}{\partial W_j}$ and as before, we do this iteratively for each weight, many times, until the whole network's cost function is minimized.</p>
+Also unlike our toy math problem above, a neural network may have many weights. We need to find the optimal value for each individual weight to lower the cost for our entire neural net output. This requires taking the partial derivative of the cost/error function with respect to a single weight, and then running gradient descent for each individual weight. Thus, for any individual weight $W_j$, $weight_{new} = W_j - \alpha*\frac{\partial C}{\partial W_j}$ (where $C$ is our cost function) and as before, we do this iteratively for each weight, many times, until the whole network's cost function is minimized.</p>
 <p>I'm by nature a reductionist, that is, I like to reduce problems to the simplest possible version, make sure I understand that, and then I can build from there. So let's do backpropagation and gradient descent on the simplest possible neural network (in fact, it's hardly a network), a single input, a single output, no bias units. We want our NN to model this problem:</p>
 
 
@@ -610,7 +602,7 @@ Clearly, we just need $W_1$ to be a big negative number, so that any $x$ will be
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now let's define our <b>cost</b> (or error) <b>function</b>. A commonly used cost function is the Mean Squared Error (MSE), which is $$C(h(x)) = \frac{1}{2m}\sum_1^m{(h(x) - y)^2}$$</p>
+<p>Now let's define our <b>cost</b> (or error) <b>function</b>. A commonly used cost function is the Mean Squared Error (MSE), which is $$C(h(x)) = \frac{1}{2m}\sum_1^m{(h(x_m) - y)^2}$$</p>
 <p>
 $h(x)$ is whatever our output function is (in our case the neural net's sigmoid). This says, that for every $x$:
 ${x_1, x_2, x_3 ... x_m}$
@@ -814,8 +806,6 @@ I'm not going to explain why we have to add that $x_1$ as a multiplier on the ou
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">cm</span> <span class="c">#these are for later (we&#39;re gonna plot our cost function)</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
 <span class="c">#Our training data</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;0 1;1 1&#39;</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;1;0&#39;</span><span class="p">)</span>
