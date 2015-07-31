@@ -2246,7 +2246,7 @@ AAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><p>Neat! A 3d surface of our cost function. Just in case it's not obvious, the more red parts of the surface are the highest (highest cost) and the darkest green/black is the lowest part of the plot (lowest cost). Notice how there's a big mountain peak and a deep valley, but then there are these very flat areas on each side. Those are basically local minima. If our weights initialize somewhere in there, it's not likely they'll escape down into the low cost valley because the gradients (slopes) in those parts are extremely small. Imagine we put a ball on top of the hill, that's our weight vector. Then we give it a little kick. There's a good chance it will roll down into the valley. But if we put the ball on the flat "grassy" area and give it a little kick, there's a good chance it'll stay in that flat area.</p></p>
+<p><p>Neat! A 3d surface of our cost function. Just in case it's not obvious, the more red parts of the surface are the highest (highest cost) and the darkest blue is the lowest part of the plot (lowest cost). Notice how there's a big mountain peak and a deep valley, but then there are these very flat areas on each side. Those are basically local minima. If our weights initialize somewhere in there, it's not likely they'll escape down into the low cost valley because the gradients (slopes) in those parts are extremely small. Imagine we put a ball on top of the hill, that's our weight vector. Then we give it a little kick. There's a good chance it will roll down into the valley. But if we put the ball on the flat "grassy" area and give it a little kick, there's a good chance it'll stay in that flat area.</p></p>
 <p><p>As it turns out, there's actually something we can do to make our situation better. We can simply define a different cost function. While the Mean Squared Error function is nice and simple and easy to comprehend, it clearly can lead to a lot of local minima. There's a much better cost function called a <b>cross-entropy</b> cost function, but unfortunately, it looks a lot uglier than the MSE. Here it is (I'm using $\theta$ to denote the weight vector):</p>
 $$C(\theta) = \frac 1m * \sum_1^m [-y * log((h_{\theta}(x))) - (1 - y)(log(1 - (h_{\theta}(x)))]$$</p>
 
@@ -3548,7 +3548,7 @@ SCCO6Do4ODgkkP8PmpcwXp78y1gAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Again, more red = higher cost, more dark = lower cost. Hopefully you can appreciate that this cost function looks much smoother, with pretty much no major local minima. If you placed a ball anywhere on this surface and gave it a little kick, it would almost certainly roll to the low cost valley.</p>
+<p>Again, more red = higher cost, more dark blue = lower cost. Hopefully you can appreciate that this cost function looks much smoother, with pretty much no major local minima. If you placed a ball anywhere on this surface and gave it a little kick, it would almost certainly roll to the low cost valley.</p>
 
 </div>
 </div>
@@ -3606,16 +3606,21 @@ SCCO6Do4ODgkkP8PmpcwXp78y1gAAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can see, our 3-layer network has 2 inputs, 3 hidden neurons, and 1 output (ignoring the bias nodes). There are two theta matrices between each layer, $\theta_1 = 3x3$ and $\theta_2 = 4x1$ (referring to matrix dimensions). Great, now how do we calculate those partial derivatives so we can do gradient descent? Here are the steps.</p>
 <p>
-1. Starting at the output neurons, we calculate their node delta, $\delta$. In our case, we only have one output neuron, and therefore a $\delta_1$. Delta's represent the error for each node in the network. It's easy to calculate the output node's delta, it's simply $\delta_1 = (h(x) - y)$ which is what the output neuron output minus $y$, the expected value. Note, even if we had more than one output neuron, we could calculate all their deltas, $\delta_1 ... \delta_j$, in the same way, $\delta_j = (h(x) - y)$ and at the same time if $h(x)$ and $y$ are vectors.
+1. Starting at the output neurons, we calculate their node delta, $\delta$. In our case, we only have one output neuron, and therefore a $\delta_1$. Delta's represent the error for each node in the network. It's easy to calculate the output node's delta, it's simply $\delta_1 = (h(x) - y)$ which is what the output neuron output minus $y$, the expected value. Note, even if we had more than one output neuron, we could calculate all their deltas, $\delta_1 ... \delta_j$, in the same way, $\delta_j^{L} = (h(x) - y)$ and at the same time if $h(x)$ and $y$ are vectors. L=num layers, thus $\delta_j^{L}$ refers to output node deltas.
 </p><p>
 2. Here's where we start the backpropagation. To calculate the previous layer's (in our case, the hidden layer) deltas, we backpropagate the output errors/deltas using this formula:
-$$\delta_j^{l-1} = (\theta_2 * \delta_j^l) \odot (a^{l-1} \odot (1 - a^{l-1}))$$
-Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplication (hamdard product), and $l$ = the number of layers. So $\delta_j^l$ refers to the output layer deltas, whereas $\delta_j^{l-1}$ refers to the previous, hidden layer deltas, and $\delta_j^{l-2}$ would be 2 layers before the output layer and so on. $a^{l-1}$ refers to the activations/outputs of the hidden layer (or layer before $l$). Note: <b>We only calculate delta's up to the last hidden layer, we don't calculate deltas for the input layer.</b></p><p>
+$$\delta_j^{l} = (\theta_l * \delta_j^{l+1}) \odot (a^{l} \odot (1 - a^{l}))$$
+Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplication (hamdard product), and $l$ = the layer number (e.g. $l=2$ is the hidden layer for our example NN). So $\delta_j^3$ refers to the output layer deltas, whereas $\delta_j^{2}$ refers to the previous, hidden layer deltas, and $\delta_j^{1}$ would be 2 layers before the output layer (the input layer). $a^{l}$ refers to the activations/outputs of layer $l$ (e.g. the hidden layer if $l=2$). Note: <b>We only calculate delta's up to the last hidden layer, we don't calculate deltas for the input layer.</b></p><p>
 
-
-3. Calculate the gradients using this formula: $$\frac{\partial C}{\partial \theta_j} = \delta^{1-1} * a^l$$
-
-4. Use the gradients to perform gradient descent like normal.
+<p>
+3. Calculate the gradients using this formula: $$\frac{\partial C}{\partial \theta_j^l} = \delta^{l+1} * a^{l}$$
+For example, the gradients for weights between the hidden layer and output layer ($\theta_2$, $l=2$) are $\frac{\partial C}{\partial \theta_j^2} = \delta^{3} * a^{2}$
+<b>Important:</b> We do NOT backpropagate deltas from bias units. Thus, when we calculate the gradients for $\theta_1$ (the weights between input layer and hidden layer)
+we should omit the bias unit delta from the hidden layer like this:
+$\frac{\partial C}{\partial \theta_j^1} = \delta^{2} * a^{1}$, where $\delta^{2}$ includes $\delta_1^{2}$ and $\delta_2^{2}$, NOT $\delta_0^{2}$ (the bias unit, j = 0).
+</p>
+<p>
+4. Use these gradients to perform gradient descent like normal.</p>
 </p>
 </div>
 </div>
@@ -3625,7 +3630,15 @@ Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplicati
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Below I've implemented the XOR neural net we've described using backpropagation and gradient descent. If you have familiarity with forward propagation in simple neural nets, then most of it should be straightforward. Hopefully the backpropagation portion is starting to make sense now too.</p>
+<p>Below I've implemented the XOR neural net we've described using backpropagation and gradient descent.
+  If you have familiarity with forward propagation in simple neural nets, then most of it should be straightforward.
+  Hopefully the backpropagation portion is starting to make sense now too. Note: <b>The above equations do not account for
+    proper matrix shapes</b> (i.e. I did not put in where you should transpose). You need to make sure that your
+    matrix multiplication is resulting in the proper matrix dimensions, and you will need to transpose certain matrices to get the correct dimensions.
+    I often common my code with the matrix dimensions
+    whenever I do matrix math to make sure everything checks out. Dimensional analysis is important, and this is where
+    Matlab is really useful as a prototyping tool since it's really easy to write clean vectorized code and debug it.
+</p>
 
 </div>
 </div>
@@ -3677,7 +3690,7 @@ Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplicati
 		<span class="n">delta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">theta2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a2</span><span class="p">,(</span><span class="mi">1</span><span class="o">-</span><span class="n">a2</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">))</span> <span class="c">#1x4</span>
         <span class="c">#Calculate the gradients for each training example and sum them together, getting an average</span>
         <span class="c">#gradient over all the training pairs. Then at the end, we modify our weights.</span>
-		<span class="n">theta1_grad</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">((</span><span class="n">delta2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">numHid</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">theta1_grad</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">((</span><span class="n">delta2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">numHid</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="c">#Notice I omit the bias delta</span>
 		<span class="n">theta2_grad</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">((</span><span class="n">delta3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a2</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span> <span class="c">#1x1 * 1x4 = 1x4</span>
     <span class="c">#update the weights after going through all training examples</span>
 	<span class="n">theta1</span> <span class="o">+=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">theta1_grad</span><span class="p">)</span>
