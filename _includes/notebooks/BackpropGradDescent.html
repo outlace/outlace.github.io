@@ -2185,7 +2185,7 @@ AAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><p>Neat! A 3d surface of our cost function. Just in case it's not obvious, the more red parts of the surface are the highest (highest cost) and the darkest green/black is the lowest part of the plot (lowest cost). Notice how there's a big mountain peak and a deep valley, but then there are these very flat areas on each side. Those are basically local minima. If our weights initialize somewhere in there, it's not likely they'll escape down into the low cost valley because the gradients (slopes) in those parts are extremely small. Imagine we put a ball on top of the hill, that's our weight vector. Then we give it a little kick. There's a good chance it will roll down into the valley. But if we put the ball on the flat "grassy" area and give it a little kick, there's a good chance it'll stay in that flat area.</p></p>
+<p><p>Neat! A 3d surface of our cost function. Just in case it's not obvious, the more red parts of the surface are the highest (highest cost) and the darkest blue is the lowest part of the plot (lowest cost). Notice how there's a big mountain peak and a deep valley, but then there are these very flat areas on each side. Those are basically local minima. If our weights initialize somewhere in there, it's not likely they'll escape down into the low cost valley because the gradients (slopes) in those parts are extremely small. Imagine we put a ball on top of the hill, that's our weight vector. Then we give it a little kick. There's a good chance it will roll down into the valley. But if we put the ball on the flat "grassy" area and give it a little kick, there's a good chance it'll stay in that flat area.</p></p>
 <p><p>As it turns out, there's actually something we can do to make our situation better. We can simply define a different cost function. While the Mean Squared Error function is nice and simple and easy to comprehend, it clearly can lead to a lot of local minima. There's a much better cost function called a <b>cross-entropy</b> cost function, but unfortunately, it looks a lot uglier than the MSE. Here it is (I'm using $\theta$ to denote the weight vector):</p>
 $$C(\theta) = \frac 1m * \sum_1^m [-y * log((h_{\theta}(x))) - (1 - y)(log(1 - (h_{\theta}(x)))]$$</p>
 
@@ -3487,7 +3487,7 @@ SCCO6Do4ODgkkP8PmpcwXp78y1gAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Again, more red = higher cost, more dark = lower cost. Hopefully you can appreciate that this cost function looks much smoother, with pretty much no major local minima. If you placed a ball anywhere on this surface and gave it a little kick, it would almost certainly roll to the low cost valley.</p>
+<p>Again, more red = higher cost, more dark blue = lower cost. Hopefully you can appreciate that this cost function looks much smoother, with pretty much no major local minima. If you placed a ball anywhere on this surface and gave it a little kick, it would almost certainly roll to the low cost valley.</p>
 
 </div>
 </div>
