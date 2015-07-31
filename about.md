@@ -14,8 +14,6 @@ learning, computational biology, statistics/data analysis, and mathematics but
 I don't have any formal quantitative background, so I'm
 attempting to teach myself the basics and will share my journey on this blog.
 
-If you like what you see here and want to shoot me some change, here's my Bitcoin wallet
-17nXFGVZPTd6haVTAjvik4Wm3Cw7QCJxKw
 
 ### Contact me
 
