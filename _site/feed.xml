@@ -3,15 +3,23 @@
   <channel>
     <title>Δ ℚuantitative √ourney</title>
     <description>∑ My experiences in learning quantitative applications</description>
-    <link>http://titusrevised.github.io</link>
-    <atom:link href="http://titusrevised.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://outlace.github.io</link>
+    <atom:link href="http://outlace.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Gradient Descent with Backpropagation</title>
+        <description></description>
+        <pubDate>Fri, 31 Jul 2015 00:00:00 -0700</pubDate>
+        <link>http://outlace.github.io/Beginner-Tutorial-Backpropagation/</link>
+        <guid isPermaLink="true">http://outlace.github.io/Beginner-Tutorial-Backpropagation/</guid>
+      </item>
     
       <item>
         <title>Simple Genetic Algorithm In 15 Lines Of Python</title>
         <description></description>
         <pubDate>Wed, 15 Jul 2015 00:00:00 -0700</pubDate>
-        <link>http://titusrevised.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</link>
-        <guid isPermaLink="true">http://titusrevised.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</guid>
+        <link>http://outlace.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</link>
+        <guid isPermaLink="true">http://outlace.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</guid>
       </item>
     
   </channel>
