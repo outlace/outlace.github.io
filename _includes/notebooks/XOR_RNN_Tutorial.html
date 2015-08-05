@@ -129,14 +129,14 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  } 
-  div.output_wrapper { 
-    display: block;
-    page-break-inside: avoid; 
   }
-  div.output { 
+  div.output_wrapper {
     display: block;
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
+  }
+  div.output {
+    display: block;
+    page-break-inside: avoid;
   }
 }
 </style>
@@ -512,7 +512,7 @@ Also note I imported "sigmoid" which is a separate file that only contains the s
 		<span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
 		<span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
 		<span class="n">x_context</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">context</span><span class="p">))</span> <span class="c">#add the context units to our input layer</span>
-		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[1]&#39;</span><span class="p">))))</span><span class="c">#add bias, context units to input layer; 3x1</span>
+		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[1]&#39;</span><span class="p">))))</span><span class="c">#add bias, context units to input layer</span>
 		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span><span class="p">;</span> <span class="c">#2x1</span>
 		<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[1]&#39;</span><span class="p">)))</span> <span class="c">#add bias, output hidden layer; 3x1</span>
 		<span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
@@ -642,7 +642,7 @@ What does `fmin_tnc` return to us? It returns 3 items by default in an array. Th
         <span class="mf">113.13004224</span><span class="p">,</span>  <span class="o">-</span><span class="mf">33.56398667</span><span class="p">,</span>    <span class="mf">0.7257491</span> <span class="p">,</span>   <span class="o">-</span><span class="mf">9.27982256</span><span class="p">,</span>
         <span class="o">-</span><span class="mf">18.29977063</span><span class="p">,</span>  <span class="mf">129.48720956</span><span class="p">,</span>  <span class="o">-</span><span class="mf">37.57674034</span><span class="p">,</span>  <span class="o">-</span><span class="mf">30.04523486</span><span class="p">,</span>
         <span class="o">-</span><span class="mf">90.35656788</span><span class="p">])</span>
-<span class="n">thetaVec_sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">thetaVec_all</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">theta_</span><span class="p">]),</span> <span class="n">thetaVec_all</span><span class="p">[</span><span class="mi">3</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+<span class="n">thetaVec_sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">thetaVec_all</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">theta_</span><span class="p">]),</span> <span class="n">thetaVec_all</span><span class="p">[</span><span class="mi">3</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                    <span class="k">for</span> <span class="n">theta_</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">(</span><span class="n">thetaVec_f</span><span class="p">)]</span>
 <span class="n">Xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[0;0;1;1;0]&#39;</span><span class="p">)</span>
 <span class="n">Ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[0;0;1;0;1]&#39;</span><span class="p">)</span>
@@ -926,7 +926,7 @@ yA7extP08XAAAAAASUVORK5CYII=
 		<span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
 		<span class="n">x_context</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:],</span> <span class="n">context</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[1]&#39;</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="c">#add bias, context units to input layer</span>
-		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span> 
+		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span>
 		<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s">&#39;[1]&#39;</span><span class="p">)))</span> <span class="c">#add bias, output hidden layer</span>
 		<span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="c">#ignore bias</span>
 		<span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a2</span>
