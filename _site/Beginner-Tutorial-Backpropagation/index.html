@@ -3600,7 +3600,7 @@ SCCO6Do4ODgkkP8PmpcwXp78y1gAAAAASUVORK5CYII=
 </p><p>
 2. Here's where we start the backpropagation. To calculate the previous layer's (in our case, the hidden layer) deltas, we backpropagate the output errors/deltas using this formula:
 $$\delta_j^{l} = (\theta_l * \delta_j^{l+1}) \odot (a^{l} \odot (1 - a^{l}))$$
-Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplication (hamdard product), and $l$ = the layer number (e.g. $l=2$ is the hidden layer for our example NN). So $\delta_j^3$ refers to the output layer deltas, whereas $\delta_j^{2}$ refers to the previous, hidden layer deltas, and $\delta_j^{1}$ would be 2 layers before the output layer (the input layer). $a^{l}$ refers to the activations/outputs of layer $l$ (e.g. the hidden layer if $l=2$). Note: <b>We only calculate delta's up to the last hidden layer, we don't calculate deltas for the input layer.</b></p><p>
+Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplication (Hadamard product), and $l$ = the layer number (e.g. $l=2$ is the hidden layer for our example NN). So $\delta_j^3$ refers to the output layer deltas, whereas $\delta_j^{2}$ refers to the previous, hidden layer deltas, and $\delta_j^{1}$ would be 2 layers before the output layer (the input layer). $a^{l}$ refers to the activations/outputs of layer $l$ (e.g. the hidden layer if $l=2$). Note: <b>We only calculate delta's up to the last hidden layer, we don't calculate deltas for the input layer.</b></p><p>
 
 <p>
 3. Calculate the gradients using this formula: $$\frac{\partial C}{\partial \theta_j^l} = \delta^{l+1} * a^{l}$$
