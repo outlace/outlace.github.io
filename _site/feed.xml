@@ -7,6 +7,14 @@
     <atom:link href="http://outlace.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Simple(r) RNN in Julia</title>
+        <description></description>
+        <pubDate>Mon, 10 Aug 2015 00:00:00 -0700</pubDate>
+        <link>http://outlace.github.io/Simple-RNN-in-Julia/</link>
+        <guid isPermaLink="true">http://outlace.github.io/Simple-RNN-in-Julia/</guid>
+      </item>
+    
+      <item>
         <title>Simple Recurrent Neural Network</title>
         <description></description>
         <pubDate>Wed, 05 Aug 2015 00:00:00 -0700</pubDate>
