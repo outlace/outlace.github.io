@@ -18,3 +18,6 @@ attempting to teach myself the basics and will share my journey on this blog.
 ### Contact me
 
 [outlacedev@gmail.com](mailto:outlacedev@gmail.com)
+
+Help me pay down my student loans?
+BTC: 17nXFGVZPTd6haVTAjvik4Wm3Cw7QCJxKw
