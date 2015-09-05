@@ -1,7 +1,7 @@
 ---
 layout: default_mathjax
 title: "On chain rule, computational graphs, and backpropagation"
-excerpt: "Here I'm going to revisit backpropagation theory by thinking about neural networks as computational graphs upon which we can easily visualize the chain rule to compute partial derivates."
+excerpt: "Here I'm going to revisit backpropagation theory by thinking about neural networks as computational graphs upon which we can easily visualize the chain rule to compute partial derivatives."
 ---
 On chain rule, computational graphs, and backpropagation
 ---------------------
@@ -102,16 +102,16 @@ So that is just a typical feedforward neural network visualization. Nothing new 
 
 Here L3 denotes the output layer, L2 the hidden layer, and L1 the input layer. Similarly, $\theta\_2$ denotes the weight vector 'between' layer 2 and layer 3; $\theta\_1$ denotes the weight vector 'between' layer 1 and layer 2. The $\sigma$ notation just refers to the sigmoid operation that takes place within those particular nodes (however, the *outputs* of those nodes will be referred to using the L notation, i.e. L1, L2, and L3).
 
-As you can see, it's a fairly different way of looking at the neural network. This is a functional representation. It shows the step by step functions that occur and the inputs those functions operate on. For example, the L2 layer function operates on two inputs: the L1 layer outputs (a vector) and the weight vector $theta\_1$. Likewise, the L3 function operates on L2 and $theta\_2$, and is our final output. If you're wondering where the bias nodes went, they're implicitly included in each L layer's output (i.e. the scalar 1 is added to each L vector). Each weight vector still contains a weight for the bias.
+As you can see, it's a fairly different way of looking at the neural network. This is a functional representation. It shows the step by step functions that occur and the inputs those functions operate on. For example, the L2 layer function operates on two inputs: the L1 layer outputs (a vector) and the weight vector $\theta\_1$. Likewise, the L3 function operates on L2 and $\theta\_2$, and is our final output. If you're wondering where the bias nodes went, they're implicitly included in each L layer's output (i.e. the scalar 1 is added to each L vector). Each weight vector still contains a weight for the bias.
 
-Let's list out the computational steps to compute L3.
+Let's list out the computational steps to compute the neural network output, L3.
 
 $$ \begin{align}
-&g(x) = sigmoid(x) = \frac{1}{1+e^{-x}} \text{, define the sigmoid/logistic function} \\\\
+&\sigma(x) = \frac{1}{1+e^{-x}} \text{, define the sigmoid/logistic function} \\\\
 &X = [x\_1, x\_2]       \text{, the vector containing our two input values} \\\\
 &L1 = [X, 1]            \text{, add a bias value of 1}\\\\
-&L2 = g(L1 * \theta\_1) \text{, compute L2}\\\\
-&L3 = g(L2 * \theta\_2) \text{, compute L3}\\\\
+&L2 = [\sigma(L1 * \theta\_1), 1] \text{, add bias and compute L2}\\\\
+&L3 = \sigma(L2 * \theta\_2) \text{, compute L3}\\\\
 \end{align}
 $$
 
@@ -137,7 +137,7 @@ Everything is the same as the computational graph of just our neural network, ex
 
 The most common cost function used for a network like this would be the __cross-entropy cost function__, with the generic form being:
 $$C(\theta) = \frac 1m * \sum\_1^m [-y * log((h\_{\theta}(x))) - (1 - y)(log(1 - (h\_{\theta}(x)))]$$
-where $h\_{\theta}(x)$ is the output (could be a scalar or vector depending on the number of output nodes) of the network and $y$ is the expected value given input(s) $x$.
+where $h\_{\theta}(x)$ is the output (could be a scalar or vector depending on the number of output nodes) of the network, $y$ is the expected value given input(s) $x$, and $m$ is the number of training examples.
 
 We can get the derivative of this cost function with respect to the output layer function L3 (aka $h\_{\theta}(x)$) to add to our computational graph. It's not worth going through the steps to derive it here, but if you ask [WolframAlpha](http://www.wolframalpha.com/input/?i=%E2%88%92y%E2%88%97log%28x%29%E2%88%92%281%E2%88%92y%29%28log%281%E2%88%92x%29%29%2C+d%2Fdx) to do it, it will give you this:
 $${L3}' = \frac{L3 - y}{L3(1-L3)}$$

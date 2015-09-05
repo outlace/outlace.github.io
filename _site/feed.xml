@@ -110,16 +110,16 @@ neural network can be represented as a single function whose inputs are a weight
 
 &lt;p&gt;Here L3 denotes the output layer, L2 the hidden layer, and L1 the input layer. Similarly, $\theta_2$ denotes the weight vector &amp;#39;between&amp;#39; layer 2 and layer 3; $\theta_1$ denotes the weight vector &amp;#39;between&amp;#39; layer 1 and layer 2. The $\sigma$ notation just refers to the sigmoid operation that takes place within those particular nodes (however, the &lt;em&gt;outputs&lt;/em&gt; of those nodes will be referred to using the L notation, i.e. L1, L2, and L3).&lt;/p&gt;
 
-&lt;p&gt;As you can see, it&amp;#39;s a fairly different way of looking at the neural network. This is a functional representation. It shows the step by step functions that occur and the inputs those functions operate on. For example, the L2 layer function operates on two inputs: the L1 layer outputs (a vector) and the weight vector $theta_1$. Likewise, the L3 function operates on L2 and $theta_2$, and is our final output. If you&amp;#39;re wondering where the bias nodes went, they&amp;#39;re implicitly included in each L layer&amp;#39;s output (i.e. the scalar 1 is added to each L vector). Each weight vector still contains a weight for the bias.&lt;/p&gt;
+&lt;p&gt;As you can see, it&amp;#39;s a fairly different way of looking at the neural network. This is a functional representation. It shows the step by step functions that occur and the inputs those functions operate on. For example, the L2 layer function operates on two inputs: the L1 layer outputs (a vector) and the weight vector $\theta_1$. Likewise, the L3 function operates on L2 and $\theta_2$, and is our final output. If you&amp;#39;re wondering where the bias nodes went, they&amp;#39;re implicitly included in each L layer&amp;#39;s output (i.e. the scalar 1 is added to each L vector). Each weight vector still contains a weight for the bias.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;#39;s list out the computational steps to compute L3.&lt;/p&gt;
+&lt;p&gt;Let&amp;#39;s list out the computational steps to compute the neural network output, L3.&lt;/p&gt;
 
 &lt;p&gt;$$ \begin{align}
-&amp;amp;g(x) = sigmoid(x) = \frac{1}{1+e^{-x}} \text{, define the sigmoid/logistic function} \\
+&amp;amp;\sigma(x) = \frac{1}{1+e^{-x}} \text{, define the sigmoid/logistic function} \\
 &amp;amp;X = [x_1, x_2]       \text{, the vector containing our two input values} \\
 &amp;amp;L1 = [X, 1]            \text{, add a bias value of 1}\\
-&amp;amp;L2 = g(L1 * \theta_1) \text{, compute L2}\\
-&amp;amp;L3 = g(L2 * \theta_2) \text{, compute L3}\\
+&amp;amp;L2 = [\sigma(L1 * \theta_1), 1] \text{, add bias and compute L2}\\
+&amp;amp;L3 = \sigma(L2 * \theta_2) \text{, compute L3}\\
 \end{align}
 $$&lt;/p&gt;
 
@@ -145,7 +145,7 @@ $$&lt;/p&gt;
 
 &lt;p&gt;The most common cost function used for a network like this would be the &lt;strong&gt;cross-entropy cost function&lt;/strong&gt;, with the generic form being:
 $$C(\theta) = \frac 1m * \sum_1^m [-y * log((h_{\theta}(x))) - (1 - y)(log(1 - (h_{\theta}(x)))]$$
-where $h_{\theta}(x)$ is the output (could be a scalar or vector depending on the number of output nodes) of the network and $y$ is the expected value given input(s) $x$.&lt;/p&gt;
+where $h_{\theta}(x)$ is the output (could be a scalar or vector depending on the number of output nodes) of the network, $y$ is the expected value given input(s) $x$, and $m$ is the number of training examples.&lt;/p&gt;
 
 &lt;p&gt;We can get the derivative of this cost function with respect to the output layer function L3 (aka $h_{\theta}(x)$) to add to our computational graph. It&amp;#39;s not worth going through the steps to derive it here, but if you ask &lt;a href=&quot;http://www.wolframalpha.com/input/?i=%E2%88%92y%E2%88%97log%28x%29%E2%88%92%281%E2%88%92y%29%28log%281%E2%88%92x%29%29%2C+d%2Fdx&quot;&gt;WolframAlpha&lt;/a&gt; to do it, it will give you this:
 $${L3}&amp;#39; = \frac{L3 - y}{L3(1-L3)}$$
