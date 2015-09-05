@@ -126,7 +126,12 @@ $$&lt;/p&gt;
 
 &lt;p&gt;Now let&amp;#39;s compute the &amp;#39;connection&amp;#39; derivatives. This is just simple calculus on individual functions. Remember that $\sigma&amp;#39;=\sigma(1-\sigma)$&lt;/p&gt;
 
-&lt;p&gt;$$\frac{\partial{L3}}{\partial{L2}} = \theta_2 * L3(1-L3) \\
+&lt;p&gt;$$
+L3 = \frac{1}{1+e^{-\theta_2 L2}} \\
+u = \theta_2 L2 \\
+L3 = \frac{1}{1+e^{-u}} \\
+\frac{\partial{L3}}{\partial{L2}} = \frac{\partial L3}{\partial u} * \frac{\partial u}{\partial L2} \\
+\frac{\partial{L3}}{\partial{L2}} = \theta_2 * L3(1-L3) \\
 \frac{\partial{L3}}{\partial{\theta_2}} = L2 * L3(1-L3) \\
 \frac{\partial{L2}}{\partial{L1}} = \theta_1 * L2(1-L2) \\
 \frac{\partial{L2}}{\partial{\theta_1}} = L1 * L2(1-L2) \\

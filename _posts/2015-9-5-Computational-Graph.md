@@ -118,7 +118,12 @@ $$
 
 Now let's compute the 'connection' derivatives. This is just simple calculus on individual functions. Remember that $\sigma'=\sigma(1-\sigma)$
 
-$$\frac{\partial{L3}}{\partial{L2}} = \theta\_2 * L3(1-L3) \\\\
+$$
+L3 = \frac{1}{1+e^{-\theta\_2 L2}} \\\\
+u = \theta\_2 L2 \\\\
+L3 = \frac{1}{1+e^{-u}} \\\\
+\frac{\partial{L3}}{\partial{L2}} = \frac{\partial L3}{\partial u} * \frac{\partial u}{\partial L2} \\\\
+\frac{\partial{L3}}{\partial{L2}} = \theta\_2 * L3(1-L3) \\\\
 \frac{\partial{L3}}{\partial{\theta\_2}} = L2 * L3(1-L3) \\\\
 \frac{\partial{L2}}{\partial{L1}} = \theta\_1 * L2(1-L2) \\\\
 \frac{\partial{L2}}{\partial{\theta\_1}} = L1 * L2(1-L2) \\\\
