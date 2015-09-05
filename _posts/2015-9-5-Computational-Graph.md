@@ -58,7 +58,8 @@ $$\frac{d{f}}{d{x}} = \frac{df}{dg} * \frac{dg}{dh} * \frac{dh}{dx}$$, such that
 $$\frac{df}{dg} = e^{g(h(x))} $$ (because the derivative of $e^x$ is just $e^x$),
 $$\frac{dg}{dh} = cos(h(x))$$ (because the derivative of $sin$ is $cos$),
 $$\frac{dh}{dx} = 2x$$
-
+therefore...
+$$\frac{d{f}}{d{x}} = e^{\sin x^2} * \cos x^2 * 2x$$
 So in each of these cases, I just pretend that the inner function is a single variable and derive it as such.
 The other way to view it,
 
