@@ -24,7 +24,7 @@ In fact, I *already* have a post on backpropagation here, so why am I writing *a
 post? Well, for one, this post isn't really about backpropagation per se, it's
 about how we can think about neural networks in a completely different way than
 we're used to using a computational graph representation and then use it to
-derive backpropagation from the fundamental rule of calculus, chain rule.
+derive backpropagation from a fundamental formula of calculus, chain rule.
 
 This post is entirely inspired from colah's blog post [Calculus on Computational Graphs: Backpropagation](http://colah.github.io/posts/2015-08-Backprop/) so please
 read through that first. I will reiterate a lot of what's on there but will surely
