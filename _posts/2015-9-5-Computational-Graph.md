@@ -188,7 +188,7 @@ Now that we have all the layer deltas (we don't calculate deltas for input layer
 $$ \frac{\partial{C}}{\partial{\theta\_j^l}} = \delta^{l+1} * L\_l$$
 where $l$ is the layer number, thus L2 is the hidden layer output.
 In our case, we'll find $\frac{\partial{C}}{\partial{\theta\_1}}$
-$$ \frac{\partial{C}}{\partial{\theta\_1}} = \delta^{2} * L2$$ then we'll substitute in $\delta^2$ from our calculation above
+$$ \frac{\partial{C}}{\partial{\theta\_1}} = \delta^{2} * L1$$ then we'll substitute in $\delta^2$ from our calculation above
 $$ \frac{\partial{C}}{\partial{\theta\_1}} = (\theta\_2 * \delta^3) \odot (L2(1 - L2)) * L1$$
 and we'll substitute in $\delta^3$
 $$ \frac{\partial{C}}{\partial{\theta\_1}} = (\theta\_2 * (L3 - y)) \odot (L2(1 - L2)) * L1$$
