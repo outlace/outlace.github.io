@@ -1157,7 +1157,12 @@ LWfQS1LL/X8e/85GQ5DVkwAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Looks like we converge after just <b>4</b> generations! Also notice we get these little bumps in error every 10 generations or so, likely due to a particularly dramatic mutation round.</p>
+<p>Looks like we converge after just <b>4</b> generations!
+Don't be too impressed by this. This problem is just really easy (we could solve it on paper by looking at the neural net diagram).
+Given that our initial population size is 100, there are bound to be some relatively decent solutions even in our first generation
+that rapidly get selected for in the next generations. If you were to apply this genetic algorithm to a 3-layer network with at least several
+hidden nodes, the number of generations to converge would likely increase significantly.
+</p><p>Also notice we get these little bumps in error every 10 generations or so, likely due to a particularly dramatic mutation round.</p>
 
 </div>
 </div>
