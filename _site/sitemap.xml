@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://outlace.github.io/Simple-Genetic-Algorithm-Addendum-Python/</loc>
+    <loc>http://outlace.github.io/Simple-Genetic-Algorithm-Python-Addendum/</loc>
     <lastmod>2015-09-12T00:00:00-07:00</lastmod>
   </url>
   <url>
@@ -23,12 +23,6 @@
   <url>
     <loc>http://outlace.github.io/Simple-Genetic-Algorithm-in-15-lines-of-Python/</loc>
     <lastmod>2015-07-15T00:00:00-07:00</lastmod>
-  </url>
-  <url>
-    <loc>http://outlace.github.io/2015-8-5-Simple-Recurrent-Neural-Network%202.html</loc>
-  </url>
-  <url>
-    <loc>http://outlace.github.io/2015-8-5-Simple-Recurrent-Neural-Network.html</loc>
   </url>
   <url>
     <loc>http://outlace.github.io/404.html</loc>
