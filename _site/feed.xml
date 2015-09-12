@@ -7,6 +7,14 @@
     <atom:link href="http://outlace.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Simple Genetic Algorithm in Python --Addendum</title>
+        <description></description>
+        <pubDate>Sat, 12 Sep 2015 00:00:00 -0700</pubDate>
+        <link>http://outlace.github.io/Simple-Genetic-Algorithm-Addendum-Python/</link>
+        <guid isPermaLink="true">http://outlace.github.io/Simple-Genetic-Algorithm-Addendum-Python/</guid>
+      </item>
+    
+      <item>
         <title>On chain rule, computational graphs, and backpropagation</title>
         <description>&lt;h2&gt;On chain rule, computational graphs, and backpropagation&lt;/h2&gt;
 
@@ -30,7 +38,7 @@ In fact, I &lt;em&gt;already&lt;/em&gt; have a post on backpropagation here, so 
 post? Well, for one, this post isn&amp;#39;t really about backpropagation per se, it&amp;#39;s
 about how we can think about neural networks in a completely different way than
 we&amp;#39;re used to using a computational graph representation and then use it to
-derive backpropagation from the fundamental rule of calculus, chain rule.&lt;/p&gt;
+derive backpropagation from a fundamental formula of calculus, chain rule.&lt;/p&gt;
 
 &lt;p&gt;This post is entirely inspired from colah&amp;#39;s blog post &lt;a href=&quot;http://colah.github.io/posts/2015-08-Backprop/&quot;&gt;Calculus on Computational Graphs: Backpropagation&lt;/a&gt; so please
 read through that first. I will reiterate a lot of what&amp;#39;s on there but will surely
@@ -198,7 +206,7 @@ Now that we have all the layer deltas (we don&amp;#39;t calculate deltas for inp
 &lt;p&gt;$$ \frac{\partial{C}}{\partial{\theta_j^l}} = \delta^{l+1} * L_l$$
 where $l$ is the layer number, thus L2 is the hidden layer output.
 In our case, we&amp;#39;ll find $\frac{\partial{C}}{\partial{\theta_1}}$
-$$ \frac{\partial{C}}{\partial{\theta_1}} = \delta^{2} * L2$$ then we&amp;#39;ll substitute in $\delta^2$ from our calculation above
+$$ \frac{\partial{C}}{\partial{\theta_1}} = \delta^{2} * L1$$ then we&amp;#39;ll substitute in $\delta^2$ from our calculation above
 $$ \frac{\partial{C}}{\partial{\theta_1}} = (\theta_2 * \delta^3) \odot (L2(1 - L2)) * L1$$
 and we&amp;#39;ll substitute in $\delta^3$
 $$ \frac{\partial{C}}{\partial{\theta_1}} = (\theta_2 * (L3 - y)) \odot (L2(1 - L2)) * L1$$&lt;/p&gt;

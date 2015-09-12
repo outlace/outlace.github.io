@@ -74,7 +74,7 @@ In fact, I <em>already</em> have a post on backpropagation here, so why am I wri
 post? Well, for one, this post isn&#39;t really about backpropagation per se, it&#39;s
 about how we can think about neural networks in a completely different way than
 we&#39;re used to using a computational graph representation and then use it to
-derive backpropagation from the fundamental rule of calculus, chain rule.</p>
+derive backpropagation from a fundamental formula of calculus, chain rule.</p>
 
 <p>This post is entirely inspired from colah&#39;s blog post <a href="http://colah.github.io/posts/2015-08-Backprop/">Calculus on Computational Graphs: Backpropagation</a> so please
 read through that first. I will reiterate a lot of what&#39;s on there but will surely
@@ -242,7 +242,7 @@ Now that we have all the layer deltas (we don&#39;t calculate deltas for input l
 <p>$$ \frac{\partial{C}}{\partial{\theta_j^l}} = \delta^{l+1} * L_l$$
 where $l$ is the layer number, thus L2 is the hidden layer output.
 In our case, we&#39;ll find $\frac{\partial{C}}{\partial{\theta_1}}$
-$$ \frac{\partial{C}}{\partial{\theta_1}} = \delta^{2} * L2$$ then we&#39;ll substitute in $\delta^2$ from our calculation above
+$$ \frac{\partial{C}}{\partial{\theta_1}} = \delta^{2} * L1$$ then we&#39;ll substitute in $\delta^2$ from our calculation above
 $$ \frac{\partial{C}}{\partial{\theta_1}} = (\theta_2 * \delta^3) \odot (L2(1 - L2)) * L1$$
 and we&#39;ll substitute in $\delta^3$
 $$ \frac{\partial{C}}{\partial{\theta_1}} = (\theta_2 * (L3 - y)) \odot (L2(1 - L2)) * L1$$</p>
