@@ -7,6 +7,14 @@
     <atom:link href="http://outlace.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Beginner Tutorial: Neural Nets in Theano</title>
+        <description></description>
+        <pubDate>Tue, 29 Sep 2015 00:00:00 -0700</pubDate>
+        <link>http://outlace.github.io/Beginner-Tutorial-Theano/</link>
+        <guid isPermaLink="true">http://outlace.github.io/Beginner-Tutorial-Theano/</guid>
+      </item>
+    
+      <item>
         <title>Simple Genetic Algorithm in Python --Addendum</title>
         <description></description>
         <pubDate>Sat, 12 Sep 2015 00:00:00 -0700</pubDate>
