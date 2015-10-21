@@ -6,17 +6,15 @@ permalink: /about/
 
 user: outlace
 
-Hi. I'm a self-taught programmer, current medical student
-and also involved in web-development projects.
-I don't get to do any interesting programming stuff in my 'day job', so I try to build
-little hobby projects in my free time. I'm particularly interested in machine
-learning, computational biology, statistics/data analysis, and mathematics but
-I don't have any formal quantitative background, so I'm
-attempting to teach myself the basics and will share my journey on this blog.
-
+Hi, I'm Brandon. I'm a self-taught programmer and current medical student.
+Although I spend most of my time learning medical stuff these days, I've always had a
+strong interest in machine learning and artificial intelligence. Unfortunately,
+I don't have a very quantitative background (I majored in Neuroscience in college)
+so I'm attempting to teach myself the fundamentals and will share my journey on this blog.
+My dream career would involve the combination of medicine and machine learning; hopefully I can pull it off one day.
 
 ### Contact me
 
 [outlacedev@gmail.com](mailto:outlacedev@gmail.com)
 
-Tip BTC: 17nXFGVZPTd6haVTAjvik4Wm3Cw7QCJxKw
+BTC: 17nXFGVZPTd6haVTAjvik4Wm3Cw7QCJxKw
