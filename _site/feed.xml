@@ -7,6 +7,14 @@
     <atom:link href="http://outlace.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Reinforcement Learning - Monte Carlo Methods</title>
+        <description></description>
+        <pubDate>Sun, 25 Oct 2015 00:00:00 -0700</pubDate>
+        <link>http://outlace.github.io/Reinforcement-Learning-Part-2/</link>
+        <guid isPermaLink="true">http://outlace.github.io/Reinforcement-Learning-Part-2/</guid>
+      </item>
+    
+      <item>
         <title>Reinforcement Learning - Part 1</title>
         <description></description>
         <pubDate>Mon, 19 Oct 2015 00:00:00 -0700</pubDate>
