@@ -239,6 +239,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h4>
+<p>This is part 3 in a series on reinforcement learning | <a href="/Reinforcement-Learning-Part-1/">Part 1</a> | <a href="/Reinforcement-Learning-Part-2/">Part 2</a></p>
 <p>We've finally made it. We've made it to what we've all been waiting for, Q-learning with neural networks.
 Since I'm sure a lot of people didn't follow parts 1 and 2 because they were kind of boring,
 I will attempt to make this post relatively (but not completely) self-contained.
@@ -254,7 +255,7 @@ As if our task wasn't difficult enough, there's also a wall that can block the p
 <p>
 I know, I know.. Gridworld doesn't sound very exciting; it's not teaching an algorithm how to play Space Invaders at superhuman levels..
 But I've actually used many of the same principles used by Google DeepMind's Atari playing algorithm, so I think if you understand how to implement
-a Gridworld-playing algorithm, you'll know how enhance it a bit to be playing Atari games.
+a Gridworld-playing algorithm, you'll know how to enhance it a bit to be playing Atari games.
 </p>
 
 <h4 id="Quick-Review-of-Terms-and-Concepts-(skip-if-you-followed-parts-1-&amp;-2)">Quick Review of Terms and Concepts (skip if you followed parts 1 &amp; 2)<a class="anchor-link" href="#Quick-Review-of-Terms-and-Concepts-(skip-if-you-followed-parts-1-&amp;-2)">&#182;</a></h4><p>A state is all the information necessary (e.g. pixel data in a game) to make a decision that you expect will take you to a new (higher value) state. The high level function of reinforcement learning is to learn the values of states or state-action pairs (the value of taking action $a$ given we're in state $s$). The value is some notion of how "good" that state or action is. Generally this is a function of rewards received now or in the future as a result of taking some action or being in some state.</p>
