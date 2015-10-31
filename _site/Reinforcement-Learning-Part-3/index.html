@@ -725,8 +725,9 @@ Up until now, I've been talking about how the neural network can serve the role 
 <p>our target vector for one iteration may look like this:</p>
 <div class="highlight"><pre><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
 </pre></div>
+<p>if taking action 2 one step (left) resulted in reaching the goal. So we just keep all other outputs the same as before and just change the one for the action we took.</p>
 <p>Also note, I initialize epsilon (for the $\epsilon$-greedy action selection) to be 1. It decrements by a small amount on every iteration and will eventually reach 0.1 where it stays. Google DeepMind also used an $\epsilon$-greedy action selection and also initialized epsilon to be 1 and decremented during the game play.
-if taking action 2 one step (left) resulted in reaching the goal. So we just keep all other outputs the same as before and just change the one for the action we took.</p>
+</p>
 <p>Okay, so let's go ahead and train our algorithm to learn the easiest variant of the game, where all elements are placed deterministically at the same positions every time.</p>
 
 </div>
