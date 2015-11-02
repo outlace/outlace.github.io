@@ -1,5 +1,6 @@
 ---
 layout: default_mathjax
+comments: True
 title: "On chain rule, computational graphs, and backpropagation"
 excerpt: "Here I'm going to revisit backpropagation theory by thinking about neural networks as computational graphs upon which we can easily visualize the chain rule to compute partial derivatives."
 ---
