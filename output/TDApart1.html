@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Topological Data Analysis - Persistent Homology</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="TDA,persistent-homology" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Feb 22, 2017</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/TDApart1.html" rel="bookmark" title="Permanent Link to &quot;Topological Data Analysis - Persistent Homology&quot;">Topological Data Analysis - Persistent Homology</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Topological-Data-Analysis---Part-1---Persistent-Homology">Topological Data Analysis - Part 1 - Persistent Homology<a class="anchor-link" href="#Topological-Data-Analysis---Part-1---Persistent-Homology">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h4><p>I find Topological Data Analysis (TDA) to be one of the most exciting (yet under-rated) developments in data analysis and thus I want to do my part to spread the knowledge. So what's it all about? Well there are two major flavors of TDA: persistent homology and mapper. Both are useful, and can be used to supplement each other. In this post (and the next couple of posts) we will cover persistent homology. TDA in general is very mathematical (it was born out the "lab" of a mathematics group at Stanford, particularly Gunnar Carlsson and his graduate student Gurjeet Singh, although the foundations had been developed for years before by others) and thus we cannot really study it without learning a lot of math. Hence, this post is going to be just as much a tutorial on various topics in higher math as it is TDA, so if you're not that interested in TDA but want to learn about topology, group theory, linear algebra, graph theory and abstract algebra, then this might be useful just in that regard. Of course, I will not cover these math topics in as much detail or with as much rigor as a textbook would, but my hope is if you understand what I present here, reading a textbook (or math papers) will make a whole lot more sense.</p>
+<h5 id="What-is-persistent-homology-and-why-should-I-care?">What is persistent homology and why should I care?<a class="anchor-link" href="#What-is-persistent-homology-and-why-should-I-care?">¶</a></h5><p>Think of a typical data set being a big Excel file with columns being various parameters and the rows being individual data points. Say there are 100 columns and 900 rows. If we think of the rows as being data points, then we can think of them as being 100-dimensional data points. Obviously, helplessly constrained to our 3-dimensional universe, we have no way of seeing what are data <em>looks</em> like. Well, of course there are numerous methods for projecting high-dimensional data down to a lower dimensional space that we <em>can</em> see. Usually we want to see our data so we can easily identify patterns, particularly clusters. The most well-known of these visualization methods is probably principal component analysis (PCA).  But all of these methods involve transforming our original data in a way that loses some potentially valuable information. There's no free lunch here, if you use PCA to project 100-dimensional data to a 2-dimensional plot, you're going to be missing something.</p>
+<p>Persistent homology (henceforth just <strong>PH</strong>) gives us a way to find interesting patterns in data without having to "downgrade" the data in anyway so we can see it. PH let's us leave our data in it's original, ultra-high dimensional space and tells us how many clusters there are, and how many loop-like structures there are in the data, all without being able to actually see it.</p>
+<p>As an example, consider a biologist studying some genes in cells. She uses fancy equipment to measure the expression levels of 100 genes in 900 different cells. She's interested in genes that might play a role in cell division. Being the cutting-edge biologist she is, she utilizes persistent homology to analyze her data and PH reports her data has a prominent <em>cycle</em>, which she further analyzes and is able to confirm that a subset of her 100 genes seem to have a cyclical expression pattern.</p>
+<p>The field of topology in mathematics studies properties of spaces where all we care about is the relationship of points to one another, unlike geometry, where exact distances and angles are important. Thus PH let's us ask topological questions of our data in a reliable way without having to adulterate the data in anyway. The conventional output from persistent homology is a "barcode" graph that looks like this:
+<img src="images/TDAimages/PHbarcodeExample.png" width="600px" />
+This graph encodes all the topological features we're interested in a compact and visual way.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Intended-audience">Intended audience<a class="anchor-link" href="#Intended-audience">¶</a></h4><p>As usual, my intended audience is people like me. I'm a programmer with an interest in TDA. I majored in Neuroscience in college so I have no formal mathematics training beyond high school. Everything else has been self-taught. If you have a degree in mathematics, this is not the post for you, but you can take a look at my extensive reference list.</p>
+<h4 id="Assumptions">Assumptions<a class="anchor-link" href="#Assumptions">¶</a></h4><p>While I always attempt to make my posts as accessible to a general audience with a programming background and some basic math knowledge, I do make a few knowledge assumptions here. I assume you have a foundational understanding of the following:</p>
+<ul>
+<li>High-school algebra</li>
+<li>Set theory</li>
+<li>Python and Numpy</li>
+</ul>
+<p>but I will try to explain as much as possible along the way. If you've followed my previous posts then you can probably follow this one.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Set-Theory-Review">Set Theory Review<a class="anchor-link" href="#Set-Theory-Review">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We will just very quickly review basics of set theory, but I am assuming you already have the necessary background knowledge of set theory, this is just a refresher and guide for the notation we'll be using.</p>
+<p>Recall a <strong>set</strong> is an abstract mathematical structure that is an unordered collection of abstract objects, typically denoted by curly braces, e.g. the set $S = \{a,b,c\}$. The objects contained in a set are called its <em>elements</em>. If an element $a$ is contained in a set $S$, then we denote this relationship as $a \in S$ where the symbol $\in$ is read "in" ($a$ in $S$). Or if an element $d$ is <em>not</em> in a set $S$ then we denote it as $d \not\in S$. Intuitively, one can think of a set as a box or container and you can add various objects into the box (including other boxes).</p>
+<p>A <strong>subset</strong> $Z$ of a set $S$ is a set with all elements also in $S$. A strict subset is denoted $Z \subset S$, which means there is at least one element in $S$ that is not in $Z$, whereas $Z \subseteq S$ means $Z$ could be a strict subset of $S$ or it could be identical to $S$. For every set, the empty set (denoted $\emptyset$), and the set itself are (non-strict) subsets, i.e. for a set $S$, $\emptyset \subseteq S$ and $S \subseteq S$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The symbol $\forall$ means "for all" and the symbol $\exists$ means "there exists". For example, we can say something like $\forall x \in S$ which means "for all elements $x$ in $S$". Or we can say, $\exists x \in S, x = a$, which means "there exists an element x in the set $S$ for which $x = a$".</p>
+<p>There are logical operators we use called <strong>AND</strong> (denoted $\land$) and <strong>OR</strong> (denoted $\lor$). For example, suppose we have two sets $S_1 = \{a,b,c\}, S_2 = \{d,e\}$, we can propose $a \in S_1 \land a \in S_2$, which we can evaluate to be a false proposition since $a$ is <em>not</em> in $S_2$. The proposition $a \in S_1 \lor a \in S_2$ is evaluated to be true since the element $a$ is one or both of the two sets in the proposition.</p>
+<p>The <strong>union</strong> (denoted $\cup$) of two sets $S_1, S_2$ is a new set $S_3$ that contains all the elements from $S_1$ and $S_2$. For example, if $S_1 = \{a,b,c\}, S_2 = \{d,e\}$ then $S_1 \cup S_2 = \{a,b,c,d,e\}$.</p>
+<p>We can use <em>set-builder notation</em> to describe this as $S_1 \cup S_2 = \{x \mid \forall x \in S_1, \forall x \in S_2\}$ or equivalently $S_1 \cup S_2 = \{x \mid x \in S_1 \lor x \in S_2\}$. The part before the vertical pipe | describes the elements that compose the set whereas the part after the pipe describe the conditions those elements must meet to be included in the set. For example, if we want to build the set of points that form a two-dimensional circle, $C = \{(a,b) \mid a^2 + b^2 = 1\}$. This brings up <em>ordered sets</em> or <em>sequences</em> where the order of the elements does matter and we denote these by using parentheses, e.g. $(a,b,c) \neq (c,b,a)$ whereas $\{a,b,c\} = \{c,b,a\}$.</p>
+<p>The <strong>intersection</strong> (denoted $\cap$) of two sets $S_1, S_2$ is a new set $S_3$ that contains the elements that are shared between $S_1$ and $S_2$, that is, $S_1 \cap S_2 = \{x \mid x\in S_1 \land x\in S_2\}$. For example, if $S_1 = \{a,b,c\}, S_2 = \{a,b,d,e\}$ then $S_1 \cap S_2 = \{a,b\}$.</p>
+<p>The size or <strong>cardinality</strong> of a set is the number of elements in that set. For example, if $S = \{a,b,c\}$ then the cardinality of $S$, denoted $\vert{S}\vert = 3$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A <strong>function</strong> is a relation between the elements in one set to another set. We can visualize a function as so:
+<img src="images/TDAimages/setFuncExWiki.png" width="150px" />
+(source: < <a href="https://en.wikipedia.org/wiki/Function_(mathematics">https://en.wikipedia.org/wiki/Function_(mathematics</a>) >)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here we have two sets $X = \{1,2,3\}$ and $Y = \{A,B,C,D\}$ and a function $f$ that maps each element in $X$ (called the domain) to an element in $Y$ (the codomain). We denote $f(1) = D$ to mean that the function $f$ is mapping the element $1 \in X$ to $D \in Y$.</p>
+<p>A generic mapping or relation can be any mapping of elements in one set to another set, however, a <em>function</em> must only have one output for each input, i.e. each element in the domain can only be mapped to a single element in the codomain.</p>
+<p>We define a function by building a new set of ordered pairs. For two sets $X$ and $Y$, we denote a function $f : X \rightarrow Y$ to be a subset of the Cartesian product $X \times Y$ (i.e., $f \subseteq X \times Y$). A <strong>Cartesian product</strong> is the set of all possible ordered pairs between elements in the two sets.</p>
+<p>For example, the set that defines the function $f$ from the picture above is $f = \{(1,D), (2,C), (3,C)\})$. So if we want to know the result of $f(1)$ then we just find the ordered pair where $1$ is in the first position, and the second position element is the result (in this case its $D$).</p>
+<p>The <strong>image</strong> of a function $f : X \rightarrow Y$ is the subset of $Y$ whose elements are mapped to elements in $X$. For example, for the function depicted above, the image of the function is $\{C,D\}$ since only those elements are mapped to elements in $X$.</p>
+<p>Given a function $f : X \rightarrow Y$, the <strong>preimage</strong> of a subset $K \subseteq Y$ is the set of elements in $X$ that are mapped to elements in $K$. For example, the preimage of the subset $K = \{C\}$ from the depicted function above is the set $\{2,3\}$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Topology-Primer">Topology Primer<a class="anchor-link" href="#Topology-Primer">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you might have guessed, TDA involves the mathematical field of topology. I'm far from a mathematician, but we have to have a basic context so I'll do my best to explain the relevant aspects of topology in the least jargon-y and most computational (that's how I tend to think) way possible.</p>
+<p>So mathematics in general is broken up into many fields of study, such as geometry, topology, linear algebra, etc. Each field is essentially defined by the mathematical objects under study. In linear algebra, the mathematical objects of interest are <em>vector spaces</em>. In topology, the mathematical objects are <em>topological spaces</em>. And since set theory is taken as a foundation of mathematics, all these mathematical objects are simply sets (collections of abstract things) with specific rules about what form the sets must be in and how they can be transformed or operated on.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's define what a topological space is now. This is one of several equivalent definitions of a topology (taken from wikipedia):</p>
+<blockquote><p><strong>Definition (Topological Space)</strong> <br />
+ A topological space is an ordered pair $(X, \tau)$, where $X$ is a set and $\tau$ is a collection of subsets (subset  symbol: $\subseteq$ ) of $X$, satisfying the following axioms:</p>
+<ul>
+<li>The empty set (symbol: $\emptyset$) and $X$ itself belong to $\tau$.</li>
+<li>Any (finite or infinite) union (symbol: $\cup$ ) of members of $\tau$ still belongs to $\tau$.</li>
+<li>The intersection (symbol: $\cap$ ) of any finite number of members of $\tau$ still belongs to $\tau$.</li>
+</ul>
+<p>The elements of $\tau$ are called <strong>open sets</strong> and the collection $\tau$ is called a topology on $X$.</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay so what the hell does that even mean and who cares? Let's give a really simple example.
+So let's just make up an abstract set of objects that happen to be some of the English alphabet letters. Here's our set, $X = \{a,b,c\}$. So we have a collection of 3 distinct objects and we want to define a topology on that set. Our topology τ (tau) is simply going to be a set of sets, it's a collection of subsets from X that satisfy the axioms of topology.</p>
+<p>Let's give it a try, maybe our topology τ should be this: $\{\{a\},\{b\},\{c\}\}$. So our topology τ is a collection of single element subsets from X. Notice the difference in notation. If I had simply written $\tau = \{a,b,c\}$ that would merely be the same as $X$, just an ordinary set with 3 elements. No, $\tau$ is a set whose elements are also sets (even if those sets contain one element).</p>
+<p>Ok, anyway, does our $\tau$ satisfy the axioms? Does the empty set and $X$ itself belong to $\tau$? Uh no. The empty set is $\{\}$ (or $\emptyset$) and $X$ itself is $\{a,b,c\}$, our $\tau$ did not have those two sets as members, so already our attempted topology failed. Let's try again. How about $\tau = \{\emptyset,\{a\},\{b\},\{c\}, \{a,b,c\}\}$. Now at least this τ satisfies the first axiom. The second axiom is less obvious, but take for example the union of $\{a\}$ and $\{b\}$, which yields $\{a,b\}$. Is $\{a,b\}$ in $\tau$? No it's not, so this attempted topology also fails.</p>
+<p>Alright here's a legitimate topology on $X$... $\tau = \{\emptyset, \{a\}, \{a,b,c\}\}$. It satisfies the first axiom, it has the empty set $\{\}$ and the full $X$ set as members of $\tau$, and if you take the union of any combination of members of $\tau$, the resulting set is also a member of $\tau$.</p>
+<p>For example,
+$ \{ \} \cup \{ a \} = \{ a \} $ (read: the empty set union the set $\{a\}$ produces the set $\{a\}$). Obviously the union of the empty set and $\{a\}$ must produce $\{a\}$ which is in $\tau$. We must verify for all possible unions and intersections that the results are still in $\tau$.</p>
+<p>$ \{a\} \cup \{a,b,c\} = \{a,b,c\} $, which is also in $\tau$.
+$ \{a\} \cap \{a,b,c\} = \{a\}$, which is also in $\tau$.</p>
+<p>Hence, the union or intersection of any elements in $\tau$ is also in $\tau$, thus we have ourselves a valid topology on $X$.</p>
+<p>I know this all seems rather academic at this point, but keep with me and we will eventually get to a point of using this new knowledge for practical purposes.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Closeness">Closeness<a class="anchor-link" href="#Closeness">¶</a></h5><p>What is important about topological spaces as opposed to any other mathematical abstraction? Well, one important aspect is that topological spaces end up defining a notion of <em>closeness</em> between elements in a set that has a defined topology. In a "raw" set that has no structure defined, e.g. $Y = \{c,d,e\}$, it's just a collection of abstract objects. That's it, there's nothing more we say about this set or it's elements. But once we define a topology on $Y$, then we can answer questions like "is the element $c \in Y$ closer to $d$ than $e$ is to $d$?"</p>
+<p>One of the fascinating things about mathematics is how so many things relate to each other and how there are almost always several ways of defining mathematical relationships, some of which are easier to grasp than others. So far we've been considering <strong>finite</strong> topological spaces, that is, the set $X$ for which we've defined a topology has a finite number of elements. Of course topological spaces do not have to be finite, and we'll eventually spend most of our time considering infinite topological spaces such as those defined on the set of real numbers. When we start to consider those types of spaces, visualizing them tends to be easier as we can often draw diagrams. As you've probably noticed, all this abstract non-sense about open sets defining a topological space seems really hard to grasp intuitively. As it turns out, however, there is another way to represent <em>finite</em> topological spaces, and that is by using <strong>directed graphs</strong>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="A-little-bit-of-graph-theory">A little bit of graph theory<a class="anchor-link" href="#A-little-bit-of-graph-theory">¶</a></h5><blockquote><p><strong>Definition (Graph)</strong> <br />
+A simple graph $G$ is a set of vertices (or nodes) $V$ paired with a set of edges (i.e. connections between vertices) $E$, whose elements are 2-element subsets of $V$. Hence, $G = (V,E)$.</p>
+</blockquote>
+<p>Example: G(V,E) where $V = \{a,b,c,d\}, E = \{\{a,b\},\{a,d\},\{a,c\},\{c,d\}\}$
+<img src="images/TDAimages/Graph1.svg" width="250px" /></p>
+<blockquote><p><strong>Definition (Directed Graph)</strong> <br />
+A <strong>directed</strong> graph (or digraph) $G(V,E)$ is a graph whose edges are ordered pairs of vertices from $V$. Thus the "connections" between vertices/nodes have direction. The first vertex in an ordered pair is the start and the second vertex is the end. When drawing the graph, the edges are arrows with the arrowhead facing toward and contacting the end vertex.</p>
+</blockquote>
+<p>Example: G(V,E) where $V = \{a,b,c,d\}, E = \{(b,a), (a,d), (a,c), (c,d)\}$
+<img src="images/TDAimages/Graph2.svg" width="250px" /></p>
+<p>Just for completeness sake, I want to mention a couple other properties we can impose on graph structures. We've already noted how graphs can have a direction property to the edges, but edges can also have a <strong>weight</strong> property, i.e. different edges can have different weights or strengths, implying that some connections are stronger than others. When drawing graphs with weighted edges, one way to depict this would be to simply make edges with bigger weights as proportionally thicker lines. Mathematically, a graph with vertices, edges, and weights is defined as a graph $G(V,E,w)$ where $w : E \rightarrow \mathbb R$ ($w$ is a function that maps each edge in E to a real number, it's weight). Similarly, one can have a function that endows each vertex with a weight. One might depict this where nodes (vertices) are of different sizes reflecting their respective weights.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Visualizing-Finite-Topology">Visualizing Finite Topology<a class="anchor-link" href="#Visualizing-Finite-Topology">¶</a></h4><p>It turns out that one can build a set of binary relations called <strong>preorders</strong> between elements in a set $X$ with topology $\tau$. The binary relation preorder is both reflexive (every element is related to itself, $a \sim a$) and transitive (if $a$ is related to $b$, and $b$ is related to $c$, it implies $a$ is related to $c$, i.e. $a \sim b \land b \sim c \Rightarrow a \sim c$). [The symbol ~ is used generically to denote the relation of interest]. This preorder relation (more precisely called a <em>specialization preorder</em> on $X$) can be determined by examining pair-wise relationships of elements in $X$ one at a time. The specialization preorder relation is generally denoted by the symbol $\leq$ (but it is not the same as the less-than-or-equal-to sign that you're used to; there are only so many convenient symbols so things tend to get re-used).</p>
+<p>Here's the definition of a specialization pre-order on a topological space $(X, \tau)$ (note there are other equivalent definitions).</p>
+<blockquote><p><strong>Definition (Specialization Pre-order)</strong> <br />
+$ \text{ $x \leq y$, if and only if $y$ is contained in all the open sets containing $x$ } $</p>
+</blockquote>
+<p>And remember that open sets are the elements of the topology $\tau$. Once we've determined that $x \leq y,\ \forall x,y \in X$, then we can say that $x$ is a <em>specialization</em> of $y$. This kind of means that $y$ is more general than $x$ since it appears in more open sets.</p>
+<blockquote><p><strong>Example (Topology)</strong> <br />
+To illustrate a graphic represention of our previous finite topological space, let's expand our topology on $X = \{a,b,c\}$.
+Now, $\tau = \{\{\}, \{a\}, \{b\}, \{a,b\}, \{b,c\}, \{a,b,c\}\}$</p>
+</blockquote>
+<p>To define the specialization preorder on this topological space, we need to enumerate all the possible pairings of points in the topology and figure out if the preorder relation $\leq$ is satisfied for each pair. Let's just focus on one pair, $(c,b)$, so we want to ask if $c \leq b$ is true. According to our definition of specialization preorder, if $c$ is in fact $\leq b$, then $b$ will be contained in all of the open sets that contain $c$. So let's list out all the open sets that contain $c: \{b,c\}, \{a,b,c\}$. As you can see, both of these open sets that contain $c$ also contain $b$, therefore, $c \leq b$ is true. An important note is that the preorder relation does not imply equality when two elements are specializations of each other, i.e. if $x \leq y \land y \leq x \not \Rightarrow x = y$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I will list all the true and untrue preorderings on $X$ and then we can build the topological space into a visualization graph.</p>
+<p>$ 
+a \not\leq b \\
+a \not\leq c \\
+b \not\leq a \\
+b \not\leq c \\
+c \not\leq a \\
+c \leq b \\
+$
+<br />
+There is only one true preorder relation between all pairs of points in $X$. In order to make a directed graph from a preorder on a topological space $(X,\tau)$, you simply take the points in $X$ as vertices of the graph and create a directed edge between two vertices that have a preorder relation, where the arrow points from the specialization point to the more general point (i.e. if $x \leq y$ then our graph will have an edge starting from $x$ and pointing to $y$). Any points without relations to other points are just disconnected nodes. Here's the visualized graph of our example preorder on $X$.</p>
+<p><img src="images/TDAimages/Graph3.svg" width="250px" /></p>
+<blockquote><p><strong>Example (Specialization preorder graph)</strong> <br />
+Here's another example on a different topological space. Let $Z = \{a, b, c, d\}$ be a set with the topology
+$\tau_Z = \{Z, \emptyset, \{b\}, \{a, b\}, \{b, c, d\}\}$. Listing the specialization preorder on $Z$ is left as an exercise for the reader. The graph of this topological space resulting from its specialization preorder is shown.
+<img src="images/TDAimages/Graph4.svg" width="250px" /></p>
+</blockquote>
+<p>Just like you can take any finite topological space, generate a specialization preorder on it and build a graph, you can also take a graph built by a preordering and generate its topology. In fact, by just looking at the graph you can determine a lot of the topological properties of the space. With this view, you can interpret a finite topology as a set of points with paths between them.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Connectedness">Connectedness<a class="anchor-link" href="#Connectedness">¶</a></h5><p>I'll digress here to define another property of topological spaces called connectedness. If you draw two separated circles on a sheet of paper those two shapes represent a topological space that is <em>disconnected</em> since there is no line or path connecting the circles. In this case we would say there are two <em>components</em> in the space. The intuiton captures the sense of how many "whole pieces" are in the space. The definition of connectedness in topology abstracts and generalizes the intuitive notion of "pieces" in a space.</p>
+<blockquote><p><strong>Definition (Connectedness)</strong> <br />
+A topological space $(X,\tau)$ is said to be <em>connected</em> if $X$ is not the union of two disjoint nonempty open sets. Consequently, a topological space is <em>disconnected</em> if the union of any two disjoint nonempty subsets in $\tau$ produces $X$.</p>
+</blockquote>
+<p>Looking back at the previous example, with $X = \{a,b,c\}, \tau = \{\{\}, \{a\}, \{b\}, \{a,b\}, \{b,c\}, \{a,b,c\}\}$, we can determine that this topological space is disconnected because the union of the disjoint (they dont share any common elements) open sets $\{a\} \cup \{b,c\} = X$. Alternatively, if we look at the graph that we generated from our preordering on $X$, we can visually see that $c$ and $b$ are connected by an edge but $a$ is a disconnected point. The graph for the example with set $Z$, however, demonstrates that this topological space is connected, all the vertices are connected in some way.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With these types of general "pure" topological spaces, we can't say anymore than "closeness", we don't have a notion of distance. We know $b$ is close to $c$ but we can't say <em>how</em> close. All we know is closeness in terms of relations between elements, e.g. this element is closer to that element than this other element, and so on.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Metric-Spaces">Metric Spaces<a class="anchor-link" href="#Metric-Spaces">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you've probably noticed, the general "pure" topological spaces we've been studying are fairly abstract. We're going to move to studying <em>metric spaces</em>, which are a type of topological space with a definite notion distance, not merely an abstract notion of "closeness." That is, all metric spaces are topological spaces but not all topological spaces are metric spaces. Being in the land of metric spaces makes things a lot easier, and fortunately topological data analysis is really dealing with metric spaces not "pure" topological spaces.</p>
+<blockquote><p><strong>Definition (Metric Space):</strong> <br />
+$ \text{A metric space is an ordered pair $(M,d)$ where $M$ is a set and $d$ is a metric on $M$, that is, a function}
+\\
+d: M\times M \rightarrow \mathbb{R}$</p>
+<p>(this defines a function $d$ mapping every ordered pair of elements in $M$ to an element in the set of real numbers  $\mathbb R$) <br /><br />
+$  \text {
+such that for any elements $x,y,z$ in $M$, the following conditions are met: $\$</p>
+<ol>
+<li>$d(x,y)\geq 0$ (all distances are non-negative) $\\$</li>
+<li>$d(x,y) = 0$ if and only if (iff) x = y $\\$</li>
+<li>$d(x,y) = d(y,x)$ (distance is symmetrical) $\\$</li>
+<li>$d(x,z) \leq d(x,y) + d(y,z)$ (going from x to z directly must be shorter than stopping at a another point along  the way)
+} 
+$</li>
+</ol>
+</blockquote>
+<p>This should be fairly straightforward. A metric space is simply a set paired with a distance function that accepts any two elements from that set and returns the metric distance between those two elements. The most familiar metric spaces would be the real number line, where the set is the set of real numbers and the metric is taken to be the absolute value of the difference between any two numbers on the line (for any $x,y$ in $\mathbb R$, $d = |x-y|$). Another familiar one is the 2-dimensional Euclidian space in $\mathbb R^2$, where the distance function between any two points $(x_1,y_1)$ and $(x_2,y_2)$ is defined as $d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$.</p>
+<p>The Euclidian metric basically defines a topological space in which the shortest path between any two points is a straight line. One could define a different metric where all the points lie on the surface of a sphere and thus only a curved line is the shortest path between two points. One mustn't be constrained to the real numbers, however. You can have a matric space where the set is a bunch of images, or text blobs, or whatever type of data, as long as you can define a function that computes the distance between any two elements in the set, it's a valid metric space.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Continuity">Continuity<a class="anchor-link" href="#Continuity">¶</a></h5><p>An important concept in topology is the notion of continuity. Imagine a flat sheet of gold (or some other pliable metal) in the shape of a square. You could very carefully transform this flat sheet into a circle by smashing at the edges until the hard edges become curved. From a topology standpoint, the square and the circle are equivalent topological spaces because you can apply a continuous transformation from the square to the circle. And since a topology is all about defining the closeness relationships between points, if you've continuously deformed a square into a circle, then any two points that were "close" before the deformation are still "close" after the deformation. All the closeness relations between points have been preserved even if the shape looks different from a geometric perspective (in geometry you care about the actual distance between points not just their abstract and relative closeness).</p>
+<blockquote><p><strong>Definition (Homomorphism)</strong>
+There is a <strong>homomorphism</strong> (i.e. an equivalence relation) between two topological spaces if there exists a function 
+$ f: X \rightarrow Y \text{, where X and Y are topological spaces } (X,\tau_X) \text{ and } (Y, \tau_Y) $
+with the following properties:</p>
+<ul>
+<li>$f$ maps the elements of $X$ to $Y$ in a one-to-one relationship (bijective).</li>
+<li>$f$ is continuous</li>
+<li>The inverse function $f^-1$ is continuous</li>
+</ul>
+</blockquote>
+<p>What does continuous mean? We'll state the precise mathematical definition then try to find an intuitive meaning.</p>
+<blockquote><p><strong>Definition (Continuous Function)</strong> <br />
+For two topological spaces $(X,\tau_X) \text{ and } (Y, \tau_Y)$, a function $f$ is continuous if for every element in $V \in \tau_Y$  (i.e. open subsets of Y), the preimage (inverse image) $f^{−1}(V)$ is open in $X$.</p>
+</blockquote>
+<p>Here's an equivalent definition of a continuous function that employs an understanding of specialization preorders on a topological space.<br /></p>
+<blockquote><p><strong>Definition (Continuous Function)</strong> <br />
+A function $f : X \rightarrow Y$ is continuous if and only if it is order preserving: $x \leq y$ in $X$ implies $f(x) \leq f(y)$ in $Y$ .</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We must remember that a function is a mapping where each element in a set $X$ is mapped to elements in another set $Y$ (it's a mapping between elements of the sets $X$ and $Y$ not a mapping between their topologies $\tau_X$ and $\tau_Y$ ). We also need to recall the definitions of preimage (or inverse image) from set theory. Recall that the domain of a function $f: X \rightarrow Y$ is $X$ and it's codomain is $Y$. The <em>image</em> of $f$ is the subset of $Y$ for which there is a mapping between each element $x \in X$ and elements $y \in Y$. That is, the image of $f$ is $\{f(x) \mid x \in X\}$.  We can also speak of the image of a subset $U \subset X$ being the set $\{f(x) \mid x \in U\}$. The preimage (aka inverse image) of $f$ is equal to the domain of $f$, therefore we really only refer to the preimage of individual elements or subsets of $Y$</p>
+<blockquote><p>The preimage or inverse image of a set $B \subseteq Y$ under $f$ is the subset of $X$ defined by
+$f^{-1}(B) = \{ x \in X \mid f(x) \in B\}$</p>
+<p><strong>Example (Continuous function)</strong> <br />
+Let $X = \{a,b,c\}$ and its topology $\tau_X = \{\emptyset, \{a\}, X\}$. $Y = \{d\}$ and its topology $\tau_Y = \{\emptyset, Y\}$. A continuous function $f: X \rightarrow Y$ is depicted below.
+<img src="images/TDAimages/function1.svg" /></p>
+</blockquote>
+<p>We can see that the preimage $f^{-1}(\{d\}) = \{a,b,c\}$ is an open set in $X$, thus this function is continuous. Yes, it is a pretty unimpressive function called a constant function since it maps all $X$ to a single element. The intuitive idea of a continuous function in $\mathbb R^2$ is one that can be drawn without lifting one's pencil.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Simplices-and-Simplicial-Complexes">Simplices and Simplicial Complexes<a class="anchor-link" href="#Simplices-and-Simplicial-Complexes">¶</a></h4><p>Topological data analysis employs the use of simplicial complexes, which are complexes of geometric structures called simplices (singular: simplex). TDA uses simplicial complexes because they can approximate more complicated shapes and are much more mathematically and computationally tractable than the original shapes that they approximate.</p>
+<p>In words, a simplex is a generalization of a triangle to arbitrary dimensions. For example, we call a 2-simplex an ordinary 3-sided triangle in two-dimensions (or could be embedded in higher-dimensional spaces), and a 3-simplex is a tetrahedron (with triangles as faces) in 3-dimensions, and a 4-simplex is beyond our visualization, but it has tetrahedrons as faces and so on.</p>
+<p><img src="images/TDAimages/simplices2.svg" /></p>
+<p>A simplicial complex is formed when we "glue" together different simplices. For example, we can connect a 2-simplex (triangle) to another 2-simplex via a 1-simplex (line segment).</p>
+<blockquote><p><strong>Example (Simplicial Complex)</strong>
+<img src="images/TDAimages/simplicialcomplex2.svg" />
+This depicts two triangles connected along one side, which are connected via a 1-simplex (line segment) to a third triangle. We call this a 2-complex because the highest-dimensional simplex in the complex is a 2-simplex (triangle).</p>
+</blockquote>
+<p>The <strong>faces</strong> of a simplex are its boundaries. For a 1-simplex (line segment) the faces are points (0-simplices), for a 2-simplex (triangle) the faces are line segments, and for a 3-simplex (tetrahedron) the faces are triangles (2-simplices) and so on. When depicting a simplex or complex, it is conventional to "color in" the faces of a simplex to make it clear that the simplex is a "solid object." For example, it is possible to draw a graph with three connected points that is actually a simplicial complex (1-complex) of line segments even though it looks like a triangle (but the middle is "empty"). If we color in the face, then we are indicating that it is actually a filled-in 2-simplex.</p>
+<blockquote><p>A simplex versus a simplicial complex. Importance of "coloring in" simplices.
+<img src="images/TDAimages/simplexVScomplex1.svg" /></p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay, so we have an intuition for what simplices and simplicial complexes are, but now we need a precise mathematical definition.</p>
+<blockquote><p><strong>Definition (Abstract Simplex)</strong> <br />
+An <em>abstract</em> simplex is any finite set of vertices. For example, the simplex $J = \{a,b\}$ and $K = \{a,b,c\}$ represent a 1-simplex (line segment) and a 2-simplex (triangle), respectively.</p>
+</blockquote>
+<p>Notice this defines an <em>abstract</em> simplex. An abstract simplex and abstract simplicial complexes are abstract because we haven't given them any specific geometric realization. They're "graph-like" objects since we could technically draw the simplices in any number of arbitrary ways (e.g. line segments become curvy lines). A <em>geometric</em> 2-simplex, for example, could be the triangle formed by connecting the points $\{(0,0),(0,1),(1,1)\}$ in $\mathbb R^2$ (the ordinary 2-dimensional Euclidian plane) and filling in the middle. The definition for a geometric simplex would be different (and more complicated) since it would need to include all points within some boundary.</p>
+<blockquote><p><strong>Definition (Simplicial Complex)</strong> <br />
+$ \text{ A simplicial complex $\mathcal {K} $ is a set of simplices that satisfies the following conditions: }$</p>
+<ol>
+<li>$ \text {Any face of a simplex in $\mathcal {K}$ is also in $\mathcal {K}$ }$.</li>
+<li>$ \text {The intersection of any two simplices $\sigma <em>{1}, \sigma </em>{2}\in \mathcal {K}$ is either $ \emptyset $ or a face of both $\sigma <em>{1}$ and $\sigma </em>{2}$ }$</li>
+</ol>
+</blockquote>
+<p>As an example, here is a simplicial complex depicted graphically with vertex labels and then we'll define it mathematically.
+<img src="images/TDAimages/simplicialcomplex4.svg" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This simplicial complex is defined as a set: $K = \text{{{a},{b},{c},{d},{e},{f},{a,b},{a,c},{b,c},{c,d},{d,f},{d,e},{e,f},{a,b,c},{d,e,f}}}$
+Notice that we first list all the 0-simplices (vertices), then we list all the 1-simplices (line segments), then we list the 2-simplices (triangles). If we had any higher-dimensional simplices then those would come next and so on. Thus we meet the conditions set in Definition 8.2 because any face of a higher-dimensional simplex will be listed before and so on all the way down to individual vertices. Of course since this is a set (of sets), order does not matter, however, it is conventional to list the complex in this way for readability.</p>
+<p>The second condition set in the definition for a simplicial complex means that structures such as this are <em>not</em> valid simplices or complexes:
+<img src="images/TDAimages/notacomplex1.svg" />
+This is invalid since the line segment is connected to the triangle along its edge and not at one of its vertices.</p>
+<p>When we analyze data, our data is generally in the form of a finite metric space, i.e. we have discrete points (e.g. from a database of rows and columns of data) with a metric function defined (which places them in some metric space, like Euclidian space), and this gives us a "point cloud." A point cloud is just a bunch of points placed in our space with no obvious relationship.</p>
+<p>Here's a point cloud in $\mathbb R^2$ that kind of looks like a circle, or we could say the points look as if they were <em>sampled</em> from a circle.
+<img src="images/TDAimages/pointcloud1.svg" />
+Here's a similar point cloud in $\mathbb R^2$ but it's smaller and more elliptical than circular. 
+<img src="images/TDAimages/pointcloud2.svg" />
+A geometrician who builds a simplicial complex from these two point clouds would say they are quite different shapes geometrically, however, the topologist would say they are topologically identical since they both have a single "loop" feature and only exhibit one component ("piece"). Topologists don't care about differences in size/scale or mere stretching of edges, they care about <strong>topological invariants</strong> (properties of topological spaces that do not vary with certain types of continous deformations) such as holes, loops, and connected components.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So just how <em>do</em> we construct a simplicial complex from data? And how do we calculate these topological invariants?
+Well, there are actually many different types of simplicial complex constructions that have differing properties. Some are easier to describe mathematically, some are easier to compute algorithmically, others are simple but computationally inefficient. The most common simplicial complexes go by names such as the Čech complex, Vietoris-Rips complex, alpha complex, and witness complex.</p>
+<p>We will focus on just one, the <strong>Vietoris-Rips (VR) complex</strong>, as it is fairly easy to describe and reasonably practical from a computational standpoint. I will briefly describe other complexes as appropriate.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Constructing-a-Vietoris-Rips-Complex">Constructing a Vietoris-Rips Complex<a class="anchor-link" href="#Constructing-a-Vietoris-Rips-Complex">¶</a></h5><p>Intuitively, we construct a Vietoris-Rips (VR) complex from a point cloud $P \subseteq \mathbb R^d$ (a subset $P$ of some $d$-dimensional space) by initially connecting points in $P$ with edges that are less than some arbitrarily defined distance $\epsilon$ from each other. This will construct a 1-complex, which is essentially just a graph as described above (a set of vertices and a set of edges between those vertices). Next we need to fill in the higher-dimensional simplices, e.g. any triangles, tetrahedrons, etc. so we won't have a bunch of empty holes.</p>
+<p>Here's a visualization of the major steps (from left to right) of constructing a VR complex on a small point cloud in $\mathbb R^2$ that was sampled from a circular structure:</p>
+<div>
+<div style="width:20%; float:left; margin:10px 35px 25px 10px;"><img src="images/TDAimages/pointcloud3.svg" /></div>
+<div style="width:20%; float:left; margin:10px 35px 25px 10px;"><img src="images/TDAimages/VRcomplex1.svg" /></div>
+<div style="width:20%; float:left; margin:10px 35px 25px 10px;"><img src="images/TDAimages/VRcomplex2.svg" /></div>
+<div style="width:20%; float:left; margin:10px 0px 25px 0px;"><img src="images/TDAimages/VRcomplex3.svg" /></div>
+</div>
+<div style="clear: both;"></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, we take what are called the <strong>$\epsilon$-balls</strong> around each point in $P$ (the dotted circles of radius $\epsilon$) and build edges between that point and all other points within its ball. I only drew in the balls for a few of the points on the left because it would get too hard to see if I drew them all. More generally, a <strong>ball</strong> around a d-dimensional point is the (d-1)-dimensional generalization of a sphere around that point. So the ball of a point in $\mathbb R$ (the real number line) is simply a line segment around that point, the ball of a point in $\mathbb R^2$ is a circle, a ball around a point in $\mathbb R^3$ is a sphere, and so on. It is important to realize that a particular VR construction depends not only on the point cloud data but also on a parameter $\epsilon$ that is arbitrarily chosen.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p><strong>Note</strong> (How to choose $\epsilon$) <br />
+So how does one know what to make $\epsilon$? Excellent question, and the answer is simple: you just play around with various levels for $\epsilon$ and see what seems to result in a meaningful VR complex. If you set $\epsilon$ too  small, then your complex may just consist of the original point cloud, or only a few edges between points. If you set $\epsilon$ too big, then the point cloud will just become one massive ultradimensional simplex. As we will learn later, the key to actually discovering meaningful patterns in a simplicial complex is to continuously vary the $\epsilon$ parameter (and continually re-build complexes) from 0 to a maximum that results in a single massive simplex. Then you generate a diagram that shows what topological features are born and die as $\epsilon$ continuously increases. We assume that features that persist for long intervals over $\epsilon$ are meaningful features whereas features that are very short-lived are likely noise. This procedure is called <strong>persistent homology</strong> as it finds the  homological features of a topological space (specifically a simplicial complex) that persist while you vary $\epsilon$. We will delve deeper in persistent homology after we've learned how to build simplicial complexes from data.</p>
+</blockquote>
+<p>Let's make the VR construction mathematically precise...</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p><strong>Definition (Vietoris-Rips Complex)</strong> <br />
+If we have a set of points $P$ of dimension $d$, and $P$ is a subset of $\mathbb R^d$, then the Vietoris-Rips (VR) complex $V_{\epsilon}(P)$ at scale $\epsilon$  (the VR complex over the point cloud $P$ with parameter $\epsilon$) is defined as:</p>
+<p>$V_{\epsilon}(P) = \{ \sigma \subseteq P \mid d(u,v) \le \epsilon, \forall u \neq v \in \sigma \}$</p>
+</blockquote>
+<p>Okay let's translate that into English. It reads as follows: The VR complex at scale $\epsilon$ is the set $V_{\epsilon}(P)$ of all subsets $\sigma$ of $P$ such that the pair-wise distance between any non-identical points in $\sigma$ is less than or equal to a parameter $\epsilon$.</p>
+<p>So basically, if we have a data set $P$ with a bunch of points, we add a simplex $\sigma$ (which is a subset of $P$) if the points in $\sigma$ are all within $\epsilon$ distance of each other. Thus we get a set of subsets of $P$ that are all simplices, and hence we get a simplicial complex of $P$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h6 id="Next-time...">Next time...<a class="anchor-link" href="#Next-time...">¶</a></h6><p>We're going to end this post here for now but we'll pick up right where we left off in Part 2 where we'll actually start writing some code to build a Vietoris-Rips complex on some data.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References-(Websites):">References (Websites):<a class="anchor-link" href="#References-(Websites):">¶</a></h4><ol>
+<li><a href="http://dyinglovegrape.com/math/topology_data_1.php">http://dyinglovegrape.com/math/topology_data_1.php</a></li>
+<li><a href="http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf">http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Group_(mathematics">https://en.wikipedia.org/wiki/Group_(mathematics</a>)</li>
+<li><a href="https://jeremykun.com/2013/04/03/homology-theory-a-primer/">https://jeremykun.com/2013/04/03/homology-theory-a-primer/</a></li>
+<li><a href="http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf">http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</a></li>
+<li><a href="http://www.mit.edu/~evanchen/napkin.html">http://www.mit.edu/~evanchen/napkin.html</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References-(Academic-Publications):">References (Academic Publications):<a class="anchor-link" href="#References-(Academic-Publications):">¶</a></h4><ol>
+<li><p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from <a href="http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf">http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</a></p>
+</li>
+<li><p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
+</li>
+<li><p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
+</li>
+<li><p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from <a href="http://www.cs.duke.edu/courses/fall06/cps296.1/">http://www.cs.duke.edu/courses/fall06/cps296.1/</a></p>
+</li>
+<li><p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
+</li>
+<li><p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
+</li>
+<li><p>Grigor’yan, A., Muranov, Y. V., & Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. <a href="http://doi.org/10.4310/HHA.2014.v16.n1.a16">http://doi.org/10.4310/HHA.2014.v16.n1.a16</a></p>
+</li>
+<li><p>Kaczynski, T., Mischaikow, K., & Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. <a href="http://doi.org/10.4310/HHA.2003.v5.n2.a8">http://doi.org/10.4310/HHA.2003.v5.n2.a8</a></p>
+</li>
+<li><p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
+</li>
+<li><p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
+</li>
+<li><p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
+</li>
+<li><p>Lakshmivarahan, S., & Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
+</li>
+<li><p>Liu, X., Xie, Z., & Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. <a href="http://doi.org/10.4310/HHA.2012.v14.n1.a11">http://doi.org/10.4310/HHA.2012.v14.n1.a11</a></p>
+</li>
+<li><p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
+</li>
+<li><p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., & Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from <a href="http://arxiv.org/abs/1506.08903">http://arxiv.org/abs/1506.08903</a></p>
+</li>
+<li><p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
+</li>
+<li><p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
+</li>
+<li><p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</a></p>
+</li>
+<li><p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. <a href="http://doi.org/10.1016/j.cag.2010.03.007">http://doi.org/10.1016/j.cag.2010.03.007</a></p>
+</li>
+<li><p>Symmetry and Group Theory 1. (2016), 1–18. <a href="http://doi.org/10.1016/B978-0-444-53786-7.00026-5">http://doi.org/10.1016/B978-0-444-53786-7.00026-5</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/TDApart1.html">posted at 00:10</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/topological-data-analysis.html" rel="tag">Topological Data Analysis</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/tda.html" class="tags">TDA</a>
+                    &nbsp;<a href="/tag/persistent-homology.html" class="tags">persistent-homology</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

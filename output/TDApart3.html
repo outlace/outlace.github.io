@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Persistent Homology (Part 3)</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="TDA,persistent-homology" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Feb 23, 2017</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/TDApart3.html" rel="bookmark" title="Permanent Link to &quot;Persistent Homology (Part 3)&quot;">Persistent Homology (Part 3)</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Topological-Data-Analysis---Part-3---Persistent-Homology">Topological Data Analysis - Part 3 - Persistent Homology<a class="anchor-link" href="#Topological-Data-Analysis---Part-3---Persistent-Homology">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is Part 3 in a series on topological data analysis.
+See <a href="/Topological+Data+Analysis+Tutorial+-+Part+1/">Part 1</a> | <a href="/Topological+Data+Analysis+Tutorial+-+Part+2/">Part 2</a></p>
+<p>In this part we begin to apply our the math we learned from Parts 1-2 to actually calculating the interesting topological features of a simplicial complex.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Back-to-simplicial-homology">Back to simplicial homology<a class="anchor-link" href="#Back-to-simplicial-homology">¶</a></h4><p>We've finally covered enough group theory to be able to finish our calculations of homology groups on simplicial complexes. As you should recall, we had given definitions for the n-th homology group and the n-th Betti numbers.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Betti number's are what we ultimately want. They nicely summarize the topological properties of a simplicial complex. If we have a simplicial complex that forms a single circular object, then $b_0$ (the 0th Betti Number) represents the number of connected components which is 1, $b_1$ is the number of 1-dimensional holes (i.e. cycles) which is 1, and $b_n, n \gt 1$ are the higher-dimensional holes of which there are zero.</p>
+<p>Let's see if we can calculate the Betti Numbers of a simple triangle simplicial complex.</p>
+<p>Recall that $\mathcal T = \text{ {{a}, {b}, {c}, [a, b], [b, c], [c, a]} }$. (Depicted below).
+<img src="images/TDAimages/triangleSimplex.svg" /></p>
+<p>Since we know, by visual inspection, that $T$ <em>should</em> have Betti numbers $b_0 = 1$ (1 connected component), $b_1 = 1$ (1 one-dimensional hole), we will only compute those Betti numbers.</p>
+<p>Let's walk through the whole sequence of steps slowly. First we'll note the n-chains.</p>
+<p>The 0-chain is the set of 0-simplices: $\text{ {{a}, {b}, {c} } }$
+The 1-chain is the set of 1-simplices: $\text{ [a, b], [b, c], [c, a] }$
+There are no higher-dimensional n-chains.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can use the n-chains to define our <em>chain groups</em>. We're going to be using coefficients from $\mathbb Z_2$, which is a field, and remember there are only 2 elements $\{0,1\}$ where $1+1=0$.</p>
+<p>The 0-chain group is defined as: 
+$$C_0 = \{\{x*(a,0,0)\}, \{y*(0,b,0)\}, \{z*(0,0,c)\} \mid x,y,z \in \mathbb Z_2\} \\$$ 
+Remember a group only has an addition operation defined but we're <em>building</em> the group by using a multiplication operation from the field $\mathbb Z_2$. So this group is actually isomorphic to $\mathbb Z_{2}^{3} = Z_{2} \oplus Z_{2} \oplus Z_{2}$.</p>
+<p>But we also want to represent our chain groups as a vector space. This means it becomes a structure where elements can be scaled up or down (i.e. multiplication operation) by elements of a field (in our case $\mathbb Z_2$) and added together, with all results still contained in the structure. If we only pay attention to the addition operation then we're basically looking at its group structure, whereas if we pay attention to both the multiplcation and addition operations then we are considering it as a vector space.</p>
+<p>0-chain vector space is generated by: 
+$$\mathscr C_0 = \{\{x*(a,0,0)\}, \{y*(0,b,0)\}, \{z*(0,0,c)\} \mid x,y,z \in \mathbb Z_2\} \\$$
+(Yes it's the same set that forms the group from above).</p>
+<p>The vector space is the set of elements we can multiply by 0 or 1, and add them together. For example, we can do: $1*(a,0,0) + 1*(0,0,c) = (a,0,c)$. This vector space is so small $(2^3=8\ \text{elements})$ we can actually list out all the elements. Here they are:</p>
+$$\mathscr{C_0} = \begin{Bmatrix} (a,0,0), (0,b,0), (0,0,c), (a,b,0) \\
+ (a,b,c), (0,b,c), (a,0,c), (0,0,0) \end{Bmatrix} \\ $$<p>You can see that we can add any two elements in this vector space and the result will be another element in the vector space. A random example: $(a,0,c) + (a,b,c) = (a+a,0+b,c+c) = (0,b,0)$. Recall addition is component-wise. We can also multiply vectors by an element in our field $\mathbb Z_2$ but since our field is finite with only 2 elements, it's not very interesting, e.g. $1*(a,b,0) = (a,b,0)$ and $0*(a,b,0) = (0,0,0)$, but none the less, the multiplication operation still results in an element within our vector space.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can represent this vector space as a polynomial, so our 0-chain vector space can be defined equivalently as:
+$$ \mathscr{C_0} = \{xa + yb + zc \mid z,y,z \in \mathbb Z_2\}$$
+We can easily translate a polynomial like $a+b+c$ to its ordered-set notation $(a,b,c)$. Or $a+b$ is $(a,b,0)$. The vector space seen as a set of polynomials looks like this:
+$$ \mathscr{C_0} = \begin{Bmatrix} \text{ {a}, {b}, {c}, {a+b} $\\$
+{a+b+c}, {b+c}, {a+c}, {0} } \end{Bmatrix} \\ $$
+It's more convenient to work with the polynomial form, in general, because we can make familiar algebraic equations like $$a+b=0 \\
+a = -b \\
+a = b $$
+(Recall that the inverse of an element in $\mathbb Z_2$ is just itself, hence $-b = b$ where "$-$" denotes inverse).</p>
+<blockquote><p><strong>NOTE</strong>: It is very important to keep track of whether we're talking about groups or vector spaces. I will use a normal letter $C$ to denote the chain <strong>group</strong> and the fancy script $\mathscr{C}$ to denote the chain <strong>(vector) space</strong>. They have the same underlying <em>set</em>, only different operations defined. If we talk about the group form we can only reference its addition operation, whereas if we talk about its vector space form we can talk about its multiplication and addition operation.</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's do the same for the 1-chains: $\text{ [a, b], [b, c], [c, a] }$. We can use the 1-chain set to define another chain group, $C_1$. It will be isomorphic to $C_0$ and hence $\mathbb Z_{2}^{3}$.
+$$C_1 = \{\ (\ x([a, b]), y([b, c]), z([c, a])\ ) \mid x,y,z \in \mathbb Z_2\ \} $$</p>
+<p>We can define a vector space, $\mathscr C_1$, using this chain group in the same way we did for $C_0$. I will use the polynomial form henceforth. Remember, the chain group and vector space have the same set, its just that the vector space has two binary operations instead of one.</p>
+<p>This is the full list of elements in the vector space:
+$$\mathscr{C_1} = \begin{Bmatrix} \text{
+{[a, b]}, {[b, c]}, {[c, a]}, {[a, b] + [b, c]}, $\\$
+{[b, c] + [c, a]}, {[a, b] + [c, a]}, {[a, b] + [b, c] + [c, a]}, {0} } \end{Bmatrix}  \\$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Just for clarification about the boundary map, here is a diagram of it. This shows how the boundary operator maps each element in $C_1$ to an element in $C_0$.
+<img src="images/TDAimages/boundarymap1.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can start computing the first Betti number, $b_0$.</p>
+<p>Recall the definition of a Betti number is:</p>
+<blockquote><p>The n-th Betti number, $b_n = dim(H_n)$, where $H_n$ is the n-th homology group.</p>
+</blockquote>
+<p>And recall the definition of a homology group</p>
+<blockquote><p>The $n^{th}$ Homology Group $H_n$ is defined as $H_n$ = Ker $\partial_n \ / \ \text{Im } \partial_{n+1}$.</p>
+</blockquote>
+<p>Lastly, recall the definition of a kernel:</p>
+<blockquote><p>The kernel of $\partial(C_n)$, denoted $\text{Ker}(\partial(C_n))$ is the group of $n$-chains $Z_n \subseteq C_n$ such that $\partial(Z_n) = 0$</p>
+</blockquote>
+<p>So first we need the kernel of the boundary of $C_0$, Ker $\partial(C_0)$. Remember the boundary map $\partial$ gives us a map from $C_n \rightarrow C_{n-1}$.</p>
+<p>In all cases, the boundary of a 0-chain is $0$, thus the Ker $\partial(C_0)$ is the whole 0-chain.</p>
+$$\text{Ker} \partial(C_0) = \{a, b, c\}$$<p>This forms another group we will denote $Z_0$ (or $Z_n$ generally), the group of 0-cycles, which in general is a subgroup of $C_0$, i.e. $Z_n \leq C_n$. With addition defined over $\mathbb Z_2$ then $Z_0$ is also ismorphic to $\mathbb Z_2$ and hence is the same as $C_0$.</p>
+<p>The other thing we need to find the homology group $H_0$ is $\text{Im } \partial_{1}$. This forms a subgroup of $Z_0$ that we denote $B_0$ (or more generally $B_n$) which is the group of boundaries of the (n+1)-chain. Hence, $B_n \leq Z_n \leq C_n$.</p>
+$$\partial{C_1} = \partial({[a, b], [b, c], [c, a]} = (a + b) + (b + c) + (c + a) \\
+\partial{C_1} = (a + b) + (b + c) + (c + a) = (a + a) + (b + b) + (c + c) = (0) + (0) + (0) = 0 \\
+\partial{C_1} = 0 $$<p>So $\text{Im } \partial_{1} = {0}$</p>
+<p>Thus we compute the quotient group $H_0 = Z_0\ /\ B_0$, which in this case is:
+$$Z_0 = \text { { {a, b, c}, {0} } } \\
+B_0 = \{0\} $$
+so we take the left cosets of $\{0\}$ for the two elements in $Z_0$ to get the quotient group, which gives us:
+$$ Z_0\ /\ B_0 = \text { { {a, b, c}, {0} } } = Z_0$$</p>
+<p>So in general, if $B_n = \{0\}$ then $Z_n\ /\ B_n = Z_n$. Hence $H_0 = Z_0$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The Betti number $b_0$ is the dimension of $H_0 = Z_0$. What is the dimension of $H_0$? Well, it has two elements, but the dimension is defined as the smallest set of generators for a group, and since this group is isomorphic to $\mathbb Z_2$, it only has 1 generator. For $\mathbb Z_2$ the generator is $1$, since the whole group can be formed by repeatedly applying the addition operation on $1$, i.e. $1+1=0, 1+1+1 = 1$ and now we have the full $\mathbb Z_2$.</p>
+<p>So $b_0 = dim(H_0) = 1$, which is what we expected, this simplicial complex has 1 connected component.</p>
+<p>Now let's start calculating Betti $b_1$ for the 1-dimension. This time it will be a bit different because figuring out $\text{Ker}\partial(C_1)$ is going to be more involved. We're going to need to do some algebra.</p>
+<p>So, we first want $Z_1$, the group of 1-cycles. This is the set of 1-simplices whose boundary is 0. Remember the 1-chain is $\{ [a,b], [b,c], [c,a]\}$ and forms the 1-chain group $C_1$ when applied over $\mathbb Z_2$. We will setup an equation like this:</p>
+$$ 
+\begin{aligned}
+\mathscr C_1 &= \lambda_0([a,b]) + \lambda_1([b,c]) \lambda_2([c,a]) \text{ ... where $\lambda_n \in \mathbb Z_2$. $\\$ This is the general form of any element in the vector space $\mathscr C_1$} \\
+\lambda_0([a,b]) + \lambda_1([b,c]) + \lambda_2([c,a]) &= 0 \text{ ... then take the boundary of that} \\
+\partial(\lambda_0([a,b]) + \lambda_1([b,c]) + \lambda_2([c,a])) &= 0 \\
+\lambda_0(a+b) + \lambda_1(b+c) + \lambda_2(c+a) &= 0 \\
+\lambda_0{a} + \lambda_0{b} + \lambda_1{b} + \lambda_1{c} + \lambda_2{c} + \lambda_2{a} &= 0 \\
+a(\lambda_0 + \lambda_2) + b(\lambda_0 + \lambda_1) + c(\lambda_1 + \lambda_2) &= 0 \text{ ...factor out the a,b,c} \\
+\end{aligned}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For this equation to be satisfied, then all the coefficients $\lambda_n$ for each term need to sum to 0 to make $a,b,c$ go to $0$. That is, if the whole equation goes to $0$, then each term like $a(\lambda_0 + \lambda_2) = 0$, hence $(\lambda_0 + \lambda_2) = 0, $. So now we basically have a system of linear equations:</p>
+$$\lambda_0 + \lambda_2 = 0 \\
+\lambda_0 + \lambda_1 = 0 \\
+\lambda_1 + \lambda_2 = 0 \\
+\text{...now solve...} \\
+\lambda_0 = \lambda_2 \\
+\lambda_0 = \lambda_1 \\
+\lambda_1 = \lambda_1 \\
+\lambda_0 = \lambda_1 = \lambda_2 \\
+\text{So for the equation above to be satisfied, all the coefficients $\lambda_n$ must be equal. Let's just replace all the lambdas with a single symbol, phi, i.e...} \\
+\lambda_0, \lambda_1, \lambda_2 = \phi$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, let's go back to the general expression for the 1-chain vector space $\mathscr C_1 =  \lambda_0([a,b]) + \lambda_1([b,c]) + \lambda_2([c,a])$. When we take the boundary of that and set it to 0, we get $\lambda_0 = \lambda_1 = \lambda_2$, and I proposed we just replace those with one symbol, $\phi$.</p>
+<p>Hence, the cycle group: 
+$$Z_1 \leq \mathscr C_1 = \phi([a,b]) + \phi([b,c]) + \phi([c,a]) \\
+Z_1 = \phi([a,b] + [b,c] + [c,a]), \text{ ...remember $\phi$ is from $\mathbb Z_2$ so it is either 0 or 1.}
+$$</p>
+<p>So the cycle group only contains two elements and is hence isomorphic to $\mathbb Z_2$.</p>
+<blockquote><p><strong>NOTE</strong>: I will introduce new notation. If two mathematical structures (e.g. groups) $G_1, G_2$ are isomorphic, we denote it as $G_1 \cong G_2$</p>
+</blockquote>
+<p>If $\phi = 0$, then we get $\phi([a,b] + [b,c] + [c,a]) = 0([a,b] + [b,c] + [c,a]) = 0 \\$
+, whereas if $\phi = 1$, then $\phi([a,b] + [b,c] + [c,a]) = 1([a,b] + [b,c] + [c,a]) = [a,b] + [b,c] + [c,a] \\$ 
+So the full group is:
+$$Z_1 = \begin{Bmatrix} [a,b] + [b,c] + [c,a] \\ 0 \end{Bmatrix}$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The boundary group $B_1 = Im\partial(C_2)$ but since $C_2$ is an empty set, $B_1 = \{0\}$.</p>
+<p>So once again we can compute the homology group:
+$$H_1 = Z_1 / B_1 = \begin{Bmatrix} [a,b] + [b,c] + [c,a] \\ 0 \end{Bmatrix}$$</p>
+<p>And Betti $b_1 = dim(H_1) = 1$ since we only have one generator in the group $H_1$.</p>
+<p>So that's it for that very simple simplicial complex. We'll move on to a bigger complex. This time I won't be as verbose and will use a lot of the simplifying notation and conventions that I've already defined or described.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's do the same but with a slightly more complicated simplicial complex that we've seen before:
+$$S = \text{{[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]}}$$ (Depicted below).
+<img src="images/TDAimages/simplicialcomplex5b.svg" /></p>
+<p>Notice we now have a 2-simplex [a, b, c], depicted as the filled in triangle.</p>
+<p>This time we will use the full integer field $\mathbb Z$ for our coefficients, thus the resulting vector spaces will be infinite instead of finite spaces that we could list out. Since we're using $\mathbb Z$, we must define what it means to be a "negative" simplex, e.g. what does $-[c,a]$ <em>mean</em>? Well we discussed this previously. Basically we define two ways a simplex can be oriented and opposite orientation to the original definition will be assigned the "negative" value of a simplex.</p>
+<p>So $[a,c] = -[c,a]$. But what about $[a,b,c]$? There are more than two ways to permute a 3 element list, but there only two orientations. <br />
+If you look at the oriented simplex from before:
+<img src="images/TDAimages/trianglesimplex.svg" />
+There are only two ways you can "go around" the loop. Either clockwise or counterclockwise.<br />
+$[a,b,c]$ is clockwise (and we'll call it positive).<br />
+$[c,a,b]$ is also clockwise (so $[c,a,b] = [a,b,c]$)<br />
+$[a,c,b]$ is a counterclockwise, as well as $[b,c,a]$, so $[a,b,c] = [c,a,b] = -[a,c,b] = -[b,c,a]$.<br /></p>
+<p>Let's start by listing our chain groups.
+$$ C_0 = \langle{a,b,c,d}\rangle \cong \mathbb Z^4 \\
+C_1 = \langle{[a, b], [b, c], [c, a], [c, d], [d, b]}\rangle \cong \mathbb Z^5 \\
+C_2 = \langle{[a, b, c]}\rangle \cong \mathbb Z \\ $$</p>
+<p>Recall the angle brackets mean <em>span</em>, i.e. the set of all linear combinations of the elements between the angle brackets. This is obviously much more succinct than how we we're building the groups in our last example. And note how each group is isomorphic to the vector space $\mathbb Z^n$ where $n$ is the number of simplices in the n-chain.<br /></p>
+<p>We can thus describe our <em>chain complex</em> as:</p>
+$$C_2 \stackrel{\partial_1}\rightarrow C_1 \stackrel{\partial_0}\rightarrow C_0$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We know, since we can easily visualize the simplicial complex, that it has one connected component and one 1-cycle (one 1-dimensional hole). Hence, Betti $b_0 = 1, b_1 = 1$. But we need to calculate that for ourselves.</p>
+<p>Let's start from the higher-dimensional chain group, the 2-chain group.</p>
+<p>Remember, $Z_n = \text{Ker}\partial(C_n)$ the group of n-cycles, which is a subgroup of $C_n$. And $B_n = \text{Im}\partial(C_{n+1})$ is the group of n-boundaries, which is a subgroup of the n-cycles. Hence $B_n \leq Z_n \leq C_n$. Also recall, the homology group $H_n = Z_n\ /\ B_n$ and the n-th Betti number is the dimension of the n-th homology group.</p>
+<p>To find $Z_n$, we have to setup our expression for a general element in $C_n$.
+$$
+\begin{aligned}
+C_2 &= \lambda_0{[a,b,c]},  \lambda_0 \in \mathbb{Z} \\
+Z_2 &= \text{Ker}\partial{(C_2)} \\ 
+\partial{(C_2)} &= \lambda_0{([b,c])} - \lambda_0{([a,c])} + \lambda_0{([a,b])} \text{ ...set it equal to 0 to get Kernel} \\
+\lambda_0{([b,c])} - \lambda_0{([a,c])} + \lambda_0{([a,b])} &= 0 \\
+\lambda_0{([b,c] - [a,c] + [a,b])} &= 0 \\
+\lambda_0 &= 0  \text{ ... there is only a single solution where $\lambda_0 = 0$, then $0=0$. } \\
+\lambda_0{[a,b,c]} &= 0, \lambda_0 = 0 \text{ ... so nothing in $C_2$ goes to 0, thus it's only {0} in the Kernel} \\
+... \\
+\text{Ker}\partial{(C_2)} &= \{0\} \\
+\end{aligned}
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since there are no 3-simplices or higher, $B_2 = {0}$. Thus Betti $b_2 = dim(\{0\} / \{0\}) = 0$. This is what we expect, there are no 2-dimensional holes in the simplicial complex.</p>
+<p>Let's do the same for $C_1$.</p>
+$$
+\begin{aligned}
+C_1 &= \lambda_0[a, b] + \lambda_1[b, c] + \lambda_2[c, a] + \lambda_3[c, d] + \lambda_4[d, b],  \lambda_n \in \mathbb{Z} \\
+Z_1 &= \text{Ker}\partial{(C_1)} \\ 
+\partial{(C_1)} &= \lambda_0{(a - b)} + \lambda_1{(b - c)} + \lambda_2{(c - a)} + \lambda_3{(c - d)} + \lambda_4{(d - b)} \\
+\text{ ...set it equal to 0 to get Kernel} \\
+\lambda_0{(a - b)} + \lambda_1{(b - c)} + \lambda_2{(c - a)} + \lambda_3{(c - d)} + \lambda_4{(d - b)} &= 0 \\
+\lambda_0a - \lambda_0b + \lambda_1b - \lambda_1c + \lambda_2c - \lambda_2a + \lambda_3c - \lambda_3d + \lambda_4d - \lambda_4b &= 0 \text { ...factor out the a,b,c,d}\\
+a(\lambda_0 - \lambda_2) + b(\lambda_1 - \lambda_0 - \lambda_4) + c(\lambda_2 - \lambda_1 + \lambda_3) + d(\lambda_4 - \lambda_3) &= 0 \\
+\text{Now we can setup a system of linear equations...} \\
+\lambda_0 - \lambda_2 &= 0 \\
+\lambda_1 - \lambda_0 - \lambda_4 &= 0 \\
+\lambda_2 - \lambda_1 + \lambda_3 &= 0 \\
+\lambda_4 - \lambda_3 &= 0 \\
+\text{Solve the equations, plug the solutions back into the original $C_1$ expression...} \\
+\lambda_0([a,b] + [b,c] + [c,a]) + \lambda_3([b,c] + \cancel{[a,c]} + [c,d] + \cancel{[c,a]} + [d,b]) &= \text{Ker}\partial{(C_1)} \\
+\text{Ker}\partial{(C_1)} &= \lambda_0([a,b] + [b,c] + [c,a]) + \lambda_3([b,c] + [c,d] + [d,b]) \\
+Z_1 = \text{Ker}\partial{(C_1)} &\cong \mathbb Z^2
+\end{aligned}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now to get the boundaries $B_1 = Im\partial(C_2)$.
+$$
+\begin{aligned}
+\partial(C_2) &= \lambda_0{([b,c])} - \lambda_0{([a,c])} + \lambda_0{([a,b])} \text {... remember $-[a,c] = [c,a]$ ...} \\
+\partial(C_2) &= \lambda_0{([b,c] + [c,a] + [a,b])} \\
+B_1 = Im\partial(C_2) &= \{\lambda_0{([b,c] + [c,a] + [a,b])}\}, \lambda_0 \in \mathbb Z \\
+B_1 &\cong Z \\
+H_1 = Z_1\ /\ B_1 &= \{\lambda_0([a,b] + [b,c] + [c,a]) + \lambda_3([b,c] + [c,d] + [d,b])\}\ /\ \{\lambda_0{([b,c] + [c,a] + [a,b])}\} \\
+H_1 &= \{\lambda_3([b,c] + [c,d] + [d,b])\} \cong \mathbb Z
+\end{aligned}
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Another way to more easily take the quotient group $H_1 = Z_1\ /\ B_1$ is to just pay attention to what $Z_n, B_n$ are isomorphic to in terms of $\mathbb Z^n$. In this case:
+$$ Z_1 \cong \mathbb Z^2 \\
+B_1 \cong \mathbb Z^1 \\
+H_1 = \mathbb Z^2\ /\  \mathbb Z = \mathbb Z$$</p>
+<p>So since $H_1 \cong \mathbb Z$, the Betti number for $H_1$ is 1 because the dimension of $\mathbb Z$ is 1 (it only has one generator or basis).</p>
+<p>So I think you get the point by now, I'm not going to go through all the details of calculating Betti $b_0$, it should be 1 since there is only one connected component.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Next-time...">Next time...<a class="anchor-link" href="#Next-time...">¶</a></h5><p>We've learned how to calculate homology groups and Betti numbers of simple simplicial complexes by hand. But we're going to need to develop some new tools so that we can let computer algorithms handle these calculations for the real, and generally much larger, simplicial complexes. Next time we'll see how linear algebra gives us an efficient means of doing this.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References-(Websites):">References (Websites):<a class="anchor-link" href="#References-(Websites):">¶</a></h4><ol>
+<li><a href="http://dyinglovegrape.com/math/topology_data_1.php">http://dyinglovegrape.com/math/topology_data_1.php</a></li>
+<li><a href="http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf">http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Group_(mathematics">https://en.wikipedia.org/wiki/Group_(mathematics</a>)</li>
+<li><a href="https://jeremykun.com/2013/04/03/homology-theory-a-primer/">https://jeremykun.com/2013/04/03/homology-theory-a-primer/</a></li>
+<li><a href="http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf">http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</a></li>
+<li><a href="http://www.mit.edu/~evanchen/napkin.html">http://www.mit.edu/~evanchen/napkin.html</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References-(Academic-Publications):">References (Academic Publications):<a class="anchor-link" href="#References-(Academic-Publications):">¶</a></h4><ol>
+<li><p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from <a href="http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf">http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</a></p>
+</li>
+<li><p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
+</li>
+<li><p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
+</li>
+<li><p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from <a href="http://www.cs.duke.edu/courses/fall06/cps296.1/">http://www.cs.duke.edu/courses/fall06/cps296.1/</a></p>
+</li>
+<li><p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
+</li>
+<li><p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
+</li>
+<li><p>Grigor’yan, A., Muranov, Y. V., & Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. <a href="http://doi.org/10.4310/HHA.2014.v16.n1.a16">http://doi.org/10.4310/HHA.2014.v16.n1.a16</a></p>
+</li>
+<li><p>Kaczynski, T., Mischaikow, K., & Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. <a href="http://doi.org/10.4310/HHA.2003.v5.n2.a8">http://doi.org/10.4310/HHA.2003.v5.n2.a8</a></p>
+</li>
+<li><p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
+</li>
+<li><p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
+</li>
+<li><p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
+</li>
+<li><p>Lakshmivarahan, S., & Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
+</li>
+<li><p>Liu, X., Xie, Z., & Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. <a href="http://doi.org/10.4310/HHA.2012.v14.n1.a11">http://doi.org/10.4310/HHA.2012.v14.n1.a11</a></p>
+</li>
+<li><p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
+</li>
+<li><p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., & Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from <a href="http://arxiv.org/abs/1506.08903">http://arxiv.org/abs/1506.08903</a></p>
+</li>
+<li><p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
+</li>
+<li><p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
+</li>
+<li><p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</a></p>
+</li>
+<li><p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. <a href="http://doi.org/10.1016/j.cag.2010.03.007">http://doi.org/10.1016/j.cag.2010.03.007</a></p>
+</li>
+<li><p>Symmetry and Group Theory 1. (2016), 1–18. <a href="http://doi.org/10.1016/B978-0-444-53786-7.00026-5">http://doi.org/10.1016/B978-0-444-53786-7.00026-5</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/TDApart3.html">posted at 00:30</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/topological-data-analysis.html" rel="tag">Topological Data Analysis</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/tda.html" class="tags">TDA</a>
+                    &nbsp;<a href="/tag/persistent-homology.html" class="tags">persistent-homology</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

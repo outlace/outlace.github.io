@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Simple Recurrent Neural Network</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="RNN" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Aug 05, 2015</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/rnn.html" rel="bookmark" title="Permanent Link to &quot;Simple Recurrent Neural Network&quot;">Simple Recurrent Neural Network</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><em>Re-submission Note</em>: I originally submitted an RNN post but realized I made some major mistakes (I'm learning as I go). This is almost a complete re-do. One of the issues was that the RNN was not training properly, and I have not been able to get it to reliably train with my own implementation of gradient descent, so here I will calculate the gradients and hand those off to a scipy optimizer to find the weights.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Assumptions:">Assumptions:<a class="anchor-link" href="#Assumptions:">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I'm assuming you already know how to build a simple neural network (e.g. to solve XOR) and train it using backpropagation. I have a previous post covering backpropagation/gradient descent and at the end of that tutorial I build and train a neural network to solve the XOR problem, so I recommend making sure you understand that because I am basing the RNNs I demonstrate here off of that. I also assume you have a functional understanding of Python/numpy.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Summary-&amp;-Motivations:">Summary & Motivations:<a class="anchor-link" href="#Summary-&amp;-Motivations:">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This blog is my journey into learning the fundamentals of machine learning and other quantitative principles and applications and is generally in chronological order of my learning. After I successfully learned how to make feedforward neural networks and train them, I really wanted to learn how to make recurrent neural networks (RNNs). I understood that they were for temporal/sequential data and thus they could learn relationships through time. But I could not for the life of me figure out how to make the jump from a feedforward neural net to an RNN until I watched this youtube video: <a href="https://www.youtube.com/watch?v=e2sGq_vI41s">https://www.youtube.com/watch?v=e2sGq_vI41s</a> (which I highly suggest you watch) by Jeff Heaton. Then I understood that RNNs can be implemented almost exactly like an ordinary feedforward neural network. I will re-explain some of the contents of that video here as I build a simple recurrent (Elman) neural network to solve a temporal version of the XOR problem (my favorite toy problem). I will also show you how to do basic time series/sequence prediction with a mini-mini-char-RNN implementation.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Converting-to-Sequential-Data:-XOR">Converting to Sequential Data: XOR<a class="anchor-link" href="#Converting-to-Sequential-Data:-XOR">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We're going to build a simple recurrent neural network to solve a sequential/temporal version of the XOR problem.
+<br />Just as a reminder, here is the truth table for XOR.</p>
+<table>
+<tr><td>$x_1$</td><td>$x_2$</td><td>$y$</td></tr>
+<tr><td>$0$</td><td>$0$</td><td>$0$</td></tr>
+<tr><td>$0$</td><td>$1$</td><td>$1$</td></tr>
+<tr><td>$1$</td><td>$0$</td><td>$1$</td></tr>
+<tr><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+</table>
+<p>
+So normally, in a feedforward neural network, we would feed each training example as a tuple $(x_1, x_2)$ and we would expect an output $h(x)$ that closely matches $y$ if the network has been trained. As review, here's what our ordinary feedforward XOR architecture looks like:
+
+<img src="images/SimpleRNN/XORnormal.png" />
+
+In an RNN, we're going to add in the time dimension. But how? Well we simply reformat our training data to be in a time-dependent sequence.</p>
+<p>Here's our new (temporal) training data:</p>
+<table style="width:150px;">
+<tr><td>$x$</td><td>$y$</td><td>$t$</td></tr>
+<tr><td>$0$</td><td>?</td><td>$0$</td></tr>
+<tr><td>$0$</td><td>0</td><td>$1$</td></tr>
+<tr><td>$1$</td><td>1</td><td>$2$</td></tr>
+<tr><td>$1$</td><td>0</td><td>$3$</td></tr>
+<tr><td>$0$</td><td>1</td><td>$4$</td></tr>
+<tr><td>$...x_n$</td><td>$...y_n$</td><td>$...t_n$</td></tr>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Where $x ... x_n$ represents our training data, $y...y_n$ are the corresponding expected values, and $t ... t_n $ represents our time steps. I arranged a sequence of bits [0 0 1 1 0] such that we can XOR the current bit and the previous bit to get the result. For every-time step our RNN is going to make output the XOR of the previous 2 bits, so notice that after the first bit $y=?$ because there is no previous bit to XOR, so we just ignore what the RNN outputs. But for $x=0, t=1$ we see that $y=0$ because XOR(0,0)=0.  Also notice how $time$ is in discrete, integer, steps. Some algorithms may actually have continous time implementation and that's something I'll likely explore in a future post. Let's take another look at our sequential data written horizontally as numpy code:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [54]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[0;0;1;1;0]'</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[0;0;1;0;1]'</span><span class="p">)</span> <span class="c1">#first bit should be ignored, just arbitrarily putting 0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>
+So what do we do with our sequential XOR data and what does our neural network look like? Well, we're simply going to feed each (one at a time) $x$ value into our neural network and expect one output value at a time. Instead of having 2 input units (excluding bias), we only need one now:
+<img src="images/SimpleRNN/XORrnn.png" />
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What's that loop and $t-1$ thing? Well it means we're going to take our output from the hidden layer at time $t_n$ and feed it back into our hidden layer as additional input at $t_{n+1}$ (the next time step), or we could rephrase that to say that our hidden layer input at $t_n$ includes the output of the hidden layer from $t_{n-1}$ (the previous time step).
+</p>
+<p>
+You might be wondering how this is any more useful than an ordinary feedforward NN, and the answer is it's not really. For a problem like XOR, I can't think of a reason why you'd ever want to use an RNN over a feedforward. We're just using it here because it's familiar and I'm a reductionist. But after we get this down, we'll move onto something where RNNs really shine: sequence prediction (in our case, predicting the next character in a sequence).
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-Elman-Neural-Network">The Elman Neural Network<a class="anchor-link" href="#The-Elman-Neural-Network">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><p>An Elman network is in the class of "simple recurrent neural networks" (presumably because they really are simple, with no frills) and it's the type of RNN we're going to build to solve our temporal XOR problem. Here's what it looks like when applied to our XOR problem:</p>
+<img src="images/SimpleRNN/XORrnnFull.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>where $\theta_1$ refers to the weights between the input layer and the hidden layer (a 6x4 matrix) and $\theta_2$ refers to our weights in between the hidden layer and our output layer (a 5x1 matrix).</p>
+<p>
+Okay so everything should make sense here except those 4 units labeled $C_1 - C_4$. Those are called <em>context</em> units in the parlance of simple RNNs. These context units are additional input units that feed the output from $t_{n-1}$'s hidden layer back into $t_n$'s hidden layer. They're treated exactly like a normal input unit, with adjustable weights. (At $t = 0$ there is no history to remember, so we have to initialize our network's context units with something, generally 0s.) Notice that we have the <b>same number of context units as we do hidden units</b>, that's by design and is simply the architecture of an Elman network.
+</p>
+<p>
+So what we've done here by adding context units that feed the previous time step's state into the current time step is to turn that diagram with the t-1 loop into essentially an ordinary feedforward neural network. And since it's a feedforward neural network, we can train it exactly like we do with a feed forward XOR neural network: backpropagation (it often get's called <em>backpropagation through time</em> but it's just a different name for the same thing).</p>
+<p>
+Let's walk through the flow of how this works in the feedforward direction for 2 time steps.
+<ul>
+<li>1. $t=0$. Start with $x_1 = 0$ (first element in our list), intialize $C_1 - C_4$ to input 0s.</li>
+<li>2. Feed those inputs (from bottom to top, $x_1, c_4, c_3, c_2, c_1, B_1$): [0,0,0,0,0,1] into the hidden layer (of course we multiply by $\theta_1$).</li>
+<li>3. The hidden layer outputs $a_4, a_3, a_2, a_1, B_2$. We'll then store these values (except bias, $B_2$) in another temporary vector for the next time step. </li>
+<li>4. Then our output unit uses the hidden layer outputs to produce the final output, $g(x)$</li>
+<li>5. $t=1$ (next time step). So still $x_1 = 0$ (second element in our list), intialize $C_1 - C_4$ to the stored outputs of $H_1 - H_4$ from the last time we ran the network forward.</li>
+<li>6. Feed those inputs (from bottom to top, $x_1, c_4, c_3, c_2, c_1, B_1$): [0, $H_4^{t-1}, H_3^{t-1}, H_2^{t-1}, H_1^{t-1}$, 1] into the hidden layer.</li>
+<li>7. The hidden layer outputs $a_4, a_3, a_2, a_1, B_2$. We'll then store these values in the temporary vector for the next time step.</li>
+<li>8. Then our output unit uses the hidden layer outputs to produce the final output, $g(x)$</li>
+</ul>
+</p>
+<p>
+<b>Important Notes:</b> As mentioned before, we treat the context units just like ordinary input units, that means they have weighted connections between them and the hidden layer, but their input does not go through any activation function nor do we manipulate those values in anyway before we feed them back in the next time step.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Let's-build-it-(updated)">Let's build it (updated)<a class="anchor-link" href="#Let's-build-it-(updated)">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So as mentioned before, when I originally posted this article I attemped to train it using ordinary backpropagation/gradient descent (with momentum), and it was not reliably working. So rather than posting some code that may or may not work for you, I'm going to use scipy's optimize functions to help out the training (and even then it has issues converging sometimes). RNNs are infamously difficult to train compared to NNs. (We'll graph the cost function to see why later.) </p><p>
+If you have taken Andrew Ng's machine learning course, then you should be familiar with Matlab's 'fminunc' (and `fmincg`) optimizer. We're going to use scipy's version, `fmin_tnc` (I'll explain how it works later). Let me just walk through the major points of the following implementation
+<ul>
+<li>I have a cost function defined in a separate file which accepts an 'unrolled' theta vector, so in the cost function we have to assign theta1 and theta2 by slicing the long thetaVec. This cost function returns the cost ('J') and the gradient (an unrolled vector containing theta1_grad and theta2_grad).</li>
+<li> In the main code to follow, we give scipy's `fmin_tnc` our cost function and some initial weights and it quickly finds an optimal set of weights. `fmin_tnc` will return the optimal weights as an unrolled vector.</li>
+<li>After we define theta1 and theta2 from the optimal weights returned, we run the network forward on a different sequence of bits to see if it really learned how to XOR the sequence one step at a time.</li>
+</ul>
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [170]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sigmoid</span> <span class="k">import</span> <span class="n">sigmoid</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<span class="kn">import</span> <span class="nn">cost_xorRNN</span> <span class="k">as</span> <span class="nn">cr</span> <span class="c1">#I defined the cost function in a separate file</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[0;0;1;1;0]'</span><span class="p">)</span> <span class="c1">#training data</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[0;0;1;0;1]'</span><span class="p">)</span> <span class="c1">#expect y values for every pair in the sequence of X</span>
+<span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span>
+<span class="c1">#initial, randomized weights:</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span> <span class="p">(</span> <span class="mi">6</span> <span class="o">/</span> <span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span><span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">theta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span> <span class="p">(</span> <span class="mi">6</span> <span class="o">/</span> <span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="n">numOut</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span> <span class="p">)</span> <span class="p">)</span>
+<span class="c1">#we're going to concatenate or 'unroll' theta1 and theta2 into a 1-dimensional, long vector</span>
+<span class="n">thetaVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta1</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">theta2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#give the optimizer our cost function and our unrolled weight vector</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fmin_tnc</span><span class="p">(</span><span class="n">cr</span><span class="o">.</span><span class="n">costRNN</span><span class="p">,</span> <span class="n">thetaVec</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="c1">#retrieve the optimal weights</span>
+<span class="n">optTheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1">#reconstitute our original 2 weight vectors</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="n">optTheta</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">24</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">theta2</span> <span class="o">=</span> <span class="n">optTheta</span><span class="p">[</span><span class="mi">24</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">):</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="c1">#forward propagation</span>
+	<span class="n">hid_last</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#context units</span>
+	<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#to save the output</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span><span class="c1">#for every input element</span>
+		<span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+		<span class="n">x_context</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:],</span> <span class="n">context</span><span class="p">))</span>
+		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">))))</span><span class="c1">#add bias, context units to input layer</span>
+		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span>
+		<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">)))</span> <span class="c1">#add bias, output hidden layer</span>
+		<span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+		<span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a2</span>
+		<span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span>
+		<span class="n">results</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">a3</span>
+	<span class="k">return</span> <span class="n">results</span>
+
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1;0;0;1;1;0]'</span><span class="p">)</span> <span class="c1">#test it out on some new data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[ 0.  1.  0.  1.  0.  1.]]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>
+Cool! It worked. Remember, ignore the first bit of the output, it can't XOR just 1 digit. The rest of the sequence [1 0 1 0 1] matches with XOR of each pair of bits along the sequence. You might have to run this code a couple of times before it works because even when using a fancy optimizer, this thing is hard to train. Also try changing how we initialize the weights. Unfortunately scipy's `fmin_tnc` doesn't seem to work as well as Matlab's `fmincg` (I originally wrote this in Matlab and ported to Python; `fmincg` trains it alot more reliably) and I'm not sure why (email me if you know).
+</p>
+<p>
+Also note I imported "sigmoid" which is a separate file that only contains the sigmoid function and 'cost_xorRNN' which is the cost function.. I'll reproduce both below so you can run everything on your own.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [87]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#sigmoid.py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [124]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#cost_xorRNN.py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sigmoid</span> <span class="k">import</span> <span class="n">sigmoid</span>
+<span class="k">def</span> <span class="nf">costRNN</span><span class="p">(</span><span class="n">thetaVec</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+	<span class="n">X</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="c1">#reconstitute our theta1 and theta2 from the unrolled thetaVec</span>
+	<span class="n">theta1</span> <span class="o">=</span> <span class="n">thetaVec</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">24</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
+	<span class="n">theta2</span> <span class="o">=</span> <span class="n">thetaVec</span><span class="p">[</span><span class="mi">24</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">)</span>
+    <span class="c1">#initialize our gradient vectors</span>
+	<span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">))</span>
+	<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">))</span>
+    <span class="c1">#this will keep track of the output from the hidden layer</span>
+	<span class="n">hid_last</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">J</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#cost output</span>
+	<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#to store the output of the network</span>
+    <span class="c1">#this is to find the gradients:</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span> <span class="c1">#for every training element</span>
+		<span class="c1">#y = X[j+1,:] #expected output, the next element in the sequence</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+		<span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+		<span class="n">x_context</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">context</span><span class="p">))</span> <span class="c1">#add the context units to our input layer</span>
+		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">))))</span><span class="c1">#add bias, context units to input layer; 3x1</span>
+		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span><span class="p">;</span> <span class="c1">#2x1</span>
+		<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">)))</span> <span class="c1">#add bias, output hidden layer; 3x1</span>
+		<span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
+		<span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a2</span> <span class="c1">#1x1</span>
+		<span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span>
+		<span class="n">results</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">a3</span>
+		<span class="c1">#Backpropagation:::</span>
+		<span class="c1">#calculate delta errors</span>
+		<span class="n">d3</span> <span class="o">=</span> <span class="p">(</span><span class="n">a3</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+		<span class="n">d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">((</span><span class="n">theta2</span> <span class="o">*</span> <span class="n">d3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">)))</span>
+		<span class="c1">#accumulate gradients</span>
+		<span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">theta1_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">numHid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">a1</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">theta2_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d3</span> <span class="o">*</span> <span class="n">a2</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1">#calculate the network cost</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+		<span class="n">a3n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">yn</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">J</span> <span class="o">=</span> <span class="n">J</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yn</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a3n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">yn</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a3n</span><span class="p">))</span> <span class="c1">#cross-entropy cost function</span>
+	<span class="n">J</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">J</span>
+	<span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta1_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">theta2_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#unroll our gradients</span>
+	<span class="k">return</span> <span class="n">J</span><span class="p">,</span> <span class="n">grad</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Everything should look fairly familiar if you've gone through my post on gradient descent and backpropagation, or already have a decent handle on building an XOR-capable feedforward network, but let me walk through the important/new parts of the code.
+</p>
+<p>1. Every training iteration, we temporarily save the hidden layer outputs in `hid_last` and then at the start of the next training iteration, we initialize our context units to what we stored in `hid_last`.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>
+2. We have 4 context units, we add/concatenate them with our 1 input unit $X_1$ (and the bias of course), so our total input layer contains 6 units. This means our `theta1` is a 6x4 matrix (6 inputs projecting to 4 hidden units). Our hidden layer has 4 hidden units + 1 bias, so `theta2` is a 5x1 matrix. Other than these manipulations, the network is virtually identical to an ordinary feedforward network.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>
+3. In case the 'unrolling' of matrices is unclear... When we unroll theta1 and theta2 into a single vector, `thetaVec`, we simply flatten those vectors into a 1 dimensional sequence and concatenate them. So `theta1` is a 6x4 matrix (24 total elements) which we flatten to a 24 element vector, and we likewise flatten `theta` (5x1 = 5 elements) to a 5 element vector, then concatenate them in order to produce a 29 element vector, `thetaVec`. Thus the first 24 elements of this vector are `theta1` and the last 5 arre `theta2`, so we can rebuild our original vectors by slicing up `thetaVec` and using `.reshape()` to give us matrices of the proper dimensions.
+<br /><br />
+4. Let's discuss the scipy optimizer.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fmin_tnc</span><span class="p">(</span><span class="n">cr</span><span class="o">.</span><span class="n">costRNN</span><span class="p">,</span> <span class="n">thetaVec</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>
+Scipy's optimizer `fmin_tnc` just wants the reference to our cost function (i.e we're passing the object itself, not calling the function, hence we don't do `cr.costRNN(...)`. But if we do that, how do we pass in the arguments it expects? Well `fmin_tnc` will assume that the first argument of our cost function is supposed to be the unrolled theta vector and thus the 2nd argument to `fmin_tnc` is `thetaVec` which we randomly initialize. The optmizer will iteratively modify and improve the thetaVec we originally pass in.</p><p>But wait, our cost function also expects `X` and `Y` parameters! We defined the second argument in our cost function to be `*args` which essentially allows us to accept a tuple of arguments there, and that's what `fmin_tnc` is going to do. We give `fmin_tnc` an `args=()` parameter which is a tuple of additional arguments to pass into our cost function. In our case, we just want to pass in our X and Y vectors.
+</p><p>
+The 4th parameter we give to `fmin_tnc` is `maxfun=5000` which refers to the maximum number of times the optimizer is allowed to call our cost function. It isn't necessary to set this, but I decided to set it to be higher than default to allow it to hopefully find a better optimum.
+</p>
+<p>
+What does `fmin_tnc` return to us? It returns 3 items by default in an array. The first is the only thing we really care about, our optimal weights stored in an unrolled vector. Hence I retrieve it with this line: `optTheta = np.array(opt[0])`  The other 2 return values are the number of times it called our cost function, and a return code string. You can see the documentation here: http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_tnc.html
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Why-is-it-so-difficult-to-train-this-thing?">Why is it so difficult to train this thing?<a class="anchor-link" href="#Why-is-it-so-difficult-to-train-this-thing?">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [86]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cost_xorRNN</span> <span class="k">as</span> <span class="nn">cr</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">thetaVec_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">thetaVec_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="o">-</span><span class="mf">18.37619967</span><span class="p">,</span>  <span class="mf">124.9886293</span> <span class="p">,</span>    <span class="mf">0.69066491</span><span class="p">,</span>   <span class="o">-</span><span class="mf">2.38403005</span><span class="p">,</span>
+         <span class="o">-</span><span class="mf">2.3863598</span> <span class="p">,</span>   <span class="mf">34.07749817</span><span class="p">,</span>   <span class="o">-</span><span class="mf">4.0086386</span> <span class="p">,</span>  <span class="o">-</span><span class="mf">99.19477153</span><span class="p">,</span>
+          <span class="mf">5.28132817</span><span class="p">,</span>  <span class="mf">154.89424477</span><span class="p">,</span>   <span class="mf">17.32554579</span><span class="p">,</span>  <span class="o">-</span><span class="mf">64.2570698</span> <span class="p">,</span>
+         <span class="mf">16.34582581</span><span class="p">,</span>  <span class="o">-</span><span class="mf">20.79296525</span><span class="p">,</span>  <span class="o">-</span><span class="mf">21.30831168</span><span class="p">,</span>  <span class="o">-</span><span class="mf">15.76185224</span><span class="p">,</span>
+          <span class="mf">4.64747081</span><span class="p">,</span>  <span class="o">-</span><span class="mf">65.70656672</span><span class="p">,</span>   <span class="mf">13.59414862</span><span class="p">,</span>  <span class="o">-</span><span class="mf">53.70279419</span><span class="p">,</span>
+        <span class="mf">113.13004224</span><span class="p">,</span>  <span class="o">-</span><span class="mf">33.56398667</span><span class="p">,</span>    <span class="mf">0.7257491</span> <span class="p">,</span>   <span class="o">-</span><span class="mf">9.27982256</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">18.29977063</span><span class="p">,</span>  <span class="mf">129.48720956</span><span class="p">,</span>  <span class="o">-</span><span class="mf">37.57674034</span><span class="p">,</span>  <span class="o">-</span><span class="mf">30.04523486</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">90.35656788</span><span class="p">])</span>
+<span class="n">thetaVec_sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">thetaVec_all</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">theta_</span><span class="p">]),</span> <span class="n">thetaVec_all</span><span class="p">[</span><span class="mi">3</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+                   <span class="k">for</span> <span class="n">theta_</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">(</span><span class="n">thetaVec_f</span><span class="p">)]</span>
+<span class="n">Xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[0;0;1;1;0]'</span><span class="p">)</span>
+<span class="n">Ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[0;0;1;0;1]'</span><span class="p">)</span>
+<span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cr</span><span class="o">.</span><span class="n">costRNN</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">theta_s</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">Xs</span><span class="p">,</span> <span class="n">Ys</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">theta_s</span> <span class="ow">in</span> <span class="n">thetaVec_sample</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="c1">#ax.set_yscale('log') #Try uncommenting this to see a different perspective</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Cost'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'thetaVec[2]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">thetaVec_f</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+yA7extP08XAAAAAASUVORK5CYII=
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You don't really need to understand the code behind this graph. Essentially what I'm doing is taking the set of optimal weights returned from the optimization function, and then changing the third weight (arbitrarily chosen) in the unrolled weight vector to between the values of -1 to -10 and calculating the cost for each new set of weights (but of the 29 total weights, only one individual weight is changed). So we're only looking at the cost as a function of <b>1</b> individual weight. The graph looks different if you look at a different weight, but the point is, this is not a nice cost surface. If our initial weight lands somewhere left of 6, then we'll probably be able to gradient descent down to the minimum, but if it lands to the right, we'll probably get stuck in that local minimum. Now imagine all 29 weights in our network having a cost surface like this and you can see how it gets ugly. <b>The take-away here is that RNNs have a lot of local optima that make it really difficult to train with the typical methods we use in feedforward networks.</b> Ideally, we want a cost function that is smooth and convex.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Let's-build-a-mini,-mini,-mini-char-RNN">Let's build a mini, mini, mini char-RNN<a class="anchor-link" href="#Let's-build-a-mini,-mini,-mini-char-RNN">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What's "mini, mini, mini char-RNN" ? If you're familiar with Karpathy's charRNN (<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">http://karpathy.github.io/2015/05/21/rnn-effectiveness/</a>) then you'll have an idea. We're going to build the simple RNN that predicts the next character in a short word like "hello" as presented on his blog. We're just going to modify the RNN we built above with a few key changes:</p>
+<p>1) There is no longer a distinct Y vector of expected values. Our expected values are the next character in the sequence. So if we feed our RNN 'hell' we expect it to return 'ello' to complete the word we trained it on. So $y = X[j+1, :]$.</p>
+<p>2) Since we have only have 4 characters in our "vocabularly", we'll represent them as binary vectors of length 4. I.e. our binary encoding (arbitrarily assigned) is: <code>h = [0 0 1 0], e = [0 1 0 0], l = [0 0 0 1], o = [1 0 0 0]</code></p>
+<p>3) We're going to expand the hidden layer from 4 to 10. Seems to make training faster.</p>
+<p>4) Thus the input layer will now contain: 4 inputs + 10 context units + 1 bias = 11 total. And the output will contain  4 units since each letter is a vector of length 4.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As before, I'll reproduce the code below (two separate files: RNNoptim.py and cost_charRNN.py; but you could put it all in one file if you want) and explain the important points.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [171]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#cost_charRNN.py OUR COST FUNCTION FILE</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sigmoid</span> <span class="k">import</span> <span class="n">sigmoid</span>
+<span class="k">def</span> <span class="nf">costRNN</span><span class="p">(</span><span class="n">thetaVec</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+	<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+	<span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span>
+	<span class="n">numInTot</span> <span class="o">=</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span>
+	<span class="n">theta1</span> <span class="o">=</span> <span class="n">thetaVec</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">numInTot</span> <span class="o">*</span> <span class="n">numHid</span><span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numInTot</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
+	<span class="n">theta2</span> <span class="o">=</span> <span class="n">thetaVec</span><span class="p">[(</span><span class="n">numInTot</span> <span class="o">*</span> <span class="n">numHid</span><span class="p">):]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numHid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">)</span>
+	<span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numInTot</span><span class="p">,</span> <span class="n">numHid</span><span class="p">))</span>
+	<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">))</span>
+	<span class="n">hid_last</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">J</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">numOut</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1">#for every training element</span>
+		<span class="c1">#y = X[j+1,:] #expected output, the next element in the sequence</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+		<span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+		<span class="n">x_context</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:],</span> <span class="n">context</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="c1">#add bias, context units to input layer; 3x1</span>
+		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span><span class="p">;</span> <span class="c1">#2x1</span>
+		<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">)))</span> <span class="c1">#add bias, output hidden layer; 3x1</span>
+		<span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
+		<span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a2</span> <span class="c1">#1x1</span>
+		<span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span>
+		<span class="n">results</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">a3</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numOut</span><span class="p">,)</span>
+		<span class="c1">#Backpropagation:::</span>
+		<span class="c1">#calculate delta errors</span>
+		<span class="n">d3</span> <span class="o">=</span> <span class="p">(</span><span class="n">a3</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+		<span class="n">d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">((</span><span class="n">theta2</span> <span class="o">*</span> <span class="n">d3</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">)))</span>
+		<span class="c1">#accumulate gradients</span>
+		<span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">theta1_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">numHid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">a1</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">theta2_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">a2</span> <span class="o">*</span> <span class="n">d3</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+		<span class="n">a3n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numOut</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">yn</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+		<span class="n">J</span> <span class="o">=</span> <span class="n">J</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yn</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a3n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">yn</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a3n</span><span class="p">))</span>
+	<span class="n">J</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">J</span>
+	<span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta1_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">theta2_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">J</span><span class="p">,</span> <span class="n">grad</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's our cost function file. It accepts an unrolled theta vector and the input data and returns the cost and the gradients. It is virtually the same as before besides the changed layer architecture and the fact that our $y$ (expected output) is just $X[j+1]$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [174]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sigmoid</span> <span class="k">import</span> <span class="n">sigmoid</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span>
+<span class="c1">#Vocabulary h,e,l,o</span>
+<span class="c1">#Encoding:   h = [0,0,1,0], e = [0,1,0,0], l = [0,0,0,1], o = [1,0,0,0]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'0,0,1,0; 0,1,0,0; 0,0,0,1; 0,0,0,1; 1,0,0,0'</span><span class="p">)</span>
+<span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">numInTot</span> <span class="o">=</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span> <span class="p">(</span> <span class="mi">6</span> <span class="o">/</span> <span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span><span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">theta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span> <span class="p">(</span> <span class="mi">6</span> <span class="o">/</span> <span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="n">numOut</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">thetaVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta1</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">theta2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fmin_tnc</span><span class="p">(</span><span class="n">costRNN</span><span class="p">,</span> <span class="n">thetaVec</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">optTheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="n">optTheta</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">numInTot</span> <span class="o">*</span> <span class="n">numHid</span><span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numInTot</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
+<span class="n">theta2</span> <span class="o">=</span> <span class="n">optTheta</span><span class="p">[(</span><span class="n">numInTot</span> <span class="o">*</span> <span class="n">numHid</span><span class="p">):]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numHid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">):</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="c1">#forward propagation</span>
+	<span class="n">hid_last</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#context units</span>
+	<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">numOut</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span><span class="c1">#for every input element</span>
+		<span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+		<span class="n">x_context</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:],</span> <span class="n">context</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_context</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="c1">#add bias, context units to input layer</span>
+		<span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a1</span> 
+		<span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'[1]'</span><span class="p">)))</span> <span class="c1">#add bias, output hidden layer</span>
+		<span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#ignore bias</span>
+		<span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">a2</span>
+		<span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span>
+		<span class="n">results</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">a3</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numOut</span><span class="p">,)</span>
+	<span class="k">return</span> <span class="n">results</span>
+<span class="c1">#This spells 'hell' and we expect it to return 'ello' as it predicts the next character for each input</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">'0,0,1,0; 0,1,0,0; 0,0,0,1; 0,0,0,1'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[ 0.  1.  0.  0.]
+ [ 0.  0.  0.  1.]
+ [ 0.  0.  0.  1.]
+ [ 1.  0.  0.  0.]]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><b>That's cool.</b> Do you remember our encoding? h = [0,0,1,0], e = [0,1,0,0], l = [0,0,0,1], o = [1,0,0,0]
+<br />
+So we gave it 'hell' and it returned 'ello' ! That means, when it received the first character, [0,0,1,0] ("h"), it returned [ 0.  1.  0.  0.] ("e"). It knew what letter is supposed to come next! Neat.</p>
+<p>
+Again, this is virtually identical to the network we built for XOR just that our input layer accepts binary 4 element vectors and returns 4 element vectors representing characters. We also increased the hidden layer size to 10.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Closing-Words">Closing Words<a class="anchor-link" href="#Closing-Words">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you want to take this farther, try increasing the number of characters you can encode by increasing the input and output layers. I tried (not shown here) up to 11 element vectors, using the letters "e t a o i n s h r d" (which are the top 10 highest frequency letters in english) and the space character. With just those 11 characters you can encode alot of words, even sentences. While I got it to work on individual words, training became increasingly difficult for longer input sequences (I tried expanding the hidden layer). My guess is that it just doesn't have enough 'memory' to remember more than a couple of characters back, therefore it won't be able to learn the character sequences of a long word or sentence. Hence why anyone doing 'real' character prediction (like the Karpathy charRNN) uses a much more sophisticated RNN, an LSTM network.</p>
+<p>
+I also attempted to build a character generator from this code, so that we train it on a word or small sentence and then tell it to generate some sequence of characters based on a seed/starting character or word. That didn't work well enough to present here, but if I get it working, I'll make a new post.
+</p>
+<p>Do note that I wrote this code for readability, thus it doesn't follow best coding practices like DRY.</p>
+<p>Also, like I mentioned before, I had to resort to using a scipy optimizer to help train the network rather than use my own implementation of gradient descent like I did with the normal feedforward XOR network in my previous post. I suppose I was experiencing the exploding/vanishing gradient problem and I just didn't have a sophisticated enough gradient descent implementation. If you have any expertise to lend here then please email me (outlacedev@gmail.com). And please email me if you spot any errors.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References:">References:<a class="anchor-link" href="#References:">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol>
+<li><a href="https://www.youtube.com/watch?v=e2sGq_vI41s">https://www.youtube.com/watch?v=e2sGq_vI41s</a> (Elman Network Tutorial)</li>
+<li><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">http://karpathy.github.io/2015/05/21/rnn-effectiveness/</a></li>
+</ol>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/rnn.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/recurrent-neural-network.html" rel="tag">Recurrent Neural Network</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/rnn.html" class="tags">RNN</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | On chain rule, computational graphs, and backpropagation</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Sep 05, 2015</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/on-chain-rule-computational-graphs-and-backpropagation.html" rel="bookmark" title="Permanent Link to &quot;On chain rule, computational graphs, and backpropagation&quot;">On chain rule, computational graphs, and backpropagation</a>
+                </h2>
+
+
+
+                <hr>
+<p><script>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['<span class="math">\(','\)</span>'], ['\(','\)']],
+    processEscapes: true
+  },
+  TeX: {
+    extensions: ["cancel.js"]
+  },
+  displayAlign: "left",
+});
+</script></p>
+<h4>...Another post on backpropagation?</h4>
+<p>Sort of. I know, everyone and their brother has a post on backpropagation.
+In fact, I <em>already</em> have a post on backpropagation here, so why am I writing <em>another</em>
+post? Well, for one, this post isn't really about backpropagation per se, it's
+about how we can think about neural networks in a completely different way than
+we're used to using a computational graph representation and then use it to
+derive backpropagation from a fundamental formula of calculus, chain rule.</p>
+<p>This post is entirely inspired from colah's blog post <a href="http://colah.github.io/posts/2015-08-Backprop/">Calculus on Computational Graphs: Backpropagation</a> so please
+read through that first. I will reiterate a lot of what's on there but will surely
+not do as good a job. My purpose here is more an extension of that post to
+thinking about neural networks as computational graphs.</p>
+<h6>Assumptions:</h6>
+<p>I assume you remember some high school calculus on taking derivatives, and I assume you already know
+the basics about neural networks and have hopefully implemented one before.</p>
+<h5>Calculus' chain rule, a refresher</h5>
+<p>Before I begin, I just want to refresh you on how chain rule works. Of course you can skip
+this section if you know chain rule as well as you know your own mother.</p>
+<p><a href="https://en.wikipedia.org/wiki/Chain_rule#Composites_of_more_than_two_functions">Chain rule</a> is the process
+we can use to analytically compute derivatives of <em>composite functions</em>. A composite function is a function
+of other function(s). That is, we might have one function <span class="math">\(f\)</span> that is composed of multiple inner or nested functions.</p>
+<p>For example,
+</p>
+<div class="math">$$f(g(h(x)))$$</div>
+<p> is a composite function. We have an outer function <span class="math">\(f\)</span>, an inner function <span class="math">\(g\)</span>, and the final inner function <span class="math">\(h(x)\)</span></p>
+<p>Let's say <span class="math">\(f(x) = e^{sin(x^2)}\)</span>, we can decompose this function into 3 separate functions:</p>
+<p><span class="math">\(f(x) = e^x $, $g(x) = sin(x)\)</span>, and <span class="math">\(h(x) = x^2\)</span>, or what it looks like as a nested function:
+</p>
+<div class="math">$$f(g(h(x))) = e^{g(h(x))}$$</div>
+<p>And to get the derivative of this function with respect to x, <span class="math">\(\frac{d{f}}{d{x}}\)</span>, we use the chain rule:</p>
+<div class="math">$$\frac{d{f}}{d{x}} = \frac{df}{dg} * \frac{dg}{dh} * \frac{dh}{dx}$$</div>
+<p>, such that,
+</p>
+<div class="math">$$\frac{df}{dg} = e^{g(h(x))} $$</div>
+<p> (because the derivative of <span class="math">\(e^x\)</span> is just <span class="math">\(e^x\)</span>),
+</p>
+<div class="math">$$\frac{dg}{dh} = cos(h(x))$$</div>
+<p> (because the derivative of <span class="math">\(sin\)</span> is <span class="math">\(cos\)</span>),
+</p>
+<div class="math">$$\frac{dh}{dx} = 2x$$</div>
+<p>
+therefore...
+</p>
+<div class="math">$$\frac{d{f}}{d{x}} = e^{\sin x^2} * \cos x^2 * 2x$$</div>
+<p>
+So in each of these cases, I just pretend that the inner function is a single variable and derive it as such.
+The other way to view it,</p>
+<div class="math">$$f(x) = e^{sin(x^2)}$$</div>
+<p>, then create some temporary, substitution variables
+<span class="math">\(u = sin(v)\)</span>, and <span class="math">\(v = x^2\)</span>, now <span class="math">\(f(u) = e^u\)</span>, and you can use chain rule as above.</p>
+<h5>Computational graphs</h5>
+<p>A computational graph is a representation of a composite function as a network of connected nodes, where each node is an operation/function.
+It is similar in appearance to a feedforward neural network (but don't get them confused). When we visualize these graphs, we can easily see all the nested relationships and follow some basic rules to come up with derivatives of any node we want.</p>
+<p>Let's visualize the above simple composite function as a computational graph.</p>
+<p><img alt="" src="../images/compgraph/compgraph1.png"></p>
+<p>As you can see, the graph shows what inputs get sent to each function. Every connection is an input, and every node is a function or operation
+(used here interchangeably).</p>
+<p>What's neat about these graphs is that we can <em>visualize</em> chain rule. All we need to do is get the derivative of each node with respect
+to each of its inputs.</p>
+<p><img alt="" src="../images/compgraph/compgraph2.png"></p>
+<p>Now you can follow along the graph and do some dimensional analysis to compute whichever derivatives you want by multiplying
+the 'connection' derivatives (derivatives between a pair of connected nodes) along a path. For example, if we want to get <span class="math">\(df/dx\)</span>, we simply multiply the connection derivatives starting from <span class="math">\(f\)</span> all the way to <span class="math">\(x\)</span>, which gives us the same equation as the chain rule formula above:
+</p>
+<div class="math">$$\frac{df}{dx} = \frac{df}{\cancel{dg}} * \frac{\cancel{dg}}{\cancel{dh}} * \frac{\cancel{dh}}{dx} $$</div>
+<p>Now all of that was probably painfully obvious to a lot of you, but I just want to make this as accessible as possible.</p>
+<h5>Re-imagining neural networks as computational graphs</h5>
+<p>A neural network, if you haven't noticed, is essentially a massive nested composite function. Each layer of a feedforward
+neural network can be represented as a single function whose inputs are a weight vector and the outputs of the previous layer. This means we can build a nice computational graph out of it and use it to derive the backpropagation algorithm.</p>
+<p>Here's a 3 layer neural network (1 input layer, 1 hidden layer, 1 output layer), which could be used to solve something like the good ol' XOR problem.</p>
+<p><img alt="" src="../images/compgraph/NN.png"></p>
+<p>So that is just a typical feedforward neural network visualization. Nothing new here, should be very familiar. Of course there are weight vectors hanging around in between the layers. It's a very intuitive and convenient representation of a neural network in terms of the information flow through the network. However, I don't think it's the best way to think about it or visualize it in terms of a computational implementation. We're going to try re-visualizing this as a computational graph, such that each node is no longer an abstract "neuron" with weights modulating the connection to other neurons, but instead where each node is a single computation or operation and the arrows are no longer weighted connections but merely indications of where inputs are being 'sent'. I'm going to switch these graphs to a vertical orientation just for better presentation, and the notation will be different.</p>
+<p><img alt="" src="../images/compgraph/NNCompGraph.png"></p>
+<p>Here L3 denotes the output layer, L2 the hidden layer, and L1 the input layer. Similarly, <span class="math">\(\theta\_2\)</span> denotes the weight vector 'between' layer 2 and layer 3; <span class="math">\(\theta\_1\)</span> denotes the weight vector 'between' layer 1 and layer 2. The <span class="math">\(\sigma\)</span> notation just refers to the sigmoid operation that takes place within those particular nodes (however, the <em>outputs</em> of those nodes will be referred to using the L notation, i.e. L1, L2, and L3).</p>
+<p>As you can see, it's a fairly different way of looking at the neural network. This is a functional representation. It shows the step by step functions that occur and the inputs those functions operate on. For example, the L2 layer function operates on two inputs: the L1 layer outputs (a vector) and the weight vector <span class="math">\(\theta\_1\)</span>. Likewise, the L3 function operates on L2 and <span class="math">\(\theta\_2\)</span>, and is our final output. If you're wondering where the bias nodes went, they're implicitly included in each L layer's output (i.e. the scalar 1 is added to each L vector). Each weight vector still contains a weight for the bias.</p>
+<p>Let's list out the computational steps to compute the neural network output, L3.</p>
+<div class="math">$$ \begin{align}
+&amp;\sigma(x) = \frac{1}{1+e^{-x}} \text{, define the sigmoid/logistic function} \\\\
+&amp;X = [x\_1, x\_2]       \text{, the vector containing our two input values} \\\\
+&amp;L1 = [X, 1]            \text{, add a bias value of 1}\\\\
+&amp;L2 = [\sigma(L1 * \theta\_1), 1] \text{, add bias and compute L2}\\\\
+&amp;L3 = \sigma(L2 * \theta\_2) \text{, compute L3}\\\\
+\end{align}
+$$</div>
+<p>Now let's compute the 'connection' derivatives. This is just simple calculus on individual functions. Remember that <span class="math">\(\sigma'=\sigma(1-\sigma)\)</span></p>
+<div class="math">$$
+L3 = \frac{1}{1+e^{-\theta\_2 L2}} \\\\
+u = \theta\_2 L2 \\\\
+L3 = \frac{1}{1+e^{-u}} \\\\
+\frac{\partial{L3}}{\partial{L2}} = \frac{\partial L3}{\partial u} * \frac{\partial u}{\partial L2} \\\\
+\frac{\partial{L3}}{\partial{L2}} = \theta\_2 * L3(1-L3) \\\\
+\frac{\partial{L3}}{\partial{\theta\_2}} = L2 * L3(1-L3) \\\\
+\frac{\partial{L2}}{\partial{L1}} = \theta\_1 * L2(1-L2) \\\\
+\frac{\partial{L2}}{\partial{\theta\_1}} = L1 * L2(1-L2) \\\\
+$$</div>
+<p>Here's our computational graph again with our derivatives added.</p>
+<p><img alt="" src="../images/compgraph/NNCompGraph_deriv.png"></p>
+<h5>Backpropagation</h5>
+<p>Remember that the purpose of backpropagation is to figure out the partial derivatives of our cost function (whichever cost function we choose to define), with respect to each individual weight in the network: <span class="math">\(\frac{\partial{C}}{\partial\theta\_j}\)</span>, so we can use those in gradient descent. We've already seen how we can create a computational graph out of our neural network where the output layer is a composite function of the previous layers and the weight vectors. In order to figure our <span class="math">\(\frac{\partial{C}}{\partial\theta\_j}\)</span>, we can extend our computational graph so that the 'outer' function is our cost function, which of course has to be a function of the neural network output.</p>
+<p><img alt="" src="../images/compgraph/NNCompGraph_withcost.png"></p>
+<p>Everything is the same as the computational graph of just our neural network, except now we're taking the output of the neural network and feeding it into the cost function, which also requires the parameter <span class="math">\(y\)</span> (the expected value given the input(s) <span class="math">\(x\)</span>).</p>
+<p>The most common cost function used for a network like this would be the <strong>cross-entropy cost function</strong>, with the generic form being:
+</p>
+<div class="math">$$C(\theta) = \frac 1m * \sum\_1^m [-y * log((h\_{\theta}(x))) - (1 - y)(log(1 - (h\_{\theta}(x)))]$$</div>
+<p>
+where <span class="math">\(h\_{\theta}(x)\)</span> is the output (could be a scalar or vector depending on the number of output nodes) of the network, <span class="math">\(y\)</span> is the expected value given input(s) <span class="math">\(x\)</span>, and <span class="math">\(m\)</span> is the number of training examples.</p>
+<p>We can get the derivative of this cost function with respect to the output layer function L3 (aka <span class="math">\(h\_{\theta}(x)\)</span>) to add to our computational graph. It's not worth going through the steps to derive it here, but if you ask <a href="http://www.wolframalpha.com/input/?i=%E2%88%92y%E2%88%97log%28x%29%E2%88%92%281%E2%88%92y%29%28log%281%E2%88%92x%29%29%2C+d%2Fdx">WolframAlpha</a> to do it, it will give you this:
+</p>
+<div class="math">$${L3}' = \frac{L3 - y}{L3(1-L3)}$$</div>
+<p>
+So now we have everything we need to compute <span class="math">\(\frac{\partial{C}}{\partial\theta\_j}\)</span>. Let's compute <span class="math">\(\frac{\partial{C}}{\partial\theta\_2}\)</span> and see if it compares to the textbook backpropagation algorithm.</p>
+<p><img alt="" src="../images/compgraph/NNCompGraphDeriv2.png"></p>
+<p>We're just following the path from the top (the cost function) down to the node we're interested in, in this case, <span class="math">\(\theta\_2\)</span>. We multiply the partial derivatives along that path to get <span class="math">\(\frac{\partial{C}}{\partial\theta\_2}\)</span>. As you'll notice, it's obvious from a dimensional analysis perspective that doing this multiplication gets us what we want. We already calculated what the 'connection' derivatives were above, so we'll just substitute them back in and do the math to get what we want.</p>
+<div class="math">$$
+\frac{\partial{C}}{\partial{L3}} = \frac{L3 - y}{L3(1-L3)} \\\\
+\frac{\partial{L3}}{\partial{\theta\_2}} = L2 * L3(1-L3) \\\\
+\frac{\partial{C}}{\partial\theta\_2} = \frac{\partial{C}}{\partial{L3}} * \frac{\partial{L3}}{\partial{\theta\_2}} \text { this is what we want} \\\\
+\frac{\partial{C}}{\partial\theta\_2} = \frac{L3 - y}{\cancel{L3(1-L3)}} * L2 * \cancel{L3(1-L3)} \\\\
+\frac{\partial{C}}{\partial\theta\_2} = (L3 - y) * L2\\\\
+$$</div>
+<p>It should be clear that this is in fact the same result we'd get from backpropagation by calculating the node deltas and all of that. We just derived a more general form of backpropagation by using a computational graph.</p>
+<p>But you might still be skeptical, let's calculate <span class="math">\(\frac{\partial{C}}{\partial\theta\_1}\)</span>, one more layer deep, just to prove this is a robust method. Same process as above. Again, here's a visualization of the path we follow along the computational graph to where we want. You can also just think of it as dimensional analysis.</p>
+<p><img alt="" src="../images/compgraph/NNCompGraphDeriv3.png"></p>
+<div class="math">$$
+\frac{\partial{C}}{\partial{L3}} = \frac{L3 - y}{L3(1-L3)} \\\\
+\frac{\partial{L3}}{\partial{L2}} = \theta\_2 * L3(1-L3) \\\\
+\frac{\partial{L2}}{\partial{\theta\_1}} = L1 * L2(1-L2) \\\\
+\frac{\partial{C}}{\partial{\theta\_1}} = \frac{\partial{C}}{\partial{L3}} * \frac{\partial{L3}}{\partial{L2}} * \frac{\partial{L2}}{\partial{\theta\_1}} \text{this is what we want} \\\\
+\frac{\partial{C}}{\partial{\theta\_1}} = \frac{L3 - y}{\cancel{L3(1-L3)}} * \theta\_2 * \cancel{L3(1-L3)} * L1 * L2(1-L2) \\\\
+\frac{\partial{C}}{\partial{\theta\_1}} = (L3 - y) * \theta\_2 *  L1 * L2(1-L2) \\\\
+$$</div>
+<p>And there you have it. Just to check against the usual backpropagation method:</p>
+<h6>Comparing against ordinary backpropagation</h6>
+<p>We would start by calculating the output node delta: <span class="math">\(\delta^3 = (L3 - y)\)</span>
+Then we would calculate the hidden layer delta:
+</p>
+<div class="math">$$
+\delta^2 = (\theta\_2 * \delta^3) \odot (L2(1 - L2))
+$$</div>
+<p>
+Now that we have all the layer deltas (we don't calculate deltas for input layer), we use this formula to get <span class="math">\(\frac{\partial{C}}{\partial{\theta\_j^l}}\)</span>:</p>
+<div class="math">$$ \frac{\partial{C}}{\partial{\theta\_j^l}} = \delta^{l+1} * L\_l$$</div>
+<p>
+where <span class="math">\(l\)</span> is the layer number, thus L2 is the hidden layer output.
+In our case, we'll find <span class="math">\(\frac{\partial{C}}{\partial{\theta\_1}}\)</span>
+</p>
+<div class="math">$$ \frac{\partial{C}}{\partial{\theta\_1}} = \delta^{2} * L1$$</div>
+<p> then we'll substitute in <span class="math">\(\delta^2\)</span> from our calculation above
+</p>
+<div class="math">$$ \frac{\partial{C}}{\partial{\theta\_1}} = (\theta\_2 * \delta^3) \odot (L2(1 - L2)) * L1$$</div>
+<p>
+and we'll substitute in <span class="math">\(\delta^3\)</span>
+</p>
+<div class="math">$$ \frac{\partial{C}}{\partial{\theta\_1}} = (\theta\_2 * (L3 - y)) \odot (L2(1 - L2)) * L1$$</div>
+<p>Important to note that with the derivation using the computational graph, we have to be careful about dimensional analysis and when to use which multiplication operator (dot product or element-wise), whereas with textbook backpropagation, those things are made more explicit. The computational graph method above makes it seem like we only use dot products when that might be computationally impossible. Thus, the computational graph method requires a bit more thought.</p>
+<h5>Conclusion</h5>
+<p>I think representing neural networks (and probably all types of algorithms based on composite functions) as computational graphs is a fantastic way of understanding how to implement one in code in a functional way and allows you to have all sorts of differential fun with ease. They give us the tools to derive backpropagation from an arbitrary neural network architecture. For example, by unfolding a recurrent neural network, we could generate a computational graph and apply the same principles to derive backpropagation through time.</p>
+<h6>References</h6>
+<ol>
+<li>http://colah.github.io/posts/2015-08-Backprop/</li>
+<li>https://en.wikipedia.org/wiki/Chain_rule</li>
+<li>https://en.wikipedia.org/wiki/Automatic_differentiation</li>
+<li>http://www.wolframalpha.com</li>
+</ol>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','cancel.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js','cancel.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/on-chain-rule-computational-graphs-and-backpropagation.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/computational-graphs.html" rel="tag">Computational Graphs</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

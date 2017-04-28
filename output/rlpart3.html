@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Q-learning with Neural Networks</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="Q-learning,RL" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Oct 30, 2015</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/rlpart3.html" rel="bookmark" title="Permanent Link to &quot;Q-learning with Neural Networks&quot;">Q-learning with Neural Networks</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Learning-Gridworld-with-Q-learning">Learning Gridworld with Q-learning<a class="anchor-link" href="#Learning-Gridworld-with-Q-learning">¶</a></h3><h4 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h4><p>We've finally made it. We've made it to what we've all been waiting for, Q-learning with neural networks. Since I'm sure a lot of people didn't follow parts 1 and 2 because they were kind of boring, I will attempt to make this post relatively (but not completely) self-contained. In this post, we will dive into using Q-learning to train an agent (player) how to play Gridworld. Gridworld is a simple text based game in which there is a 4x4 grid of tiles and 4 objects placed therein: a player, pit, goal, and a wall. The player can move up/down/left/right ($a \in A \{up,down,left,right\}$) and the point of the game is to get to the goal where the player will receive a numerical reward. Unfortunately, we have to avoid a pit, because if we land on the pit we are penalized with a negative 'reward'. As if our task wasn't difficult enough, there's also a wall that can block the player's path (but it offers no reward or penalty).</p>
+<p><img src="images/RL/gridworld.png" /></p>
+<h4 id="Quick-Review-of-Terms-and-Concepts-(skip-if-you-followed-parts-1-&amp;-2)">Quick Review of Terms and Concepts (skip if you followed parts 1 & 2)<a class="anchor-link" href="#Quick-Review-of-Terms-and-Concepts-(skip-if-you-followed-parts-1-&amp;-2)">¶</a></h4><p>A state is all the information necessary (e.g. pixel data in a game) to make a decision that you expect will take you to a new (higher value) state. The high level function of reinforcement learning is to learn the values of states or state-action pairs (the value of taking action $a$ given we're in state $s$). The value is some notion of how "good" that state or action is. Generally this is a function of rewards received now or in the future as a result of taking some action or being in some state.</p>
+<p>A policy, denoted $\pi$, is the specific strategy we take in order to get into high value states or take high value actions to maximize our rewards over time. For example, a policy in blackjack might be to always hit until we have 19. We denote a function, $\pi(s)$ that accepts a state $s$ and returns the action to be taken. Generally $\pi(s)$ as a function just evaluates the value of all possible actions given the state $s$ and returns the highest value action. This will result in a specific policy $\pi$ that may change over time as we improve our value estimates.</p>
+<p>We call the function that accepts a state $s$ and returns the value of that state $v_{\pi}(s)$. This is the value function. Similarly, there is an action-value function $Q(s, a)$ that accepts a state $s$ and an action $a$ and returns the value of taking that action given that state. Some RL algorithms or implementations will use one or the other. Importantly, if we base our algorithm on learning state-values (as opposed to action-values), we must keep in mind that the value of a state depends completely on our policy $\pi$. Using blackjack as an example, if we're in the state of having a card total of 20, and have two possible actions, hit or stay, the value of this state is only high if our policy says to stay when we have 20. If our policy said to hit when we have 20, we would probably bust and lose the game, thus the value of that state would be low. More formally, the value of a state is equivalent to the value of the highest action taken in that state.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="What-is-Q-learning?">What is Q-learning?<a class="anchor-link" href="#What-is-Q-learning?">¶</a></h4><p>Q-learning, like virtually all RL methods, is one type of algorithm used to calculate state-action values. It falls under the class of <em>temporal difference</em> (TD) algorithms, which suggests that time differences between actions taken and rewards received are involved.</p>
+<p>In part 2 where we used a Monte Carlo method to learn to play blackjack, we had to wait until the end of a game (episode) to update our state-action values. With TD algorithms, we make updates after every action taken. In most cases, that makes more sense. We make a prediction (based on previous experience), take an action based on that prediction, receive a reward and then update our prediction.</p>
+<p>(Btw: Don't confuse the "Q" in Q-learning with the $Q$ function we've discussed in the previous parts. The $Q$ function is always the name of the function that accepts states and actions and spits out the value of that state-action pair. RL methods involve a $Q$ function but aren't necessarily Q-learning algorithms.)</p>
+<p>Here's the tabular Q-learning update rule:
+$$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma maxQ(S_{t+1}, a_{t+1}) - Q(S_t, A_t)]$$</p>
+<p>So, like Monte Carlo, we could have a table that stores the Q-value for every possible state-action pair and iteratively update this table as we play games. Our policy $\pi$ would be based on choosing the action with the highest Q value for that given state.</p>
+<p>But we're done with tables. This is 2015, we have GPUs and stuff. Well, as I alluded to in part 2, our $Q(s,a)$ function doesn't have to just be a lookup table. In fact, in most interesting problems, our state-action space is much too large to store in a table. Imagine a very simplified game of Pacman. If we implement it as a graphics-based game, the state would be the raw pixel data. In a tabular method, if the pixel data changes by just a single pixel, we have to store that as a completely separate entry in the table. Obviously that's silly and wasteful. What we need is some way to generalize and pattern match between states. We need our algorithm to say "the value of these <em>kind</em> of states is X" rather than "the value of this exact, super specific state is X."</p>
+<p>That's where neural networks come in. Or any other type of function approximator, even a simple linear model. We can use a neural network, instead of a lookup table, as our $Q(s,a)$ function. Just like before, it will accept a state and an action and spit out the value of that state-action.</p>
+<p>Importantly, however, unlike a lookup table, a neural network also has a bunch of parameters associated with it. These are the weights. So our $Q$ function actually looks like this: $Q(s, a, \theta)$ where $\theta$ is a vector of parameters. And instead of iteratively updating values in a table, we will iteratively update the $\theta$ parameters of our neural network so that it learns to provide us with better estimates of state-action values.</p>
+<p>Of course we can use gradient descent (backpropagation) to train our $Q$ neural network just like any other neural network.</p>
+<p>But what's our target <code>y</code> vector (expected output vector)? Since the net is not a table, we don't use the formula shown above, our target is simply: $r_{t+1} + \gamma * maxQ(s', a')$ for the state-action that just happened. $\gamma$ is a parameter $0\rightarrow1$ that is called the <em>discount factor</em>. Basically it determines how much each future reward is taken into consideration for updating our Q-value. If $\gamma$ is close to 0, we heavily discount future rewards and thus mostly care about immediate rewards.  $s'$ refers to the new state after having taken action $a$ and $a'$ refers to the next actions possible in this new state. So $maxQ(s', a')$ means we calculate all the Q-values for each state-action pair in the new state, and take the maximium value to use in our new value update. (Note I may use $s' \text{ and } a'$ interchangeably with $s_{t+1} \text{ and } a_{t+1}$.)</p>
+<p>One important note: our reward update for every state-action pair is $r_{t+1} + \gamma*maxQ(s_{t+1}, a)$ <strong>except</strong> when the state $s'$ is a terminal state. When we've reached a terminal state, the reward update is simply $r_{t+1}$. A terminal state is the last state in an episode. In our case, there are 2 terminal states: the state where the player fell into the pit (and receives -10) and the state where the player has reached the goal (and receives +10). Any other state is non-terminal and the game is still in progress.</p>
+<p>There are two keywords I need to mention as well: <strong>on-policy</strong> and <strong>off-policy</strong> methods. In on-policy methods we iteratively learn about state values at the same time that we improve our policy. In other words, the updates to our state values depend on the policy. In contrast, off-policy methods do not depend on the policy to update the value function. Q-learning is an off-policy method. It's advantageous because with off-policy methods, we can follow one policy while learning about another. For example, with Q-learning, we could always take completely random actions and yet we would still learn about another policy function of taking the best actions in every state. If there's ever a $\pi$ referenced in the value update part of the algorithm then it's an on-policy method.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Gridworld-Details">Gridworld Details<a class="anchor-link" href="#Gridworld-Details">¶</a></h3><p>Before we get too deep into the neural network Q-learning stuff, let's discuss the Gridworld game implementation that we're using as our toy problem.</p>
+<p>We're going to implement 3 variants of the game in order of increasing difficulty. The first version will initialize a grid in exactly the same way each time. That is, every new game starts with the player (P), goal (+), pit (-), and wall (W) in exactly the same positions. Thus the algorithm just needs to learn how to take the player from a known starting position to a known end position without hitting the pit, which gives out negative rewards.</p>
+<p>The second implementation is slightly more difficult. The goal, pit and wall will always be initialized in the same positions, but the player will be placed randomly on the grid on each new game. The third implementation is the most difficult to learn, and that's where all elements are randomly placed on the grid each game.</p>
+<p>Let's get to coding.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">randPair</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+
+<span class="c1">#finds an array in the "depth" dimension of the grid</span>
+<span class="k">def</span> <span class="nf">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span>
+
+<span class="c1">#Initialize stationary grid, all items are placed deterministically</span>
+<span class="k">def</span> <span class="nf">initGrid</span><span class="p">():</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="c1">#place player</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#place wall</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#place pit</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#place goal</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1">#Initialize player in random location, but keep wall, goal and pit stationary</span>
+<span class="k">def</span> <span class="nf">initGridPlayer</span><span class="p">():</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="c1">#place player</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">randPair</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#place wall</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#place pit</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#place goal</span>
+    <span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span> <span class="c1">#find grid position of player (agent)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span> <span class="c1">#find wall</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span> <span class="c1">#find goal</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span> <span class="c1">#find pit</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">a</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">w</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">p</span><span class="p">):</span>
+        <span class="c1">#print('Invalid grid. Rebuilding..')</span>
+        <span class="k">return</span> <span class="n">initGridPlayer</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1">#Initialize grid so that goal, pit, wall, player are all randomly placed</span>
+<span class="k">def</span> <span class="nf">initGridRand</span><span class="p">():</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="c1">#place player</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">randPair</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#place wall</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">randPair</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#place pit</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">randPair</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#place goal</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">randPair</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="c1">#If any of the "objects" are superimposed, just call the function again to re-place</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">a</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">w</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">p</span><span class="p">):</span>
+        <span class="c1">#print('Invalid grid. Rebuilding..')</span>
+        <span class="k">return</span> <span class="n">initGridRand</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The state is a 3-dimensional numpy array (4x4x4). You can think of the first two dimensions as the positions on the board; e.g. row 1, column 2 is the position (1,2) [zero indexed] on the board. The 3rd dimension encodes the object/element at that position. Since there are 4 different possible objects, the 3rd dimension of the state contains vectors of length 4. We're using a one-hot encoding for the elements except that the empty position is just a vector of all zeros. So with a 4 length vector we're encoding 5 possible options at each grid position: empty, player, goal, pit, or wall.</p>
+<p>You can also think of the 3rd dimension as being divided into 4 separate grid planes, where each plane represents the position of each element. So below is an example where the player is at grid position (3,0), the wall is at (0,0), the pit is at (0,1) and the goal is at (1,0). [All other elements are 0s]</p>
+<p><img src="images/RL/gridpositions.png" width="300px" /></p>
+<p>In our simple implementation it's possible for the board to be initialized such that some of the objects contain a 1 at the same "x,y" position (but different "z" positions), which indicates they're at the same position on the grid. Obviously we don't want to initialize the board in this way, so for the last 2 variants of the game that involve some element of random initialization, we check if we can find "clean" arrays (only one "1" in the 'Z' dimension of a particular grid position) of the various element types on the grid and if not, we just recursively call the initialize grid function until we get a state where elements are not superimposed.</p>
+<p>When the player successfully plays the game and lands on the goal, the player and goal positions <em>will</em> be superimposed and that is how we know the player has won (likewise if the player hits the pit and loses). The wall is supposed to block the movement of the player so we prevent the player from taking an action that would place them at the same position as the wall. Additionally, the grid is "enclosed" so that player cannot walk through the edges of the grid.</p>
+<p>Now we will implement the movement function.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="c1">#need to locate player in grid</span>
+    <span class="c1">#need to determine what object (if any) is in the new grid spot the player is moving to</span>
+    <span class="n">player_loc</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">wall</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">goal</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">pit</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    
+    <span class="c1">#up (row - 1)</span>
+    <span class="k">if</span> <span class="n">action</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#down (row + 1)</span>
+    <span class="k">elif</span> <span class="n">action</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#left (column - 1)</span>
+    <span class="k">elif</span> <span class="n">action</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#right (column + 1)</span>
+    <span class="k">elif</span> <span class="n">action</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                
+    <span class="n">new_player_loc</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">new_player_loc</span><span class="p">):</span>
+        <span class="n">state</span><span class="p">[</span><span class="n">player_loc</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#re-place pit</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">pit</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#re-place wall</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">wall</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#re-place goal</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">goal</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The first thing we do is try to find the positions of each element on the grid (state). Then it's just a few simple if-conditions. We need to make sure the player isn't trying to step on the wall and make sure that the player isn't stepping outside the bounds of the grid.</p>
+<p>Now we implement <code>getLoc</code> which is similar to <code>findLoc</code> but can identify superimposed elements, whereas <code>findLoc</code> would miss it (intentionally) if there was superimposition. Additionally, we'll implement our reward function, which will award +10 if the player steps onto the goal, -10 if the player steps into the pit, and -1 for any other move. These rewards are pretty arbitrary, as long as the goal has a significantly higher reward than the pit, the algorithm should do fine.</p>
+<p>Lastly, I've implemented a function that will display our grid as a text array so we can see what's going on.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">getLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="n">level</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span>
+
+<span class="k">def</span> <span class="nf">getReward</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">player_loc</span> <span class="o">=</span> <span class="n">getLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">pit</span> <span class="o">=</span> <span class="n">getLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">goal</span> <span class="o">=</span> <span class="n">getLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">player_loc</span> <span class="o">==</span> <span class="n">pit</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">10</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">player_loc</span> <span class="o">==</span> <span class="n">goal</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">10</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    
+<span class="k">def</span> <span class="nf">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'<u2&#x27;&lt; span><span class="p">)</span>
+    <span class="n">player_loc</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">wall</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">goal</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">pit</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">' '</span>
+            
+    <span class="k">if</span> <span class="n">player_loc</span><span class="p">:</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">player_loc</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'P'</span> <span class="c1">#player</span>
+    <span class="k">if</span> <span class="n">wall</span><span class="p">:</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">wall</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'W'</span> <span class="c1">#wall</span>
+    <span class="k">if</span> <span class="n">goal</span><span class="p">:</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">goal</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'+'</span> <span class="c1">#goal</span>
+    <span class="k">if</span> <span class="n">pit</span><span class="p">:</span>
+        <span class="n">grid</span><span class="p">[</span><span class="n">pit</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'-'</span> <span class="c1">#pit</span>
+    
+    <span class="k">return</span> <span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And that's it. That's the entire gridworld game implementation. Not too bad right? As with my part 2 blackjack implementation, this game is not using OOP-style and implemented in a functional style where we just pass around states.</p>
+<p>Let's demonstrate some gameplay. I'll be using the <code>initGridRand()</code> variant so that all items are placed randomly.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [422]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">initGridRand</span><span class="p">()</span>
+<span class="n">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[422]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([['P', '-', ' ', ' '],
+       [' ', ' ', ' ', ' '],
+       [' ', ' ', 'W', ' '],
+       [' ', '+', ' ', ' ']], 
+      dtype='<u2&#x27;)&lt; pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, I clearly need to move 3 spaces down, and 1 space to the right to land on the goal.
+Remember, our action encoding is: 0 = up, 1 = down, 2 = left, 3 = right.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [423]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Reward: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">getReward</span><span class="p">(</span><span class="n">state</span><span class="p">),))</span>
+<span class="n">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Reward: 10
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt output_prompt">Out[423]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[' ', '-', ' ', ' '],
+       [' ', ' ', ' ', ' '],
+       [' ', ' ', 'W', ' '],
+       [' ', ' ', ' ', ' ']], 
+      dtype='<u2&#x27;)&lt; pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We haven't implemented a display for when the player is on the goal or pit so the player and goal just disappear when that happens.</p>
+<h3 id="Neural-Network-as-our-Q-function">Neural Network as our Q function<a class="anchor-link" href="#Neural-Network-as-our-Q-function">¶</a></h3><p>Now for the fun part. Let's build our neural network that will serve as our $Q$ function. Since this is a post about Q-learning, I'm not going to code a neural network from scratch. I'm going to use the fairly popular Theano-based library Keras. You can of course use whatever library you want, or roll your own.</p>
+<p><strong>Important Note</strong>:
+Up until now, I've been talking about how the neural network can serve the role of $Q(s, a)$, and that's absolutely true. However, I will be implementing our neural network in the same way that Google DeepMind did for its Atari playing algorithm. Instead of a neural network architecture that accepts a state and an action as inputs and outputs the value of that single state-action pair, DeepMind built a network that just accepts a state and outputs separate Q-values for each possible action in its output layer. This is pretty clever because in Q-learning we need to get the $maxQ(s', a')$ [max of the Q values for every possible action in the new state s']. Rather than having to run our network forward for every action, we just need to run it forward once. The result is the same, however, it's just more efficient.</p>
+<p><img src="images/RL/rl3net.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="k">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Activation</span>
+<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">RMSprop</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [20]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">164</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">'lecun_uniform'</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">'relu'</span><span class="p">))</span>
+<span class="c1">#model.add(Dropout(0.2)) I'm not using dropout, but maybe you wanna give it a try?</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">'lecun_uniform'</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">'relu'</span><span class="p">))</span>
+<span class="c1">#model.add(Dropout(0.2))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">'lecun_uniform'</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">'linear'</span><span class="p">))</span> <span class="c1">#linear output so we can have range of real-valued outputs</span>
+
+<span class="n">rms</span> <span class="o">=</span> <span class="n">RMSprop</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">'mse'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">rms</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [384]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#just to show an example output; read outputs left to right: up/down/left/right</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[384]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[-0.02812552, -0.04649779, -0.08819015, -0.00723661]])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So that's the network I've designed. An input layer of 64 units (because our state has a total of 64 elements, remember its a 4x4x4 numpy array), 2 hidden layers of 164 and 150 units, and an output layer of 4, one for each of our possible actions (up, down, left, right) [in that order].</p>
+<p>Why did I make the network like this? Honestly, I have no good answer for that. I just messed around with different hidden layer architectures and this one seemed to work fairly well. Feel free to change it up. There's probably a better configuration. (If you discover or know of a much better network architecture for this, let me know).</p>
+<h3 id="Online-Training">Online Training<a class="anchor-link" href="#Online-Training">¶</a></h3><p>Below is the implementation for the main loop of the algorithm. In broad strokes:</p>
+<ol>
+<li>Setup a for-loop to number of epochs</li>
+<li>In the loop, setup while loop (while game is in progress)</li>
+<li>Run Q network forward.</li>
+<li>We're using an epsilon greedy implementation, so at time <em>t</em> with probability $\epsilon$ we will choose a random action. With probability $1-\epsilon$ we will choose the action associated with the highest Q value from our neural network.</li>
+<li>Take action $a$ as determined in (4), observe new state $s'$ and reward $r_{t+1}$</li>
+<li>Run the network forward using $s'$. Store the highest Q value (<code>maxQ</code>).</li>
+<li>Our target value to train the network is <code>reward + (gamma * maxQ)</code> where <code>gamma</code> is a parameter ($0 <= \gamma <= 1$).</li>
+<li>Given that we have 4 outputs and we only want to update/train the output associated with the action we just took, our target output vector is the same as the output vector from the first run, except we change the one output associated with our action to: <code>reward + (gamma * maxQ)</code></li>
+<li>Train the model on this 1 sample. Repeat process 2-9</li>
+</ol>
+<p>Just to be clear, when we first run our neural network and get an output of action-values like this</p>
+<div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.08819015</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
+</pre></div>
+<p>our target vector for one iteration may look like this:</p>
+<div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
+</pre></div>
+<p>Also note, I initialize epsilon (for the $\epsilon$-greedy action selection) to be 1. It decrements by a small amount on every iteration and will eventually reach 0.1 where it stays. Google DeepMind also used an $\epsilon$-greedy action selection and also initialized epsilon to be 1 and decremented during the game play.
+if taking action 2 one step (left) resulted in reaching the goal. So we just keep all other outputs the same as before and just change the one for the action we took.</p>
+<p>Okay, so let's go ahead and train our algorithm to learn the easiest variant of the game, where all elements are placed deterministically at the same positions every time.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [29]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="c1">#since it may take several moves to goal, making gamma high</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    
+    <span class="n">state</span> <span class="o">=</span> <span class="n">initGrid</span><span class="p">()</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#while game still in progress</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1">#We are in state S</span>
+        <span class="c1">#Let's run our Q function on S to get Q values for all possible actions</span>
+        <span class="n">qval</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">epsilon</span><span class="p">):</span> <span class="c1">#choose random action</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#choose best action from Q(s,a) values</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">qval</span><span class="p">))</span>
+        <span class="c1">#Take action, observe new state S'</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="c1">#Observe reward</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">getReward</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+        <span class="c1">#Get max_Q(S',a)</span>
+        <span class="n">newQ</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">maxQ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">newQ</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">y</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">qval</span><span class="p">[:]</span>
+        <span class="k">if</span> <span class="n">reward</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="c1">#non-terminal state</span>
+            <span class="n">update</span> <span class="o">=</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">maxQ</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#terminal state</span>
+            <span class="n">update</span> <span class="o">=</span> <span class="n">reward</span>
+        <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span> <span class="c1">#target output</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Game #: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">new_state</span>
+        <span class="k">if</span> <span class="n">reward</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">></span> <span class="mf">0.1</span><span class="p">:</span>
+        <span class="n">epsilon</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">epochs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Game #: 999
+Epoch 1/1
+1/1 [==============================] - 0s - loss: 0.0265
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Alright, so I've empirically tested this and it trains on the easy variant with just 1000 epochs (keep in mind every epoch is a full game played to completion). Below I've implemented a function we can use to test our trained algorithm to see if it has properly learned how to play the game. It basically just uses the neural network model to calculate action-values for the current state and selects the action with the highest Q-value. It just repeats this forever until the game is won or lost. I've made it break out of this loop if it is making more than 10 moves because this probably means it hasn't learned how to win and we don't want an infinite loop running.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">init</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">initGrid</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">init</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">initGridPlayer</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">init</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">initGridRand</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Initial State:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#while game still in progress</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">qval</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">qval</span><span class="p">))</span> <span class="c1">#take action with highest Q-value</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Move #: </span><span class="si">%s</span><span class="s1">; Taking action: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">action</span><span class="p">))</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">getReward</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reward</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Reward: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">reward</span><span class="p">,))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1">#If we're taking more than 10 actions, just stop, we probably can't win this game</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">></span> <span class="mi">10</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Game lost; too many moves."</span><span class="p">)</span>
+            <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [30]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Initial State:
+[[' ' 'P' ' ' ' ']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' '+']]
+Move #: 0; Taking action: 3
+[[' ' ' ' 'P' ' ']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' '+']]
+Move #: 1; Taking action: 3
+[[' ' ' ' ' ' 'P']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' '+']]
+Move #: 2; Taking action: 1
+[[' ' ' ' ' ' ' ']
+ [' ' '-' ' ' 'P']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' '+']]
+Move #: 3; Taking action: 1
+[[' ' ' ' ' ' ' ']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' 'P']
+ [' ' ' ' ' ' '+']]
+Move #: 4; Taking action: 1
+[[' ' ' ' ' ' ' ']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Reward: 10
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Can we get a round of applause for our gridworld player here? Clearly it knows what its doing; it went straight for the prize!</p>
+<h3 id="Playing-the-the-harder-variant,-catastrophic-forgetting,-and-experience-replay">Playing the the harder variant, catastrophic forgetting, and experience replay<a class="anchor-link" href="#Playing-the-the-harder-variant,-catastrophic-forgetting,-and-experience-replay">¶</a></h3><p>We're slowly building up our chops and we want our algorithm to train on the harder variant of the game where every new game the player is randomly placed on the grid. It can't just memorize a sequence of steps to take as before, it needs to be able to take the shortest path to the goal (without stepping into the pit) from wherever it starts on the grid. It needs to develop a slightly more sophisticated representation of its environment.</p>
+<p>Unfortunately, there is a problem we may need to deal with as our problem becomes increasingly more difficult. There is a known problem called <strong>catastrophic forgetting</strong> that is associated with gradient descent based training methods in online training.</p>
+<p>Imagine that in game #1 that our algorithm is training on (learning Q-values for) the player is placed in between the pit and the goal such that the goal is on the right and the pit is on the left. Using epsilon-greedy strategy, the player takes a random move and by chance takes a step to the right and hits the goal. Great, the algorithm will try to learn that this state-action pair is associated with a high reward by updating its weights in such a way that the output will more closely match the target value (i.e backpropagation). Now, the second game gets initialized and the player is again in between the goal and pit but this time the goal is on the <em>left</em> and the pit is on the right. Perhaps to our naive algorithm, the state <em>seems</em> very similar to the last game.  Let's say that again, the player chooses to make one step to the right, but this time it ends up in the pit and gets -10 reward. The player is thinking "what the hell I thought going to the right was the best decision based on my previous experience." So now it may do backpropagation again to update its state-action value but because this state-action is very similar to the last learned state-action it may mess up its previously learned weights.</p>
+<p>This is the essence of catastrophic forgetting. There's a push-pull between very similar state-actions (but with divergent targets) that results in this inability to properly learn anything. We generally don't have this problem in the supervised learning realm because we do randomized batch learning, where we don't update our weights until we've iterated through some random subset of our training data.</p>
+<p>Catastrophic forgetting is probably not something we have to worry about with the first variant of our game because the targets are always stationary; but with the harder variants, it's something we should consider, and that is why I'm implementing something called <strong>experience replay</strong>. Experience replay basically gives us minibatch updating in an online learning scheme. It's actually not a huge deal to implement; here's how it works.</p>
+<p>Experience replay:</p>
+<ol>
+<li>In state $s$, take action $a$, observe new state $s_{t+1}$ and reward $r_{t+1}$</li>
+<li>Store this as a tuple $(s, a, s_{t+1}, r_{t+1})$ in a list.</li>
+<li>Continue to store each experience in this list until we have filled the list to a specific length (up to you to define)</li>
+<li>Once the experience replay memory is filled, randomly select a subset (e.g. 40)</li>
+<li>Iterate through this subset and calculate value updates for each; store these in a target array (e.g. <code>y_train</code>) and store the state $s$ of each memory in <code>X_train</code></li>
+<li>Use <code>X_train</code> and <code>y_train</code> as a minibatch for batch training. For subsequent epochs where the array is full, just overwrite old values in our experience replay memory array.</li>
+</ol>
+<p>Thus, in addition to learning the action-value for the action we just took, we're also going to use a random sample of our past experiences to train on to prevent catastrophic forgetting.</p>
+<p>So here's the same training algorithm from above except with experience replay added. Remember, this time we're training it on the harder variant of the game where the player is randomly placed on the grid.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [21]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">'mse'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">rms</span><span class="p">)</span><span class="c1">#reset weights of neural network</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">3000</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.975</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">batchSize</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">buffer</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">replay</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1">#stores tuples of (S, A, R, S')</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    
+    <span class="n">state</span> <span class="o">=</span> <span class="n">initGridPlayer</span><span class="p">()</span> <span class="c1">#using the harder state initialization function</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#while game still in progress</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1">#We are in state S</span>
+        <span class="c1">#Let's run our Q function on S to get Q values for all possible actions</span>
+        <span class="n">qval</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">epsilon</span><span class="p">):</span> <span class="c1">#choose random action</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#choose best action from Q(s,a) values</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">qval</span><span class="p">))</span>
+        <span class="c1">#Take action, observe new state S'</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="c1">#Observe reward</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">getReward</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+        
+        <span class="c1">#Experience replay storage</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">replay</span><span class="p">)</span> <span class="o"><</span> <span class="n">buffer</span><span class="p">):</span> <span class="c1">#if buffer not filled, add to it</span>
+            <span class="n">replay</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">new_state</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#if buffer full, overwrite old values</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">h</span> <span class="o"><</span> <span class="p">(</span><span class="n">buffer</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+                <span class="n">h</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">replay</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">new_state</span><span class="p">)</span>
+            <span class="c1">#randomly sample our experience replay memory</span>
+            <span class="n">minibatch</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">replay</span><span class="p">,</span> <span class="n">batchSize</span><span class="p">)</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">y_train</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">memory</span> <span class="ow">in</span> <span class="n">minibatch</span><span class="p">:</span>
+                <span class="c1">#Get max_Q(S',a)</span>
+                <span class="n">old_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">memory</span>
+                <span class="n">old_qval</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">old_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">newQ</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">maxQ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">newQ</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+                <span class="n">y</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">old_qval</span><span class="p">[:]</span>
+                <span class="k">if</span> <span class="n">reward</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="c1">#non-terminal state</span>
+                    <span class="n">update</span> <span class="o">=</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">maxQ</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1">#terminal state</span>
+                    <span class="n">update</span> <span class="o">=</span> <span class="n">reward</span>
+                <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span>
+                <span class="n">X_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">old_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">64</span><span class="p">,))</span>
+                <span class="n">y_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+            
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Game #: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batchSize</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">new_state</span>
+        <span class="k">if</span> <span class="n">reward</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="c1">#if reached terminal state, update game status</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">></span> <span class="mf">0.1</span><span class="p">:</span> <span class="c1">#decrement epsilon over time</span>
+        <span class="n">epsilon</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">epochs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Game #: 2999
+Epoch 1/1
+40/40 [==============================] - 0s - loss: 0.0018
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I've increased the training epochs to 3000 just based on empiric testing. So let's see how it does, we'll run our <code>testAlgo()</code> function a couple times to see how it handles randomly initialized player scenarios.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [22]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testAlgo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#run testAlgo using random player placement => initGridPlayer()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Initial State:
+[[' ' ' ' ' ' ' ']
+ [' ' '-' '+' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' 'P' ' ']]
+Move #: 0; Taking action: 3
+[[' ' ' ' ' ' ' ']
+ [' ' '-' '+' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' 'P']]
+Move #: 1; Taking action: 0
+[[' ' ' ' ' ' ' ']
+ [' ' '-' '+' ' ']
+ [' ' ' ' 'W' 'P']
+ [' ' ' ' ' ' ' ']]
+Move #: 2; Taking action: 0
+[[' ' ' ' ' ' ' ']
+ [' ' '-' '+' 'P']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 3; Taking action: 2
+[[' ' ' ' ' ' ' ']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Reward: 10
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Fantastic. Let's run the <code>testAlgo()</code> one more time just to prove it has generalized.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [28]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Of course, I ran it many times more than I'm showing here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Initial State:
+[[' ' ' ' ' ' ' ']
+ [' ' '-' '+' ' ']
+ [' ' 'P' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 0; Taking action: 2
+[[' ' ' ' ' ' ' ']
+ [' ' '-' '+' ' ']
+ ['P' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 1; Taking action: 0
+[[' ' ' ' ' ' ' ']
+ ['P' '-' '+' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 2; Taking action: 0
+[['P' ' ' ' ' ' ']
+ [' ' '-' '+' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 3; Taking action: 3
+[[' ' 'P' ' ' ' ']
+ [' ' '-' '+' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 4; Taking action: 3
+[[' ' ' ' 'P' ' ']
+ [' ' '-' '+' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Move #: 5; Taking action: 1
+[[' ' ' ' ' ' ' ']
+ [' ' '-' ' ' ' ']
+ [' ' ' ' 'W' ' ']
+ [' ' ' ' ' ' ' ']]
+Reward: 10
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I'll be darned. It seems to have learned to play the game from any starting position! Pretty neat.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-Hardest-Variant">The Hardest Variant<a class="anchor-link" href="#The-Hardest-Variant">¶</a></h3><p>Okay, I lied. I will not be showing you the algorithm learning the hardest variant of the game (where all 4 elements are randomly placed on the grid each game). I'm leaving that up to you to attempt and let me know how it goes via email (outlacedev@gmail.com). The reason is, I'm doing all this on a Macbook Air (read: no CUDA gpu) and thus I cannot train the algorithm to a sufficiently large number of epochs for it to learn the problem. I suspect it may require significantly more epochs, perhaps more than 50,000. So if you have an nVIDIA GPU and can train it that long, let me know if it works. I could have used Lua/Torch7 since there is an OpenCL version but no one would read this if it wasn't in Python =P.</p>
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h3><p>There you have it, basic Q-learning using neural networks.</p>
+<p>That was a lot to go through, hopefully I didn't make too many mistakes (as always, email if you spot any so I can post corrections). I'm hoping you have success training Q-learning algorithms on more interesting problems than the gridworld game.</p>
+<p>I'd say this is definitely the climax of the series on reinforcement learning. I plan to release a part 4 that will be about other temporal difference learnings algorithms that use eligibility traces. Since that's a relatively minor new concept, I will likely use it on another toy problem like gridworld. However, I do, at some point, want to release a post about setting up and using the Arcade Learning Environment (ALE) [fmr. Atari Learning Environment] and training an alogorithm to play Atari games, however, that will likely be a long while from now so don't hold your breath.</p>
+<p>Cheers</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Download-this-IPython-Notebook">Download this IPython Notebook<a class="anchor-link" href="#Download-this-IPython-Notebook">¶</a></h3><p><a href="https://github.com/outlace/outlace.github.io/blob/master/ipython-notebooks/rlpart2.ipynb">https://github.com/outlace/outlace.github.io/blob/master/ipython-notebooks/rlpart2.ipynb</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References">¶</a></h3><ol>
+<li><a href="http://www.computervisiontalks.com/deep-learning-lecture-16-reinforcement-learning-and-neuro-dynamic-programming-nando-de-freitas/">http://www.computervisiontalks.com/deep-learning-lecture-16-reinforcement-learning-and-neuro-dynamic-programming-nando-de-freitas/</a></li>
+<li><a href="https://www.youtube.com/watch?v=yNeSFbE1jdY">https://www.youtube.com/watch?v=yNeSFbE1jdY</a></li>
+<li><a href="http://www.researchgate.net/profile/Marco_Wiering/publication/236645821_Reinforcement_Learning_to_Train_Ms._Pac-Man_Using_Higher-order_Action-relative_Inputs/links/0deec518a22042f5d7000000.pdf?inViewer=true&amp;pdfJsDownload=true&amp;disableCoverPage=true&amp;origin=publication_detail">http://www.researchgate.net/profile/Marco_Wiering/publication/236645821_Reinforcement_Learning_to_Train_Ms._Pac-Man_Using_Higher-order_Action-relative_Inputs/links/0deec518a22042f5d7000000.pdf?inViewer=true&pdfJsDownload;=true&disableCoverPage;=true&origin;=publication_detail</a></li>
+<li>"Reinforcement Learning An Introduction" Sutton & Barto, 1996</li>
+<li>"Human-level control through deep reinforcement learning" Mnih et al, 2015 (Google DeepMind Atari paper)</li>
+</ol>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/rlpart3.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/reinforcement-learning.html" rel="tag">Reinforcement-Learning</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/q-learning.html" class="tags">Q-learning</a>
+                    &nbsp;<a href="/tag/rl.html" class="tags">RL</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

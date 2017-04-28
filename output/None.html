@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Simple RNN</title>
+    <link rel="shortcut icon" type="image/png" href="./favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="stylesheet" href="./theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="./theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="RNN" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="./">Home</a></li>
+                <li><a href="./pages/about.html">About</a></li>
+                <li><a href="https://github.com/outlace">GitHub</a></li>
+                <li><a href="./tags">Tags</a></li>
+                <li><a href="./categories">Categories</a></li>
+                <li><a href="./archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="./">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Apr 26, 2017</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="./Simple-RNN" rel="bookmark" title="Permanent Link to &quot;Simple RNN&quot;">Simple RNN</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Assumptions:">Assumptions:<a class="anchor-link" href="#Assumptions:">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I assume you know how basic feedforward neural nets work and can implement and train at least a 2-layer neural net using backpropagation and gradient descent. I'm using the same ultra-simple problem found in this article: <a href="http://iamtrask.github.io/2015/07/12/basic-python-network/">http://iamtrask.github.io/2015/07/12/basic-python-network/</a> so I encourage you to go through that first if you need some more background.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Summary-&amp;-Motivations">Summary & Motivations<a class="anchor-link" href="#Summary-&amp;-Motivations">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You may have noticed I already have an article about building a simple recurrent network (in Python). Why am I making another one? Well, in that article, I show how to build an RNN that solves a temporal XOR problem and then how to do sequence prediction of characters. I think that article betrayed my mission of making things as simple as possible. Additionally, I ended up using a scipy optimizer to find the weights instead of implementing my own gradient descent. This article is meant as a prequel to that one. Here we're going to build an RNN that solves a temporal/sequential version of the problem in the aforementioned <code>i am trask</code> article where $y=1$ if and only if $x_1$ in a $(x_1, x_2)$ tuple is $1$. This problem is actually a lot easier for a neural network to learn than XOR because it doesn't require any hidden units in an ordinary feedforward architecture (we <em>will</em> use hidden units in our RNN implementation). Since this problem is easier, I can demonstrate how we can train the network using ordinary backpropagation like <code>i am trask</code> does in his article. No need for optimization libraries.</p>
+<p>Additionally, I wanted to try out Julia.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Why-Julia?">Why Julia?<a class="anchor-link" href="#Why-Julia?">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>My previous posts all use Python and Python is surely a darling of the data science/machine learning world. I can unequivocally say that Python is my hands-down favorite programming language. Python's main strengths are its clean and simple syntax and of course the massive community and number of libraries available. Unfortunately, Python's strength of clean syntax completely disappears when you have to use numpy for linear algebra. Take this line for example:</p>
+<div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)))</span>
+</pre></div>
+<p>It looks terrible. It looks nothing like how we think about a linear algebra operation. This is where Python breaks down as a clean, readable language. This is where it becomes clear why (unfortunately) so many people in industry and academia prefer proprietary tools like Matlab. This is what the above line looks like in Julia and what it should look like in any language purporting to be for scientific computing.</p>
+<div class="highlight"><pre><span></span><span class="n">vec1</span> <span class="o">.*</span> <span class="n">vec2</span> <span class="o">.*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)</span>
+</pre></div>
+<p>I'm betting on Julia because I think it takes the strengths of Python and combines them with Matlab and R's cleaner scientific and mathematical syntax, while providing dramatic performance improvements over all 3 of those. If Julia becomes popular, I think it would be extremely well-suited for data science and machine learning applications. I strongly recommend at least trying out Julia. Even though it's not a mature language yet, if you're mostly doing data science/machine learning fundamentals like me, it will serve this purpose very well. If you need a production-ready language, then stick with Python, R or Matlab.</p>
+<p>But if you disagree with all of this or simply have no interest in Julia, that's fine. The following code is almost exactly the same as Matlab/Octave syntax and if you don't have Matlab experience, then it should still be very obvious what's going on, and I of course will do my best to explain. If there's interest, I may supply a downloadable IPython notebook version of this.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="A-Simple(r)-RNN">A Simple(r) RNN<a class="anchor-link" href="#A-Simple(r)-RNN">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here is the truth table for the problem we're going to solve:</p>
+<p><table></table></p>
+<p><tr><td>$x_1$</td><td>$x_2$</td><td>$y$</td></tr></p>
+<p><tr><td>0</td><td>0</td><td>0</td></tr></p>
+<p><tr><td>0</td><td>1</td><td>0</td></tr></p>
+<p><tr><td>1</td><td>0</td><td>1</td></tr></p>
+<p><tr><td>1</td><td>1</td><td>1</td></tr>
+</table>
+As you can see, the result $y$ is only $1$ if the left bit is $1$. The right bit, $x_2$ has no contribution to what the output $y$ is. Let's call this function $LEFTBIT$ from now on.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The strength of RNNs is that they have "memory." They can retain information about previous inputs through time. The degree and duration of this memory depends on the implementation. Our implementation here is very simple and has a relatively short memory. This memory allows RNNs to process information differently than a feedforward network, they can process information as a stream of information through time. This makes them very useful for time series predictions and for problems where the input and outputs may need to be variable length vectors.</p>
+<p>To be clear, there is really no reason to use an RNN for our <code>LEFTBIT</code> problem. The problem has a well-definied 2-length vector input and 1-length vector output in a feedforward architecture and works very well. But nonetheless, it serves as a good toy problem to learn how to build and train an RNN.</p>
+<p>Now, we can design an RNN to have any number of input units and output units just like a feedforward network. We could design our RNN to accept an $X_1, X_2$ tuple like the feedforward version, but then it wouldn't really need a memory at all. So in order to demonstrate it's memory capability, we will only feed one input at a time. Thus it must accept an $X_1$, wait for us to give it the $X_2$, and remember what $X_1$ was to give the proper output for <code>LEFTBIT</code>.</p>
+<p>Here's how we'll present the data:</p>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="o">?</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+<p>I put a <code>?</code> as the first element of Y because the RNN can't compute <code>LEFTBIT</code> until it has received 2 consecutive inputs. But the way we implement the network, it will output <em>something</em> everytime it receives an input, but we will simply ignore the first output. In our actual code, we of course can't use a <code>?</code> but I will simply make it a 0 (arbitrarily).</p>
+<p>Here's the flow for how the network will process our sequential <code>LEFTBIT</code> data.</p>
+<ol>
+<li>We will feed the network each element from $X$ starting with 0.</li>
+<li>The network will output something because it has to, but we ignore it's first output.</li>
+<li>We then feed the second element from $X$, also a 0.</li>
+<li>The network should compute the <code>LEFTBIT</code> of these 2 sequential bits (0,0), and output 0. It must remember the previous bit to do so.</li>
+<li>We continue to feed the third element from $X$, this time a 1.</li>
+<li>The network should compute the <code>LEFTBIT</code> of the (0,1) now since those are the last consecutive two bits.</li>
+<li>And we just continue this process until we reach the end of $X$.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here's a schematic of our simple RNN:
+<img src="images/XORrnn.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here, $t-1$ refers to the previous time step (and e.g. $t-2$ would refer to 2 time steps ago). Thus, for each time step, we feed the output of the hidden layer from the last time step back into the hidden layer of the current time step. This is how we achieve the memory. It turns out implementing this is actually really simple, and we can do so by re-imagining our network as a feedforward network with some additional input units called <em>contex units</em>. These context units are treated exactly like ordinary input units, with weighted connections to the hidden layer and no activation function. Unlike a normal input unit, however, we aren't supplying the data, the context units simply return the output of $t-1$'s hidden layer. In this way, we've just created a feedforward architecture again. Take a look at how the network looks showing all the units:
+<img src="images/RNN_leftbit.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice, we only have one <em>real</em> input unit, but we have 3 additional context units (C1 -> C3) that act as inputs and of course we have our bias unit. This type of RNN is called an <b>Elman neural network</b>. There is a similar type of architecture called a Jordan neural network where instead of the context units returning the hidden layer output from $t-1$, they return the output from the output unit from $t-1$.</p>
+<p>Notice how we have 3 context units and 3 hidden units. That's not a coincidence, an Elman network by definition has the same number of context units as it does hidden units so that each context unit is matched with a corresponding hidden unit. That is, the output from hidden unit 1 (H1) from $t-1$ is stored and returned by context unit 1 (C1) at the current time step.</p>
+<p>Also note that the context units return the hidden output <b>without manipulation</b>. That is, if H1 output 0.843 in the last time step, $t-1$, then C1 will save that exactly, and use that as its output in the current time step, $t$. Of course the value 0.843 will be sent over to the hidden layer after it's been weighted.</p>
+<p>The reason I chose 3 hidden units is just a matter of training performance. 2 units works too but has a harder time training.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since we've re-imagined the RNN's recurrent connections as a feedforward network with some additional inputs, we can train it exactly the same way we would any other feedforward NN (FFNNs): backpropagation and gradient descent. The only difference is that training RNNs happens to be much more difficult than FFNNs for reasons I won't detail here. Modern RNN implementations like the Long Short Term Memory (LSTM) networks laregely solve this training problem with additional complexities.</p>
+<p>So that's actually all the theory behind our simple RNN. It's really not much more complicated than a feedforward network. Let's get to work..</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Let's-build-it,-in-Julia,-a-few-lines-at-a-time">Let's build it, in Julia, a few lines at a time<a class="anchor-link" href="#Let's-build-it,-in-Julia,-a-few-lines-at-a-time">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [293]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here I've simply defined our input $X$ vector and our expected output $Y$ vector. I arbitrarily chose a sequence of 1s and 0s for the $X$ vector and then manually computed the <code>LEFTBIT</code> of each consecutive pair of bits and stored those in the $Y$ vector. Remember that I chose to keep the Y vector the same length as the X vector by adding a 0 in the beginning, but for the purposes of training, we will ignore the first output of the network since it can't compute the <code>LEFTBIT</code> of only one bit.</p>
+<p>Note: These are both <em>column</em> vectors. We will not be using the entire $X$ vector as an input. We will access the each element of the $X$ vector in order and feed those one by one into our network. We will refer to the corresponding element in our $Y$ vector to calculate the error of our network.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [294]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here I define some variables that control how many input units, hidden layer units, and output units our network has. You can change the number of hidden units without having to modify anything else and see how it affects performance. You can't change the number of input or output units without also changing how we structure the input and output data.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [295]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">theta1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> 
+<span class="n">theta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span> <span class="p">)</span> 
+<span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
+<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, I'm randomly initializing our weight vectors (I tend to use the terms "weights" and "theta" interchangeably. theta1 and theta2 are the weights for the input-to-hidden layer and hidden-to-output layer, respectively.)</p>
+<p>I'm initializing the theta vectors by using the randn() function that returns an array of random values from the normal distribution. I've scaled up these random numbers a bit by multiplying by 2. There is no right way to initialize weights, only wrong ways. People try all sorts of different methods. I've chosen this way because it works relatively well for this particular NN and because it's simple. There are much more complicated ways to initialize weights that may work better. The general wisdom here is to make the weights random and well-distributed but constrained within the limits of what makes sense for the particular neural network (often from trial and error).</p>
+<p>The second block is to intitialize our gradient vectors to zero vectors, which will store and accumulate the gradients during backpropagation.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [296]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">60000</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Some additional parameters for the backpropagation training. Epochs refers to the number of iterations we will train. Yes, 60000 is a big number but RNNs are hard to train. We want to train until the network's error stops decreasing.</p>
+<p><code>alpha</code> is our learning rate (i.e. how big each gradient descent step is). <code>epsilon</code> is our momentum rate. We will be using the momentum method as part of our gradient descent implementation which I will explain in further detail below. Note that I set these constants from trial and error.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [297]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">hid_last</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">last_change1</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
+<span class="n">last_change2</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c"># m = the number of elements in the X vector;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>hid_last</code> is a vector that will store the output from the hidden layer units for use in the next time step. We just initialize to zeros at first.</p>
+<p><code>last_change1</code> and <code>last_change2</code> are for the momentum learning. In momentum learning, we attempt to prevent gradient descent from getting stuck in local optima by giving the weight updates <em>momentum</em>, e.g. if a weight is rapidly decreasing at one point, we will try to keep it going in that same direction by making the next weight update take into account the previous weight update. These vectors simply store the weight updates from the previous iteration. The simplest implementation of gradient descent-based weight updates uses this equation:
+$$\theta_j = \theta_j - \alpha * \frac{\partial C}{\partial \theta_j}$$
+where $\theta_j$ refers to a particular weight, $\alpha$ is the learning rate, and $\frac{\partial C}{\partial \theta_j}$ is the gradient of the cost function $C$ for that particular weight, $\theta_j$.</p>
+<p>With momentum, the weight update takes this form:
+$$\theta_j = \theta_j - \alpha\frac{\partial C}{\partial \theta_j} + \epsilon\Delta_{t-1}\theta_j$$
+Where all notation remains the same, except that $\epsilon$ is our momentum rate and $\Delta_{t-1}\theta_j$ refers to the weight change from the previous iteration. Thus, how much we change the weight <em>this</em> iteration partially depends on how much we changed the weight <em>last</em> iteration. And we can scale this term up or down by changing $\epsilon$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [298]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span><span class="nf"> sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+<span class="k">end</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This will define the sigmoid activation function we will use for our neurons. Should be fairly self-explanatory.</p>
+<p>Now let's get to the meat of our training code:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [299]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">epochs</span>
+    <span class="c">#forward propagation</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">:(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c">#random number between 1 and number of elements minus 1</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">s</span><span class="p">:</span><span class="n">m</span> <span class="c">#for every training element</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span> <span class="c">#set our expect output, y, to be the corresponding element in Y vector</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span> <span class="c">#update our context units to hold t-1's hidden layer output</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span> <span class="c">#our single input value, from the X vector</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#add context units and bias unit to input layer; 5x1 vector</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">'</span> <span class="o">*</span> <span class="n">a1</span> <span class="c">#theta1 = 5x3, a1 5x1. So theta1' * a1 = 3x5 * 5x1 = 3x1 vector</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#calculate output, add bias to hidden layer; </span>
+        <span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c">#store the output values for next time step, but ignore bias</span>
+        <span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">'</span> <span class="o">*</span> <span class="n">a2</span> <span class="c">#theta2 = 4x1, a2 = 4x1. So theta2' * a2 = 1x4 * 4x1 = 1x1 vector</span>
+        <span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="c">#compute final output</span>
+        <span class="c">#Ignore first output in training</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">s</span>
+            <span class="c">#calculate delta errors</span>
+            <span class="n">d3</span> <span class="o">=</span> <span class="p">(</span><span class="n">a3</span> <span class="o">-</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">d2</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta2</span> <span class="o">*</span> <span class="n">d3</span><span class="p">)</span> <span class="o">.*</span> <span class="p">(</span><span class="n">a2</span> <span class="o">.*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">))</span>
+            <span class="c">#accumulate gradients</span>
+            <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">theta1_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">numHid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">a1</span><span class="sc">')'</span><span class="p">;</span>
+            <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">theta2_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d3</span> <span class="o">*</span> <span class="n">a2</span><span class="sc">')'</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="c">#calculate our weight updates</span>
+    <span class="n">theta1_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change1</span><span class="p">;</span>
+    <span class="n">theta2_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta2_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change2</span><span class="p">;</span>
+    <span class="c">#update the weights</span>
+    <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">theta1_change</span><span class="p">;</span>
+    <span class="n">theta2</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">-</span> <span class="n">theta2_change</span><span class="p">;</span>
+    <span class="c">#store the weight updates for next time (momentum method)</span>
+    <span class="n">last_change1</span> <span class="o">=</span> <span class="n">theta1_change</span><span class="p">;</span>
+    <span class="n">last_change2</span> <span class="o">=</span> <span class="n">theta2_change</span><span class="p">;</span>
+    <span class="c">#reset gradients</span>
+    <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
+    <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you've gone through my tutorial on backpropagation and gradient descent, most of this code will look very familiar so I'm not going to explain every single line. I've also commented it well. But let's go over the important/new parts of the code.</p>
+<div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">:(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+<p>For every training iteration, we initialize s to be a random number between 1 and <code>(m - 1)</code> where <code>m</code> is the number of elements in $X$. This is sort of a mini-batch, stochastic gradient descent implementation because we're training on a random subset of our input sequence each training iteration. This will hopefully ensure our network learns how to actually compute <code>LEFTBIT</code> and not just memorize the original sequence we gave it to train on (which would be overfitting).</p>
+<div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+<p>This is where we build up our input layer. First we get the element from the input $X$ vector that we're currently training on and add it to our input layer $a1$, then we add in our context units, and finally add in the bias value of 1. The rest is ordinary feedforward logic.</p>
+<div class="highlight"><pre><span></span><span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+<p>We save the current hidden layer output in the <code>hid_last</code> vector that we defined and initialized outside of the training loop.</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">s</span>
+</pre></div>
+<p>this block calculates the network deltas and gradients (backpropagation) but not if this is the first element in the sequence because the network can't compute <code>LEFTBIT</code> on only 1 input bit. Thus is wouldn't make sense to calculate an error for the first bit when it's impossible for the RNN to get it correct.</p>
+<div class="highlight"><pre><span></span><span class="n">theta1_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change1</span><span class="p">;</span>
+<span class="n">theta2_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta2_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change2</span><span class="p">;</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">theta1_change</span><span class="p">;</span>
+<span class="n">theta2</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">-</span> <span class="n">theta2_change</span><span class="p">;</span>
+</pre></div>
+<p>This is where we calculate the weight updates based on the learning rate alpha, the gradients, and the previous weight update (momentum method).</p>
+<p>To continue with the momentum method in the next iteration, we save how much we updated the weights in this iteration in our last_change vectors:</p>
+<div class="highlight"><pre><span></span><span class="n">last_change1</span> <span class="o">=</span> <span class="n">theta1_change</span>
+<span class="n">last_change2</span> <span class="o">=</span> <span class="n">theta2_change</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
+<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
+</pre></div>
+<p>Here we reset the gradients for the next epoch (and thus training 'mini-batch'). We don't want to keep accumulating gradients forever. We reset them after accumulating gradients for each training sequence.</p>
+<hr>
+<p>Okay, so that is how we implement and train our simple RNN to compute <code>LEFTBIT</code> on an arbitrary binary sequence.
+After training it, let's run the network forward over a new binary sequence to see if it learned.</p>
+</hr></div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [300]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">[]</span> <span class="c">#vector to store the output values of the network</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c">#Arbitrary new input data to test our network</span>
+<span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c">#for every training element</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#add bias, context units to input layer</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">'</span> <span class="o">*</span> <span class="n">a1</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">);</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#output hidden layer</span>
+    <span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">'</span> <span class="o">*</span> <span class="n">a2</span>
+    <span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span>
+    <span class="n">push!</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">a3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c">#add current output to results vector</span>
+<span class="k">end</span>
+<span class="n">println</span><span class="p">(</span><span class="s">"Results:  "</span>  <span class="o">*</span> <span class="n">string</span><span class="p">(</span><span class="n">int</span><span class="p">(</span><span class="n">round</span><span class="p">(</span><span class="n">results</span><span class="p">))))</span>
+<span class="n">println</span><span class="p">(</span><span class="s">"Expected: "</span> <span class="o">*</span> <span class="n">string</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Results:  [0,1,0,0,1,1,0]
+Expected: [0,1,0,0,1,1,0]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><b>It worked!</b> As you can see our neural network output exactly what we expected. Keep in mind we ignore the first bit in the output vector. Although in this case the network happened to output 0 as the first bit like we defined in our $Y$ vector, it could have also output 1 and it would still be correct since the rest of the output sequence is indeed the computed <code>LEFTBIT</code> of each sequential pair of bits in our input vector.</p>
+<p>I literally copy and pasted the code from above in our training code to just run the network forward but added a <code>results</code> vector to store the sequence of output results.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Closing-Words...">Closing Words...<a class="anchor-link" href="#Closing-Words...">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hopefully this was easy to follow. This was really a bare-bones implementation of a simple recurrent neural network (other than the fact we added in the momentum method to help it learn better). To take this further, I suggest you try defining a cost function (e.g. the cross-entropy cost function) and graph the cost versus the epochs. Then you can vary the hyperparameters of the network (e.g. $\alpha, \epsilon, $ the number of hidden units, etc) and see how it effects the gradient descent.</p>
+<p>I also really hope you can appreciate the beauty and value of Julia as a language for modern scientific computing. I will continue to write articles using Python but will likely increasingly use Julia.</p>
+<p>As always, please email me (outlacedev@gmail.com) to let me know about errors or if you have other comments or questions.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References:">References:<a class="anchor-link" href="#References:">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol>
+<li><a href="https://www.youtube.com/watch?v=e2sGq_vI41s">https://www.youtube.com/watch?v=e2sGq_vI41s</a></li>
+<li><a href="http://iamtrask.github.io/2015/07/12/basic-python-network/">http://iamtrask.github.io/2015/07/12/basic-python-network/</a> </li>
+</ol>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="./Simple-RNN">posted at 19:50</a>
+                    &nbsp;&middot;&nbsp;<a href="./category/rnn.html" rel="tag">RNN</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="./tag/rnn.html" class="tags">RNN</a>
+                </div>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <a href="https://github.com/jody-frankowski/blue-penguin">Blue Penguin</a> Theme
+                &middot;
+                Powered by <a href="http://getpelican.com">Pelican</a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Persistent Homology (Part 4)</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="TDA,persistent-homology" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Feb 23, 2017</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/TDApart4.html" rel="bookmark" title="Permanent Link to &quot;Persistent Homology (Part 4)&quot;">Persistent Homology (Part 4)</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Topological-Data-Analysis---Part-4---Persistent-Homology">Topological Data Analysis - Part 4 - Persistent Homology<a class="anchor-link" href="#Topological-Data-Analysis---Part-4---Persistent-Homology">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is Part 3 in a series on topological data analysis.
+See <a href="/Topological+Data+Analysis+Tutorial+-+Part+1/">Part 1</a> | <a href="/Topological+Data+Analysis+Tutorial+-+Part+2/">Part 2</a> | <a href="/Topological+Data+Analysis+Tutorial+-+Part+3/">Part 3</a></p>
+<p>In this part we learn more about how linear algebra can help us calculate topological features in a computationally efficient manner.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Linear-algebra-saves-the-day">Linear algebra saves the day<a class="anchor-link" href="#Linear-algebra-saves-the-day">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You might have noticed that calculating the homology groups and Betti numbers by hand can be very tedious and impractical for anything larger than the simple examples we've considered thus far. Fortunately, there are better ways. In particularly, we can represent most of the computation of homology groups in terms of vectors and matrices and computers are very efficient when working with vectors and matrices.</p>
+<p>Now, we already went over what a vector is (an element in a vector space) but what is a matrix? You probably think of a matrix has a kind of 2-dimensional grid of numbers, and you know you can multiply matrices by other matrices and vectors and what not. Well a grid of numbers is certainly a convenient notation for matrices, but that's not what they <em>are</em>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="What's-a-matrix?">What's a matrix?<a class="anchor-link" href="#What's-a-matrix?">¶</a></h5><p>By this point, you should be comfortable with the idea of a function or map. These are both ways of translating one type of mathematical structure into another (or at least mapping one element in a structure to a different element in the same structure). In particular, we've spent a good amount of time working with boundary maps that mapped a higher-dimensional chain group to a lower dimensional chain group that preserved the structure of the original group in some way (it is a homomorphism).</p>
+<p>So just like we can have a map between two groups, we can have a map between two vector spaces. And we call (linear) maps between vector spaces, <strong>matrices</strong>. A matrix basically applies a linear transformation on a vector space (or individual vector element) producing new vector space. A <em>linear</em> transformation just implies that we can only transform the vector space via the normal vector operations of scaling by a constant and addition of a constant vector.</p>
+<blockquote><p><strong>Definition (Linear Tansformation)</strong> <br />
+More precisely, a linear transformation $M\ :\ V_1 \rightarrow V_2$ is a map $M$ from the vector spaces $V_1$ to $V_2$ such that $M(V_1 + V_2) = M(V_1) + M(V_2)$ and $M(aV_1) = aM(V_1)$ where $a$ is a scalar.</p>
+</blockquote>
+<p>Let's say we want to map the real-valued volume $\mathbb R^3$ to the plane $\mathbb R^2$.</p>
+$$
+\begin{aligned}
+V_1 &= span\{(1,0,0),(0,1,0),(0,0,1)\} \\
+V_2 &= span\{(1,0),(0,1)\}
+\end{aligned}
+$$<p>Now, what if I want to map $V_1$ to $V_2$, that is, I want to send every point in $V_1$ to a point in $V_2$. There are many reasons why I might want to do something like this. If I'm making a graphics application, for example, I want to offer an option to rotate images drawn, and this is simply a matter of applying a linear transformation on the pixels.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So we want a map $M : V_1 \rightarrow V_2$, and we'll call this map a matrix. Notice that $V_1$ has a basis with 3 elements, and $V_2$ has a basis with 2 elements. In order to map from one space to the other, we just need to map one basis set to another basis set. And remember, since this is a linear map, all we are allowed to do to a basis is multiply it by a scalar or add another vector to it; we can't do exotic things like square it or take the logarithm.</p>
+<p>Let's call the 3 basis elements of $V_1: B_1, B_2, B_3$. Hence, $V_1 = \langle{B_1, B_2, B_3}\rangle$.
+Similarly, we'll call the 2 basis elements of $V_2: \beta_1, \beta_2$. Hence, $V_2 = \langle{\beta_1, \beta_2}\rangle$. (Remember the angle brackets $\langle\rangle$ mean span, i.e. the set of all linear combinations of those elements). We can setup equations such that any vector in $V_1$ can be mapped to a vector in $V_2$ by using the fact that each vector space can be defined by their bases.</p>
+<blockquote><p><em>New Notation (Vector)</em> <br />
+To prevent confusion between symbols that refer to scalars and symbols that refer vectors, I will henceforth add a little arrow over every vector $\vec{v}$ to denote it is a vector, not a scalar. Remember, the scalar is just a single element from the underlying field $F$ over which the vector space is defined.</p>
+</blockquote>
+<p>We can define our map $M(V_1) = V_2$ in this way:</p>
+$$
+\begin{aligned}
+M(B_1) &= a\vec \beta_1 + b\vec \beta_2 \mid a,b \in \mathbb R \\
+M(B_2) &= c\vec \beta_1 + d\vec \beta_2 \mid c,d \in \mathbb R \\
+M(B_3) &= e\vec \beta_1 + f\vec \beta_2 \mid e,f \in \mathbb R \\
+\end{aligned}
+$$<p>That is, the map from each basis in $V_1$ is setup as a linear combination of the basis elements in $V_2$. This requires us to define a total of 6 new pieces of data: $a,b,c,d,e,f \in \mathbb R$ required for our mapping. We just have to keep track of the fact that $a,b$ are for mapping to $\beta_1$ and $d,e,f$ are for mapping to $\beta_2$. What's a convenient way to keep track of all of that? Oh I know, a matrix!</p>
+$$
+M = 
+\begin{pmatrix}
+a & c & e \\
+b & d & f \\
+\end{pmatrix}
+$$<p>That is a very convenient way to represent our map $M\ :\ V_1 \rightarrow V_2$ indeed. Notice that each <em>column</em> of this matrix corresponds to the "mapping equation" coefficients for each M(B_n). Also notice that the dimensions of this matrix, $2\times3$, corresponds to the dimensions of the two vector spaces we're mapping to and from. That is, any map $\mathbb R^n \rightarrow \mathbb R^m$ will be represented as an $m\times n$ matrix. It is important to keep in mind that since the linear map (and hence the matrix) depend on coefficients applied to a basis, then the matrix elements will change if one uses a different basis.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Knowing this we can easily see how vector-matrix multiplication <em>should</em> work and why the dimensions of a matrix and vector have to correspond. Namely, a $n \times m$ vector/matrix multiplied by a $j \times k$ vector/matrix must produce a $n \times k$ vector/matrix, and for it to work at all, $m = j$.</p>
+<p>This is how we can multiply our matrix map $M$ by any vector in $V_1$ to produce the mapped-to vector in $V_2$:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+$$
+M(\vec v\ \in\ V_1)
+=
+\underbrace{
+\begin{bmatrix}
+a & c & e \\
+b & d & f \\
+\end{bmatrix}}_{M:V_1\rightarrow V_2}
+\underbrace{
+\begin{pmatrix}
+x \\ y \\ z \\
+\end{pmatrix}}_{\vec v\ \in\ V_1}
+=
+\underbrace{
+\begin{bmatrix}
+a * x & c * y & e * z \\
+b * x & d * y & f * z \\
+\end{bmatrix}}_{M:V_1\rightarrow V_2}
+=
+\begin{pmatrix}
+a * x + c * y + e * z \\
+b * x + d * y + f * z \\
+\end{pmatrix}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ok now we know a matrix is a linear map between two vector spaces. But what happens if you multiply two matrices together? Well that is just a composition of maps. For example, we have three vector spaces $T, U, V$ and two linear maps $m_1, m_2$:</p>
+$$ T \stackrel{m_1}{\rightarrow} U \stackrel{m_2}{\rightarrow} V$$<p>To get from $T$ to $V$, we need to apply both maps: $m_2(m_1(T)) = V$. Hence, multiplying two matrices together gives us a composition of maps $m_2 \circ m_1$. The <em>identity</em> matrix is an identity map (i.e. it doesn't change the input) that takes the form where 1s are along the diagonal and 0s everywhere else, e.g.:</p>
+$$
+m=
+\begin{bmatrix}
+\ddots & 0 & 0 & 0 & ⋰ \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+⋰ & 0 & 0 & 0 & \ddots \\
+\end{bmatrix}
+\\
+m \vec V = \vec V
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Back-to-simplicial-homology-(again)">Back to simplicial homology (again)<a class="anchor-link" href="#Back-to-simplicial-homology-(again)">¶</a></h4><p>We learned all of that so we can represent the boundary map $\partial(C_n)$ as a <strong>matrix</strong> so we can apply the tools of linear algebra. This makes sense since we already know that the chain groups $C_n$ can be viewed as vector spaces when we allow scalar multiplication, so then a linear map between the chain vector spaces is the boundary map, that we can represent as a matrix.</p>
+<p>We represent an $n$-boundary map, i.e. $\partial(C_n)$, where $n$ is the dimension of the chain group, $k$ is the number of simplices in $C_n$ and $l$ is the number of simplices in $C_{n-1}$, as a matrix with $k$ columns and $l$ rows. Thus each column represents a simplex in $C_n$ and each row represents a simplex in $C_{n-1}$. We put a $1$ in a cell of the matrix if the simplex in that column maps to the simplex in that row. For example, $\partial([a,b]) = a - b$ if the field is $\mathbb Z$, so we will put a $1$ in the row for $a$ and $b$ since the 1-simplex $[a,b]$ maps to those two 0-simplices.</p>
+<p>Let's try calculating the homology groups of the previous simplicial complex (depicted below again) using matrices and vectors. We're going to go back to using $\mathbb Z_2$ as our field (so simplex orientation can be ignored) because it is computationally more efficient to do so.</p>
+$$ S = \text{ {[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]} } $$<p><img src="images/TDAimages/part4/simplicialcomplex5b.svg" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since we're using the (very small) finite field $\mathbb Z_2$ then we can actually list out all the vectors in our chain (group) vector space. We have 3 chain groups, namely the group of 0-simplices (vertices), 1-simplices (edges), and 2-simplices (triangle).</p>
+<p>In our example, we only have a single 2-simplex: [a,b,c], thus the group it generates over the field $\mathbb Z_2$ is only $\{0, [a,b,c]\}$ which is isomorphic to $\mathbb Z_2$. Recall, in general, the group generated by the number $n$ of $p$-simplices in a simplicial complex is isomorphic to $\mathbb Z^n_2$. For a computer to understand, we can encode the group elements just using their coefficients 1 or 1. So, for example, the group generated by $[a,b,c]$ can just be represented as $\{0,1\}$. Or the group generated by the 0-simplices $\{a, b, c, d\}$ can be represented by 4-dimensional vectors, for example, if a group element is $a+b+c$ then we encode this as $(1, 1, 1, 0)$ where each position represents the presence or abscence of $(a, b, c, d)$, respectively.</p>
+<p>Here are all the chain groups represented as vectors with just coefficients (I didn't list all elements for $C_1$ since there are so many [32]):</p>
+$$
+\begin{align}
+C_0
+&=
+\left\{
+\begin{array}{ll}
+(0,0,0,0) & (1,0,0,0) & (0,1,1,0) & (0,1,0,1) \\ 
+(0,1,0,0) & (0,0,1,0) & (0,0,1,1) & (0,1,1,1) \\ 
+(0,0,0,1) & (1,1,0,0) & (1,0,0,1) & (1,0,1,1) \\ 
+(1,1,1,0) & (1,1,1,1) & (1,0,1,0) & (1,1,0,1) \\ 
+\end{array} 
+\right.
+& \cong \mathbb Z^4_2
+\\
+C_1
+&=
+\left\{
+\begin{array}{ll}
+(0,0,0,0,0) & (1,0,0,0,0) & (0,1,1,0,0) & (0,1,0,1,0) \\ 
+(0,1,0,0,0) & (0,0,1,0,0) & (0,0,1,1,0) & (0,1,1,1,0) \\ 
+\dots
+\end{array} 
+\right.
+& \cong \mathbb Z^5_2
+\\
+C_2
+&=
+\left\{
+\begin{array}{ll}
+0 & 1
+\end{array} 
+\right.
+& \cong \mathbb Z_2
+\end{align}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To represent the boundary map (which is a linear map) of the group of $p$-simplices as a matrix, we set the columns to represent each $p$-simplex in the group, and the rows represent each $(p-1)$-simplex. We put a $1$ in each position of the matrix if the $(p-1)$-simplex row is a <em>face</em> of the $p$-simplex column.</p>
+<p>We index rows and columns as an ordered pair $(i, j)$ respectively. Thus the element $a_{2,3}$ is the element in the 2nd row (from the top) and the 3rd column (from the left).</p>
+<p>The generic boundary matrix is thus (each column is a $p$-simplex, each row is a $(p-1)$-simplex):</p>
+$$ \begin{align}
+\partial_p
+&=
+\begin{pmatrix}
+a_{1,1} & a_{1,2} & a_{1,3} & \cdots & a_{1,j}  \\ 
+a_{2,1} & a_{2,2} & a_{2,3} & \cdots & a_{2,j}  \\ 
+a_{3,1} & a_{3,2} & a_{3,3} & \cdots & a_{3,j}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\ 
+a_{i,1} & a_{i,2} & a_{i,3} & \cdots & a_{i,j}
+\end{pmatrix} 
+\end{align}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We'll start by representing the boundary map $\partial(C_2)$ as a matrix. There's only one 2-simplex in $C_2$ so there is only one column, but there are five 1-simplices in $C_1$ so there are 5 rows.</p>
+$$
+\partial_2 
+=
+\begin{array}{c|lcr}
+\partial & [a,b,c] \\
+\hline
+[a,b] & 1 \\
+[b,c] & 1 \\
+[c,a] & 1 \\
+[c,d] & 0 \\
+[d,b] & 0 \\
+\end{array}
+$$<p>We put a $1$ if each row-element was a face of the simplex $[a,b,c]$. This matrix makes sense as a linear map because if we multiply it by a vector element in $C_2$ (there's only 1, besides the 0 element) we get what we expect:</p>
+$$
+\begin{align}
+\begin{pmatrix}
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+\end{pmatrix} * 
+0 \qquad
+&= 
+\qquad
+\begin{pmatrix}
+0 \\
+0 \\
+0 \\
+0 \\
+0 \\
+\end{pmatrix} \\
+\begin{pmatrix}
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+\end{pmatrix} * 
+1 \qquad
+&= 
+\qquad
+\begin{pmatrix}
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+\end{pmatrix}
+\end{align}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay, let's move on to building the boundary matrix $\partial(C_1)$:</p>
+$$
+\partial_1 =
+\begin{array}{c|lcr}
+\partial & [a,b] & [b,c] & [c,a] & [c,d] & [d,b] \\
+\hline
+a & 1 & 0 & 1 & 0 & 0 \\
+b & 1 & 1 & 0 & 0 & 1 \\
+c & 0 & 1 & 1 & 1 & 0 \\
+d & 0 & 0 & 0 & 1 & 1 \\
+\end{array}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Does this make sense? Let's check with some python/numpy. Let's take an arbitrary element from the group of 1-chains, namely: $[a,b]+[c,a]+[c,d]$ which we've encoded as $(1,0,1,1,0)$ and apply the boundary matrix and see what we get.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#boundary matrix C_1</span>
+<span class="n">el</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#random element from C_1</span>
+<span class="n">np</span><span class="o">.</span><span class="n">fmod</span><span class="p">(</span><span class="n">b1</span> <span class="o">*</span> <span class="n">el</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># we want integers modulo 2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>matrix([[0],
+        [1],
+        [0],
+        [1]])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$\require{cancel}$</p>
+<p>Recall that $(0,1,0,1)$ translates to $b+d$. By hand we can calculate the boundary and compare: 
+$$\partial([a,b]+[c,a]+[c,d]) = a+b+c+a+c+d = \cancel{a}+b+\cancel{c}+\cancel{a}+\cancel{c}+d = b+d = (0,1,0,1)$$</p>
+<p>It works!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Lastly, we need the boundary matrix for $C_0$ which is trivial since the boundary of $0$-simplices always maps to $0$, so $$
+\partial_0 =
+\begin{pmatrix}
+0 & 0 & 0 & 0 \\
+\end{pmatrix}
+$$</p>
+<p>Okay, now we have our three boundary matrices, how do we calculate the Betti numbers? Well recall that sequence of subgroups of a chain group: $ B_n \leq Z_n \leq C_n $ which are the group of boundaries, group of cycles, and chain group, respectively.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Also recall that Betti $b_n = dim(Z_n\ /\ B_n)$. But that's when things were represented as just sets with group structure, now everything is represented as vectors and matrices, so instead we define the Betti number $b_n = rank(Z_n)\ -\ rank(B_n)$. What does <strong>rank</strong> mean? Rank and dimension are related but not the same. If we think of the columns of a matrix as a set basis vectors: $\beta_1, \beta_2, \dots \beta_k$ then the dimension of the span of those column vectors $\langle \beta_1, \beta_2, \dots \beta_k \rangle$ is the rank of the matrix. It turns out that you can also use the rows and it will have the same result. Importantly, however, dimension is defined on the smallest set of basis elements, i.e. the basis elements that are linearly independent.</p>
+<p>The boundary matrix $\partial_n$ contains the information for the chain group and cycles subgroup, and the $B_{n-1}$ boundary subgroup, all the information we need to calculate the Betti number. Unfortunately, in general, our naïve approach of building the boundary matrix is not in a form where the group and subgroup information is readily accessible. We need to modify the boundary matrix, without disturbing the mapping information it contains, into a new form called <strong>Smith normal form</strong>. Basically, the smith normal form of a matrix will have $1$s along the diagonal starting from the top left of the matrix and $0$s everywhere else.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For example,
+$$
+\begin{align}
+\text{Smith normal form}
+&:\ 
+\begin{pmatrix}
+1 & 0 & 0 & \cdots & 0  \\ 
+0 & 1 & 0 & \cdots & 0  \\ 
+0 & 0 & 1 & \cdots & 0  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\ 
+0 & 0 & 0 & \cdots & ?
+\end{pmatrix} 
+\end{align}
+$$</p>
+<p>Notice the $1$s along the diagonal do not necessarily need to extend all the way down to the bottom right. And here's the information available once it's in Smith normal form (the red diagonal box indicates the $1$s):
+<img src="images/TDAimages/part4/smithnormalformsubgroups.svg" />
+(Source: "COMPUTATIONAL TOPOLOGY" by Edelsbrunner and Harer, pg. 104)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So how do we get a matrix into Smith normal form? We do so by playing a game involving manipulating the matrix according to some rules. Here are the two allowed operations on the matrix:</p>
+<ol>
+<li>You can swap any two columns or any two rows in the matrix.</li>
+<li>You can add a column to another column, or a row to another row.</li>
+</ol>
+<p>Now you just need to apply these operations until you get the matrix in Smith normal form. I should point out that this process is alot easier when we use the field $\mathbb Z_2$. Let's try it out on the boundary matrix for $C_1$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+$$
+\partial_1 =
+\begin{array}{c|lcr}
+\partial & [a,b] & [b,c] & [c,a] & [c,d] & [d,b] \\
+\hline
+a & 1 & 0 & 1 & 0 & 0 \\
+b & 1 & 1 & 0 & 0 & 1 \\
+c & 0 & 1 & 1 & 1 & 0 \\
+d & 0 & 0 & 0 & 1 & 1 \\
+\end{array}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We already have 1s across the diagonal, but we have a lot of 1s not along the diagonal.<br />
+Steps: Add column 3 to 5, then add column 4 to 5, then add column 5 to 1, then swap columns 1 and 5:
+$$
+\partial_1 =
+\begin{pmatrix}
+1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+\end{pmatrix}
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Steps: Add column 1 to 3, add column 2 to 3, swap columns 3 and 4, add row 1 to 2, add row 4 to 2, add row 3 to 2, add row 4 to 3, swap rows 3 and 2, swap rows 4 and 3. Stop.
+$$
+\text{Smith normal form: }
+\begin{pmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+\end{pmatrix}
+$$
+Once we have the matrix in Smith normal form, we don't do any more operations. We could of course continue adding rows and columns together until we get a matrix of only 0s, but that wouldn't be very helpful! I sort of randomly added rows/columns to get it into the Smith normal form, but there really is an algorithm that can do it relatively efficiently.</p>
+<p>Rather than walk through the detailed implementation of the Smith normal form algorithm, I will merely use an <a href="https://triangleinequality.wordpress.com/2014/01/23/computing-homology/">existing algorithm</a>:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [41]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">reduce_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="c1">#Returns [reduced_matrix, rank, nullity]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">matrix</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">=</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+ 
+    <span class="k">def</span> <span class="nf">_reduce</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="c1">#We recurse through the diagonal entries.</span>
+        <span class="c1">#We move a 1 to the diagonal entry, then</span>
+        <span class="c1">#knock out any other 1s in the same  col/row.</span>
+        <span class="c1">#The rank is the number of nonzero pivots,</span>
+        <span class="c1">#so when we run out of nonzero diagonal entries, we will</span>
+        <span class="c1">#know the rank.</span>
+        <span class="n">nonzero</span><span class="o">=</span><span class="kc">False</span>
+        <span class="c1">#Searching for a nonzero entry then moving it to the diagonal.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">matrix</span><span class="p">[[</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="p">],:]</span><span class="o">=</span><span class="n">matrix</span><span class="p">[[</span><span class="n">i</span><span class="p">,</span><span class="n">x</span><span class="p">],:]</span>
+                    <span class="n">matrix</span><span class="p">[:,[</span><span class="n">x</span><span class="p">,</span><span class="n">j</span><span class="p">]]</span><span class="o">=</span><span class="n">matrix</span><span class="p">[:,[</span><span class="n">j</span><span class="p">,</span><span class="n">x</span><span class="p">]]</span>
+                    <span class="n">nonzero</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">nonzero</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="c1">#Knocking out other nonzero entries.</span>
+        <span class="k">if</span> <span class="n">nonzero</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_xor</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">x</span><span class="p">,:],</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">matrix</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">matrix</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_xor</span><span class="p">(</span><span class="n">matrix</span><span class="p">[:,</span><span class="n">x</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
+            <span class="c1">#Proceeding to next diagonal entry.</span>
+            <span class="k">return</span> <span class="n">_reduce</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#Run out of nonzero entries so done.</span>
+            <span class="k">return</span> <span class="n">x</span>
+    <span class="n">rank</span><span class="o">=</span><span class="n">_reduce</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">matrix</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">rank</span><span class="p">]</span>
+
+<span class="c1"># Source: < https://triangleinequality.wordpress.com/2014/01/23/computing-homology/ ></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [29]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reduce_matrix</span><span class="p">(</span><span class="n">b1</span><span class="p">)</span>
+<span class="c1">#Returns the matrix in Smith normal form as well as rank(B_n-1) and rank(Z_n)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[29]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>[matrix([[1, 0, 0, 0, 0],
+         [0, 1, 0, 0, 0],
+         [0, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0]]), 3, 2]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see we got the same result by hand, but surely the algorithm was more efficient.</p>
+<p>Since each boundary map gives us $Z_n$ (cycles) and $B_{n-1}$ (boundary for (n-1)-chain group) we need both $\partial_n$ and $\partial_{n+1}$ in order to calculate the Betti number for chain group $n$. Remember, we now calculate Betti numbers as <br />
+Betti $b_n = rank(Z_n) - rank(B_n)$</p>
+<p>Let's start calculating those Betti numbers.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [40]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Initialize boundary matrices</span>
+<span class="n">boundaryMap0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+<span class="n">boundaryMap1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">boundaryMap2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="c1">#Smith normal forms of the boundary matrices</span>
+<span class="n">smithBM0</span> <span class="o">=</span> <span class="n">reduce_matrix</span><span class="p">(</span><span class="n">boundaryMap0</span><span class="p">)</span>
+<span class="n">smithBM1</span> <span class="o">=</span> <span class="n">reduce_matrix</span><span class="p">(</span><span class="n">boundaryMap1</span><span class="p">)</span>
+<span class="n">smithBM2</span> <span class="o">=</span> <span class="n">reduce_matrix</span><span class="p">(</span><span class="n">boundaryMap2</span><span class="p">)</span>
+
+<span class="c1">#Calculate Betti numbers</span>
+<span class="n">betti0</span> <span class="o">=</span> <span class="p">(</span><span class="n">smithBM0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">smithBM1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">betti1</span> <span class="o">=</span> <span class="p">(</span><span class="n">smithBM1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">smithBM2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">betti2</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1">#There is no n+1 chain group, so the Betti is 0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">smithBM0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">smithBM1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">smithBM2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Betti #0: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Betti #1: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Betti #2: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">betti0</span><span class="p">,</span> <span class="n">betti1</span><span class="p">,</span> <span class="n">betti2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[matrix([[0, 0, 0, 0]]), 0, 4]
+[matrix([[1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0]]), 3, 2]
+[matrix([[1, 0, 0, 0, 0]]), 1, 4]
+Betti #0: 1 
+ Betti #1: 1 
+ Betti #2: 0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Great it worked!</p>
+<p>But we skipped an important step. We designed the boundary matrices by hand initially, in order to algorithm-ize the entire process from building a simplicial complex over data to computing Betti numbers, we need an algorithm that takes a simplicial complex and builds the boundary matrices. Let's tackle that now.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [138]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#return the n-simplices in a complex</span>
+<span class="k">def</span> <span class="nf">nSimplices</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">complex</span><span class="p">):</span>
+    <span class="n">nchain</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">simplex</span> <span class="ow">in</span> <span class="nb">complex</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">simplex</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">nchain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">simplex</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nchain</span> <span class="o">==</span> <span class="p">[]):</span> <span class="n">nchain</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">nchain</span>
+
+<span class="c1">#check if simplex is a face of another simplex</span>
+<span class="k">def</span> <span class="nf">checkFace</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">simplex</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">simplex</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="o"><</span> <span class="nb">set</span><span class="p">(</span><span class="n">simplex</span><span class="p">):</span> <span class="c1">#if face is a subset of simplex</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    
+<span class="c1">#build boundary matrix for dimension n ---> (n-1) = p</span>
+<span class="k">def</span> <span class="nf">boundaryMatrix</span><span class="p">(</span><span class="n">nchain</span><span class="p">,</span> <span class="n">pchain</span><span class="p">):</span>
+    <span class="n">bmatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">nchain</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">pchain</span><span class="p">)))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">nSimplex</span> <span class="ow">in</span> <span class="n">nchain</span><span class="p">:</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pSimplex</span> <span class="ow">in</span> <span class="n">pchain</span><span class="p">:</span>
+            <span class="n">bmatrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">checkFace</span><span class="p">(</span><span class="n">pSimplex</span><span class="p">,</span> <span class="n">nSimplex</span><span class="p">)</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">bmatrix</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Those are very simple helper functions that we'll use to build the boundary matrix and then use the previously described reduction algorithm to get it into Smith normal form. Remember, the simplicial complex example we're using looks like this:
+<img src="images/TDAimages/part4/simplicialcomplex5b.svg" />
+I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [139]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span> <span class="c1">#this is our simplex from above</span>
+
+<span class="n">chain2</span> <span class="o">=</span> <span class="n">nSimplices</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+<span class="n">chain1</span> <span class="o">=</span> <span class="n">nSimplices</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+<span class="n">reduce_matrix</span><span class="p">(</span><span class="n">boundaryMatrix</span><span class="p">(</span><span class="n">chain2</span><span class="p">,</span> <span class="n">chain1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[139]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>[array([[ 1.,  0.,  0.,  0.,  0.],
+        [ 0.,  1.,  0.,  0.,  0.],
+        [ 0.,  0.,  1.,  0.,  0.],
+        [ 0.,  0.,  0.,  0.,  0.]]), 3, 2]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's put everything together and make a function that will return all the Betti numbers of a simplicial complex.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [206]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">betti</span><span class="p">(</span><span class="nb">complex</span><span class="p">):</span>
+    <span class="n">max_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">complex</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span> <span class="c1">#get the maximum dimension of the simplicial complex, 2 in our example</span>
+    <span class="n">betti_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_dim</span><span class="p">)</span> <span class="c1">#setup array to store n-th dimensional Betti numbers</span>
+    <span class="n">z_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_dim</span><span class="p">)</span> <span class="c1">#number of cycles (from cycle group)</span>
+    <span class="n">b_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_dim</span><span class="p">)</span> <span class="c1">#b_(n-1) boundary group</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_dim</span><span class="p">):</span> <span class="c1">#loop through each dimension starting from maximum to generate boundary maps</span>
+        <span class="n">bm</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#setup n-th boundary matrix</span>
+        <span class="n">chain2</span> <span class="o">=</span> <span class="n">nSimplices</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span> <span class="c1">#n-th chain group</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="c1">#there is no n+1 boundary matrix in this case</span>
+            <span class="n">bm</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">z_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain2</span><span class="p">)</span>
+            <span class="n">b_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">chain1</span> <span class="o">=</span> <span class="n">nSimplices</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span> <span class="c1">#(n-1)th chain group</span>
+            <span class="n">bm</span> <span class="o">=</span> <span class="n">reduce_matrix</span><span class="p">(</span><span class="n">boundaryMatrix</span><span class="p">(</span><span class="n">chain2</span><span class="p">,</span> <span class="n">chain1</span><span class="p">))</span>
+            <span class="n">z_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">b_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#b_(n-1)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_dim</span><span class="p">):</span> <span class="c1">#Calculate betti number: Z_n - B_n</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o"><</span> <span class="n">max_dim</span><span class="p">:</span>
+            <span class="n">betti_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">b_n</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">betti_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span> <span class="c1">#if there are no higher simplices, the boundary group of this chain is 0</span>
+
+    <span class="k">return</span> <span class="n">betti_array</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Alright, no we should have everything we need to calculate the set of Betti numbers on any arbitrary simplicial complex given in the right format. Keep in mind that all this code is for learning purposes so I've kept it intentionally simple. It is not production ready. It has basically no safety checks so it will just fail if it gets something even slightly unexpected.</p>
+<p>But let's see how versatile our procedure is by trying it out on various simplicial complexes.</p>
+<p>Let $H = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }$
+<img src="images/TDAimages/part4/simplicialComplex7a.png" /></p>
+<p>As you can tell this is the same simplicial complex we've been working with except now it has a disconnected edge on the right. Thus we should get Betti=2 for dimension 0 since there are 2 connect components.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [212]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="n">betti</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[212]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 2.,  1.,  0.])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's try another one, now with 2 cycles and 2 connect components. <br />
+Let $Y_1 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {0, 6}, {2, 6}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }$
+<img src="images/TDAimages/part4/simplicialComplex7b.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [213]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y1</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="n">betti</span><span class="p">(</span><span class="n">Y1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[213]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 2.,  2.,  0.])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here's another. I just added a stranded vertex: <br />
+Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }$
+<img src="images/TDAimages/part4/simplicialComplex7c.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [214]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y2</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">7</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="n">betti</span><span class="p">(</span><span class="n">Y2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[214]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 3.,  2.,  0.])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One last one. This is a hollow tetrahedron:
+<img src="images/TDAimages/part4/simplicialComplex8a.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [215]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}]</span>
+<span class="n">betti</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[215]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 1.,  0.,  1.])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Exactly what we expect! Okay, it looks like we can reliably calculate Betti numbers for any arbitrary simplicial complex.</p>
+<h6 id="What's-next?">What's next?<a class="anchor-link" href="#What's-next?">¶</a></h6><p>These first 4 posts were all just exposition on the math and concepts behind persistent homology, but so far all we've done is (non-persistent) homology. Remember back in part 2 where we wrote an algorithm to build a simplicial complex from data? Well recall that we needed to arbitrarily choose a parameter $\epsilon$ that determined whether or not two vertices were close enough to connect with an edge. If we set a small $\epsilon$ then we'd have a very dense graph with a lot of edges, if we chose a large $\epsilon$ then we'd get a more sparse graph.</p>
+<p>The problem is we have no way of knowing what the "correct" $\epsilon$ value should be. We will get dramatically different simplicial complexes (and thus different homology groups and Betti numbers) with varying levels of $\epsilon$. Persistent homology basically says: let's just continuously scale $\epsilon$ from 0 to the maximal value (where all vertices are edge-wise connected) and see which topological features <em>persist</em> the longest. We then believe that topological features (e.g. connected components, cycles) that are short-lived across scaling $\epsilon$ are noise whereas those that are long-lived (i.e. persistent) are <em>real</em> features of the data. So next time we will work on modifying our algorithms to be able to continuously vary $\epsilon$ while tracking changes in the calculated homology groups.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References-(Websites):">References (Websites):<a class="anchor-link" href="#References-(Websites):">¶</a></h4><ol>
+<li><a href="http://dyinglovegrape.com/math/topology_data_1.php">http://dyinglovegrape.com/math/topology_data_1.php</a></li>
+<li><a href="http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf">http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Group_(mathematics">https://en.wikipedia.org/wiki/Group_(mathematics</a>)</li>
+<li><a href="https://jeremykun.com/2013/04/03/homology-theory-a-primer/">https://jeremykun.com/2013/04/03/homology-theory-a-primer/</a></li>
+<li><a href="http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf">http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</a></li>
+<li><a href="http://www.mit.edu/~evanchen/napkin.html">http://www.mit.edu/~evanchen/napkin.html</a></li>
+<li><a href="https://triangleinequality.wordpress.com/2014/01/23/computing-homology">https://triangleinequality.wordpress.com/2014/01/23/computing-homology</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References-(Academic-Publications):">References (Academic Publications):<a class="anchor-link" href="#References-(Academic-Publications):">¶</a></h4><ol>
+<li><p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from <a href="http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf">http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</a></p>
+</li>
+<li><p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
+</li>
+<li><p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
+</li>
+<li><p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from <a href="http://www.cs.duke.edu/courses/fall06/cps296.1/">http://www.cs.duke.edu/courses/fall06/cps296.1/</a></p>
+</li>
+<li><p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
+</li>
+<li><p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
+</li>
+<li><p>Grigor’yan, A., Muranov, Y. V., & Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. <a href="http://doi.org/10.4310/HHA.2014.v16.n1.a16">http://doi.org/10.4310/HHA.2014.v16.n1.a16</a></p>
+</li>
+<li><p>Kaczynski, T., Mischaikow, K., & Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. <a href="http://doi.org/10.4310/HHA.2003.v5.n2.a8">http://doi.org/10.4310/HHA.2003.v5.n2.a8</a></p>
+</li>
+<li><p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
+</li>
+<li><p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
+</li>
+<li><p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
+</li>
+<li><p>Lakshmivarahan, S., & Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
+</li>
+<li><p>Liu, X., Xie, Z., & Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. <a href="http://doi.org/10.4310/HHA.2012.v14.n1.a11">http://doi.org/10.4310/HHA.2012.v14.n1.a11</a></p>
+</li>
+<li><p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
+</li>
+<li><p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., & Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from <a href="http://arxiv.org/abs/1506.08903">http://arxiv.org/abs/1506.08903</a></p>
+</li>
+<li><p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
+</li>
+<li><p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
+</li>
+<li><p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</a></p>
+</li>
+<li><p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. <a href="http://doi.org/10.1016/j.cag.2010.03.007">http://doi.org/10.1016/j.cag.2010.03.007</a></p>
+</li>
+<li><p>Symmetry and Group Theory 1. (2016), 1–18. <a href="http://doi.org/10.1016/B978-0-444-53786-7.00026-5">http://doi.org/10.1016/B978-0-444-53786-7.00026-5</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/TDApart4.html">posted at 00:35</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/topological-data-analysis.html" rel="tag">Topological Data Analysis</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/tda.html" class="tags">TDA</a>
+                    &nbsp;<a href="/tag/persistent-homology.html" class="tags">persistent-homology</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

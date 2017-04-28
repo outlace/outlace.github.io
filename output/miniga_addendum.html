@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Simple Genetic Algorithm in Python --Addendum</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="GA,evolution" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Sep 12, 2015</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/miniga_addendum.html" rel="bookmark" title="Permanent Link to &quot;Simple Genetic Algorithm in Python --Addendum&quot;">Simple Genetic Algorithm in Python --Addendum</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Simple-Genetic-Algorithm-in-Python---Addendum">Simple Genetic Algorithm in Python --Addendum<a class="anchor-link" href="#Simple-Genetic-Algorithm-in-Python---Addendum">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id='A-brief-addendum-to-my-previous-post-"Simple-Genetic-Algorithm-In-15-Lines-Of-Python"'>A brief addendum to my previous post <a href="Simple-Genetic-Algorithm-in-15-lines-of-Python/">"Simple Genetic Algorithm In 15 Lines Of Python"</a><a class="anchor-link" href='#A-brief-addendum-to-my-previous-post-"Simple-Genetic-Algorithm-In-15-Lines-Of-Python"'>¶</a></h5><p>First, I'd like to apologize for jumping on the here's-how-to-implement-X-in-Y-lines-of-code bandwagon in my previous post. As many people have pointed out, who care's how many lines of code it takes to implement X as long as it's well-explained?</p><p>Okay, now that I've cleansed my soul of that sin, let's get to what this addendum is all about. Basically this is just a quick demonstration of the same genetic algorithm (GA) from my last post except instead of using it to find the weights for that ultra-simple 2-layer neural network, I've just modified it slightly to find the weights for a 3 layer XOR neural network (yes, I'm tired of XOR too, but it's just soo useful). So this neural network has a total of 13 weights: 3x3 weights for the input-to-hidden layer, and 4x1 weights for the hidden-to-output layer.
+</p><p><em>__Why is this necessary?__</em> I received some comments that suggested doubt over whether the genetic algorithm is actually robust. I think that's valid because the problem it was solving was really too easy. With such a small search space, there was likely a good solution in the very first, randomly intialized, generation. Thus it is a reasonable suspicion that our mutation and 'mating' process, for example, weren't actually contributing to solving the problem. Extending our search space from a 3-element vector to a 13-element vector significantly increases the difficulty of the problem and we can see the GA utilizing all it's evolutionary 'tools,' so to speak.</p><p> We'll begin by running it with some optimized parameters I figured out empirically, but then we'll explore the effects of varying the parameters and hopefully convince ourselves the GA is actually 'evolving' toward an optimal solution versus doing something less interesting.</p><p>
+I'm not going to go line-by-line and explain what's going on here, because I really haven't changed much from my previous post and this isn't meant to be a tutorial, it's an exploration. Here's the code for the XOR neural network (which I store in a separate file and import into the GA file).
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [70]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#the third element in each tuple is the bias value (1)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">init_theta</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="c1">#lazy way to initialize</span>
+
+<span class="k">def</span> <span class="nf">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+	<span class="n">theta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">theta</span><span class="p">[:</span><span class="mi">9</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+	<span class="n">theta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">9</span><span class="p">:])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">h1</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta1</span><span class="p">))</span> <span class="c1">#4x3 * 3x3 = 4x3</span>
+	<span class="n">h1_bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">output</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">h1_bias</span><span class="p">,</span> <span class="n">theta2</span><span class="p">))</span> <span class="c1">#4x4 * 4x1 = 4x1</span>
+	<span class="k">return</span> <span class="n">output</span>
+	<span class="c1">#4x3 * 3x1 = 4x1</span>
+<span class="k">def</span> <span class="nf">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+	<span class="n">hThetaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">hThetaX</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">demoRun</span><span class="p">():</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">"Random theta: </span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init_theta</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">"Cost: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">init_theta</span><span class="p">)))</span>
+    <span class="c1">#this "optimal theta" was found from a previous run of the GA</span>
+	<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">10.27649069</span><span class="p">,</span> <span class="o">-</span><span class="mf">14.03</span><span class="p">,</span> <span class="mf">10.45888659</span><span class="p">,</span> <span class="mf">9.12</span><span class="p">,</span> <span class="mf">14.87</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.50294038</span><span class="p">,</span> <span class="mf">1.85</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.28</span><span class="p">,</span> 
+                       <span class="o">-</span><span class="mf">0.15360052</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.21345025</span><span class="p">,</span> <span class="mf">35.77912716</span><span class="p">,</span> <span class="mf">11.05</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.49589577</span><span class="p">])</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">"Optimal theta: </span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">"Cost: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">)))</span>
+<span class="n">demoRun</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Random theta: 
+[[ 0.71]
+ [ 0.53]
+ [ 0.74]
+ [ 0.7 ]]
+
+Cost: 2.13729248257
+
+Optimal theta: 
+[[ 0.]
+ [ 1.]
+ [ 1.]
+ [ 0.]]
+
+Cost: 0.00107762026703
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay, just making sure the neural network works properly...and it does...</p>
+<p>Keep in mind that we're working with 'unrolled' theta (weight) vectors. Unlike my previous post that only had one set of weights between the two layers, now we have 3 layers but our GA is only going to generate and use 1-dimensional vectors of length 13, then our neural network will just slice that up to get two weight vectors, theta1 and theta2. I.e. theta1 = the first 9 elements reshaped to a 3x3 matrix, and theta2 = the last 4 elements reshaped to a 4x1 matrix.</p>
+<p>Here's the code for the GA. It's nearly exactly the same as the GA code posted at the bottom (the more readable version) of the previous post.</p>
+<p>I've made the following modifications to the paremeters:</p>
+<ol>
+<li>Reduced the initial population (initPop) size to 80. Why? To reduce chance of getting a good solution from the random first generation, I want to make sure to show off the evolutionary process.</li>
+<li>Reduced mutation rate (mutRate) to 0.01 = 1%. I did this from experimenting.</li>
+<li>Changed the number of generations (numGen) to 30</li>
+<li>Increased the solution length from 3 to 13 (since our new unrolled theta vector is of length 13)</li>
+</ol>
+<p>Alright, let's watch it run with those parameters:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="c1"># [Initial population size, mutation rate (=1%), num generations (30), solution length (30), # winners/per gen]</span>
+<span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
+<span class="c1">#initialize current population to random values within range</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">initPop</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="c1">#1st col is indices, 2nd col is cost</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numGen</span><span class="p">):</span> <span class="c1">#iterate through num generations</span>
+    <span class="c1">#Create vector of all errors from cost function for each solution</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">initPop</span><span class="p">)])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numWin</span><span class="p">,</span> <span class="n">solLen</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">numWin</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
+	<span class="n">duplicWin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))),</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span> <span class="c1">#for each col in winners (3 cols)</span>
+        <span class="c1">#Duplicate winners (20x3 matrix) 3 times to create 80x3 matrix, then shuffle columns</span>
+		<span class="n">numDups</span> <span class="o">=</span> <span class="p">((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span> <span class="c1">#num times to duplicate to fill rest of nextPop</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="n">numDups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="c1">#duplicate each col</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">])</span> <span class="c1">#shuffle each col ("crossover")</span>
+    <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">)</span>
+    <span class="c1">#Create a mutation matrix, mostly 1s, but some elements are random numbers from a normal distribution</span>
+	<span class="n">mutMatrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">rn</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">mutRate</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+    <span class="c1">#randomly mutate part of the population by multiplying nextPop by our mutation matrix</span>
+	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mutMatrix</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> 
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Total cost/err'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Generation #'</span><span class="p">)</span>
+<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best Sol'n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Best Sol'n:
+[[-10.27649069 -14.03        10.45888659   9.12        14.87       -21.50294038
+    1.85       -13.28        -0.15360052 -11.21345025  35.77912716  11.05
+   -2.49589577]]
+Cost:0.00107762027157
+When X = 
+[[0 0]
+ [0 1]
+ [1 0]
+ [1 1]] 
+hThetaX = 
+[[ 0.]
+ [ 1.]
+ [ 1.]
+ [ 0.]]
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+MX0NqD0AAAAASUVORK5CYII=
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can see it converges after about 10 generations, a little over twice as long as it took for the simple 2-layer neural network despite our search space is more than 4 times bigger. With the parameters I've used here, it properly converges almost every time I run it.</p>
+<p>Now I want to demonstrate what it looks like when we change the mutation rate to <strong>10%</strong> (I've removed all the comments to reduce the code size a bit).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [73]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">initPop</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numGen</span><span class="p">):</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">initPop</span><span class="p">)])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numWin</span><span class="p">,</span> <span class="n">solLen</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">numWin</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+	<span class="n">duplicWin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))),</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+		<span class="n">numDups</span> <span class="o">=</span> <span class="p">((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="n">numDups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">])</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">)</span>
+	<span class="n">mutMatrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">rn</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">mutRate</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mutMatrix</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> 
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Total cost/err'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Generation #'</span><span class="p">)</span>
+<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best Sol'n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Best Sol'n:
+[[ -8.01259712e+00   3.14587352e+01   1.40600000e+01   6.65543028e-02
+    1.01012825e+02  -8.45144543e+01   8.72955079e+00  -1.04300000e+01
+   -4.53000000e+00  -1.74629574e+01   2.64781112e+01   6.63253301e+01
+   -1.97971192e+00]]
+Cost:1.00087335923
+When X = 
+[[0 0]
+ [0 1]
+ [1 0]
+ [1 1]] 
+hThetaX = 
+[[ 0.]
+ [ 1.]
+ [ 1.]
+ [ 1.]]
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With a mutation rate of 10% the error trends downward but fails to converge (trust me, I ran it a few times, it almost never converges). This mutation rate is too big, any good solution is likely to just get destroyed by the mutation process.</p>
+<p>Let's try a really low mutation rate, actually let's just make the mutation rate <strong>0%</strong>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [77]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">initPop</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numGen</span><span class="p">):</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">initPop</span><span class="p">)])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numWin</span><span class="p">,</span> <span class="n">solLen</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">numWin</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+	<span class="n">duplicWin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))),</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+		<span class="n">numDups</span> <span class="o">=</span> <span class="p">((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="n">numDups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">])</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">)</span>
+	<span class="n">mutMatrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">rn</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">mutRate</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mutMatrix</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> 
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Total cost/err'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Generation #'</span><span class="p">)</span>
+<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best Sol'n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Best Sol'n:
+[[  5.08 -12.1    6.61   0.48  14.44  -8.22  -9.47   1.94   8.45 -13.2
+   -4.37  -4.07   6.79]]
+Cost:0.92032599599
+When X = 
+[[0 0]
+ [0 1]
+ [1 0]
+ [1 1]] 
+hThetaX = 
+[[ 0.]
+ [ 1.]
+ [ 1.]
+ [ 0.]]
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here the error trends downward and just flatlines every time. From running this a few times, it converges most of the time but not as frequently as with a mutation rate of 1%. Also, you'll notice that the total error at the end is <strong>0.92</strong> and it generally stays about the same from a few runs. However, looking back when we used mutRate=0.01, the error get's really, really low at about <strong>0.0011</strong></p>
+<p>This demonstrates how a good mutation rate can help the GA escape local minima and maintain 'genetic diversity' in every generation.</p>
+<p>Now let's return to our good mutation rate of 1% but let's disable the 'mating' process by commenting out that line of code and see what happens.</p>
+<h5 id="Mating-disabled:">Mating disabled:<a class="anchor-link" href="#Mating-disabled:">¶</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [84]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">initPop</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numGen</span><span class="p">):</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">initPop</span><span class="p">)])</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numWin</span><span class="p">,</span> <span class="n">solLen</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">numWin</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+	<span class="n">duplicWin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))),</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+		<span class="n">numDups</span> <span class="o">=</span> <span class="p">((</span><span class="n">initPop</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span>
+		<span class="n">duplicWin</span><span class="p">[:,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="n">numDups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="c1">#duplicWin[:, x] = np.random.permutation(duplicWin[:, x]) Disabled mating process</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">duplicWin</span><span class="p">)</span>
+	<span class="n">mutMatrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">rn</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">mutRate</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mutMatrix</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> 
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Total cost/err'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Generation #'</span><span class="p">)</span>
+<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best Sol'n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Best Sol'n:
+[[ 17.04173136  10.77       -28.33009951 -10.72        -0.30622293
+  -20.70366345  13.6         -3.37855753   3.62        13.16        -4.68347871
+  -17.17325518  -1.88      ]]
+Cost:1.00371505771
+When X = 
+[[0 0]
+ [0 1]
+ [1 0]
+ [1 1]] 
+hThetaX = 
+[[ 0.]
+ [ 1.]
+ [ 1.]
+ [ 1.]]
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+AElFTkSuQmCC
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is a particularly interesting run (I ran it with these parameters about 8 times). It only correctly converged once (but didn't achieve the really low error rate we got in the beginning with 1% mut rate and mating enabled). The error vs. num generations graph looked quite different each time I ran it but I'm displaying this one because I think it illustrates nicely what happens when there's no mating.</p>
+<p>At first we get a sharp drop in error; it's simply selecting for the best solutions in our first generation. Then it flattens out for awhile because we're having a really hard time improving on those initial decent solutions without mating, but eventually, due to a lucky mutation round, we get another sharp decline in error and then it flattens out again. But it's still not good enough to globally converge and solve the problem.</p>
+<p>Clearly, the mating process is more important than the mutation process.</p>
+<h4 id="Closing-words...">Closing words...<a class="anchor-link" href="#Closing-words...">¶</a></h4><p>I hope that quells any concerns about the genetic algorithm not actually doing it's evolutionary due diligence. It's also just interesting to experiment with the parameters to see how it affects the performance of the algorithm.</p>
+<p>This is a simple genetic algorithm implementation. Natural organisms have evolved much more sophisticated ways of controlling their own evolution. "In general, the mutation rate in unicellular eukaryotes and bacteria is roughly 0.003 mutations per genome per cell generation" - <a href="https://en.wikipedia.org/wiki/Mutation_rate">Wikipedia</a>. This much lower than our 1% mutation rate, but our solution space is also much, much smaller.</p>
+<p>Interestingly, however, different genes in the same organism can experience different rates of mutation. In fact, some organisms <em>intentionally</em> subject particular genes to higher rates of mutation (for example, the human immune system involves hypermutating the genes of antibodies to produce higher affinity versions; a sort of evolutionary process in the cells of our own bodies that evolved from an evolutionary process). It would be a fun experiment to try to emulate this behavior in a GA by allowing a separate mutation rate for each 'gene' (element in a vector, in our case) and subjecting those mutation rates themselves to an evolutionary process. It's very unlikely this would help the GA for a simple feedforward neural network (and the overhead to implement it wouldn't be worth it) but could be useful with more complex problems.</p>
+<p>As a former neuroscience researcher and current medical student, I'm quite fascinated by "bio-similar" algorithms like GAs and neural networks, so combining those two here has just filled me with nerd joy.</p>
+<p>Cheers</p>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/miniga_addendum.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/genetic-algorithms.html" rel="tag">Genetic Algorithms</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/ga.html" class="tags">GA</a>
+                    &nbsp;<a href="/tag/evolution.html" class="tags">evolution</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

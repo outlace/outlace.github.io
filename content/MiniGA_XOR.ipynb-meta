@@ -1,0 +1,9 @@
+---
+Title: Simple Genetic Algorithm in Python --Addendum
+Slug: miniga_addendum
+Date: 2015-09-12
+Category: Genetic Algorithms
+Tags: GA, evolution
+Author: outlace
+Summary: A brief addendum to my previous post on a simple genetic algorithm. Here I explore how varying the parameters affects our GA performance.
+---

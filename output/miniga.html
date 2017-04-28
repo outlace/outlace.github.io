@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Simple Genetic Algorithm In 15 Lines Of Python</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon" />
+
+    <meta name="keywords" content="GA,evolution" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/tags">Tags</a></li>
+                <li><a href="/categories">Categories</a></li>
+                <li><a href="/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ My experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Jul 15, 2015</h4>
+
+            <article class="post"> 
+                <h2 class="title">
+                    <a href="/miniga.html" rel="bookmark" title="Permanent Link to &quot;Simple Genetic Algorithm In 15 Lines Of Python&quot;">Simple Genetic Algorithm In 15 Lines Of Python</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><h1>Genetic Algorithm in 15 lines of Python code</h1></p>
+<h4>A simple yet powerful genetic algorithm implementation used to train a neural network in 15 lines of code.</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p style="font-size:smaller;"><b>Disclaimer: </b> I am not a machine learning expert by any means, I mostly do web development, so this is not my forte at all, but I have enjoyed messing around writing basic neural nets and genetic algorithms and am just trying to share what little I've learned to other neophytes out there.</p>
+<p><b>Summary:</b>
+This is a spinoff of a really great tutorial called "A Neural Network in 11 lines of Python" found here: < http://iamtrask.github.io/2015/07/12/basic-python-network/ > So please go through that article first otherwise this may not make any sense. <br />
+Here I will show you how I wrote a basic genetic algorithm (GA) that finds an optimal set of weights to train the neural network. I'm not going to go into detail about what a genetic algorithm is, so if you're already not familiar with them, please do some googling. 
+<p style="font-size:small;">By the way, GAs are generally much slower than good ol' gradient descent, but I think applying GAs to a simple neural net is a more fun way to learn it. Also, GAs may be good for finding an optimal set of <em>hyperparameters</em> for a neural net (e.g. the net architecture).</p>
+</p></div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3>Just Give Me The Code:</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><br />Ok, so I'm assuming that code is completely not helpful at this point, and in fact, it won't even run if you tried to copy and paste and run it because you also need the code for the Neural Network, which I stored in a separate file and imported. Let's first talk about the general steps in implementing a genetic algorithm and then we'll break down the code line by line, add in some print() statements to see what's going on, and maybe even make some fancy graphs.<p>Essentially, a genetic algorithm is a search algorithm that will hopefully find an optimal solution through a process that simulates natural selection and evolution. Here's the overall flow for how they work:</p></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>We generate a population of random potential solutions</li>
+<li>Then we iterate through this population and assess the fitness of (i.e. how good of a solution) each solution</li>
+<li>We prefentially select solutions with higher fitness to survive and make it to the next generation.
+Solutions with higher fitness have a higher probability of being selected</li>
+<li>These "winner" solutions then "mate" and produce offspring solutions. For example, if our solutions are simply 
+vectors of integers, then mating vector1 with vector2 involves taking a few elements from vector1 and combining it with a few elements of vector2 to make a new offspring vector of the same dimensions. Vector1: [1 2 3], Vector2: [4 5 6]. Vector1 mates with Vector2 to produce [4 5 3] and [1 2 6]</li>
+<li>So now we have a new population with the top solutions from the last generation along with new offspring solutions, at this point, we will iterate over our solutions and randomly mutate some of them to make sure to introduce new "genetic diversity" into every generation to prevent premature convergence on a local optimum.</li>
+<li>Repeat this process for X number of generations or until we have a sufficiently good solution</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As a quick review, the iamtrask article shows you how to implement a really simple 2-layer (1 input layer, 1 output layer) neural network that is trained to solve this problem:</p>
+<p><table class="tg" style="width: 234px; margin-right: 65vw;">
+<tbody><tr>
+<th class="tg-5rcs" colspan="3">Inputs</th>
+<th class="tg-5rcs">Output</th>
+</tr>
+<tr>
+<td class="tg-4kyz">0</td>
+<td class="tg-4kyz">0</td>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">0</td>
+</tr>
+<tr>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">1</td>
+</tr>
+<tr>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">0</td>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">1</td>
+</tr>
+<tr>
+<td class="tg-4kyz">0</td>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">1</td>
+<td class="tg-4kyz">0</td>
+</tr>
+</tbody></table>
+</p></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, the output simply depends on whether the first input is a 1 or not. The 2nd input is irrelevant and the 3rd input is our bias (explained elsewhere).</p>
+<p>If you train the 2-layer neural net (thus one set of weights) using gradient descent using the implementation in the iamtrask article, you will get a set of weights close to this:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>[[ 9.67299303],[-0.2078435],[-4.62963669]]</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And if you calculate the cost using these weights (the cost function is a simple difference between expected and actual output values), you get...</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>Cost: 0.0557587344696</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pretty low right? Now just to jump ahead a bit, when I tuned the genetic algorithm and ran it a couple of times, it found a completely different set of weights:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>[[  3.09686945e+05  -7.88485054e-03  -1.67477116e+03]]
+<br />Cost: 0.0</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Obviously these weights resulted in a significantly lower cost (better fitness). In all honesty however, for this simplistic problem, the difference in cost is pretty inconsequential. In more complex problems, a cost that low is probably resulting in overfitting. Not to mention, genetic algorithms almost certainly will take longer to converge than gradient descent. But let's ignore all those details, we just want to build a genetic algorithm because they're cool.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Before I jump into the details of the genetic algorithm, I want to revisit the neural net. Here's the code for the neural net I implemented, which is an adaptation from the one by iamtrask:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#training data X</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#training data Y</span>
+<span class="n">syn0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1">#randomize intial weights (Theta)</span>
+
+<span class="k">def</span> <span class="nf">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span> <span class="c1">#this runs our net and returns the output</span>
+	<span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span> <span class="c1">#our cost function, simply determines the arithmetic difference between the expected y and our actual y</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+	<span class="n">hThetaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">hThetaX</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">x</span><span class="p">))</span> <span class="c1">#Just our run-of-the-mill sigmoid function</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You should be able to figure this out if you've run through the iamtrask article or already have an understanding of neural nets. Just a note: I call the weights Theta. Let's go ahead and run this network just to make sure it's working right.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">syn0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 0.31364485])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We expect to get about [ 0 ] for an input of [0,1,1], but obviously when we use random weights, that's not likely to happen. Let's try again with those weights I got from doing gradient descent (not shown here).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">9.67299303</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.2078435</span><span class="p">],[</span><span class="o">-</span><span class="mf">4.62963669</span><span class="p">]])</span>
+<span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 0.00786466])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, we get a value pretty close to 0, as expected. Nice. Okay, so now let's try the weights I got from running the genetic algorithm.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_theta_ga</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.09686945e+05</span><span class="p">,</span><span class="o">-</span><span class="mf">7.88485054e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.67477116e+03</span><span class="p">])</span>
+<span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta_ga</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/IPython/kernel/__main__.py:14: RuntimeWarning: overflow encountered in exp
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.0</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Wow! The result we get here is so close to zero we get an overflow warning. Just ignore that, the point is, the error/cost is really, really low. (Again, this is not necessarily a good thing...becauase of potential overfitting, but for this particular problem, overfitting is fine). Just to make things really clear, let's take a look at what these weights are doing diagramatically.</p>
+<div>
+<img src="images/NNDiagram1.png" style="display:inline-block;" width="200px" /><img src="images/NNDiagram2.png" style="display:inline-block;" width="200px" />
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So as you can see on the right, whenever the bottom (left-most) input is 1, a really, really big number gets sent over to our sigmoid function, which will of course return something very close to 1.</p>
+<p>Alright, so enough about the neural network. Let's go line by line with the genetic algorithm (skipping imports).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1">#These are just some parameters for the GA, defined below in order:</span>
+<span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Nothing too interesting there, but just noting that params[3] (solution length) refers to the number of elements in each individual solution. Since our solutions are weights to the 2-layer neural net, each solution is a 3 element vector (numpy array). Also need to note the last parameter, params[4] refers to how many solutions we will pick as winners from each generation to populate the new generation. So out of total population of 100, every generation we will preferentially pick the top 20 solutions, populate the new generation with them and their offspring.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The top line is the most important here. Basically we're creating a matrix 100x3 with an initial population of random solutions. We're using the np.arange() function to create a bunch of values -15, -14.99, -14.89....15  in order in a long array, then we use np.random.choice() to randomly choose 100x3 = 300 of them to build the 100x3 matrix of initial solutions. This isn't the most computationally efficient way to do things, but I've found it works really well. This is certainly not the only way to do it, and I encourage you to mess around with different ways to intialize your population. It turns out this step is really important to how well it does. If your initial population is not well randomized and not very diverse, you won't get good results.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>params[2] is our number of generations, so this is our main, outer loop to go through the whole flow each generation.
+Our first step is to calculate the cost/error of each solution (there's 100) and add it to a matrix called <b>fitVec</b>. Each element of fitVec is an array consisting of the index of the solution in curPop and its cost, e.g. [0, 2.54] means that the 0th element in curPop (first solution) has an error of 2.54</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We initialize a new matrix called <b>winners</b>; this will hold our winning solutions temporarily until we move them to the next generation.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we're in a loop to populate the winners matrix. We use np.random.choice() to randomly pick params[4]/2 (20/2=10) solutions. We're gonna use a <b>tournament style selection</b> process where we randomly choose a subset of our population, and then pick the best solution from that subset and add it to our winners array. Obviously higher fitness (lower error) solutions have a higher chance of making it to the winners array, but we don't just pick the top 20 solutions because we want to maintain some genetic diversity in each generation, so have a few higher error solutions is generally a good thing.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So the array 'selected' contains 10 random solutions (actually the indices to 10 solutions) from our population. Now we reference fitVec to find the actual elements, use np.argmin() to pick the one with the smallest error/cost and assign the index of that winning element to a variable, 'wnr'</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then we reference the winner in curPop, the array of all solutions of the current generation, and copy it to our 'winners' array.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>nextPop is the array containing all the solutions for the next generation. We populate the first 20 elements of nextPop with our winning solutions from 'winners' array.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay, yeah this is a really long line and it's not very readable. I kind of cheated to make this all in 15 lines.
+This line is our <b>mating</b> process, and it's probably the most complicated part of a genetic algorithm. Let's start with the core of this nasty line. <br /></p>
+<blockquote><p><code>np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0)</code> <br /></p>
+</blockquote>
+<p>Basically np.repeat() will duplicate our 20x3 matrix to create a 80x3 matrix. We already populated the first 20 elements of nextPop with the winners from last generation. Now we want to populate the last 80 elements with their offspring.</p>
+<blockquote><p><code>np.random.permutation(np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0))</code></p>
+</blockquote>
+<p>Now we just use np.random.permutation() to shuffle the columns of this next 80x3 matrix. This is how we accomplish the crossover functional. Imagine we have a 3x3 matrix (2 solutions) like this:<br /> <code>np.array([[1,2,3],[4,5,6],[7,8,9]])</code> , when we run the permutation function, it will change it something like:<br /> <code>np.array([[7,5,3],[1,8,9],[4,2,3]])</code>
+<br />Go look at the numpy documentation to learn more about permutation if you still don't understand how it's working here.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>	<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ahh. Our last line of code! This is our <b>mutation</b> process. I'm using a list comprehension to build a matrix of the same dimensions as nextPop, but filled with 1s. However, with a probability of params[1] (our mutation rate), we randomly "mutate" some of the elements. Our mutation is basically using a random value from numpy.random.normal() instead of 1. So we end up with a matrix like this (I've shrunk it to 10x3 to make it fit here and changed the mutation rate to 20% so you can see more mutated elements):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [19]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="mf">0.20</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[19]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>matrix([[ 1.        ,  1.        , -0.274611  ],
+        [ 1.        ,  1.        ,  1.        ],
+        [ 1.        ,  1.        ,  1.        ],
+        [ 1.        ,  0.05055137,  1.98058061],
+        [ 1.        ,  2.62563321,  1.        ],
+        [ 1.        ,  1.        ,  3.35454534],
+        [ 1.        ,  1.        ,  1.        ],
+        [ 1.        ,  1.        , -1.96160288],
+        [ 1.        ,  1.        ,  1.0381105 ],
+        [-0.64245344,  2.04278346,  1.        ]])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then we multiply this matrix (element-wise multiplication) to our nextPop matrix. Most of the time we're multiplying each element in nextPop by 1, so leaving them unchanged, but sometimes we multiply by one of the mutated values and thus will randomly change some elements in nextPop. This adds genetic diversity to our next generation. So now we've filled up nextPop with a new generation of higher fitness solutions. We just repeat this process for how ever many generations we defined in params.</p>
+<p><h4>Alright, so we're done! That's it! We made a genetic algorithm that trains a neural network, cool!</h4></p>
+<p>...Okay, yeah technically we did, but let's actually watch it do something. Here we go...</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [20]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#initialize current population to random values within range</span>
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="c1">#1st col is indices, 2nd col is cost</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span> <span class="c1">#iterate through num generations</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c1">#Create vec of all errors from cost function</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">"(Gen: #</span><span class="si">%s</span><span class="s2">) Total error: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])))</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
+	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c1">#randomly mutate part of the population</span>
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+
+<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best Sol'n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(Gen: #0) Total error: 360.621647726
+
+(Gen: #1) Total error: 164.147038902
+
+(Gen: #2) Total error: 42.1044097511
+
+(Gen: #3) Total error: 24.2327815785
+
+(Gen: #4) Total error: 17.0591462061
+
+(Gen: #5) Total error: 11.0531107277
+
+(Gen: #6) Total error: 14.4015531463
+
+(Gen: #7) Total error: 21.6185558409
+
+(Gen: #8) Total error: 12.6716347732
+
+(Gen: #9) Total error: 13.5456215099
+
+Best Sol'n:
+[[ 139.26240253    2.64168216   -8.3325537 ]]
+Cost:0.00721156902032
+When X = 
+[[0 1]
+ [1 1]
+ [0 0]
+ [1 0]] 
+hThetaX = 
+[[ 0.]
+ [ 1.]
+ [ 0.]
+ [ 1.]]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><h3>Sweet!</h3>
+Looks like it converged, finding a solution with a cost of only 0.007, pretty close to the error of the solution found with gradient descent. Notice I only ran it for 10 generations 1) because clearly that's all it takes and 2) because I didn't want a 20 page long document here.</p>
+<p><h2>Where to go from here?</h2>
+First off, thanks. If you made it this far, I must've done something right. <br />
+But if you want to do more, then I really encourage you to play around with the parameters, maybe change up the neural network, or change the neural network cost function, etc and see what happens. The best way to learn is to get your hands dirty. Keep in mind this GA was kind of hard-wired for our little neural net by iamtrask, but if you understand the concepts and methods, you should be able to adapt it to more complex problems.
+</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3>Bonus! Let's graph the population errors vs the generation #</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [30]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [37]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
+<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#initialize current population to random values within range</span>
+<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="c1">#1st col is indices, 2nd col is cost</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span> <span class="c1">#iterate through num generations</span>
+	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c1">#Create vec of all errors from cost function</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
+	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
+		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
+	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
+	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o"><</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c1">#randomly mutate part of the population</span>
+	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+
+<span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best Sol'n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Best Sol'n:
+[[ 625.07750262  -48.12579247 -532.48348958]]
+Cost:1.11272735801e-231
+When X = 
+[[0 1]
+ [1 1]
+ [0 0]
+ [1 0]] 
+hThetaX = 
+[[ 0.]
+ [ 1.]
+ [ 0.]
+ [ 1.]]
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/brandonbrown/Desktop/Projects/MiniGAandNN/NeuralNet.py:15: RuntimeWarning: overflow encountered in exp
+  def sigmoid(x): return 1 / (1 + np.exp(- x))
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+LWfQS1LL/X8e/85GQ5DVkwAAAABJRU5ErkJggg==
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Looks like we converge after just <b>4</b> generations! Also notice we get these little bumps in error every 10 generations or so, likely due to a particularly dramatic mutation round.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/miniga.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/genetic-algorithms.html" rel="tag">Genetic Algorithms</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/ga.html" class="tags">GA</a>
+                    &nbsp;<a href="/tag/evolution.html" class="tags">evolution</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

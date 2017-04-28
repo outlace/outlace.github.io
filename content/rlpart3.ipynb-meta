@@ -1,0 +1,7 @@
+Title: Q-learning with Neural Networks
+Slug: rlpart3
+Date: 2015-10-30
+Category: Reinforcement-Learning
+Tags: Q-learning, RL
+Author: outlace
+Summary: In part 3 of the reinforcement learning series we implement a neural network as the action-value function and use the Q-learning algorithm to train an agent how to play Gridworld.
