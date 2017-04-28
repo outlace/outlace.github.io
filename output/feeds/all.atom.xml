@@ -26517,7 +26517,7 @@ AElFTkSuQmCC
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="GA"></category><category term="evolution"></category></entry><entry><title>Simple RNN in Julia</title><link href="/Simple-RNN-in-Julia.html" rel="alternate"></link><published>2015-09-10T19:50:00-07:00</published><updated>2015-09-10T19:50:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-09-10:/Simple-RNN-in-Julia.html</id><summary type="html">&lt;p&gt;A beginner tutorial for an even simpler recurrent neural network implementation in Julia.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="GA"></category><category term="evolution"></category></entry><entry><title>Simple RNN in Julia</title><link href="/rnnjulia.html" rel="alternate"></link><published>2015-09-10T19:50:00-07:00</published><updated>2015-09-10T19:50:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-09-10:/rnnjulia.html</id><summary type="html">&lt;p&gt;A beginner tutorial for an even simpler recurrent neural network implementation in Julia.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
