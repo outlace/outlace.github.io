@@ -43,7 +43,8 @@ THEME = 'blue-penguin'
 
 MARKUP = ('md', 'ipynb')
 
-STATIC_PATHS = ['images', 'pdfs', 'pages', 'js', 'extra']
+STATIC_PATHS = ['images', 'pdfs', 'pages', 'js', 'extra/CNAME']
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 STATIC_IMG = 'images'
 CONTACT_EMAIL = 'outlacedev@gmail.com'
 
