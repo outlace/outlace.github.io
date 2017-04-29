@@ -43,7 +43,7 @@ THEME = 'blue-penguin'
 
 MARKUP = ('md', 'ipynb')
 
-STATIC_PATHS = ['images', 'pdfs', 'pages', 'js', 'extra/CNAME']
+STATIC_PATHS = ['images', 'pdfs', 'pages', 'js', 'extra/CNAME', 'notebooks']
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 STATIC_IMG = 'images'
 CONTACT_EMAIL = 'outlacedev@gmail.com'
@@ -51,7 +51,7 @@ CONTACT_EMAIL = 'outlacedev@gmail.com'
 PLUGIN_PATHS = ['./plugins']
 PLUGINS = ['ipynb.markup', 'render_math']
 IPYNB_USE_META_SUMMARY = True
-IGNORE_FILES = ['.ipynb_checkpoints']
+IGNORE_FILES = ['.ipynb_checkpoints', '__pycache__']
 
 DISPLAY_PAGES_ON_MENU = True
 DISQUS_SITENAME = "outlace"
