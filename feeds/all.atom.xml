@@ -9204,8 +9204,8 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;This is Part 3 in a series on topological data analysis.
-See &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+1/"&gt;Part 1&lt;/a&gt; | &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+2/"&gt;Part 2&lt;/a&gt; | &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+3/"&gt;Part 3&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is Part 4 in a series on topological data analysis.
+See &lt;a href="TDApart1.html"&gt;Part 1&lt;/a&gt; | &lt;a href="TDApart2.html"&gt;Part 2&lt;/a&gt; | &lt;a href="TDApart3.html"&gt;Part 3&lt;/a&gt; | &lt;a href="TDApart5.html"&gt;Part 5&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;In this part we learn more about how linear algebra can help us calculate topological features in a computationally efficient manner.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
