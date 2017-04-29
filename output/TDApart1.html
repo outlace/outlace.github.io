@@ -5,12 +5,12 @@
         <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Δ ℚuantitative √ourney | Topological Data Analysis - Persistent Homology</title>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
-    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <link rel="shortcut icon" type="image/png" href="http://outlace.com/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="http://outlace.com/favicon.ico">
+    <link href="http://outlace.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/print.css" type="text/css" media="print" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="" />
     <meta name="author" content="Brandon" />
@@ -21,15 +21,15 @@
     <header>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/pages/about.html">About</a></li>
-                <li><a href="/tags/">Tags</a></li>
-                <li><a href="/categories/">Categories</a></li>
-                <li><a href="/archives/{slug}/">Archives</a></li>
+                <li><a href="http://outlace.com/">Home</a></li>
+                <li><a href="http://outlace.com/pages/about.html">About</a></li>
+                <li><a href="http://outlace.com/tags/">Tags</a></li>
+                <li><a href="http://outlace.com/categories/">Categories</a></li>
+                <li><a href="http://outlace.com/archives/{slug}/">Archives</a></li>
             </ul>
         </nav>
         <div class="header_box">
-            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
+            <h1><a href="http://outlace.com/">Δ ℚuantitative √ourney</a></h1>
             <h2>∑ My experiences in learning quantitative applications</h2>
         </div>
     </header>
@@ -38,7 +38,7 @@
 
             <article class="post"> 
                 <h2 class="title">
-                    <a href="/TDApart1.html" rel="bookmark" title="Permanent Link to &quot;Topological Data Analysis - Persistent Homology&quot;">Topological Data Analysis - Persistent Homology</a>
+                    <a href="http://outlace.com/TDApart1.html" rel="bookmark" title="Permanent Link to &quot;Topological Data Analysis - Persistent Homology&quot;">Topological Data Analysis - Persistent Homology</a>
                 </h2>
 
 
@@ -1029,6 +1029,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>This is Part 1 in a series on topological data analysis.
+See <a href="TDApart2.html">Part 2</a> | <a href="TDApart3.html">Part 3</a> | <a href="TDApart4.html">Part 5</a> | <a href="TDApart5.html">Part 5</a></p>
 <h4 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h4><p>I find Topological Data Analysis (TDA) to be one of the most exciting (yet under-rated) developments in data analysis and thus I want to do my part to spread the knowledge. So what's it all about? Well there are two major flavors of TDA: persistent homology and mapper. Both are useful, and can be used to supplement each other. In this post (and the next couple of posts) we will cover persistent homology. TDA in general is very mathematical (it was born out the "lab" of a mathematics group at Stanford, particularly Gunnar Carlsson and his graduate student Gurjeet Singh, although the foundations had been developed for years before by others) and thus we cannot really study it without learning a lot of math. Hence, this post is going to be just as much a tutorial on various topics in higher math as it is TDA, so if you're not that interested in TDA but want to learn about topology, group theory, linear algebra, graph theory and abstract algebra, then this might be useful just in that regard. Of course, I will not cover these math topics in as much detail or with as much rigor as a textbook would, but my hope is if you understand what I present here, reading a textbook (or math papers) will make a whole lot more sense.</p>
 <h5 id="What-is-persistent-homology-and-why-should-I-care?">What is persistent homology and why should I care?<a class="anchor-link" href="#What-is-persistent-homology-and-why-should-I-care?">¶</a></h5><p>Think of a typical data set being a big Excel file with columns being various parameters and the rows being individual data points. Say there are 100 columns and 900 rows. If we think of the rows as being data points, then we can think of them as being 100-dimensional data points. Obviously, helplessly constrained to our 3-dimensional universe, we have no way of seeing what are data <em>looks</em> like. Well, of course there are numerous methods for projecting high-dimensional data down to a lower dimensional space that we <em>can</em> see. Usually we want to see our data so we can easily identify patterns, particularly clusters. The most well-known of these visualization methods is probably principal component analysis (PCA).  But all of these methods involve transforming our original data in a way that loses some potentially valuable information. There's no free lunch here, if you use PCA to project 100-dimensional data to a 2-dimensional plot, you're going to be missing something.</p>
 <p>Persistent homology (henceforth just <strong>PH</strong>) gives us a way to find interesting patterns in data without having to "downgrade" the data in anyway so we can see it. PH let's us leave our data in it's original, ultra-high dimensional space and tells us how many clusters there are, and how many loop-like structures there are in the data, all without being able to actually see it.</p>
@@ -1587,11 +1589,11 @@ If we have a set of points $P$ of dimension $d$, and $P$ is a subset of $\mathbb
                 <div class="clear"></div>
 
                 <div class="info">
-                    <a href="/TDApart1.html">posted at 00:10</a>
-                    &nbsp;&middot;&nbsp;<a href="/category/topological-data-analysis/" rel="tag">Topological Data Analysis</a>
+                    <a href="http://outlace.com/TDApart1.html">posted at 00:10</a>
+                    &nbsp;&middot;&nbsp;<a href="http://outlace.com/category/topological-data-analysis/" rel="tag">Topological Data Analysis</a>
                     &nbsp;&middot;
-                    &nbsp;<a href="/tag/tda/" class="tags">TDA</a>
-                    &nbsp;<a href="/tag/persistent-homology/" class="tags">persistent-homology</a>
+                    &nbsp;<a href="http://outlace.com/tag/tda/" class="tags">TDA</a>
+                    &nbsp;<a href="http://outlace.com/tag/persistent-homology/" class="tags">persistent-homology</a>
                 </div>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -1607,10 +1609,10 @@ If we have a set of points $P$ of dimension $d$, and $P$ is a subset of $\mathbb
             <div class="clear"></div>
             <footer>
                 <p>
-                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <!--- <a href="http://outlace.com/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
                 <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
                 <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
-                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+                <a href="http://outlace.com/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
             </footer>
         </div>
         <div class="clear"></div>

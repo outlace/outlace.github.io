@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Δ ℚuantitative √ourney</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2017-04-26T19:41:00-07:00</updated><entry><title>Announcement</title><link href="/announcement.html" rel="alternate"></link><published>2017-04-26T19:41:00-07:00</published><updated>2017-04-26T19:41:00-07:00</updated><author><name>Brandon</name></author><id>tag:None,2017-04-26:/announcement.html</id><summary type="html">&lt;p&gt;Some announcements about this blog's migration to a different static site generator as well as some new GitHub repos I've created.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I've decided to migrate this blog to Pelican from Jekyll. I did this largely because
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Δ ℚuantitative √ourney</title><link href="http://outlace.com/" rel="alternate"></link><link href="http://outlace.com/feeds/all.atom.xml" rel="self"></link><id>http://outlace.com/</id><updated>2017-04-26T19:41:00-07:00</updated><entry><title>Announcement</title><link href="http://outlace.com/announcement.html" rel="alternate"></link><published>2017-04-26T19:41:00-07:00</published><updated>2017-04-26T19:41:00-07:00</updated><author><name>Brandon</name></author><id>tag:outlace.com,2017-04-26:/announcement.html</id><summary type="html">&lt;p&gt;Some announcements about this blog's migration to a different static site generator as well as some new GitHub repos I've created.&lt;/p&gt;</summary><content type="html">&lt;p&gt;I've decided to migrate this blog to Pelican from Jekyll. I did this largely because
 Pelican has a plugin for allowing Jupyter notebooks to be served automatically
 as blog posts. With Jekyll, I had to use nbconvert to convert my ipynb document to html
 every time I wanted to publish a new post, and I also had to often manually edit that html document to get it formatted correctly when embedded into the site. That was fine once, but if you want to make
@@ -21,7 +21,7 @@ an open source TDA library in Python called &lt;a href="https://github.com/outla
 &lt;p&gt;After that, I want to get back into reinforcement learning as that's my biggest passion
 in machine learning. I'm not exactly sure what I plan to work on yet, but will likely
 use OpenAI's gym library as a testing ground. Feel free to drop a comment if you have any suggestions.&lt;/p&gt;
-&lt;p&gt;-Brandon&lt;/p&gt;</content></entry><entry><title>Persistent Homology (Part 5)</title><link href="/TDApart5.html" rel="alternate"></link><published>2017-02-26T00:40:00-08:00</published><updated>2017-02-26T00:40:00-08:00</updated><author><name>outlace</name></author><id>tag:None,2017-02-26:/TDApart5.html</id><summary type="html">&lt;p&gt;In part 5 we combine everything we've learned and compute persistent homology barcodes from raw data.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+&lt;p&gt;-Brandon&lt;/p&gt;</content></entry><entry><title>Persistent Homology (Part 5)</title><link href="http://outlace.com/TDApart5.html" rel="alternate"></link><published>2017-02-26T00:40:00-08:00</published><updated>2017-02-26T00:40:00-08:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2017-02-26:/TDApart5.html</id><summary type="html">&lt;p&gt;In part 5 we combine everything we've learned and compute persistent homology barcodes from raw data.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -1008,7 +1008,7 @@ h6:hover .anchor-link {
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;This is Part 5 in a series on topological data analysis.
-See &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+1/"&gt;Part 1&lt;/a&gt; | &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+2/"&gt;Part 2&lt;/a&gt; | &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+3/"&gt;Part 3&lt;/a&gt; | &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+4/"&gt;Part 4&lt;/a&gt;&lt;/p&gt;
+See &lt;a href="TDApart1.html"&gt;Part 1&lt;/a&gt; | &lt;a href="TDApart2.html"&gt;Part 2&lt;/a&gt; | &lt;a href="TDApart3.html"&gt;Part 3&lt;/a&gt; | &lt;a href="TDApart4.html"&gt;Part 4&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://github.com/outlace/OpenTDA/PersistentHomology.py"&gt;Download this notebook&lt;/a&gt; | &lt;a href="https://github.com/outlace/outlace.github.io/ipython-notebooks/TDA/TDApart5.ipynb"&gt;Download the code&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;In this part we finally utilize all we've learned to compute the persitent homology groups and draw persistence diagrams to summarize the information graphically.&lt;/p&gt;
 &lt;/div&gt;
@@ -8218,7 +8218,7 @@ rkJggg==
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Persistent Homology (Part 4)</title><link href="/TDApart4.html" rel="alternate"></link><published>2017-02-23T00:35:00-08:00</published><updated>2017-02-23T00:35:00-08:00</updated><author><name>outlace</name></author><id>tag:None,2017-02-23:/TDApart4.html</id><summary type="html">&lt;p&gt;In part 4 we use linear algebra to build out simple algorithms to efficiently calculate homology groups and Betti numbers.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Persistent Homology (Part 4)</title><link href="http://outlace.com/TDApart4.html" rel="alternate"></link><published>2017-02-23T00:35:00-08:00</published><updated>2017-02-23T00:35:00-08:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2017-02-23:/TDApart4.html</id><summary type="html">&lt;p&gt;In part 4 we use linear algebra to build out simple algorithms to efficiently calculate homology groups and Betti numbers.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -10173,7 +10173,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Persistent Homology (Part 3)</title><link href="/TDApart3.html" rel="alternate"></link><published>2017-02-23T00:30:00-08:00</published><updated>2017-02-23T00:30:00-08:00</updated><author><name>outlace</name></author><id>tag:None,2017-02-23:/TDApart3.html</id><summary type="html">&lt;p&gt;In part 3 we start calculating homology groups and Betti numbers of simplicial complexes.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Persistent Homology (Part 3)</title><link href="http://outlace.com/TDApart3.html" rel="alternate"></link><published>2017-02-23T00:30:00-08:00</published><updated>2017-02-23T00:30:00-08:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2017-02-23:/TDApart3.html</id><summary type="html">&lt;p&gt;In part 3 we start calculating homology groups and Betti numbers of simplicial complexes.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -11160,7 +11160,7 @@ h6:hover .anchor-link {
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;This is Part 3 in a series on topological data analysis.
-See &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+1/"&gt;Part 1&lt;/a&gt; | &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+2/"&gt;Part 2&lt;/a&gt;&lt;/p&gt;
+See &lt;a href="TDApart1.html"&gt;Part 1&lt;/a&gt; | &lt;a href="TDApart2.html"&gt;Part 2&lt;/a&gt; | &lt;a href="TDApart4.html"&gt;Part 4&lt;/a&gt; | &lt;a href="TDApart5.html"&gt;Part 5&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;In this part we begin to apply our the math we learned from Parts 1-2 to actually calculating the interesting topological features of a simplicial complex.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -11577,7 +11577,7 @@ H_1 = \mathbb Z^2\ /\  \mathbb Z = \mathbb Z$$&lt;/p&gt;
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Persistent Homology (Part 2)</title><link href="/TDApart2.html" rel="alternate"></link><published>2017-02-22T00:20:00-08:00</published><updated>2017-02-22T00:20:00-08:00</updated><author><name>outlace</name></author><id>tag:None,2017-02-22:/TDApart2.html</id><summary type="html">&lt;p&gt;In part 2 we implement an algorithm to construct a simplicial complex from data and continue to build up the fundamental mathematical knowledge for TDA&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Persistent Homology (Part 2)</title><link href="http://outlace.com/TDApart2.html" rel="alternate"></link><published>2017-02-22T00:20:00-08:00</published><updated>2017-02-22T00:20:00-08:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2017-02-22:/TDApart2.html</id><summary type="html">&lt;p&gt;In part 2 we implement an algorithm to construct a simplicial complex from data and continue to build up the fundamental mathematical knowledge for TDA&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -12563,8 +12563,8 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;This is Part 2 in a series on topological data analysis. &lt;br /&gt;
-See &lt;a href="/Topological+Data+Analysis+Tutorial+-+Part+1/"&gt;Part 1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is Part 2 in a series on topological data analysis.
+See &lt;a href="TDApart1.html"&gt;Part 1&lt;/a&gt; | &lt;a href="TDApart3.html"&gt;Part 3&lt;/a&gt; | &lt;a href="TDApart4.html"&gt;Part 4&lt;/a&gt; | &lt;a href="TDApart5.html"&gt;Part 5&lt;/a&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -15047,7 +15047,7 @@ N \leq \mathbb Z_4 \\
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Topological Data Analysis - Persistent Homology</title><link href="/TDApart1.html" rel="alternate"></link><published>2017-02-22T00:10:00-08:00</published><updated>2017-02-22T00:10:00-08:00</updated><author><name>outlace</name></author><id>tag:None,2017-02-22:/TDApart1.html</id><summary type="html">&lt;p&gt;(Part 1) In this multi-part series I will go through the fundamental mathematics and algorithms of a powerful new tool for analysis of complex data.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Topological Data Analysis - Persistent Homology</title><link href="http://outlace.com/TDApart1.html" rel="alternate"></link><published>2017-02-22T00:10:00-08:00</published><updated>2017-02-22T00:10:00-08:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2017-02-22:/TDApart1.html</id><summary type="html">&lt;p&gt;(Part 1) In this multi-part series I will go through the fundamental mathematics and algorithms of a powerful new tool for analysis of complex data.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -16033,6 +16033,8 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;This is Part 1 in a series on topological data analysis.
+See &lt;a href="TDApart2.html"&gt;Part 2&lt;/a&gt; | &lt;a href="TDApart3.html"&gt;Part 3&lt;/a&gt; | &lt;a href="TDApart4.html"&gt;Part 5&lt;/a&gt; | &lt;a href="TDApart5.html"&gt;Part 5&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id="Introduction"&gt;Introduction&lt;a class="anchor-link" href="#Introduction"&gt;¶&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;I find Topological Data Analysis (TDA) to be one of the most exciting (yet under-rated) developments in data analysis and thus I want to do my part to spread the knowledge. So what's it all about? Well there are two major flavors of TDA: persistent homology and mapper. Both are useful, and can be used to supplement each other. In this post (and the next couple of posts) we will cover persistent homology. TDA in general is very mathematical (it was born out the "lab" of a mathematics group at Stanford, particularly Gunnar Carlsson and his graduate student Gurjeet Singh, although the foundations had been developed for years before by others) and thus we cannot really study it without learning a lot of math. Hence, this post is going to be just as much a tutorial on various topics in higher math as it is TDA, so if you're not that interested in TDA but want to learn about topology, group theory, linear algebra, graph theory and abstract algebra, then this might be useful just in that regard. Of course, I will not cover these math topics in as much detail or with as much rigor as a textbook would, but my hope is if you understand what I present here, reading a textbook (or math papers) will make a whole lot more sense.&lt;/p&gt;
 &lt;h5 id="What-is-persistent-homology-and-why-should-I-care?"&gt;What is persistent homology and why should I care?&lt;a class="anchor-link" href="#What-is-persistent-homology-and-why-should-I-care?"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;Think of a typical data set being a big Excel file with columns being various parameters and the rows being individual data points. Say there are 100 columns and 900 rows. If we think of the rows as being data points, then we can think of them as being 100-dimensional data points. Obviously, helplessly constrained to our 3-dimensional universe, we have no way of seeing what are data &lt;em&gt;looks&lt;/em&gt; like. Well, of course there are numerous methods for projecting high-dimensional data down to a lower dimensional space that we &lt;em&gt;can&lt;/em&gt; see. Usually we want to see our data so we can easily identify patterns, particularly clusters. The most well-known of these visualization methods is probably principal component analysis (PCA).  But all of these methods involve transforming our original data in a way that loses some potentially valuable information. There's no free lunch here, if you use PCA to project 100-dimensional data to a 2-dimensional plot, you're going to be missing something.&lt;/p&gt;
 &lt;p&gt;Persistent homology (henceforth just &lt;strong&gt;PH&lt;/strong&gt;) gives us a way to find interesting patterns in data without having to "downgrade" the data in anyway so we can see it. PH let's us leave our data in it's original, ultra-high dimensional space and tells us how many clusters there are, and how many loop-like structures there are in the data, all without being able to actually see it.&lt;/p&gt;
@@ -16587,7 +16589,7 @@ If we have a set of points $P$ of dimension $d$, and $P$ is a subset of $\mathbb
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Q-learning with Neural Networks</title><link href="/rlpart3.html" rel="alternate"></link><published>2015-10-30T00:00:00-07:00</published><updated>2015-10-30T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-10-30:/rlpart3.html</id><summary type="html">&lt;p&gt;In part 3 of the reinforcement learning series we implement a neural network as the action-value function and use the Q-learning algorithm to train an agent how to play Gridworld.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="TDA"></category><category term="persistent-homology"></category></entry><entry><title>Q-learning with Neural Networks</title><link href="http://outlace.com/rlpart3.html" rel="alternate"></link><published>2015-10-30T00:00:00-07:00</published><updated>2015-10-30T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-10-30:/rlpart3.html</id><summary type="html">&lt;p&gt;In part 3 of the reinforcement learning series we implement a neural network as the action-value function and use the Q-learning algorithm to train an agent how to play Gridworld.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -18461,7 +18463,7 @@ Reward: 10
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="Q-learning"></category><category term="RL"></category></entry><entry><title>Reinforcement Learning - Monte Carlo Methods</title><link href="/rlpart2.html" rel="alternate"></link><published>2015-10-25T00:00:00-07:00</published><updated>2015-10-25T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-10-25:/rlpart2.html</id><summary type="html">&lt;p&gt;Part 2 of the RL series. A slightly deeper dive into reinforcement learning methods by learning how to use Monte Carlo simulations to learn how to play blackjack.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="Q-learning"></category><category term="RL"></category></entry><entry><title>Reinforcement Learning - Monte Carlo Methods</title><link href="http://outlace.com/rlpart2.html" rel="alternate"></link><published>2015-10-25T00:00:00-07:00</published><updated>2015-10-25T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-10-25:/rlpart2.html</id><summary type="html">&lt;p&gt;Part 2 of the RL series. A slightly deeper dive into reinforcement learning methods by learning how to use Monte Carlo simulations to learn how to play blackjack.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -21275,7 +21277,7 @@ xgBkwZSRkZGRkTEAWTBlZGRkZGQM4P8BF5MLE8eyu2kAAAAASUVORK5CYII=
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="Monte-Carlo"></category><category term="RL"></category></entry><entry><title>Reinforcement Learning - Part 1</title><link href="/rlpart1.html" rel="alternate"></link><published>2015-10-19T00:00:00-07:00</published><updated>2015-10-19T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-10-19:/rlpart1.html</id><summary type="html">&lt;p&gt;The first part in a series introducing the theory, math and implementation details of reinforcement learning algorithms using Python. Here we introduce the topic with a very simple RL problem, the n-armed bandit problem.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="Monte-Carlo"></category><category term="RL"></category></entry><entry><title>Reinforcement Learning - Part 1</title><link href="http://outlace.com/rlpart1.html" rel="alternate"></link><published>2015-10-19T00:00:00-07:00</published><updated>2015-10-19T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-10-19:/rlpart1.html</id><summary type="html">&lt;p&gt;The first part in a series introducing the theory, math and implementation details of reinforcement learning algorithms using Python. Here we introduce the topic with a very simple RL problem, the n-armed bandit problem.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -23085,7 +23087,7 @@ UDIQERHbFxvjAAAAFUlEQVSUDEREBCUDERFByUBERID/D8NaOB+1DL/VAAAAAElFTkSuQmCC
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="RL"></category><category term="bandit"></category></entry><entry><title>Beginner Tutorial: Neural Nets in Theano</title><link href="/theano.html" rel="alternate"></link><published>2015-09-29T00:00:00-07:00</published><updated>2015-09-29T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-09-29:/theano.html</id><summary type="html">&lt;p&gt;A gentle introduction to the powerful machine learning library, Theano.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="RL"></category><category term="bandit"></category></entry><entry><title>Beginner Tutorial: Neural Nets in Theano</title><link href="http://outlace.com/theano.html" rel="alternate"></link><published>2015-09-29T00:00:00-07:00</published><updated>2015-09-29T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-09-29:/theano.html</id><summary type="html">&lt;p&gt;A gentle introduction to the powerful machine learning library, Theano.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -24586,7 +24588,7 @@ Cost: 0.000981410600338758
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="Theano"></category><category term="Frameworks"></category></entry><entry><title>Simple Genetic Algorithm in Python --Addendum</title><link href="/miniga_addendum.html" rel="alternate"></link><published>2015-09-12T00:00:00-07:00</published><updated>2015-09-12T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-09-12:/miniga_addendum.html</id><summary type="html">&lt;p&gt;A brief addendum to my previous post on a simple genetic algorithm. Here I explore how varying the parameters affects our GA performance.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="Theano"></category><category term="Frameworks"></category></entry><entry><title>Simple Genetic Algorithm in Python --Addendum</title><link href="http://outlace.com/miniga_addendum.html" rel="alternate"></link><published>2015-09-12T00:00:00-07:00</published><updated>2015-09-12T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-09-12:/miniga_addendum.html</id><summary type="html">&lt;p&gt;A brief addendum to my previous post on a simple genetic algorithm. Here I explore how varying the parameters affects our GA performance.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -26517,7 +26519,7 @@ AElFTkSuQmCC
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="GA"></category><category term="evolution"></category></entry><entry><title>Simple RNN in Julia</title><link href="/rnnjulia.html" rel="alternate"></link><published>2015-09-10T19:50:00-07:00</published><updated>2015-09-10T19:50:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-09-10:/rnnjulia.html</id><summary type="html">&lt;p&gt;A beginner tutorial for an even simpler recurrent neural network implementation in Julia.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="GA"></category><category term="evolution"></category></entry><entry><title>Simple RNN in Julia</title><link href="http://outlace.com/rnnjulia.html" rel="alternate"></link><published>2015-09-10T19:50:00-07:00</published><updated>2015-09-10T19:50:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-09-10:/rnnjulia.html</id><summary type="html">&lt;p&gt;A beginner tutorial for an even simpler recurrent neural network implementation in Julia.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -27997,7 +27999,7 @@ Expected: [0,1,0,0,1,1,0]
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="RNN"></category></entry><entry><title>On chain rule, computational graphs, and backpropagation</title><link href="/on-chain-rule-computational-graphs-and-backpropagation.html" rel="alternate"></link><published>2015-09-05T00:00:00-07:00</published><updated>2015-09-05T00:00:00-07:00</updated><author><name>Brandon</name></author><id>tag:None,2015-09-05:/on-chain-rule-computational-graphs-and-backpropagation.html</id><summary type="html">&lt;p&gt;Here I'm going to revisit backpropagation theory by thinking about neural networks as computational graphs upon which we can easily visualize the chain rule to compute partial derivatives.&lt;/p&gt;</summary><content type="html">&lt;hr&gt;
+</content><category term="RNN"></category></entry><entry><title>On chain rule, computational graphs, and backpropagation</title><link href="http://outlace.com/on-chain-rule-computational-graphs-and-backpropagation.html" rel="alternate"></link><published>2015-09-05T00:00:00-07:00</published><updated>2015-09-05T00:00:00-07:00</updated><author><name>Brandon</name></author><id>tag:outlace.com,2015-09-05:/on-chain-rule-computational-graphs-and-backpropagation.html</id><summary type="html">&lt;p&gt;Here I'm going to revisit backpropagation theory by thinking about neural networks as computational graphs upon which we can easily visualize the chain rule to compute partial derivatives.&lt;/p&gt;</summary><content type="html">&lt;hr&gt;
 &lt;p&gt;&lt;script&gt;
 MathJax.Hub.Config({
   tex2jax: {
@@ -28226,7 +28228,7 @@ and we'll substitute in &lt;span class="math"&gt;\(\delta^3\)&lt;/span&gt;
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content></entry><entry><title>Simple Recurrent Neural Network</title><link href="/rnn.html" rel="alternate"></link><published>2015-08-05T00:00:00-07:00</published><updated>2015-08-05T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-08-05:/rnn.html</id><summary type="html">&lt;p&gt;A beginner tutorial on building a simple (Elman) recurrent neural network in Python. We'll build an RNN than can compute XOR on sequential data and another that can predict the next character in a sequence.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+&lt;/script&gt;</content></entry><entry><title>Simple Recurrent Neural Network</title><link href="http://outlace.com/rnn.html" rel="alternate"></link><published>2015-08-05T00:00:00-07:00</published><updated>2015-08-05T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-08-05:/rnn.html</id><summary type="html">&lt;p&gt;A beginner tutorial on building a simple (Elman) recurrent neural network in Python. We'll build an RNN than can compute XOR on sequential data and another that can predict the next character in a sequence.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -30030,7 +30032,7 @@ I also attempted to build a character generator from this code, so that we train
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="RNN"></category></entry><entry><title>Gradient Descent with Backpropagation</title><link href="/Gradient-Descent.html" rel="alternate"></link><published>2015-07-31T00:00:00-07:00</published><updated>2015-07-31T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-07-31:/Gradient-Descent.html</id><summary type="html">&lt;p&gt;A beginner tutorial to understand the theoretical and implementation details of gradient descent by backpropagation using Python.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="RNN"></category></entry><entry><title>Gradient Descent with Backpropagation</title><link href="http://outlace.com/Gradient-Descent.html" rel="alternate"></link><published>2015-07-31T00:00:00-07:00</published><updated>2015-07-31T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-07-31:/Gradient-Descent.html</id><summary type="html">&lt;p&gt;A beginner tutorial to understand the theoretical and implementation details of gradient descent by backpropagation using Python.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -34484,7 +34486,7 @@ I really struggled understanding how backpropagation worked and some of the othe
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="gradient-descent"></category><category term="backpropagation"></category><category term="optimization"></category></entry><entry><title>Simple Genetic Algorithm In 15 Lines Of Python</title><link href="/miniga.html" rel="alternate"></link><published>2015-07-15T00:00:00-07:00</published><updated>2015-07-15T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:None,2015-07-15:/miniga.html</id><summary type="html">&lt;p&gt;Beginner tutorial on writing a genetic algorithm to train a simple 2-layer feed-forward neural network. (Ok, I admit it, the "15 lines" is a gimmick)&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+</content><category term="gradient-descent"></category><category term="backpropagation"></category><category term="optimization"></category></entry><entry><title>Simple Genetic Algorithm In 15 Lines Of Python</title><link href="http://outlace.com/miniga.html" rel="alternate"></link><published>2015-07-15T00:00:00-07:00</published><updated>2015-07-15T00:00:00-07:00</updated><author><name>outlace</name></author><id>tag:outlace.com,2015-07-15:/miniga.html</id><summary type="html">&lt;p&gt;Beginner tutorial on writing a genetic algorithm to train a simple 2-layer feed-forward neural network. (Ok, I admit it, the "15 lines" is a gimmick)&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
