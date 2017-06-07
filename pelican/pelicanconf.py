@@ -49,7 +49,7 @@ STATIC_IMG = 'images'
 CONTACT_EMAIL = 'outlacedev@gmail.com'
 
 PLUGIN_PATHS = ['./plugins']
-PLUGINS = ['ipynb.markup', 'render_math']
+PLUGINS = ['ipynb.markup', 'render_math', 'pelican_alias']
 IPYNB_USE_META_SUMMARY = True
 IGNORE_FILES = ['.ipynb_checkpoints', '__pycache__']
 
