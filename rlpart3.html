@@ -30,7 +30,7 @@
         </nav>
         <div class="header_box">
             <h1><a href="http://outlace.com/">Δ ℚuantitative √ourney</a></h1>
-            <h2>∑ My experiences in learning quantitative applications</h2>
+            <h2>∑ Our experiences in learning quantitative applications</h2>
         </div>
     </header>
     <div id="wrapper">
@@ -1157,7 +1157,7 @@ $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma maxQ(S_{t+1}, a_{
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
@@ -1168,32 +1168,14 @@ $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma maxQ(S_{t+1}, a_{
     <span class="n">goal</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">pit</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-    
-    <span class="c1">#up (row - 1)</span>
-    <span class="k">if</span> <span class="n">action</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
-                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="c1">#down (row + 1)</span>
-    <span class="k">elif</span> <span class="n">action</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
-                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="c1">#left (column - 1)</span>
-    <span class="k">elif</span> <span class="n">action</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
-        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
-                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="c1">#right (column + 1)</span>
-    <span class="k">elif</span> <span class="n">action</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
-        <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
-                <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-                
+
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="c1">#e.g. up => (player row - 1, player column + 0)</span>
+    <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">actions</span><span class="p">[</span><span class="n">action</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">player_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">actions</span><span class="p">[</span><span class="n">action</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">new_loc</span> <span class="o">!=</span> <span class="n">wall</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o"><=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span> <span class="o">>=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+            <span class="n">state</span><span class="p">[</span><span class="n">new_loc</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
     <span class="n">new_player_loc</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
     <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">new_player_loc</span><span class="p">):</span>
         <span class="n">state</span><span class="p">[</span><span class="n">player_loc</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
@@ -1203,7 +1185,7 @@ $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma maxQ(S_{t+1}, a_{
     <span class="n">state</span><span class="p">[</span><span class="n">wall</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="c1">#re-place goal</span>
     <span class="n">state</span><span class="p">[</span><span class="n">goal</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    
+
     <span class="k">return</span> <span class="n">state</span>
 </pre></div>
 </div>
@@ -1870,7 +1852,8 @@ Reward: 10
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Download-this-IPython-Notebook">Download this IPython Notebook<a class="anchor-link" href="#Download-this-IPython-Notebook">¶</a></h3><p><a href="https://github.com/outlace/outlace.github.io/blob/master/ipython-notebooks/rlpart2.ipynb">https://github.com/outlace/outlace.github.io/blob/master/ipython-notebooks/rlpart2.ipynb</a></p>
+<h3 id="Download-this-IPython-Notebook">Download this IPython Notebook<a class="anchor-link" href="#Download-this-IPython-Notebook">¶</a></h3><p><a href="https://github.com/outlace/outlace.github.io/blob/master/pelican/content/rlpart3.ipynb">https://github.com/outlace/outlace.github.io/blob/master/pelican/content/rlpart3.ipynb</a></p>
+<h3 id="Download-the-Gridworld-Game">Download the Gridworld Game<a class="anchor-link" href="#Download-the-Gridworld-Game">¶</a></h3><p><a href="https://github.com/outlace/Gridworld">https://github.com/outlace/Gridworld</a></p>
 </div>
 </div>
 </div>
