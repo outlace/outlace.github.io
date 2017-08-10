@@ -4,6 +4,6 @@ Slug: rnn
 Date: 2015-08-05
 Category: Recurrent Neural Network
 Tags: RNN
-Author: outlace
+Authors: Brandon Brown
 Summary: A beginner tutorial on building a simple (Elman) recurrent neural network in Python. We'll build an RNN than can compute XOR on sequential data and another that can predict the next character in a sequence.
 ---

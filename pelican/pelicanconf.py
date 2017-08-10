@@ -115,7 +115,7 @@ MENUITEMS = (
     #('GitHub', 'https://github.com/outlace'),
 )
 
-SITESUBTITLE = '∑ My experiences in learning quantitative applications'
+SITESUBTITLE = '∑ Our experiences in learning quantitative applications'
 
 #FAVICON = 'images/Deep_learning_icon.png'
 #ICON = 'images/Deep_learning_icon.png'

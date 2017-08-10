@@ -3,5 +3,5 @@ Slug: rlpart2
 Date: 2015-10-25
 Category: Reinforcement-Learning
 Tags: Monte-Carlo, RL
-Author: outlace
+Authors: Brandon Brown
 Summary: Part 2 of the RL series. A slightly deeper dive into reinforcement learning methods by learning how to use Monte Carlo simulations to learn how to play blackjack.

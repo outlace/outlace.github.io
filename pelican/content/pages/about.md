@@ -5,16 +5,30 @@ permalink: /about/
 Category: About
 ---
 
+This is a machine learning, data science, and anything quantitative/computational blog. Posts are meant to be
+expository and are generally embedded Jupyter notebooks. Python is the primary programming language used.
+The blog began as a single-contributor personal blog but is transitioning into a multi-contributor blog.
+
+
+The current blog contributors are as follows:
+
 user: outlace
 
-Hi, I'm Brandon. I'm a self-taught programmer and current medical student.
-Although I spend most of my time learning medical stuff these days, I've always had a
-strong interest in machine learning and artificial intelligence. Unfortunately,
-I don't have a very quantitative background (I majored in Neuroscience in college)
-so I'm attempting to teach myself the fundamentals and will share my journey on this blog.
+Hi, my name is Brandon. I'm a former web programmer (primarily), but now a 4th year medical student.
+During my first year of medical school I started reading about and implementing machine learning algorithms
+and decided I wanted to make machine learning a part of my career. My posts here are my own attempts at teaching
+what I'm learning. I tend to be more academic/theory-oriented rather than working on practical, scale applications.
 
-### Contact me
+##### Contact me
 
 <img src="/images/emailaddr.svg" />
 
-BTC: 17nXFGVZPTd6haVTAjvik4Wm3Cw7QCJxKw
+<!---
+user: [username]
+
+I'm [name]. I'm a former full-stack engineer now doing machine learning engineering.
+
+##### Contact me
+
+TBD
+--->

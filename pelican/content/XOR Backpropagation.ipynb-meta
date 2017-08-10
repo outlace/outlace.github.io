@@ -4,6 +4,6 @@ Slug: Gradient-Descent
 Date: 2015-07-31
 Category: Backpropagation
 Tags: gradient-descent, backpropagation, optimization
-Author: outlace
+Authors: Brandon Brown
 Summary: A beginner tutorial to understand the theoretical and implementation details of gradient descent by backpropagation using Python.
 ---

@@ -1,6 +1,8 @@
+---
 Title: On chain rule, computational graphs, and backpropagation
 Date: 2015-09-05
 Category: Computational Graphs
+Authors: Brandon Brown
 Summary: Here I'm going to revisit backpropagation theory by thinking about neural networks as computational graphs upon which we can easily visualize the chain rule to compute partial derivatives.
 ---
 
