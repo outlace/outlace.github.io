@@ -19,6 +19,8 @@ During my first year of medical school I started reading about and implementing 
 and decided I wanted to make machine learning a part of my career. My posts here are my own attempts at teaching
 what I'm learning. I tend to be more academic/theory-oriented rather than working on practical, scale applications.
 
+user: Alex Zai
+
 ##### Contact me
 
 <img src="/images/emailaddr.svg" />
