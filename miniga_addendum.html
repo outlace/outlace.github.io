@@ -200,6 +200,7 @@ div.cell.selected.jupyter-soft-selected {
   }
 }
 div.inner_cell {
+  min-width: 0;
   /* Old browsers */
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -220,11 +221,6 @@ div.inner_cell {
   box-flex: 1;
   /* Modern browsers */
   flex: 1;
-}
-@-moz-document url-prefix() {
-  div.inner_cell {
-    overflow-x: hidden;
-  }
 }
 /* input_area and input_prompt must match in top border and margin for alignment */
 div.input_area {
@@ -962,8 +958,10 @@ h6:hover .anchor-link {
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
 .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
 .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
 .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
 .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
@@ -974,9 +972,11 @@ h6:hover .anchor-link {
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
 .highlight .vc { color: #19177C } /* Name.Variable.Class */
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
 <style type="text/css">
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
@@ -1015,8 +1015,7 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1024,8 +1023,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1077,7 +1075,8 @@ I'm not going to go line-by-line and explain what's going on here, because I rea
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Random theta: 
 [[ 0.71]
@@ -1101,8 +1100,7 @@ Cost: 0.00107762026703
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1171,7 +1169,8 @@ Cost: 0.00107762026703
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Best Sol'n:
 [[-10.27649069 -14.03        10.45888659   9.12        14.87       -21.50294038
@@ -1191,7 +1190,8 @@ hThetaX =
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYkAAAEPCAYAAAC3NDh4AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGcBJREFUeJzt3X2UJXV95/H31+HBRkVAOTOAGNggnmAwIAF1jdJEuwdO
@@ -1311,14 +1311,13 @@ U5xFfCczX04RkMcZEOokzyS0EJ0OfCIiPkzRWfwE8OHys89QNN3cWl4J9RDFmPozPkksM58sm6b+
 PCKeT/H/zCeArVOLNC2+DvjbiHgE+Arwa+X8G4AvlU9UPGfa98aAT5VB9T3g7IqfqeoKk1cAt5cP
 69m7fJKb1DFe3SRJqmRzkySpkiEhSapkSEiSKhkSkqRKhoQkqZIhIUmqZEhIkioZEpKkSv8fX2sT
 MX0NqD0AAAAASUVORK5CYII=
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1369,7 +1368,8 @@ MX0NqD0AAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Best Sol'n:
 [[ -8.01259712e+00   3.14587352e+01   1.40600000e+01   6.65543028e-02
@@ -1390,7 +1390,8 @@ hThetaX =
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYcAAAEPCAYAAACp/QjLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHSpJREFUeJzt3X+cXHV97/HX2wCyVBABL5AANyhEb2oUoaRaxQwXdxfa
@@ -1525,14 +1526,13 @@ KcCHgPIoP94rg4u4heSp4YcR8VaSxHicE4O1k58crJu8D/hTSZ8laQR+EfhseuyrJFU096Y9m54m
 mdN+xJW7ImJHWgX1Z5JeS/J/5U+BjcOnVJw+APyNpGeB24H/nJbfDHwrXcHwk1XvWwBcmyaox4Dz
 6vxM9XqMHA/cny6Ss3e6cppZ27i3kpmZ1XC1kpmZ1XByMDOzGk4OZmZWw8nBzMxqODmYmVkNJwcz
 M6vh5GBmZjWcHMzMrMb/BwQDNiFrFwxfAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1583,7 +1583,8 @@ M6vh5GBmZjWcHMzMrMb/BwQDNiFrFwxfAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Best Sol'n:
 [[  5.08 -12.1    6.61   0.48  14.44  -8.22  -9.47   1.94   8.45 -13.2
@@ -1602,7 +1603,8 @@ hThetaX =
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYcAAAEPCAYAAACp/QjLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGdtJREFUeJzt3X2UZHV95/H3J8ODgw8g4uFJzKCCZhIEn1CjkSY6M3iy
@@ -1722,14 +1724,13 @@ u5W0IFTVF4CHJfkvbc0Pb1seB05unqlLkkOT7DHd4Wg9C/yxSSa7i3ZNsrRtn/Yv9Efx4FXFa9ra
 dzXbPkKri+ba5s6mH9Kqab/NJ3dV1damC+qDSfak9X/lA8DGyV3adl8N/GOSO4EvAL/ZtF8GfKp5
 guHbprxvJfDhJkF9Gzhpmp9pujtGng5c3zwkZ9fmyWlSz3i3kiSpg91KkqQOJgdJUgeTgySpg8lB
 ktTB5CBJ6mBykCR1MDlIkjqYHCRJHf4/RmKvzUNuNl8AAAAASUVORK5CYII=
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1782,7 +1783,8 @@ ktTB5CBJ6mBykCR1MDlIkjqYHCRJHf4/RmKvzUNuNl8AAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Best Sol'n:
 [[ 17.04173136  10.77       -28.33009951 -10.72        -0.30622293
@@ -1802,7 +1804,8 @@ hThetaX =
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYkAAAEPCAYAAAC3NDh4AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGipJREFUeJzt3X2UJXV95/H31wG0URGJnBlAFFzBhAQFUWLiA02ku+Hk
@@ -1924,14 +1927,13 @@ AXmUAaFO8kxCy9FbgE9FxMcoOoufAD5WLvscRdPNLeWVUA9TjKk/45PEMvPJsmnqLyLiBRT/z3wK
 uGtqlabVNwJ/FxGPAl8FXlrOvxb4+/KJimdO+9ww8NkyqL4LnFbxM1VdYfJqYHv5sJ49yye5SR3j
 1U2SpEo2N0mSKhkSkqRKhoQkqZIhIUmqZEhIkioZEpKkSoaEJKmSISFJqvT/AfMu3Gd8ctUHAAAA
 AElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1946,6 +1948,7 @@ AElFTkSuQmCC
 </div>
 </div>
 </div>
+
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';

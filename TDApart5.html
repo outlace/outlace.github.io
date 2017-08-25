@@ -200,6 +200,7 @@ div.cell.selected.jupyter-soft-selected {
   }
 }
 div.inner_cell {
+  min-width: 0;
   /* Old browsers */
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -220,11 +221,6 @@ div.inner_cell {
   box-flex: 1;
   /* Modern browsers */
   flex: 1;
-}
-@-moz-document url-prefix() {
-  div.inner_cell {
-    overflow-x: hidden;
-  }
 }
 /* input_area and input_prompt must match in top border and margin for alignment */
 div.input_area {
@@ -962,8 +958,10 @@ h6:hover .anchor-link {
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
 .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
 .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
 .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
 .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
@@ -974,9 +972,11 @@ h6:hover .anchor-link {
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
 .highlight .vc { color: #19177C } /* Name.Variable.Class */
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
 <style type="text/css">
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
@@ -1015,8 +1015,7 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1024,8 +1023,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1036,8 +1034,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1055,8 +1052,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1091,7 +1087,8 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl4lNXZx/HvjYgCCuKCoKhsLogIbqBgMa5QVKhWqmBd
@@ -1242,8 +1239,8 @@ vAu0N7M8vJrPAAAAuklEQVTdzKwBcAqQtlURDwLTQwh3xC4kSSGEq0MIu4YQ2uLft1dSFOSEEBYA
 c8tyEuBIqrjQm/jIvAqFsskokL6XfXcBDYAX/cUHE0IIv4xbUmZCCGvM7AJ8pU494IEQQqUrBvKJ
 mfUATgWmmdkH+M/l1SGEcXErk2q6EBhmZpsDnwNnVXZnbRoSEUkBHRsnIpICCnMRkRRQmIuIpIDC
 XEQkBRTmIiIpoDAXEUkBhbmISAoozEVEUuD/AXBn4bt6DSzbAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -1264,7 +1261,8 @@ XEQkBRTmIiIpoDAXEUkBhbmISAoozEVEUuD/AXBn4bt6DSzbAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAEPBJREFUeJzt3X2MZXV9x/H3Fxfi+NyHBCIbEGpsG3ykLVpp7Y2wO0TD
@@ -1344,8 +1342,8 @@ PPBQZt7YdCHjyMyrM/OMzDybwd/7PS0KcjLzKeDYMGcALqBdA7mPAW+LiBcPLx4vYIMB3NqvzDdQ
 0iKjpF23nv8InAIsDn43uDczP9xsSevLzP+LiL9hMBPnJOBzmdmmGQnnA+8DjkbE/Qx+Z67OzK82
 W1lnXAHcEhEnA48CH2y4npFl5jci4gBwP/DM8P/713uNi4YkqQB+bJwkFcAwl6QCGOaSVADDXJIK
 YJhLUgEMc0kqgGEuSQUwzCWpAP8PAvZED7fD1lUAAAAASUVORK5CYII=
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -1376,7 +1374,8 @@ YJhLUgEMc0kqgGEuSQUwzCWpAP8PAvZED7fD1lUAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xd0VNX+9/H3mZY2aaSSHgIkEAIhtNBDDQhKV0EBqXa8
@@ -1857,14 +1856,13 @@ kSOlTAJii/MMQE9qVkfuZaCjEMKquPLYk9t04FZ5zfw2atMkI0nN+uq5ELAAthV9NtgnpXy+ekO6
 NSmlUQjxIkUjcTTA/6SUNWlEwgPA40CkEOIoRZ+Z16WUW6o3sjpjErBCCGEOXACeruZ4yk1KeUAI
 sRo4ChQW//vVrcqoSUOKoii1gNo2TlEUpRZQyVxRFKUWUMlcURSlFlDJXFEUpRZQyVxRFKUWUMlc
 URSlFlDJXFEUpRZQyVxRFKUW+H8pEQsbrub5PQAAAABJRU5ErkJggg==
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1887,7 +1885,8 @@ URSlFlDJXFEUpRZQyVxRFKUW+H8pEQsbrub5PQAAAABJRU5ErkJggg==
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl4Tdf+x/H3yoAQhITEEFOVBCGJWbViSEJrpqheVbRu
@@ -2197,14 +2196,13 @@ A0DSLHAC6FnMhz3M8m+TEf02GY0a2x9t77M9YfsgRWM5MiqFvB9JZyi6zNO2f9edZ0DzwCFJ4+VM
 o02bjEyzup73gO3Ai6Jt8Nr21XojVbP9R9J1ipU4W4AHtpu0ImESuAh8kLRI0WY6tp/Xm2zTuAE8
 kbQNWAIu15xnYLbfSOoCi8BK+Xm/6p5sGoqIaIH8bVxERAukmEdEtECKeUREC6SYR0S0QIp5REQL
 pJhHRLRAinlERAukmEdEtMBfQagxFUYzmz8AAAAASUVORK5CYII=
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2228,7 +2226,8 @@ pJhHRLRAinlERAukmEdEtMBfQagxFUYzmz8AAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl8zNf+x/HXyYIQtSQkltiqJAhJ1FLViiUJbe2U6lVb
@@ -2520,14 +2519,13 @@ PQo0VkoVSe88tuQeH+BavGd+D460yEhjX289xwOFgGjjZ4MNWutXzY10d1rrVKXUfzBm4jgB32mt
 7WlGwuPA88AupdQ2jJ+Zt7TWS8xNVmAMAKYrpVyBQ0Afk/PkmtZ6k1JqFrANSE7/c8rdHiOLhoQQ
 wgHIsXFCCOEApJgLIYQDkGIuhBAOQIq5EEI4ACnmQgjhAKSYCyGEA5BiLoQQDkCKuRBCOID/B25a
 JJkuuCIAAAABSURBVLINV69IAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2550,7 +2548,8 @@ JJkuuCIAAAABSURBVLINV69IAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeYXVW5+PHv2vv0c+aUOdN7SyYJ6SGUJJDQEhCRi4qI
@@ -3163,14 +3162,13 @@ NZD7HPB6Ecm2O4/XcI4B3GXvmZ+D1ZRkpKysR89bAQ+4J/1u8ENV/UBnJc2PqsYi8kHSmTgW8GVV
 XUkzEt4IvAfYJyKPkn5nPqGq/95ZZS8ZPgx8XURc4Cjw3g7rWTCq+v9E5G7gUSBs/7xtvmNM0pDB
 YDCsAsyycQaDwbAKMGZuMBgMqwBj5gaDwbAKMGZuMBgMqwBj5gaDwbAKMGZuMBgMqwBj5gaDwbAK
 MGZuMBgMq4D/D4EHU1mKLN3SAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3193,7 +3191,8 @@ MGZuMBgMq4D/D4EHU1mKLN3SAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXmcHFX1t59bVd09+5Z9IWRPSAgEEBAEDAESEJAlbIKy
@@ -3626,14 +3625,13 @@ IfmgqlNUdS9VHYb53udWkZCjqp8Aq+M6AzCG6prIXQUcIyK18cHjGHJM4JZ8ZJ6DrpRkpFTXpeft
 QA3wvDk2eE1V/6OyJmVHVR0RuQQTieMD7lXVaopIOB74NrBURN7CHDNTVPXZylq2y3AZ8JCIBIF/
 Ad+vsD2eUdXXRWQm8BYQjd/fnW0bmzRksVgsXQDbNs5isVi6AFbMLRaLpQtgxdxisVi6AFbMLRaL
 pQtgxdxisVi6AFbMLRaLpQtgxdxisVi6AFbMLRaLpQvw/1XPLv/ra3lUAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3648,8 +3646,7 @@ Here's what our barcode might look like for the above example:</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3657,8 +3654,7 @@ Here's what our barcode might look like for the above example:</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3668,8 +3664,7 @@ Here's what our barcode might look like for the above example:</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3678,8 +3673,7 @@ Here's what our barcode might look like for the above example:</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3702,8 +3696,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3722,8 +3715,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3741,8 +3733,7 @@ Notice I already have the simplices in each subcomplex of the filtration in orde
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3764,8 +3755,7 @@ $$
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3778,8 +3768,7 @@ $$
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3799,8 +3788,7 @@ Then <code>low(j) = 3</code> (with indexing starting from 0) since the lowest $1
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3844,8 +3832,7 @@ $$
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3867,8 +3854,7 @@ $$
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3888,8 +3874,7 @@ $$<p>Once the algorithm is done running, we can always refer to this memory matr
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3923,8 +3908,7 @@ $$<p>To record the intervals of birth and death of topological features, we simp
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3936,8 +3920,7 @@ $$<p>To record the intervals of birth and death of topological features, we simp
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3972,7 +3955,8 @@ $$<p>To record the intervals of birth and death of topological features, we simp
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWoAAAEACAYAAACatzzfAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADtNJREFUeJzt3F+MVPd5xvHnIetYbLaOrKSCGPynVY0wFhYbBFTClcdO
@@ -4043,14 +4027,13 @@ pPdtzyo+9TVJhyoc6Wo9rDaHPaQSL3gZTd1fDGP7h5Iakr5k+z1J68+dnKgD24sl/Y2kt4rjvCHp
 6YjYWe1kpX1F0ovFWe8pkn4cET+veKZrxTRJ24v/+qFH0paI2FXxTJ1aK2lLcfjgt5Ier3iejtju
 VetE4jfbruUFLwCQGycTASA5Qg0AyRFqAEiOUANAcoQaAJIj1ACQHKEGgOQINQAk9/+AZ3C7Hb/w
 qQAAAABJRU5ErkJggg==
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4061,8 +4044,7 @@ qQAAAABJRU5ErkJggg==
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4188,7 +4170,8 @@ qQAAAABJRU5ErkJggg==
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWoAAAEACAYAAACatzzfAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XlwVXWe9/H3796bfb9JSCABEpYQwppAQFk0yKrS7u3a
@@ -4357,8 +4340,8 @@ MSmBx3HAUiAsToRaa//eWjvGWjuO7p/7Tdba+5yeK1TGmPjAKzGMMQnAMuAjZ6cKnbX2GPCZMaYg
 WchGAs8Fznp7gP+y1r7h8EzDRRawOlD94AOet9aud3imvnoUeD6wfLAfuN/hefrEGBNP94nE7/W6
 rW54ERFxN51MFBFxOQW1iIjLKahFRFxOQS0i4nIKahERl1NQi4i4nIJaRMTlFNQiIi73/wFBXhiS
 YyOszAAAAABJRU5ErkJggg==
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -4375,7 +4358,8 @@ YyOszAAAAABJRU5ErkJggg==
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[48]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[48]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[[{0},
   {1},
@@ -4469,7 +4453,8 @@ YyOszAAAAABJRU5ErkJggg==
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[49]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[49]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
@@ -4491,8 +4476,7 @@ YyOszAAAAABJRU5ErkJggg==
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4558,7 +4542,8 @@ YyOszAAAAABJRU5ErkJggg==
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Mod: add col 6 to 8 
 
@@ -4583,7 +4568,8 @@ Mod: add col 13 to 14
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt output_prompt">Out[56]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[56]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>(array([[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -4620,8 +4606,7 @@ Mod: add col 13 to 14
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4692,7 +4677,8 @@ Mod: add col 13 to 14
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[100]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[100]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[[0, -1], [1, 4], [2, 6], [3, 5], [7, 12]]</pre>
 </div>
@@ -4700,8 +4686,7 @@ Mod: add col 13 to 14
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4722,7 +4707,8 @@ Mod: add col 13 to 14
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[101]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[101]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[[0, [0, 5.8309518948453007]],
  [0, [0, 3.0]],
@@ -4734,8 +4720,7 @@ Mod: add col 13 to 14
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4780,7 +4765,8 @@ Mod: add col 13 to 14
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEKCAYAAADgl7WbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADXJJREFUeJzt3WuMbfVZx/HvDw4WaAGbYqyCIG0t0BhyuAgq1RxCaMAq
@@ -4845,10 +4831,11 @@ Bvj4sHwv8OEknwI+tdabDjcGOGK4+QiMg/26Vat8Yvh6J3DsDLZD2ifOzLXVBbi6qk6pqpOr6sSq
 bcZtl9cPN9q4ZmihBLiiqp4cd2f26M3AXw7XOl99+dHn99e99KiWzkvgqqUkT1XVYcuuQ1oU2yzq
 ylmK9ivOzCWpAWfmktSAYS5JDRjmktSAYS5JDRjmktSAYS5JDfwfiLp2aRoatAwAAAAASUVORK5C
 YII=
-">
-</img></div>
+" />
 </div>
-<div class="output_area"><div class="prompt"></div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXAAAAEKCAYAAAALoA6YAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADVhJREFUeJzt3X+sZHV9xvHngWuC4LKKNCTaapQoq7G4bFBoIWbUSqG2
@@ -4912,14 +4899,13 @@ EAIc1X1G0quazfhl+ynNFrlHa7SntzRqqaytpJ+R5AZJb5d0vKQnTXrRJA9KemCsv32hpBs2qGGZ
 P/gB2xgrB5SW5E7bvyPp2mY1/X1Jv6rRNsEvtv0OjVoqr7a9IumKpj1iSe9J8uCo8zLRRZLeb/uJ
 Gu3/vLbt8OP75WzpiYVgO1ksJduHkuyYfSZQFy0ULCtWJlh6rMABoChW4ABQFAEOAEUR4ABQFAEO
 AEUR4ABQFAEOAEX9Hyy94BbceVTQAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -4957,7 +4943,8 @@ AEUR4ABQFAEOAEX9Hyy94BbceVTQAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW0AAAEACAYAAAB4ayemAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl0VPeZ5//3t6q0b6V9B8S+mEXYrF6Q2QQYcLATbzjG
@@ -5189,14 +5176,13 @@ WusMrfVwrXUenYuYfK31Lf9w9im0u1YY3SfeHAbeMtOJN0qpu4GVwFyl1IGufdVFRtc1yHwfWKeU
 Okhn98g/GVyPX7TWe+l8ZnAA+JzOX8RXDC2qB0qpN4CdwGil1Hml1DPAPwMLlFLdZz3/s5E13spN
 6v+/QCywrev39yVDi7yFm9R/JY0f2yNyco0QQpiIvBAphBAmIqEthBAmIqEthBAmIqEthBAmIqEt
 hBAmIqEthBAmIqEthBAmIqEthBAm8v8DWAEBmzhIRDEAAAAASUVORK5CYII=
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -5232,7 +5218,8 @@ hBAmIqEthBAmIqEthBAmIqEthBAm8v8DWAEBmzhIRDEAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEKCAYAAADgl7WbAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADktJREFUeJzt3X2MbPVdx/H3By4WaAGbYqyCIG3loTGEJ0GlmksQAlYh
@@ -5300,10 +5287,11 @@ fHxvn7Rb2OCwbnESGAf7dRO73Ni9vRs4ehO+DmlDnJlr2QW4uqpOqaqTq+qEqvrtVfZbmXm/FvhT
 1T5pd/30r0/0w38BuH0vNSzr5ZHVEGcUWmpVtSfJbwK3dLPsbwNvA74JnJ7ktxi3XV7fLdRxTddC
 CXBlVT097s6s6o3AX3TXUp+8fOoL++teelSD8xK4alKSZ6rqkKHrkBbFNota5SxF+xRn5pLUAGfm
 ktQAw1ySGmCYS1IDDHNJaoBhLkkNMMwlqQH/B8WmwKoTSYtNAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
-<div class="output_area"><div class="prompt"></div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAEKCAYAAAAYd05sAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADulJREFUeJzt3X2MZXV9x/HPB4YEsbsrlMYELAZsYTUt3V1RaKHNJVQL
@@ -5374,14 +5362,13 @@ mFMUPNa7myS9xvaPSZLto6staA9XuY+3VC7ZLJ2JnxARt6i8mMJmSRMvwlFdLu3RsfX1CyXdskKG
 vq5sBTTCmQfWtYi41/bvS7qhOhv/rqRfV7kd7ottX6pyyea1thckXVktv1jS+yPisXJlZ6KLJP2V
 y0un3a8fbK+7fL2eLVkxl9guGCnZPhgRm1Y/EsiLJRpkxZkLNjzO4AEgKc7gASApCh4AkqLgASAp
 Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -5403,7 +5390,8 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[105]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[105]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[[0, [0, 6.5]],
  [0, [0, 3.0]],
@@ -5418,8 +5406,7 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -5441,7 +5428,8 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[107]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[107]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[10, 19]</pre>
 </div>
@@ -5462,7 +5450,8 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[111]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[111]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0])</pre>
@@ -5471,8 +5460,7 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -5493,7 +5481,8 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[120]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[120]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[7, 8, 9, 10]</pre>
 </div>
@@ -5514,7 +5503,8 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[127]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[127]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[{0, 1}, {2, 3}, {1, 2}, {0, 3}]</pre>
 </div>
@@ -5522,8 +5512,7 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -5560,7 +5549,8 @@ Ch4AkqLgASApCh4Akvp/Z5bQlBfFzeAAAAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xl4lNXZx/HvjYgCCuKCoKhsLogIbqBgMa5QVKhWqmBd
@@ -5711,10 +5701,11 @@ vAu0N7M8vJrPAAAAuklEQVTdzKwBcAqQtlURDwLTQwh3xC4kSSGEq0MIu4YQ2uLft1dSFOSEEBYA
 c8tyEuBIqrjQm/jIvAqFsskokL6XfXcBDYAX/cUHE0IIv4xbUmZCCGvM7AJ8pU494IEQQqUrBvKJ
 mfUATgWmmdkH+M/l1SGEcXErk2q6EBhmZpsDnwNnVXZnbRoSEUkBHRsnIpICCnMRkRRQmIuIpIDC
 XEQkBRTmIiIpoDAXEUkBhbmISAoozEVEUuD/AXBn4bt6DSzbAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
-<div class="output_area"><div class="prompt"></div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAD7BJREFUeJzt3X+IZeV9x/HPZ7sKtyRKf8AKDkZtsC0m1NpEW6TtRZm5
@@ -5789,8 +5780,8 @@ Iu6KiEsi4nKN/t6+m1GQKyJek3S6yElJukETbvQmn5lP0JVFRqH8fu37M0nnSzo6+uVDxyPic/UO
 qZyI+F/bv69Rp84OSV+LiLEdA21i+zpJn5T0vO1nNfq5vCsiVusdGaZ0m6Rv2D5P0iuSPjPuYBYN
 AUAG+Ng4AMgAYQ4AGSDMASADhDkAZIAwB4AMEOYAkAHCHAAyQJgDQAb+Dye4uEISwXNhAAAAAElF
 TkSuQmCC
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -5809,7 +5800,8 @@ TkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAEACAYAAABBDJb9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdcleX/x/HXfRbrsPcQVFyoqOAeJWmCI3emNszRHjZs
@@ -6221,14 +6213,13 @@ X40Qoj+Vb2kHSykrHF1PDdkJtBRCNBVCGIH7AWcbFfEpcFBKOcvRhdQkKeVkKWUTKWVzKp+3jU4U
 lFccMVCfCCHuAB4EEoUQv1L5dzlZSvm9YytTrtFTwJdCCAOQAjx8pY3VpCFFURQnoJaNUxRFcQIq
 zBVFUZyACnNFURQnoMJcURTFCagwVxRFcQIqzBVFUZyACnNFURQnoMJcURTFCfx/a6vp9iiq5oEA
 AAAASUVORK5CYII=
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -6250,7 +6241,8 @@ AAAASUVORK5CYII=
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[161]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[161]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>148</pre>
 </div>
@@ -6274,7 +6266,8 @@ persist4 = readPersistence(intervals4, rips4)
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>CPU times: user 43.4 s, sys: 199 ms, total: 43.6 s
 Wall time: 44.1 s
@@ -6297,7 +6290,8 @@ Wall time: 44.1 s
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAEKCAYAAAAYd05sAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADlVJREFUeJzt3X+sZGdZwPHv0x9QkHZFavzR0oog/RHTbNe6gBBZQiCt
@@ -6366,10 +6360,11 @@ kZk3Au8CTmFyf89jtGtyPzpVX/8x4MZN2jDa28SpNjMPjVq7XPN7gOvabPxrwNuYLKe6PyJ+iUnJ
 5g3tDSOuassvAVyemY9NKjsb+gng99v1uf+Vp5ZnXV+vd0lW7UguF6ySIuJoZp686nZIq2SJRlWZ
 uWjXM4OXpKLM4CWpKAO8JBVlgJekogzwklSUAV6SijLAS1JR/wcGYYkL7cGi1AAAAABJRU5ErkJg
 gg==
-">
-</img></div>
+" />
 </div>
-<div class="output_area"><div class="prompt"></div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAEKCAYAAAAYd05sAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADkJJREFUeJzt3XuMbWdZx/Hvrz1IKbSHS40KCAIRSoP1tOFShZgBRFsv
@@ -6437,14 +6432,13 @@ Lw6fv4IDJa0pA1773aXAs5N8PUCSBwzL/h4PPHs45lzg6Ej8YVV1OfAK4GRGz+n8GlX1OeCzY/Pr
 5wGXb1PDuj64Rvdwjjy0r1XVjUl+CXjPMBr/EvBTjJZTfWKSVzGasnnO8OCHNw3TLwFeNzxcYbvT
 vwD4nWF97k9w1/KsW+frXZJVa8nlgtVSktur6qSdj5T6copGXTly0T2eI3hJasoRvCQ1ZcBLUlMG
 vCQ1ZcBLUlMGvCQ1ZcBLUlP/Dwk4M0mbYn63AAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -6474,7 +6468,8 @@ vCQ1ZcBLUlMGvCQ1ZcBLUlP/Dwk4M0mbYn63AAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEACAYAAABVtcpZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcTfX/wPHXWyKVFEVlSaVEi7Ro0TKSUIq08e2bpYUW
@@ -6704,8 +6699,8 @@ kP/9ssjvzYi3BAoiIi2AQcCxwBQRWeKcayoiJwBDnXPNnHMZItIJmI4mrWHOuVQfww6yPsA4EbkT
 WAfcCrp4j6yfJ9qV9FFWeY6SwHvOuel+BRw0+b3fRKSj/rV70zn3iYhcKyI/AH8A7f2MOahC+VkC
 N4vIfcAB4C/gNv8iDj4ReR9IAiqIyM/AU0Apwnhv2mIxY4xJYEHqDjLGGBNllgSMMSaBWRIwxpgE
 ZknAGGMSmCUBY4xJYJYEjDEmgVkSMMaYBGZJwBhjEtj/AwBxC7VrpyP3AAAAAElFTkSuQmCC
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -6726,7 +6721,8 @@ ZknAGGMSmCUBY4xJYJYEjDEmgVkSMMaYBGZJwBhjEtj/AwBxC7VrpyP3AAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAD7CAYAAACMlyg3AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAEvxJREFUeJzt3X2MY9dZx/HfLw2VBopCAnQbkqa8tDQQXqJKJKlaEaPI
@@ -6815,8 +6811,8 @@ Z5S2/QYYpz2elfTafcqU0b77FhEv9T3/jO0/s31NRLwwpzrOWlXbbizTtF+ZuoMG9mPZ/m7br+o9
 jmL4oqQnJN1bdIY+z/3rvT4k6bykCxXbv2skPdyr+xlJ31eH9hvUHpLulnSsr8z96o60+ZJGjGwr
 22O/fZP0HnWD9Bcl/ZOkW4uu84T795eSvi7pfyX9u6R316Xtxtm/adqPZSMAIGFl6g4CAMwZQQAA
 EkYQAICEEQQAIGEEAQBIGEEAABJGEACAhBEEACBh/wciJWKJ2ecNAgAAAABJRU5ErkJggg==
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -6846,7 +6842,8 @@ EkYQAICEEQQAIGEEAQBIGEEAABJGEACAhBEEACBh/wciJWKJ2ecNAgAAAABJRU5ErkJggg==
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEACAYAAABVtcpZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdcVfX/wPHXuewhuMHBcCIgskTMzNAE1G9uc+VITduZ
@@ -7175,8 +7172,8 @@ qn5TPtO9k97xubP0ZhMf6L++GdjfX76O3lUMR+jduvqeaZ+hn+T4+s+3A8eA43M2viuBx/t9Pwhc
 cSHUb7l6AF8FvrKkzYP0rrR5jhWubJu1x7CxAV+jF9JHgF8AN0+7z2OO70fAn4H/AH8Evnyh1G6U
 8a2mfk4Wk6SGzdLhIEnSOjMEJKlhhoAkNcwQkKSGGQKS1DBDQJIaZghIUsMMAUlq2H8BujmI9WWA
 AiAAAAAASUVORK5CYII=
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -7197,7 +7194,8 @@ persist5 = readPersistence(intervals5, rips5)
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>CPU times: user 17min 8s, sys: 3.93 s, total: 17min 12s
 Wall time: 17min 24s
@@ -7207,8 +7205,7 @@ Wall time: 17min 24s
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -7229,7 +7226,8 @@ Wall time: 17min 24s
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAAEKCAYAAADzQPVvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADjlJREFUeJzt3XuoZWUZx/Hfz0t4GyfJEPKGaelEyMxoaikxIslIpQSC
@@ -7297,10 +7295,11 @@ dddKOr68IYZs71IuDbu1pOPLfU6RNJeh7xUR10s6V9LO6q3IuJmIeFrSk331+FMlXb9IG7gZD1qP
 jAQzLSI22v6EpKvLLP15SR+Q9IykQ2x/Ur2yzgm2t5F0cVmisaTzIuLpXvVnQe+W9DXb26t3s+zT
 5k47vxlV/kxAHVjiGJ1ke1NELJl2O4C2oIyDriKLAfqQ2QNAAmT2AJAAwR4AEiDYA0ACBHsASIBg
 DwAJEOwBIIH/AWyfCf259r7fAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
-<div class="output_area"><div class="prompt"></div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEKCAYAAAAVaT4rAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADuRJREFUeJzt3XusbGV5x/HvIweLCBywVBq1ELXl0jYUEJVqbYagzaEX
@@ -7371,14 +7370,13 @@ srsaeMfQlLsHNVPb7gW8o9nndGD1zP3QzLyGwQ2ADgD2W+ugObgl6KND4/fvYnC7vrV0cds+aWY8
 U9FSy8w7I+L3gCuas/fvAu8BvgO8LiJ+n8HQzzub+9xe3AzjBPDRzHx8MEK0pjOBjze3B72bwR2R
 4PmfBzjFrZaK0zJrU4qInZm5/7zrkBaRQz3arDyjkdbhGb8kFeMZvyQVY/BLUjEGvyQVY/BLUjEG
 vyQVY/BLUjH/DxQlzI8GWN0gAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -7410,7 +7408,8 @@ vyQVY/BLUjH/DxQlzI8GWN0gAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEACAYAAABVtcpZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAF41JREFUeJzt3X+sZOV52PHvQ4iVm2CIWdcLAUPsbAyO29pFCiay20xL
@@ -7520,8 +7519,8 @@ K652f4he/uoE8CLwYP/9c4Ev9p+/g94MikeAx4Gbq67Sj9L//usd9Cr5T9Ws/2cDX+r37TDwo00Y
 //XGE7gO2L2qzV30ZuF8gw1mntWx/8DH6AXaR4D/CLy/6j6v6vu/Bl4A/i/w34BrGzb2G/a/5mP/
 AeDVVf8ev97/Wyo0/i4Wk6QWq1M6SJI0ZQYBSWoxg4AktZhBQJJazCAgSS1mEJCkFjMISFKLGQQk
 qcX+P2PWtrTM63SRAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -7540,7 +7539,8 @@ qcX+P2PWtrTM63SRAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEACAYAAABVtcpZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XdUVFfXBvDnDl26DVSqBZAiMyqKip+IDKNGLGiM3Wgs
@@ -7894,8 +7894,8 @@ oZeHpK0zQb1cALzj7n9Ic39S+pmxzqPqZ3vv4W6yJ/siUvNs+0idTfxcdHs/YGm0PIjUERpvkLp0
 9ewk1hl9P5HUHvvNMdVZAjwf1bAC6JWkfjbXH2AacHWjMfeSOjrnTTIcMRZnncBPSQXnG8DLwNkx
 1PgX4BNgP7AFuCKhvcxYZ0J6ORo42Oj3oi56DSSqn9nUeTT91MliIiIBS9J0kIiItDOFgIhIwBQC
 IiIBUwiIiARMISAiEjCFgIhIwBQCIiIBUwiIiATsf5PYEeuq9uyMAAAAAElFTkSuQmCC
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -7912,7 +7912,8 @@ IiIBUwiIiARMISAiEjCFgIhIwBQCIiIBUwiIiATsf5PYEeuq9uyMAAAAAElFTkSuQmCC
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[175]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[175]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>220</pre>
 </div>
@@ -7936,7 +7937,8 @@ persist6 = readPersistence(intervals6, rips6)
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>CPU times: user 4min 2s, sys: 780 ms, total: 4min 2s
 Wall time: 4min 4s
@@ -7959,7 +7961,8 @@ Wall time: 4min 4s
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAAEKCAYAAADzQPVvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADlhJREFUeJzt3XmMJHUZxvHnkcWgHCsRYyJX8AKMIbsrIgoxQwhkiQox
@@ -8028,10 +8031,11 @@ Iq6UdJakvTS4IuNOIuJ+SfcO9eNPk3TlKmPgZjyYe1Qk6LSIuMn2+yRdWlbpD0p6i6R/SjrC9vs1
 aOucYnudpPPLFo0lnR0R9w+6Pyt6jaTP2X6CBjfLPmNpt8uHUeXPBNSBSxyjl2zviIg92x4HMC9o
 46CvqGKAIVT2AJAAlT0AJEDYA0AChD0AJEDYA0AChD0AJEDYA0AC/wfuEs12QAZ2RgAAAABJRU5E
 rkJggg==
-">
-</img></div>
+" />
 </div>
-<div class="output_area"><div class="prompt"></div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAAEKCAYAAADzQPVvAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADpFJREFUeJzt3X2sJXV9x/HPRy5mVZZFxWiEQn1kNQaXlQqV1g6hNosP
@@ -8101,14 +8105,13 @@ oepBHYeqmsHzIaJ6RN89Y+Pxr5J0xQp1WLQHm2AB0SPBXIuIm22/S9LldS/915L+QtIvJD3X9t+o
 GtZ5ef2wlYvqIRpLOi8i7q1Gf5b1Gkn/Vj+u7zZVTwuSHjq+z9SxWPOY4hgLyfbuiFg/63oAawXD
 OFhU9GKAMfTsASABevYAkABhDwAJEPYAkABhDwAJEPYAkABhDwAJ/D/JlPwuThHBUwAAAABJRU5E
 rkJggg==
-">
-</img></div>
+" />
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -8116,8 +8119,7 @@ rkJggg==
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -8126,8 +8128,7 @@ rkJggg==
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -8143,8 +8144,7 @@ rkJggg==
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -8204,14 +8204,14 @@ rkJggg==
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 </div>
 </div>
 </div>
+
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
