@@ -2,7 +2,7 @@
             <h4 class="date">{{ article.date.strftime("%b %d, %Y") }}</h4>
             {% endif %}
 
-            <article class="post"> 
+            <article class="post">
                 {% if article.title %}
                 <h2 class="title">
                     <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permanent Link to &quot;{{ article.title }}&quot;">{{ article.title }}</a>
@@ -19,6 +19,7 @@
 
                 <div class="info">
                     <a href="{{ SITEURL }}/{{ article.url }}">posted at {{ article.date.strftime("%H:%M") }}</a>
+                    by {{ article.author }}
                     {% if article.category.name != "misc" %}
                     &nbsp;&middot;&nbsp;<a href="{{ SITEURL }}/{{ article.category.url }}" rel="tag">{{ article.category }}</a>
                     {% endif %}

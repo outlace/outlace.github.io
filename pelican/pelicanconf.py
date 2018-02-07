@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Brandon'
+AUTHOR = 'Brandon Brown'
 SITENAME = 'Δ ℚuantitative √ourney'
 SITEURL = 'http://outlace.com'
 
@@ -78,8 +78,8 @@ DISPLAY_MENU   = True
 # provided as examples, they make ‘clean’ urls. used by MENU_INTERNAL_PAGES.
 '''TAGS_URL           = 'tags'
 TAGS_SAVE_AS       = 'tags/index.html'
-#AUTHORS_URL        = 'authors'
-#AUTHORS_SAVE_AS    = 'authors/index.html'
+AUTHORS_URL        = 'authors'
+AUTHORS_SAVE_AS    = 'authors/index.html'
 CATEGORIES_URL     = 'categories'
 CATEGORIES_SAVE_AS = 'categories/index.html'
 ARCHIVES_URL       = 'archives'

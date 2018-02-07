@@ -1,6 +1,7 @@
 Title: Announcement
 Date: 2017-04-26 19:41
 Category: Announcement
+Author: Brandon Brown
 Summary: Some announcements about this blog's migration to a different static site generator as well as some new GitHub repos I've created.
 ---
 
