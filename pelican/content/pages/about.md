@@ -7,8 +7,7 @@ Category: About
 
 This is a machine learning, data science, and anything quantitative/computational blog. Posts are meant to be
 expository and are generally embedded Jupyter notebooks. Python is the primary programming language used.
-The blog began as a single-contributor personal blog but is transitioning into a multi-contributor blog.
-
+The blog began as a single-contributor personal blog but I'm planning to transition it into a multi-contributor blog.
 
 The current blog contributors are as follows:
 
@@ -18,8 +17,6 @@ Hi, my name is Brandon. I'm a former web programmer (primarily), but now a 4th y
 During my first year of medical school I started reading about and implementing machine learning algorithms
 and decided I wanted to make machine learning a part of my career. My posts here are my own attempts at teaching
 what I'm learning. I tend to be more academic/theory-oriented rather than working on practical, scale applications.
-
-user: Alex Zai
 
 ##### Contact me
 

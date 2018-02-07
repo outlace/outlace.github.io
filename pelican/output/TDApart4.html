@@ -5,13 +5,12 @@
         <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Δ ℚuantitative √ourney | Persistent Homology (Part 4)</title>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
-    <link href="/feeds/topological-data-analysis.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Categories Atom Feed" />
-    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <link rel="shortcut icon" type="image/png" href="http://outlace.com/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="http://outlace.com/favicon.ico">
+    <link href="http://outlace.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/print.css" type="text/css" media="print" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="" />
     <meta name="author" content="Brandon" />
@@ -22,16 +21,16 @@
     <header>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/pages/d-quantitative-ourney-about.html">Δ ℚuantitative √ourney | About</a></li>
-                <li><a href="/tags/">Tags</a></li>
-                <li><a href="/categories/">Categories</a></li>
-                <li><a href="/archives/{slug}/">Archives</a></li>
+                <li><a href="http://outlace.com/">Home</a></li>
+                <li><a href="http://outlace.com/pages/about.html">About</a></li>
+                <li><a href="http://outlace.com/tags/">Tags</a></li>
+                <li><a href="http://outlace.com/categories/">Categories</a></li>
+                <li><a href="http://outlace.com/archives/{slug}/">Archives</a></li>
             </ul>
         </nav>
         <div class="header_box">
-            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
-            <h2>∑ My experiences in learning quantitative applications</h2>
+            <h1><a href="http://outlace.com/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ Our experiences in learning quantitative applications</h2>
         </div>
     </header>
     <div id="wrapper">
@@ -39,7 +38,7 @@
 
             <article class="post"> 
                 <h2 class="title">
-                    <a href="/TDApart4.html" rel="bookmark" title="Permanent Link to &quot;Persistent Homology (Part 4)&quot;">Persistent Homology (Part 4)</a>
+                    <a href="http://outlace.com/TDApart4.html" rel="bookmark" title="Permanent Link to &quot;Persistent Homology (Part 4)&quot;">Persistent Homology (Part 4)</a>
                 </h2>
 
 
@@ -201,6 +200,7 @@ div.cell.selected.jupyter-soft-selected {
   }
 }
 div.inner_cell {
+  min-width: 0;
   /* Old browsers */
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -221,11 +221,6 @@ div.inner_cell {
   box-flex: 1;
   /* Modern browsers */
   flex: 1;
-}
-@-moz-document url-prefix() {
-  div.inner_cell {
-    overflow-x: hidden;
-  }
 }
 /* input_area and input_prompt must match in top border and margin for alignment */
 div.input_area {
@@ -963,8 +958,10 @@ h6:hover .anchor-link {
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
 .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
 .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
 .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
 .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
@@ -975,9 +972,11 @@ h6:hover .anchor-link {
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
 .highlight .vc { color: #19177C } /* Name.Variable.Class */
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
 <style type="text/css">
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
@@ -1353,7 +1352,8 @@ $$
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[2]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>matrix([[0],
         [1],
@@ -1563,7 +1563,8 @@ Once we have the matrix in Smith normal form, we don't do any more operations. W
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[29]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[29]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[matrix([[1, 0, 0, 0, 0],
          [0, 1, 0, 0, 0],
@@ -1616,7 +1617,8 @@ Betti $b_n = rank(Z_n) - rank(B_n)$</p>
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[matrix([[0, 0, 0, 0]]), 0, 4]
 [matrix([[1, 0, 0, 0, 0],
@@ -1709,7 +1711,8 @@ I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[139]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[139]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>[array([[ 1.,  0.,  0.,  0.,  0.],
         [ 0.,  1.,  0.,  0.,  0.],
@@ -1790,7 +1793,8 @@ I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[212]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[212]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 2.,  1.,  0.])</pre>
 </div>
@@ -1822,7 +1826,8 @@ Let $Y_1 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {0, 6}, {2, 6}, {4, 5}, {
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[213]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[213]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 2.,  2.,  0.])</pre>
 </div>
@@ -1854,7 +1859,8 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[214]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[214]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 3.,  2.,  0.])</pre>
 </div>
@@ -1885,7 +1891,8 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[215]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[215]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([ 1.,  0.,  1.])</pre>
 </div>
@@ -1971,6 +1978,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 </div>
 </div>
+
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
@@ -2003,11 +2011,11 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
                 <div class="clear"></div>
 
                 <div class="info">
-                    <a href="/TDApart4.html">posted at 00:35</a>
-                    &nbsp;&middot;&nbsp;<a href="/category/topological-data-analysis/" rel="tag">Topological Data Analysis</a>
+                    <a href="http://outlace.com/TDApart4.html">posted at 00:35</a>
+                    &nbsp;&middot;&nbsp;<a href="http://outlace.com/category/topological-data-analysis/" rel="tag">Topological Data Analysis</a>
                     &nbsp;&middot;
-                    &nbsp;<a href="/tag/tda/" class="tags">TDA</a>
-                    &nbsp;<a href="/tag/persistent-homology/" class="tags">persistent-homology</a>
+                    &nbsp;<a href="http://outlace.com/tag/tda/" class="tags">TDA</a>
+                    &nbsp;<a href="http://outlace.com/tag/persistent-homology/" class="tags">persistent-homology</a>
                 </div>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -2023,10 +2031,10 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
             <div class="clear"></div>
             <footer>
                 <p>
-                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <!--- <a href="http://outlace.com/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
                 <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
                 <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
-                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+                <a href="http://outlace.com/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
             </footer>
         </div>
         <div class="clear"></div>

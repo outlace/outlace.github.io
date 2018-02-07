@@ -5,13 +5,12 @@
         <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Δ ℚuantitative √ourney | Gradient Descent with Backpropagation</title>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
-    <link href="/feeds/backpropagation.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Categories Atom Feed" />
-    <link rel="stylesheet" href="/theme/css/screen.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/print.css" type="text/css" media="print" />
+    <link rel="shortcut icon" type="image/png" href="http://outlace.com/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="http://outlace.com/favicon.ico">
+    <link href="http://outlace.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/print.css" type="text/css" media="print" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="" />
     <meta name="author" content="Brandon" />
@@ -22,16 +21,16 @@
     <header>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/pages/d-quantitative-ourney-about.html">Δ ℚuantitative √ourney | About</a></li>
-                <li><a href="/tags/">Tags</a></li>
-                <li><a href="/categories/">Categories</a></li>
-                <li><a href="/archives/{slug}/">Archives</a></li>
+                <li><a href="http://outlace.com/">Home</a></li>
+                <li><a href="http://outlace.com/pages/about.html">About</a></li>
+                <li><a href="http://outlace.com/tags/">Tags</a></li>
+                <li><a href="http://outlace.com/categories/">Categories</a></li>
+                <li><a href="http://outlace.com/archives/{slug}/">Archives</a></li>
             </ul>
         </nav>
         <div class="header_box">
-            <h1><a href="/">Δ ℚuantitative √ourney</a></h1>
-            <h2>∑ My experiences in learning quantitative applications</h2>
+            <h1><a href="http://outlace.com/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ Our experiences in learning quantitative applications</h2>
         </div>
     </header>
     <div id="wrapper">
@@ -39,7 +38,7 @@
 
             <article class="post"> 
                 <h2 class="title">
-                    <a href="/Gradient-Descent.html" rel="bookmark" title="Permanent Link to &quot;Gradient Descent with Backpropagation&quot;">Gradient Descent with Backpropagation</a>
+                    <a href="http://outlace.com/Gradient-Descent.html" rel="bookmark" title="Permanent Link to &quot;Gradient Descent with Backpropagation&quot;">Gradient Descent with Backpropagation</a>
                 </h2>
 
 
@@ -201,6 +200,7 @@ div.cell.selected.jupyter-soft-selected {
   }
 }
 div.inner_cell {
+  min-width: 0;
   /* Old browsers */
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -221,11 +221,6 @@ div.inner_cell {
   box-flex: 1;
   /* Modern browsers */
   flex: 1;
-}
-@-moz-document url-prefix() {
-  div.inner_cell {
-    overflow-x: hidden;
-  }
 }
 /* input_area and input_prompt must match in top border and margin for alignment */
 div.input_area {
@@ -963,8 +958,10 @@ h6:hover .anchor-link {
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
 .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
 .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
 .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
 .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
@@ -975,9 +972,11 @@ h6:hover .anchor-link {
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
 .highlight .vc { color: #19177C } /* Name.Variable.Class */
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
 <style type="text/css">
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
@@ -1092,7 +1091,8 @@ h6:hover .anchor-link {
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWYAAAD6CAYAAACS9e2aAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHhhJREFUeJzt3XmYXVWd7vHvSxgFMYAKYRJsicwyS0QlUVFkElAR1Ib2
@@ -1231,8 +1231,8 @@ n28ALoqIJyNiAXAXadMUM2sRB3Nv2RK4t+PxvaSRs5m1iFsZDSVpBmnD9IE+FhGXj+BSXkFk1jIO
 5oaKiING8W33Adt0PN46P7cKSVM7Hs4cammomXWfg7n9OpdWXwZcKOnzpBbGDsAvB36Dl2ObNZt7
 zC0k6ShJC4H9gWmSrgDIpyFcAswj7a/7vtXt+WpmzeRNjMzMGsYjZjOzhnEwm5k1jIPZzKxhHMxm
 Zg3jYDYzaxgHs5lZwziYzcwaxsFsZtYw/x+kvLsBGbaB/gAAAABJRU5ErkJggg==
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -1275,7 +1275,8 @@ Let's formalize this: When we start with a random x and compute it's deriative $
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Local minimum occurs at 2.2500325268933734
 </pre>
@@ -1349,8 +1350,8 @@ Where $f = sigmoid(W_1 * X_1)$ and $$sigmoid = \frac{1}{(1+e^{-z})}$$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You should already be familiar with the sigmoid function and it's shape, it squashes any input $x \in \Bbb R$ (any input, $x$ in the real numbers), between $0-1$
-<img alt="" src="images/grad_descent/sigmoid.gif">
-Clearly, we just need $W_1$ to be a big negative number, so that any $x$ will become a big negative number, and our $sigmoid$ function will return something close to 0.</img></p>
+<img alt="" src="images/grad_descent/sigmoid.gif" />
+Clearly, we just need $W_1$ to be a big negative number, so that any $x$ will become a big negative number, and our $sigmoid$ function will return something close to 0.</p>
 </div>
 </div>
 </div>
@@ -1450,7 +1451,8 @@ $$ \frac{d}{dW_j}C(W_j) = \frac{1}{m}\sum_1^m (h(x) - y) * h'(x) = \frac{1}{m}\s
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Cost Before Gradient Descent: 0.757384221746 
 
@@ -1476,7 +1478,8 @@ Final Cost: 0.00130014553005
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[227]:</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[227]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[ 0.08],
        [ 0.  ],
@@ -1596,7 +1599,8 @@ I'm not going to explain why we have to add that $x_1$ as a multiplier on the ou
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Initial Weight: [[-0.14935895]
  [ 7.10444213]]
@@ -1697,7 +1701,8 @@ Expected Result
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAADtCAYAAAAcNaZ2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvWmUbGlZJvp837fnHXNERmbkfM6pqnOq6tQABUUxFthY
@@ -2956,8 +2961,8 @@ JuOdTERHAvgWzDzs74no8wAuYuZPW4qF02AG0+1EJO3PeD7P4UM+6B5mjOevmvdenTiW/OxMADuY
 uZWIlP11z8iTB8inFw578t6rU8NqO/Ra1vV8wM0zIfJB9zBijPzqDwCcnfdezZNn7sinF/LkyZNn
 DskXR+TJkyfPHJIPunny5Mkzh+SDbp48efLMIfmgmydPnjxzSD7o5smTJ88c8v8B8lPLCiUvEu8A
 AAAASUVORK5CYII=
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -3040,7 +3045,8 @@ $$ \frac{\partial C}{\partial W_j} = \frac 1m \sum_1^m x_m(h(x) - y) $$</p>
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAADtCAYAAAAcNaZ2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXl4I+d95/l937dOAIWbBA8QYN9qyZJ1OLYc307iXPZO
@@ -4245,8 +4251,8 @@ DHoSEqDO3rYuAL7IkACAs4YEoiaNRgBbmHk6Ed0I6UIXgjQv/wkzvxa/d+jQHY7oOgwIRGRAFmGU
 ASgFYDLz04N7VsODaNHt7eMOQxsnvOAwIKg81gPqNpBWk+cqTkjgHGXIVdI4OIxUiGgWER0EcDFk
 HPkP6qGpALaqmO4qAHc7fhPDFye84ODg4JBAnJWug4ODQwJxRNfBwcEhgTii6+Dg4JBAHNF1cHBw
 SCCO6Do4ODgkkP8PmpcwXp78y1gAAAAASUVORK5CYII=
-">
-</img></div>
+" />
+</div>
 </div>
 </div>
 </div>
@@ -4410,7 +4416,8 @@ Where $*$ indicates the dot product, $\odot$ indicates element-wise multiplicati
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+<div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Results:
 
@@ -4470,6 +4477,7 @@ I really struggled understanding how backpropagation worked and some of the othe
 </div>
 </div>
 </div>
+
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
@@ -4502,12 +4510,12 @@ I really struggled understanding how backpropagation worked and some of the othe
                 <div class="clear"></div>
 
                 <div class="info">
-                    <a href="/Gradient-Descent.html">posted at 00:00</a>
-                    &nbsp;&middot;&nbsp;<a href="/category/backpropagation/" rel="tag">Backpropagation</a>
+                    <a href="http://outlace.com/Gradient-Descent.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="http://outlace.com/category/backpropagation/" rel="tag">Backpropagation</a>
                     &nbsp;&middot;
-                    &nbsp;<a href="/tag/gradient-descent/" class="tags">gradient-descent</a>
-                    &nbsp;<a href="/tag/backpropagation/" class="tags">backpropagation</a>
-                    &nbsp;<a href="/tag/optimization/" class="tags">optimization</a>
+                    &nbsp;<a href="http://outlace.com/tag/gradient-descent/" class="tags">gradient-descent</a>
+                    &nbsp;<a href="http://outlace.com/tag/backpropagation/" class="tags">backpropagation</a>
+                    &nbsp;<a href="http://outlace.com/tag/optimization/" class="tags">optimization</a>
                 </div>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -4523,10 +4531,10 @@ I really struggled understanding how backpropagation worked and some of the othe
             <div class="clear"></div>
             <footer>
                 <p>
-                <!--- <a href="/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <!--- <a href="http://outlace.com/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
                 <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
                 <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
-                <a href="/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+                <a href="http://outlace.com/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
             </footer>
         </div>
         <div class="clear"></div>
