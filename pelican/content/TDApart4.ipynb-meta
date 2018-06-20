@@ -1,9 +1,0 @@
----
-Title: Persistent Homology (Part 4)
-Slug: TDApart4
-Date: 2017-02-23 00:35
-Category: Topological Data Analysis
-Tags: TDA, persistent-homology
-Authors: Brandon Brown
-Summary: In part 4 we use linear algebra to build out simple algorithms to efficiently calculate homology groups and Betti numbers.
----

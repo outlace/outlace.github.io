@@ -1,9 +1,0 @@
----
-Title: Reinforcement Learning - Part 1
-Slug: rlpart1
-Date: 2015-10-19
-Category: Reinforcement-Learning
-Tags: RL, bandit
-Authors: Brandon Brown
-Summary: The first part in a series introducing the theory, math and implementation details of reinforcement learning algorithms using Python. Here we introduce the topic with a very simple RL problem, the n-armed bandit problem.
----

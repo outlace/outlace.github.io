@@ -991,8 +991,9 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Teaser: Tensor Networks can be seen as a higher-order generalization of traditional deep neural networks, and yet they lack an explicit non-linearity such as applying the ReLU or sigmoid function as we do with neural nets. A deeper understanding of what nonlinearity actually means, however, reveals that tensor networks can indeed learn non-linear functions. The non-linearity of tensor networks arises soley from the architecture and topology of the network itself.&lt;/p&gt;
-&lt;p&gt;&lt;img src="images/Tensor_Network.png" width="400px" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Abstract&lt;/strong&gt;: Tensor Networks can be seen as a higher-order generalization of traditional deep neural networks, and yet they lack an explicit non-linearity such as applying the ReLU or sigmoid function as we do with neural nets. In this article, we cover a different perspective on what linearity vs nonlinearity means by treating function arguments as "resources" that can be consumed. Linear functions are those that "conserve resources" (i.e. they don't copy or delete their inputs).&lt;/p&gt;
+&lt;p&gt;We then cover what tensor networks are, how they work, and how this different notion of linearity gives insight into how tensor networks can learn non-linear transformations. We demonstrate that while tensor networks are locally linear, they can exhibit global non-linear behavior due to the action of copying input data and inpendently transforming each copy. Hence, unlike neural networks, the non-linearity of tensor networks arises soley from the architecture and topology of the network itself. Lastly, we demonstrate how a simple tensor network can perform reasonably well on the FashionMNIST dataset using PyTorch's &lt;code&gt;einsum&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/Tensor_Network.png" width="400px" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1002,12 +1003,7 @@ h6:hover .anchor-link {
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Deep learning algorithms (neural networks) in their simplest form are
 just a sequence of two operations composed to some depth: a linear transformation (i.e. a matrix-vector multiplication) followed by the element-wise application of a reasonably well-behaved non-linear function (called the activation function). Together the linear transformation and the non-linear function are called a "layer" of the network, and the composition of many layers forms a deep neural network. Both the depth and the non-linearity of deep neural networks are crucial for their generalizability and learning power.&lt;/p&gt;
-&lt;p&gt;The reason for the importance of depth is reasonably well-understood. If you increase the complexity of your network by adding depth, then your neural network will grow linearly in the number of its parameters. For example, let's say you have a three layer neural network that is designed to predict the digit classes of the world famous MNIST dataset. Your network has three matrices, $784\times 100$, $100 \times 100$ and $100 \times 10$, hence you have a total of $784*100 + 100*100 + 100*10 = 89,400$ parameters in your network. Now what if you decide that this network is not learning as well as you like and you think it needs more parameters, so you decide to increase the dimensions of your network's matrices. You can only increase the dimensions that are currently $100$ since the other two dimensions reflect the input and outputs that are constant. So you keep increasing this variable dimension by 1 until you're satifised, but notice how this change causes the rate of your total parameters to increase:&lt;/p&gt;
-&lt;p&gt;$$T(n) = 784*n + n^2 + 10*n = 794n+n^2 $$&lt;/p&gt;
-&lt;p&gt;The total parameters scale quadratically with increasing the number of parameters "width-wise".&lt;/p&gt;
-&lt;p&gt;Another strategy might be to add more layer matrices. In this case your total parameters would scale like this:&lt;/p&gt;
-&lt;p&gt;$$T(M) = 784*n + n^2 + n^2 ... n^2 + 10*n = 794n+Mn^2 $$ where $M$ is the number of middle layers. So this depth-wise way of scaling your network scales linearly as opposed to quadratically, a decent improvement. Moreover, scaling depth-wise means you don't need to resize any of the other layer matrices, you can keep adding new layers without affecting the others. In the width-wise scaling, you had to adjust all the layers to be compatible. In other words, width-wise scaling results in entangled layers whereas depth-wise scaling can be done with un-entangled layers.&lt;/p&gt;
-&lt;p&gt;The scaling properties of increasing depth over width is nice, but it's probably not the most important reason why depth is so powerful. Depth models hierarchy, i.e. the idea that some data are at a higher and lower levels of abstraction. "My Jack Terrier dog Spot" is a concrete instance of the more abstract concept of "dog" or even "animal." Hence depth naturally models these kinds of hierarchical relationships in data, and it turns out pretty much all of the data we care about has a hierarchical structure (e.g. letters -&gt; words -&gt; sentences, or musical notes -&gt; chords -&gt; bars -&gt; songs). Another word for hierarchy is composition; complex things are often composed of simpler things, which are composed of yet simpler things. Hence &lt;em&gt;deep&lt;/em&gt; neural networks have an (inductive) bias toward learning these compositional/hierarchical relationships, which is exactly what we want them to do.&lt;/p&gt;
+&lt;p&gt;The most credible explanation for why depth matters in neural networks is that depth models hierarchy, i.e. the idea that some data are at a higher and lower levels of abstraction. "My Jack Terrier dog Spot" is a concrete instance of the more abstract concept of "dog" or even "animal." Hence depth naturally models these kinds of hierarchical relationships in data, and it turns out pretty much all of the data we care about has a hierarchical structure (e.g. letters -&gt; words -&gt; sentences, or musical notes -&gt; chords -&gt; bars -&gt; songs). Another word for hierarchy is composition; complex things are often composed of simpler things, which are composed of yet simpler things. Hence &lt;em&gt;deep&lt;/em&gt; neural networks have an (inductive) bias toward learning these compositional/hierarchical relationships, which is exactly what we want them to do.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1016,9 +1012,7 @@ just a sequence of two operations composed to some depth: a linear transformatio
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Okay so depth is important. But why is the non-linear "activation" function so important for deep learning? 
-An almost tautological answer is that for a neural network to model non-linear functions, it needs to have a source of
-non-linearity. We know neural networks are universal function approximators [1] and
-of course some functions are non-linear, thus it must be able to exhibit non-linear behavior.&lt;/p&gt;
+An almost tautological answer is that if we want our neural network to be able to model non-linear relationships, it must have some non-linearity itself.&lt;/p&gt;
 &lt;p&gt;Another reason is that without the non-linear functions, a sequence of just linear transformation layers
 can always be "collapsed" into a single linear transformation. This is basic linear algebra; the product
 of any sequence of matrices (i.e. matrix composition, hence composition of linear transformations)
@@ -1045,8 +1039,8 @@ affine transformations can only uniformly stretch and shrink (scale), rotate, sh
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;div style="display:table"&gt;
 &lt;div style="display: table-row;"&gt;
-&lt;div style="float:left;display: table-cell; margin-right:50px; "&gt;&lt;img src="images/sigmoid_activation.png" width="350px" /&gt;&lt;/div&gt;
-&lt;div style="display: table-cell; "&gt;&lt;img src="images/relu_activation.png" width="350px" /&gt;&lt;/div&gt;
+&lt;div style="float:left;display: table-cell; margin-right:50px; "&gt;&lt;img src="images/TensorNetwork/sigmoid_activation.png" width="350px" /&gt;&lt;/div&gt;
+&lt;div style="display: table-cell; "&gt;&lt;img src="images/TensorNetwork/relu_activation.png" width="350px" /&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1056,7 +1050,7 @@ affine transformations can only uniformly stretch and shrink (scale), rotate, sh
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;On the left is a graph of the sigmoid activation function. Clearly it is a curved function and hence not linear. Sigmoid has mostly fallen out of favor and ReLU has become the de facto standard activation function. The right figure is the graph for ReLU. ReLU is just $max(0,x)$, and has two "pieces," the flat line for when $x \lt 0$ and the sloped line for when $x \geq 0$. So both of ReLU's parts are lines, why does it count as a non-linear function? A standard mathematical definition for a linear function is a function that has the following properties:&lt;/p&gt;
+&lt;p&gt;On the left is a graph of the sigmoid activation function. Clearly it is a curved function and hence not linear. Sigmoid has mostly fallen out of favor and ReLU has become the de facto standard activation function. The right figure is the graph for ReLU. ReLU is just $max(0,x)$, and has two "pieces," the flat line for when $x \lt 0$ and the sloped line for when $x \geq 0$. So both of ReLU's parts are lines, why does it count as a non-linear function? A standard, but unintuitive, mathematical definition for a linear function is a function that has the following properties:&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1081,7 +1075,7 @@ $$&lt;/p&gt;
 &lt;p&gt;If you check to see if ReLU has these properties you'll find that it fails both properties, and hence it is not a linear function. For example, $relu(-1+1) \neq relu(-1) + relu(1)$ and $relu(-2 * 5) \neq -2*relu(5)$.&lt;/p&gt;
 &lt;p&gt;But this "linearity checklist" lacks a meaningful interpretation. I can use it to identify functions as linear or not
 but it doesn't give me any intuition.&lt;/p&gt;
-&lt;p&gt;Here's a better (more intuitive) definition of a linear function:&lt;/p&gt;
+&lt;p&gt;Here's a better (more intuitive after some explanation) definition of a linear function. If we treat the input arguments of a function as resources, then:&lt;/p&gt;
 &lt;p&gt;(Definition 1.2: Linear Function)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;A linear function is a function whose input data are always used exactly &lt;em&gt;once&lt;/em&gt;. No more, no less.&lt;/li&gt;
@@ -1137,7 +1131,7 @@ add some energy you'll cause them to react to produce water molecules. The reage
 &lt;p&gt;Our slightly more mathematically precise definition of a non-linear function is thus most easily phrased in the language of computation.&lt;/p&gt;
 &lt;p&gt;(Definition 1.3: Non-linear Function OR the &lt;strong&gt;No-Cloning Rule&lt;/strong&gt;)&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;A non-linear function is any function that any point in its computation copies its input data.&lt;/li&gt;
+&lt;li&gt;A non-linear function is any function that at any point in its computation copies its input data. A linear function never duplicates its input at any point it the computation of its result.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1147,7 +1141,7 @@ add some energy you'll cause them to react to produce water molecules. The reage
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Note that although we can make a function such as $f(x) = x + x$, which appears to similarly clone its input, we can always reduce that expression to a non-cloned version, namely $f(x) = 2x$, hence it is linear. With $f(x) = x^2$ there is no way to reduce that expression to one where $x$ only appears once on the right hand side of the equation. In other words, if you were to write a computer program to calculate or even hand calculate $f(x) = x^2$ you would
-necessarily need to work with 2 copies of the value of $x$, whereas with $f(x) = 2x$ you could evaluate the result with just a single copy. This easily extends to multivariate functions, such as $g(x,y) = x + y$. In this case we would say $g(x,y)$ is linear with respect to each of its input arguments. Individually, $x$ and $y$ respect the linearity checklist and the no-cloning rule.&lt;/p&gt;
+necessarily need to work with 2 copies of the value of $x$, whereas with $f(x) = 2x$ you could evaluate the result with just a single copy. This easily extends to multivariate functions, such as $g(x,y) = x + y$. In this case we would say $g(x,y)$ is linear with respect to each of its input arguments, or &lt;strong&gt;multilinear&lt;/strong&gt;. Individually, $x$ and $y$ respect the linearity checklist and the no-cloning rule.&lt;/p&gt;
 &lt;p&gt;The no-cloning rule for non-linearity is reminiscent of the law of conservation of energy from physics (and the no-cloning theorem of quantum mechanics); indeed it can be construed as the information theory equivalent: "information is neither created nor destroyed in an isolated process (function)". This analogy will prove useful later.&lt;/p&gt;
 &lt;p&gt;With definitions 1.2 and 1.3 we now have a meaningful explanation for why the ReLU activation function is non-linear, it's because it uses the non-linear mechanism of copying. It violates the no-cloning rule. How? Well because it involves a conditional. Remember, $relu(x) = max(0,x)$ and 
 $$
@@ -1157,7 +1151,7 @@ max(0,x) &amp; = 0, &amp; x &lt; 0, \\
 \end{align}
 $$&lt;/p&gt;
 &lt;p&gt;In order to evaluate a conditional based on some input, you have to first duplicate the input so you can use one copy to evaluate (or measure) it and then use the other copy to actually do what you want with.&lt;/p&gt;
-&lt;p&gt;Okay, so we have a good intuition for what linear versus non-linear means, but how is that intuition useful? Well my eventual goal here is to explore how definitions 1.2 and 2.3 explain how tensor networks work.&lt;/p&gt;
+&lt;p&gt;Okay, so we have a good intuition for what linear versus non-linear means in terms of the copiability of resources, but how is that intuition useful? Well my eventual goal here is to explore how definitions 1.2 and 2.3 explain how tensor networks work.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1231,6 +1225,7 @@ give us about this fundamental concept in mathematics? Well, the limit definitio
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Here we used a matrix-vector multiplication to copy the single number 3 into a vector of three 3s.&lt;/p&gt;
 &lt;p&gt;What does this have to do with calculus? Well let's convert $f(x)=x\cdot x \cdot x$ into a multi-linear function, i.e. $f(x,y,z) = x\cdot y \cdot z$, except that we know $x = y = z$ (or that they're highly correlated).&lt;/p&gt;
 &lt;p&gt;So remember, we already remember from school that the derivative of $f(x)=x^3$ is $\frac{df}{dx} = 3x^2$. We can't take "the derivative" of our new multi-linear function anymore, we can only take partial derivatives with respect to each variable. To take the partial derivative of $x$, we assume the other variables $y,z$ are held as constants, and then it becomes a simple linear equation. We do the same for $y,z$.&lt;/p&gt;
 &lt;p&gt;$$ 
@@ -1261,7 +1256,8 @@ $$&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;In the tensor algebra, a scalar is a 0-tensor, a vector is a 1-tensor, a matrix is a 2-tensor, and higher order tensors don't generally have names. But in order for the linear algebra operation we just did, we had to promote a 0-tensor to a 1-tensor. Tensors are often notated by labeled indices, as if they were containers and we find elements of the container by an addressing mechanism. A 0-tensor (scalar) isn't a container, it is the "atomic ingredient" of higher tensors, hence it does not have indices. Once you box together a bunch of scalars, you get a 1-tensor (a vector), and now to locate the individual scalars in the box, we label each one with a positive integer. If we have a vector $A = \langle{a,b,c}\rangle$, where $a,b,c$ are scalars, then we could label them $1,2,3$ in order. Hence we could refer to the $i'th$ element of $A$ as $A_i$ or $A(i)$. So $A_1 = a$ or $A(3) = c$. Now we can box together a bunch of 1-tensors (vectors) and we'll get a 2-tensor (matrix). A matrix $M(i,j)$ hence would have two indices, so we need to supply two numbers to find a single scalar in the matrix. If we supply a partial address, such as $M(1,j)$ then this would return a 1-tensor, whereas $M(1,3)$ would return a 0-tensor. We can box together a bunch of 2-tensors to get a 3-tensor and so on. Importantly, anytime you box some $k$-tensors together to form a higher order tensor, they must be of the same size.&lt;/p&gt;
+&lt;p&gt;In the tensor algebra, a scalar is a 0-tensor, a vector is a 1-tensor, a matrix is a 2-tensor, and higher order tensors don't generally have names. But in order for the linear algebra operation we just did, we had to promote a 0-tensor to a 1-tensor. Tensors are often notated by labeled indices, as if they were containers and we find elements of the container by an addressing mechanism. A 0-tensor (scalar) isn't a container, it is the "atomic ingredient" of higher tensors, hence it does not have indices. Once you box together a bunch of scalars, you get a 1-tensor (a vector), and now to locate the individual scalars in the box, we label each one with a positive integer.&lt;/p&gt;
+&lt;p&gt;If we have a vector $A = \langle{a,b,c}\rangle$, where $a,b,c$ are scalars, then we could label them $1,2,3$ in order. Hence we could refer to the $i'th$ element of $A$ as $A_i$ or $A(i)$. So $A_1 = a$ or $A(3) = c$. Now we can box together a bunch of 1-tensors (vectors) and we'll get a 2-tensor (matrix). A matrix $M(i,j)$ hence would have two indices, so we need to supply two numbers to find a single scalar in the matrix. If we supply a partial address, such as $M(1,j)$ then this would return a 1-tensor, whereas $M(1,3)$ would return a 0-tensor. We can box together a bunch of 2-tensors to get a 3-tensor and so on. Importantly, anytime you box some $k$-tensors together to form a higher order tensor, they must be of the same size.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1354,8 +1350,8 @@ $$&lt;/p&gt;
 &lt;p&gt;There is a convenient graphical representation of tensors that is really helpful in reasoning about tensor contractions and tensor networks. All you do is represent a tensor as some simple geometric shape, we'll use a square, and then for each index the tensor has, you draw that many number of "legs" or &lt;strong&gt;strings&lt;/strong&gt; emanating from the box. For example, here is a matrix and a 3-tensor with 2 and 3 strings, respectively:&lt;/p&gt;
 &lt;div style="display:table"&gt;
 &lt;div style="display: table-row;"&gt;
-&lt;div style="float:left;display: table-cell;"&gt;&lt;img src="images/matrix1.png" width="200px" /&gt;&lt;/div&gt;
-&lt;div style="display: table-cell;"&gt;&lt;img src="images/3tensor1.png" width="200px" /&gt;&lt;/div&gt;
+&lt;div style="float:left;display: table-cell;"&gt;&lt;img src="images/TensorNetwork/matrix1.png" width="200px" /&gt;&lt;/div&gt;
+&lt;div style="display: table-cell;"&gt;&lt;img src="images/TensorNetwork/3tensor1.png" width="200px" /&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1366,7 +1362,7 @@ $$&lt;/p&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Each index has been labeled. Now we can form tensor networks by connecting these tensors if they have compatible indices. For example, here is that inner product we just worked out:&lt;/p&gt;
-&lt;p&gt;&lt;img src="images/inner_product1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/inner_product1.png" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1375,10 +1371,10 @@ $$&lt;/p&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;And here is a matrix vector multiplication:&lt;/p&gt;
-&lt;p&gt;&lt;img src="images/matrix_vector_mult.png" width="300px" /&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/matrix_vector_mult.png" width="300px" /&gt;
 You can see the vector on the left since it only has one string exiting from it whereas the matrix on the right has two strings. Once they share a string (an index), that represents a contraction. Notice that the number of remaining open-ended strings represents the rank or order of the tensor that results after the contraction. The matrix-vector multiplication diagram has 1 open string, so we know this contraction returns a new vector.&lt;/p&gt;
 &lt;p&gt;Since a simple feedforward neural network is nothing more than a series of matrix multiplications with non-linear activation functions, we can represent this easily diagrammatically:&lt;/p&gt;
-&lt;p&gt;&lt;img src="images/nn3.png" width="370px" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/nn3.png" width="370px" /&gt;&lt;/p&gt;
 &lt;p&gt;Where the $\sigma$ (sigma) symbol represents the non-linear function. If we removed that, we would have a tensor network. But remember, this whole post is about non-linearity and tensor networks, so how do we get back the non-linearity in a tensor network?&lt;/p&gt;
 &lt;p&gt;Copying.&lt;/p&gt;
 &lt;/div&gt;
@@ -1388,12 +1384,12 @@ You can see the vector on the left since it only has one string exiting from it 
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;All we need to do is violate the no-cloning rule in the topology of the tensor network, and it will be able to learn non-linear functions. Consider the following two tensor networks. One has two component tensors that are both 3-tensors. Since there are 2 open strings, we know the result is a 2-tensor, however, if we "connect" a box (1-tensor/vector) on the left, then we close off the string and we'll get a tensor as an output on the free string on the right.
+&lt;p&gt;All we need to do is violate the no-cloning rule in the topology of the tensor network, and it will be able to learn non-linear functions. Consider the following two tensor networks. One has two component tensors that are both 3-tensors. Since there are 2 open strings, we know the result is a 2-tensor, however, you can also think of this as a directional network in which we plug in an input vector (or matrix if it's a minibatch) on the left and the network produces an output vector on the right.
 &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;div style="display:table"&gt;
 &lt;div style="display: table-row;"&gt;
-&lt;div style="float:left;display: table-cell; margin-right:50px; margin-bottom:25px;"&gt;&lt;img src="images/tensornet1.png" width="350px" /&gt;&lt;/div&gt;
-&lt;div style="display: table-cell; "&gt;&lt;img src="images/tensornet2.png" width="350px" /&gt;&lt;/div&gt;
+&lt;div style="float:left;display: table-cell; margin-right:50px; margin-bottom:25px;"&gt;&lt;img src="images/TensorNetwork/tensornet1.png" width="350px" /&gt;&lt;/div&gt;
+&lt;div style="display: table-cell; "&gt;&lt;img src="images/TensorNetwork/tensornet2.png" width="350px" /&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1403,7 +1399,7 @@ You can see the vector on the left since it only has one string exiting from it 
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;The tensor network on the left has a tensor $A$ can can produce two strings from 1 input string, so it has the ability to copying its input, however, both copies get passed to a single tensor $B$, so this network cannot produce non-linear behavior because both copies will be entangled and cannot be transformed independently by tensor $B$. In contrast, the tensor network on the right &lt;em&gt;can&lt;/em&gt; produce non-linear behavior (as we'll soon show) and that's because tensor $A$ can produce two copies of its input and each copy gets independently transformed by two different tensors $B,D$, which then pass their result to tensor $D$ which computes the final result.&lt;/p&gt;
+&lt;p&gt;The tensor network on the left has a tensor $A$ can can produce two strings from 1 input string, so it has the ability to copying its input, however, both copies get passed to a single tensor $B$, so this network cannot produce non-linear behavior because both copies will be entangled and cannot be transformed independently by tensor $B$. In contrast, the tensor network on the right &lt;em&gt;can&lt;/em&gt; produce non-linear behavior (as we'll soon show) and that's because tensor $A$ can produce two copies of its input and each copy gets independently transformed by two different tensors $B,C$, which then pass their result to tensor $D$ which computes the final result.&lt;/p&gt;
 &lt;p&gt;Ready to see some non-linearity arise from what appears to be a purely linear network? Let's see if we can train the tensor network on the right to learn the ReLU non-linear activation function. That would surely be a sign it can do something non-linear. It turns out numpy, PyTorch and TensorFlow all have functions called &lt;strong&gt;einsum&lt;/strong&gt; that can compute tensor contractions as we've discussed. Let's see.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1553,8 +1549,10 @@ Epoch: 4500 | Loss: 0.026810143142938614
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;It worked! Well approximately. It's not exactly computing ReLU, but close enough, it's more like it learned how to square the numbers. In any case, the important thing is that it is definitely performing a non-linear function. There is no linear function that can only flip the sign of negative numbers and leave the sign of positive numbers alone. And if you tried this same training task using the "non-linear topology" from the diagram on the right above, you would be completely unable to learn this non-linear function no matter how you tune the hyperparameters and no matter how big the tensors are. The wiring is everything.&lt;/p&gt;
+&lt;p&gt;It worked! Well approximately. It's not exactly computing ReLU, but close enough, it's more like it learned how to square the numbers. In any case, the important thing is that it is definitely performing a non-linear function. There is no linear function that can only flip the sign of negative numbers and leave the sign of positive numbers alone. And if you tried this same training task using the "&lt;em&gt;linear&lt;/em&gt; topology" from the diagram on the right above, you would be completely unable to learn this non-linear function no matter how you tune the hyperparameters and no matter how big the tensors are. The wiring is everything. The non-linearity arises from the network structure (global) not the individual tensor contractions (locally linear).&lt;/p&gt;
 &lt;p&gt;To me, this is quite remarkable. That non-linearity can emerge without any explicit non-linear function. Yet it is not that surprising once you understand that no-cloning perspective of linearity. With the right wiring together of tensors, we can allow the tensor computations to return copies of input data, transform each copy independently, then pool together the result. That's how we get non-linearity. Indeed, it has been shown that certain kinds of tensor networks are directly related to convolutional neural networks with max pooling, see &lt; &lt;a href="https://arxiv.org/abs/1603.00162"&gt;https://arxiv.org/abs/1603.00162&lt;/a&gt; &gt;&lt;/p&gt;
+&lt;p&gt;The fact that the nonlinearity is due to the network itself suggests that you can dynamically tune how nonlinear the network is, by controlling the degree of data copying that the network can do. I think the generality and flexibility of tensor networks can allow you to design networks with just the right amount of inductive bias given your data. You can design tree networks, grid networks, or any topology you can think of as long as the contractions are possible.&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/tensor_topologies.png" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1573,6 +1571,7 @@ Epoch: 4500 | Loss: 0.026810143142938614
 &lt;p&gt;Okay, so that's all theoretically very interesting, but are tensor networks useful? Are they better than neural networks at anything? Well, tensor networks arose in the Physics community as a powerful tool to simulate quantum systems, so they're definitely useful in that domain. Unfortunately the jury is still out on whether they're "better" than neural networks. Is there an advantage to imposing non-linearity from network topology alone, or is it more efficient to just include an activation function?&lt;/p&gt;
 &lt;p&gt;So far, I can't tell either from my own experiments with tensor networks or from the literature. However, because the components of tensor networks, tensors, are just high-order structured data, they have shown to be much more interpretable as parameters than the weights of a neural network that get rammed through activation functions. One small benefit I've noticed (but take it with a big grain of salt) is that I can use a much higher learning rate with a tensor network than a neural network without causing divergence during training.&lt;/p&gt;
 &lt;p&gt;Tensor networks can be very useful in a method called &lt;strong&gt;tensor decompositions&lt;/strong&gt;. The idea is that if you have a huge matrix of data, say 1,000,000 x 1,000,000 entries, you can decompose it into a the contraction of a series of smaller tensors, such that when contracted they will sufficiently approximate the original matrix. It turns out that when you train a tensor decomposition network to approximate your data, it will often learn rather interpretable features.&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/tensornet5.png" /&gt;&lt;/p&gt;
 &lt;p&gt;Below, I've included some code for a linear (i.e. it cannot learn a non-linear function) tensor network that can be trained to classify FashionMNIST clothes. A 2-layer convolutional neural network with about 500,000 parameters can achieve over 92% accuracy, whereas this simple linear tensor network can achieve about 88.5% accuracy (but quite quickly). The reason for using a linear tensor network is mostly because a decently sized tensor network with non-linear topology (e.g. a hierarchical tree like the figure in the beginning of the post) would be too much code, and a bit too confusing to read with raw einsum notation.&lt;/p&gt;
 &lt;p&gt;I do include a slightly more complex non-linear topology at the very end that does achieve up to 94% train/ 90% test accuracy, which is getting competitive conventional neural networks. Whether more complex topologies of tensor networks can achieve even better results is left as an exercise for the reader.&lt;/p&gt;
 &lt;/div&gt;
@@ -1710,7 +1709,7 @@ Epoch: 4500 | Loss: 0.026810143142938614
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h4 id="Define-the-Tensor-Network"&gt;Define the Tensor Network&lt;a class="anchor-link" href="#Define-the-Tensor-Network"&gt;¶&lt;/a&gt;&lt;/h4&gt;&lt;h5 id="Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250"&gt;Total Num. Parameters: 784 * 25 * 25 + 25 * 25 * 10 = 496,250&lt;a class="anchor-link" href="#Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;&lt;img src="images/tensornet2.png" width="350px" /&gt;&lt;/p&gt;
+&lt;h4 id="Define-the-Tensor-Network"&gt;Define the Tensor Network&lt;a class="anchor-link" href="#Define-the-Tensor-Network"&gt;¶&lt;/a&gt;&lt;/h4&gt;&lt;h5 id="Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250"&gt;Total Num. Parameters: 784 * 25 * 25 + 25 * 25 * 10 = 496,250&lt;a class="anchor-link" href="#Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;&lt;img src="images/TensorNetwork/tensornet4a.png" width="350px" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1718,7 +1717,7 @@ Epoch: 4500 | Loss: 0.026810143142938614
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I haven't added labels to the strings in these tensor diagrams, however, you could label each string with its dimension size, which is often called the &lt;strong&gt;bond dimension&lt;/strong&gt;. As you'll see below, the 4 interior strings all have a bond dimension of 25.&lt;/p&gt;
+&lt;p&gt;In this case I labeled each string with its dimension size, which is often called the &lt;strong&gt;bond dimension&lt;/strong&gt;. As you'll see below, the 4 interior strings all have a bond dimension of 25.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1845,7 +1844,7 @@ Wall time: 16min 17s
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;img src="images/tensornet3.png" width="350px" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/TensorNetwork/tensornet4.png" width="500px" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1891,7 +1890,7 @@ loss1b, acc1b = train(model1b, epochs=50, params=[nl1, nl2, nl3, nl4, nl5, nl6, 
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Unfortunately, this non-linear tensor network performs significantly better with the training data (getting over 94% accuracy at 50 epochs) but the test accuracy tops out at around 88%, similar to the linear network. This just demonstrates that with the added non-linear ability, we can much more easily overfit the data.&lt;/p&gt;
+&lt;p&gt;Unfortunately, this non-linear tensor network performs significantly better with the training data (getting over 94% accuracy at 50 epochs) but the test accuracy tops out at around 88%, similar to the linear network. This just demonstrates that with the added non-linear ability, we can much more easily overfit the data. One thing to try is to add trainable bias tensors into the network as we have in neural networks.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
