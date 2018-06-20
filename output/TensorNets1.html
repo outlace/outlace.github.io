@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | On Tensor Networks and the Nature of Non-Linearity</title>
+    <link rel="shortcut icon" type="image/png" href="http://outlace.com/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="http://outlace.com/favicon.ico">
+    <link href="http://outlace.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon Brown" />
+
+    <meta name="keywords" content="Tensor-Networks,nonlinearity" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="http://outlace.com/">Home</a></li>
+                <li><a href="http://outlace.com/pages/about.html">About</a></li>
+                <li><a href="http://outlace.com/tags/">Tags</a></li>
+                <li><a href="http://outlace.com/categories/">Categories</a></li>
+                <li><a href="http://outlace.com/archives/{slug}/">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="http://outlace.com/">Δ ℚuantitative √ourney</a></h1>
+            <h2>∑ Our experiences in learning quantitative applications</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Jun 19, 2018</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="http://outlace.com/TensorNets1.html" rel="bookmark" title="Permanent Link to &quot;On Tensor Networks and the Nature of Non-Linearity&quot;">On Tensor Networks and the Nature of Non-Linearity</a>
+                </h2>
+
+
+
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="On-Deep-Tensor-Networks-and-the-Nature-of-Non-Linearity">On Deep Tensor Networks and the Nature of Non-Linearity<a class="anchor-link" href="#On-Deep-Tensor-Networks-and-the-Nature-of-Non-Linearity">¶</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Abstract</strong>: Tensor Networks can be seen as a higher-order generalization of traditional deep neural networks, and yet they lack an explicit non-linearity such as applying the ReLU or sigmoid function as we do with neural nets. In this article, we cover a different perspective on what linearity vs nonlinearity means by treating function arguments as "resources" that can be consumed. Linear functions are those that "conserve resources" (i.e. they don't copy or delete their inputs).</p>
+<p>We then cover what tensor networks are, how they work, and how this different notion of linearity gives insight into how tensor networks can learn non-linear transformations. We demonstrate that while tensor networks are locally linear, they can exhibit global non-linear behavior due to the action of copying input data and inpendently transforming each copy. Hence, unlike neural networks, the non-linearity of tensor networks arises soley from the architecture and topology of the network itself. Lastly, we demonstrate how a simple tensor network can perform reasonably well on the FashionMNIST dataset using PyTorch's <code>einsum</code> function.</p>
+<p><img src="images/TensorNetwork/Tensor_Network.png" width="400px" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Deep learning algorithms (neural networks) in their simplest form are
+just a sequence of two operations composed to some depth: a linear transformation (i.e. a matrix-vector multiplication) followed by the element-wise application of a reasonably well-behaved non-linear function (called the activation function). Together the linear transformation and the non-linear function are called a "layer" of the network, and the composition of many layers forms a deep neural network. Both the depth and the non-linearity of deep neural networks are crucial for their generalizability and learning power.</p>
+<p>The most credible explanation for why depth matters in neural networks is that depth models hierarchy, i.e. the idea that some data are at a higher and lower levels of abstraction. "My Jack Terrier dog Spot" is a concrete instance of the more abstract concept of "dog" or even "animal." Hence depth naturally models these kinds of hierarchical relationships in data, and it turns out pretty much all of the data we care about has a hierarchical structure (e.g. letters -> words -> sentences, or musical notes -> chords -> bars -> songs). Another word for hierarchy is composition; complex things are often composed of simpler things, which are composed of yet simpler things. Hence <em>deep</em> neural networks have an (inductive) bias toward learning these compositional/hierarchical relationships, which is exactly what we want them to do.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay so depth is important. But why is the non-linear "activation" function so important for deep learning? 
+An almost tautological answer is that if we want our neural network to be able to model non-linear relationships, it must have some non-linearity itself.</p>
+<p>Another reason is that without the non-linear functions, a sequence of just linear transformation layers
+can always be "collapsed" into a single linear transformation. This is basic linear algebra; the product
+of any sequence of matrices (i.e. matrix composition, hence composition of linear transformations)
+can always be reduced to a single matrix/linear transformation. So without the non-linear function in each layer
+we forfeit the compositionality (depth) property of deep neural networks, which allow hierarchical abstraction as 
+you go deeper in the network.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since we generally use "bias units" in the linear portion of a layer, every layer can actually perform
+affine transformations (linear transformation + a translation). We know from linear algebra that
+affine transformations can only uniformly stretch and shrink (scale), rotate, sheer and translate vectors in a vector space. If we think of some data of interest as a point cloud in some N-dimensional space, then if it is non-random data, it will have some sort of shape.</p>
+<p>For example, some fairly non-complex periodic system might produce data points that lie on a 2D circle or a higher-dimensional loop. The typical goal for a supervised neural network is to map this point cloud onto some other point cloud living in a different space with a different shape. When we one-hot encode the output of a neural network then we're mapping our point cloud onto essentially orthonormal unit basis vectors in a different space. Quite literally, we're transforming some geometric shape (or space) into a different shape. The task of the neural network then is to figure how to construct a new shape (the output/target space) from a starting shape (the input data point cloud) using only the tools of affine transformations and (usually) a single type of non-linear function, such as the rectified linear unit (ReLU) or sigmoid.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="display:table">
+<div style="display: table-row;">
+<div style="float:left;display: table-cell; margin-right:50px; "><img src="images/TensorNetwork/sigmoid_activation.png" width="350px" /></div>
+<div style="display: table-cell; "><img src="images/TensorNetwork/relu_activation.png" width="350px" /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On the left is a graph of the sigmoid activation function. Clearly it is a curved function and hence not linear. Sigmoid has mostly fallen out of favor and ReLU has become the de facto standard activation function. The right figure is the graph for ReLU. ReLU is just $max(0,x)$, and has two "pieces," the flat line for when $x \lt 0$ and the sloped line for when $x \geq 0$. So both of ReLU's parts are lines, why does it count as a non-linear function? A standard, but unintuitive, mathematical definition for a linear function is a function that has the following properties:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>(Definition 1.1: Linear Function)
+$$
+f : X \rightarrow Y  \\ 
+\text{$f$ is a function from some domain X to some codomain Y} \\ 
+f(x_1 + x_2) = f(x_1) + f(x_2) \\
+f(a \times x) = a \times f(x)
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you check to see if ReLU has these properties you'll find that it fails both properties, and hence it is not a linear function. For example, $relu(-1+1) \neq relu(-1) + relu(1)$ and $relu(-2 * 5) \neq -2*relu(5)$.</p>
+<p>But this "linearity checklist" lacks a meaningful interpretation. I can use it to identify functions as linear or not
+but it doesn't give me any intuition.</p>
+<p>Here's a better (more intuitive after some explanation) definition of a linear function. If we treat the input arguments of a function as resources, then:</p>
+<p>(Definition 1.2: Linear Function)</p>
+<ul>
+<li>A linear function is a function whose input data are always used exactly <em>once</em>. No more, no less.</li>
+</ul>
+<p>This is a better definition from an intuitive point of view, but of course it lacks the mathematical precision of the linearity checklist. Nonetheless, the idea is that if we treat data as a resource that can be consumed
+and transformed then a linear function is a function that completely consumes its input data without copying (i.e. duplicating) or discarding it. This notion can be formalized, but we'll wait for later.</p>
+<p>A linear function is like a chemical reaction. If you mix oxygen molecules with hydrogen molecules and
+add some energy you'll cause them to react to produce water molecules. The reagents are completely used up to produce the water molecule products. It is impossible to clone the oxygen molecules and it's impossible to delete them; all you can do is react them with other molecules. Indeed, the term "linear" as describing a function obviously has its roots in the easily visualizable line, but with definition 1.2, perhaps a better term might be "reactive function".</p>
+<p>Consider this simple function: $f(x) = mx$, where $m$ is some constant. It is immediately clear that $x$ only appears once on the right hand side of the equation, thus it is only "used" once. In contrast the non-linear function $f(x) = x^2$ has $x$ appearing twice on the right hand side of the equation (since $x^2 = x \times x$) and it is irreducible. The input argument is being implicitly cloned or copied in the function. It's as if there is a hidden sub-function $\delta: x \rightarrow (x, x)$, such that we can rewrite $f(x) = x^2$ as $f(x) = *\delta(x)$, where the multiplication operator is acting as a prefix notated operator over the 2-tuple that the $\delta$ function produces. This looks nicer in code:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">x</span>
+<span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">clone</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[12]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>25</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our slightly more mathematically precise definition of a non-linear function is thus most easily phrased in the language of computation.</p>
+<p>(Definition 1.3: Non-linear Function OR the <strong>No-Cloning Rule</strong>)</p>
+<ul>
+<li>A non-linear function is any function that at any point in its computation copies its input data. A linear function never duplicates its input at any point it the computation of its result.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that although we can make a function such as $f(x) = x + x$, which appears to similarly clone its input, we can always reduce that expression to a non-cloned version, namely $f(x) = 2x$, hence it is linear. With $f(x) = x^2$ there is no way to reduce that expression to one where $x$ only appears once on the right hand side of the equation. In other words, if you were to write a computer program to calculate or even hand calculate $f(x) = x^2$ you would
+necessarily need to work with 2 copies of the value of $x$, whereas with $f(x) = 2x$ you could evaluate the result with just a single copy. This easily extends to multivariate functions, such as $g(x,y) = x + y$. In this case we would say $g(x,y)$ is linear with respect to each of its input arguments, or <strong>multilinear</strong>. Individually, $x$ and $y$ respect the linearity checklist and the no-cloning rule.</p>
+<p>The no-cloning rule for non-linearity is reminiscent of the law of conservation of energy from physics (and the no-cloning theorem of quantum mechanics); indeed it can be construed as the information theory equivalent: "information is neither created nor destroyed in an isolated process (function)". This analogy will prove useful later.</p>
+<p>With definitions 1.2 and 1.3 we now have a meaningful explanation for why the ReLU activation function is non-linear, it's because it uses the non-linear mechanism of copying. It violates the no-cloning rule. How? Well because it involves a conditional. Remember, $relu(x) = max(0,x)$ and 
+$$
+\begin{align}
+max(0,x) & = 0, & x < 0, \\
+ & = x, & x >= 0
+\end{align}
+$$</p>
+<p>In order to evaluate a conditional based on some input, you have to first duplicate the input so you can use one copy to evaluate (or measure) it and then use the other copy to actually do what you want with.</p>
+<p>Okay, so we have a good intuition for what linear versus non-linear means in terms of the copiability of resources, but how is that intuition useful? Well my eventual goal here is to explore how definitions 1.2 and 2.3 explain how tensor networks work.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One interesting path is information theory. If you have a non-linear function like $f(x) = x^2$, it is non-linear because $x$ is copied. However, consider a function like $f(x,y) = x*y$, it is called multi-linear because it is linear with respect to each of its input variables. Interestingly, if $y = x$ (always) then this function behaves exactly like f(x)=x^2 but it's just in a different form. More generally, if $f(x,y) = x*y$ but y is merely correlated with x, say $y = x + e$ (e = noise) then you'll get f(x,y) = x(x+e) = x^2 + ex, which for a sufficiently small $e$ will behave nearly the same as f(x) = x^2. So just a linear function of two variables that are highly correlated will produce non-linear behavior. Hence, if you have say two separate<em>linear</em> dynamic systems that start off completely un-entangeled with each having their own maximum degrees of freedom, if they start to become correlated/entangled with each other by interaction, then when taken together as a composite system, it may exhibit non-linear dynamics.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="A-brief-detour-into-calculus">A brief detour into calculus<a class="anchor-link" href="#A-brief-detour-into-calculus">¶</a></h3><p>Let's take a bit of a detour into the world of calculus. You know that the derivative of a function $f(x)$ at a point $a$ is the slope of the tangent line at that point. More generally for multivariate and vector-valued functions, the derivative is thought of as the best linear approximation to that function. You've seen the definition of the derivative in terms of limits or in non-standard analysis as an algebraic operation with an extended real number system (the hyperreals).</p>
+<p>You know how to differentiate simple functions such as $f(x) = x^3$ by following some derivative rules. For example, in this case we apply the rule: "take the exponent of $x$ and multiply it by $x$ and then reduce the power of $x$ by 1." So we calculate $\frac{df}{dx} = 3x^2$ (where $\frac{df}{dx}$ is Leibniz notation, read as "the derivative of the function $f$ with respect to variable $x$"). In a mathematically precise way we declare that if $f(x)=x^{r}$, then $df/dx = rx^{r-1}$. And of course we've <em>memorized</em> a bunch of other simple rules, which together form a powerful toolset we can use to compute the derivative of many functions.</p>
+<p>Since differentiation is all about linear approximations, what new insights might definitions 1.2 and 1.3
+give us about this fundamental concept in mathematics? Well, the limit definition of a derivative and all those differentiation rules can all be seen as special cases of applying definition 1.3 to <em>non-linear</em> functions. That is, what would happen if we took a non-linear function and re-construed it as a linear function?</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Take our simple function $f(x) = x^3$ and expand it to make explicit the copying that is happening, $f(x) = x \cdot x \cdot x$. This function makes 3 copies of $x$ and then reacts them together (multiplication) to produce the final result. The copying operation is totally hidden with traditional function notation, but it happened. Where is the copy operation in traditional set-theoretic mathematics? Why is it always hidden in the notation of non-linear functions?</p>
+<p>The answer requires back-tracking to linear algebra. Remember how a matrix encodes a linear transformation? A full-rank square matrix will always result in a dimension-preserving transformation, e.g. a full-rank 2x2 matrix will always send a 2D vector to another 2D vector. A non-square matrix such as a 2x3 matrix, on the other hand, will send a 2D vector into a 3-dimensional space. A 2D vector is a vector that is described by the sum of two linearly-independent basis vectors usually called $\hat{i}$ and $\hat{j}$, so a 2x3 matrix will convert that 2D vector into a vector that is described by the sum of 3 basis vectors, $\hat{i}, \hat{j}, \hat{k}$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Thus the copy operation is the linear algebraic operation of embedding a lower-dimensional vector (even a scalar) into a higher-dimensional space. Thus we can think of $f(x) = x^3$ as a function that takes a scalar, embeds it in vector space, linearly transforms it, then collapses it back into a scalar. Thus $f(x) = x^3$ is somewhat deceptively simple.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [24]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clone</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span>
+<span class="n">clone</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[3 3 3]
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[24]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([9])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here we used a matrix-vector multiplication to copy the single number 3 into a vector of three 3s.</p>
+<p>What does this have to do with calculus? Well let's convert $f(x)=x\cdot x \cdot x$ into a multi-linear function, i.e. $f(x,y,z) = x\cdot y \cdot z$, except that we know $x = y = z$ (or that they're highly correlated).</p>
+<p>So remember, we already remember from school that the derivative of $f(x)=x^3$ is $\frac{df}{dx} = 3x^2$. We can't take "the derivative" of our new multi-linear function anymore, we can only take partial derivatives with respect to each variable. To take the partial derivative of $x$, we assume the other variables $y,z$ are held as constants, and then it becomes a simple linear equation. We do the same for $y,z$.</p>
+<p>$$ 
+\begin{align}
+\frac{\partial{f}}{\partial{x}} = yz && \frac{\partial{f}}{\partial{y}} = xz && \frac{\partial{f}}{\partial{z}} = yx 
+\end{align}
+$$</p>
+<p>But wait, we can't really hold the other variables constant because we know they're perfectly correlated (actually equal). What we're getting at is a case of the total derivative (see < <a href="https://en.wikipedia.org/wiki/Total_derivative">https://en.wikipedia.org/wiki/Total_derivative</a> >), which is how you take the derivative of a multivariable function with interacting variables. In this particular case, since $x = y = z$, we just need to combine (sum) all these partial derivatives together and make all the variables the same, say $x$.</p>
+<p>$$ \frac{df}{dx} = yz + xz + yx = xx + xx + xx = 3x^2 $$</p>
+<p>Exactly what we get with through the traditional route. Or consider a slightly more complicated function:
+$$
+f(x) = 3x^3+x^2 \rightarrow \frac{df}{dx} = 9x^2 + 2x \\
+f(a,b,c,d,e) = 3abc+de \rightarrow \frac{df}{d\{abcde\}} = 3bc+3ac+3ab + e + d \rightarrow 9x^2 + 2x
+$$</p>
+<p>Hence an intuition for copying as non-linearity even makes computing derivatives more intuitive, at least for me.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Tensor-Networks">Tensor Networks<a class="anchor-link" href="#Tensor-Networks">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the tensor algebra, a scalar is a 0-tensor, a vector is a 1-tensor, a matrix is a 2-tensor, and higher order tensors don't generally have names. But in order for the linear algebra operation we just did, we had to promote a 0-tensor to a 1-tensor. Tensors are often notated by labeled indices, as if they were containers and we find elements of the container by an addressing mechanism. A 0-tensor (scalar) isn't a container, it is the "atomic ingredient" of higher tensors, hence it does not have indices. Once you box together a bunch of scalars, you get a 1-tensor (a vector), and now to locate the individual scalars in the box, we label each one with a positive integer.</p>
+<p>If we have a vector $A = \langle{a,b,c}\rangle$, where $a,b,c$ are scalars, then we could label them $1,2,3$ in order. Hence we could refer to the $i'th$ element of $A$ as $A_i$ or $A(i)$. So $A_1 = a$ or $A(3) = c$. Now we can box together a bunch of 1-tensors (vectors) and we'll get a 2-tensor (matrix). A matrix $M(i,j)$ hence would have two indices, so we need to supply two numbers to find a single scalar in the matrix. If we supply a partial address, such as $M(1,j)$ then this would return a 1-tensor, whereas $M(1,3)$ would return a 0-tensor. We can box together a bunch of 2-tensors to get a 3-tensor and so on. Importantly, anytime you box some $k$-tensors together to form a higher order tensor, they must be of the same size.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Tensors are in a sense compositional mathematical objects. Scalars are "made of" nothing. Vectors are "made of" scalars, matrices are made of vectors, 3-tensors are made of 2-tensors. Perhaps this suggests that tensors have even more power to represent compositionality in data than do conventional neural networks, which usually only represent depth-wise hierarchy.</p>
+<p>If we have the natural compositionality of individual tensors, we can network them together to form (deep) tensor networks! As we'll soon see, however, there is no explicit non-linear activation function application in a tensor network, everything appears perfectly linear. Yet we Networking in a neural network is nothing more impressive than matrix multiplication. Tensors have a generalization of matrix multiplication called <strong>tensor contraction</strong>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Tensor-Contraction">Tensor Contraction<a class="anchor-link" href="#Tensor-Contraction">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Take a 2-tensor (matrix) and multiply it with a vector (1-tensor).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [25]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[25]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([-2,  5])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The matrix on the left is the identity matrix, so it didn't do anything to our vector, but what's the computation happening and how can it be generalized to tensors?</p>
+<p>The answer is tensor (or index) contraction. We'll denote a matrix $A_{rt}$ and a vector $B_t$. Multiplying them together is a simple operation really.</p>
+<p>$$ C_r = \sum_{t}A_{rt}\cdot B_t $$</p>
+<p>This equation is saying that a tensor contraction between matrix matrix $A_{rt}$ and a vector $B_t$ results in a new vector $C_r$ (because it only has one index), and each element of $C_r$ indexed by $r$ is determined by taking the sum of the product of each subset of $A_{rt}$ with $B_t$ for every value of $t$. Often times the summation symbol is ommitted, so we express a tensor contraction just by juxtaposition, $A_{rt}B_{t}$. This often goes by the name <strong>Einstein summation notation</strong>, so whenever you juxtapose two tensors that have at least one shared index it denotes a tensor contraction.</p>
+<p>A simpler example is easier to calculate. The inner product of two vectors returns a scalar.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [26]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[26]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>10</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This result is from $1*3+2*2+3*1$. Let's see why using a tensor contraction. We'll define two vectors $F_h = \langle{1,2,3}\rangle, G_i = \langle{3,2,1}\rangle $. We can take the inner product of two vectors when they're of equal length, in which case they are, so we can change the index label of $F_h$ to $F_i$. Now they have the same indices, we can do the tensor summation.</p>
+<p>$$ H = \sum_i F_i\cdot G_i $$</p>
+<p>It should be clear that we just multiply together corresponding elements then sum them all up, getting the inner product that numpy computed for us. Note that once we've done the sum over products, the matching indices have been fully contracted and the resulting tensor will thus have 2 less indices than the combined tensor. That is, combining the two vectors we get a tensor with two indices (a 2-tensor), but once we contract them, we get a 0-tensor.</p>
+<p>There is a convenient graphical representation of tensors that is really helpful in reasoning about tensor contractions and tensor networks. All you do is represent a tensor as some simple geometric shape, we'll use a square, and then for each index the tensor has, you draw that many number of "legs" or <strong>strings</strong> emanating from the box. For example, here is a matrix and a 3-tensor with 2 and 3 strings, respectively:</p>
+<div style="display:table">
+<div style="display: table-row;">
+<div style="float:left;display: table-cell;"><img src="images/TensorNetwork/matrix1.png" width="200px" /></div>
+<div style="display: table-cell;"><img src="images/TensorNetwork/3tensor1.png" width="200px" /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Each index has been labeled. Now we can form tensor networks by connecting these tensors if they have compatible indices. For example, here is that inner product we just worked out:</p>
+<p><img src="images/TensorNetwork/inner_product1.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And here is a matrix vector multiplication:</p>
+<p><img src="images/TensorNetwork/matrix_vector_mult.png" width="300px" />
+You can see the vector on the left since it only has one string exiting from it whereas the matrix on the right has two strings. Once they share a string (an index), that represents a contraction. Notice that the number of remaining open-ended strings represents the rank or order of the tensor that results after the contraction. The matrix-vector multiplication diagram has 1 open string, so we know this contraction returns a new vector.</p>
+<p>Since a simple feedforward neural network is nothing more than a series of matrix multiplications with non-linear activation functions, we can represent this easily diagrammatically:</p>
+<p><img src="images/TensorNetwork/nn3.png" width="370px" /></p>
+<p>Where the $\sigma$ (sigma) symbol represents the non-linear function. If we removed that, we would have a tensor network. But remember, this whole post is about non-linearity and tensor networks, so how do we get back the non-linearity in a tensor network?</p>
+<p>Copying.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All we need to do is violate the no-cloning rule in the topology of the tensor network, and it will be able to learn non-linear functions. Consider the following two tensor networks. One has two component tensors that are both 3-tensors. Since there are 2 open strings, we know the result is a 2-tensor, however, you can also think of this as a directional network in which we plug in an input vector (or matrix if it's a minibatch) on the left and the network produces an output vector on the right.
+<br /><br /></p>
+<div style="display:table">
+<div style="display: table-row;">
+<div style="float:left;display: table-cell; margin-right:50px; margin-bottom:25px;"><img src="images/TensorNetwork/tensornet1.png" width="350px" /></div>
+<div style="display: table-cell; "><img src="images/TensorNetwork/tensornet2.png" width="350px" /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The tensor network on the left has a tensor $A$ can can produce two strings from 1 input string, so it has the ability to copying its input, however, both copies get passed to a single tensor $B$, so this network cannot produce non-linear behavior because both copies will be entangled and cannot be transformed independently by tensor $B$. In contrast, the tensor network on the right <em>can</em> produce non-linear behavior (as we'll soon show) and that's because tensor $A$ can produce two copies of its input and each copy gets independently transformed by two different tensors $B,C$, which then pass their result to tensor $D$ which computes the final result.</p>
+<p>Ready to see some non-linearity arise from what appears to be a purely linear network? Let's see if we can train the tensor network on the right to learn the ReLU non-linear activation function. That would surely be a sign it can do something non-linear. It turns out numpy, PyTorch and TensorFlow all have functions called <strong>einsum</strong> that can compute tensor contractions as we've discussed. Let's see.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [31]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here we define the tensor network by first setting up our individual tensor components. Then we define a function that will accept some input tensor (in this case a scalar) and will connect up the tensors into a network by defining the tensor contractions that will happen.</p>
+<p>The notation used for the <em>einsum</em> function in PyTorch, you write the indices of the involved tensors in a string and then pass the actual tensor objects as the second argument in a tuple. In the string, all the tensor indices for each involved tensor should be listed together (as single characters), then a comma for the next tensor with all of its indices and so on. Then you write '->' to indicate the resultant tensor with its indices.</p>
+<p>Take the first string we see, 'sa,abc->sbc'. This means we will contract two tensors, the first has two indices, the second has three. We label the indices in the way we want the indices to contract. In this case, the 's' index represents the batch size and the 'a' index is the actual data. So we want to contract the data with the 2nd tensor, so we label its first index as 'a' as well. The resulting tensor indices will be whatever indices were not contracted.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [43]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">b1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">b3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">b4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">tensorNet1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sa,abc->sbc'</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">b1</span><span class="p">))</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sbc,bd->sd'</span><span class="p">,(</span><span class="n">r1</span><span class="p">,</span><span class="n">b2</span><span class="p">))</span>
+    <span class="n">r3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sbc,bd->sd'</span><span class="p">,(</span><span class="n">r1</span><span class="p">,</span><span class="n">b3</span><span class="p">))</span>
+    <span class="n">r4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sd,sd,df->sf'</span><span class="p">,(</span><span class="n">r2</span><span class="p">,</span><span class="n">r3</span><span class="p">,</span><span class="n">b4</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r4</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you're familiar with PyTorch, this is just a simple training loop. Normalizing the data seems to be important empirically for tensor contractions. Each tensor in the tensor network is a "trainable object." So if our tensor network contains a 3-tensor with indices of size $10\times 5\times 10$ then this tensor has $10 * 5 * 10 = 500$ total number of parameters. The network we've just defined above has a total of $1*10*10 + 10*10 + 10*10 + 10*1 = 3,000$ parameters.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [44]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">b3</span><span class="p">,</span><span class="n">b4</span><span class="p">],</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">):</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tensorNet1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Epoch: </span><span class="si">{}</span><span class="s2"> | Loss: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span><span class="p">))</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Epoch: 0 | Loss: 286692.1875
+Epoch: 500 | Loss: 949.7288818359375
+Epoch: 1000 | Loss: 0.07024684548377991
+Epoch: 1500 | Loss: 0.025008967146277428
+Epoch: 2000 | Loss: 0.02917313575744629
+Epoch: 2500 | Loss: 0.019280623644590378
+Epoch: 3000 | Loss: 0.03735805302858353
+Epoch: 3500 | Loss: 0.039074432104825974
+Epoch: 4000 | Loss: 0.0267774797976017
+Epoch: 4500 | Loss: 0.026810143142938614
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The loss went steadily down, but let's see if it reliably learns the ReLU function. Remember, we're expecting that it will set negative numbers to 0 (or close to 0) and leave positive numbers as their original value (or at least close to their original values).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [46]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#Some test data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="n">tensorNet1</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tensor([[-0.3854],
+        [-0.6216],
+        [ 0.2522],
+        [-0.6337]])
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[46]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>tensor([[ 0.1582],
+        [ 0.4116],
+        [ 0.0678],
+        [ 0.4277]])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It worked! Well approximately. It's not exactly computing ReLU, but close enough, it's more like it learned how to square the numbers. In any case, the important thing is that it is definitely performing a non-linear function. There is no linear function that can only flip the sign of negative numbers and leave the sign of positive numbers alone. And if you tried this same training task using the "<em>linear</em> topology" from the diagram on the right above, you would be completely unable to learn this non-linear function no matter how you tune the hyperparameters and no matter how big the tensors are. The wiring is everything. The non-linearity arises from the network structure (global) not the individual tensor contractions (locally linear).</p>
+<p>To me, this is quite remarkable. That non-linearity can emerge without any explicit non-linear function. Yet it is not that surprising once you understand that no-cloning perspective of linearity. With the right wiring together of tensors, we can allow the tensor computations to return copies of input data, transform each copy independently, then pool together the result. That's how we get non-linearity. Indeed, it has been shown that certain kinds of tensor networks are directly related to convolutional neural networks with max pooling, see < <a href="https://arxiv.org/abs/1603.00162">https://arxiv.org/abs/1603.00162</a> ></p>
+<p>The fact that the nonlinearity is due to the network itself suggests that you can dynamically tune how nonlinear the network is, by controlling the degree of data copying that the network can do. I think the generality and flexibility of tensor networks can allow you to design networks with just the right amount of inductive bias given your data. You can design tree networks, grid networks, or any topology you can think of as long as the contractions are possible.</p>
+<p><img src="images/TensorNetwork/tensor_topologies.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Are-Tensor-Networks-useful?">Are Tensor Networks useful?<a class="anchor-link" href="#Are-Tensor-Networks-useful?">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Okay, so that's all theoretically very interesting, but are tensor networks useful? Are they better than neural networks at anything? Well, tensor networks arose in the Physics community as a powerful tool to simulate quantum systems, so they're definitely useful in that domain. Unfortunately the jury is still out on whether they're "better" than neural networks. Is there an advantage to imposing non-linearity from network topology alone, or is it more efficient to just include an activation function?</p>
+<p>So far, I can't tell either from my own experiments with tensor networks or from the literature. However, because the components of tensor networks, tensors, are just high-order structured data, they have shown to be much more interpretable as parameters than the weights of a neural network that get rammed through activation functions. One small benefit I've noticed (but take it with a big grain of salt) is that I can use a much higher learning rate with a tensor network than a neural network without causing divergence during training.</p>
+<p>Tensor networks can be very useful in a method called <strong>tensor decompositions</strong>. The idea is that if you have a huge matrix of data, say 1,000,000 x 1,000,000 entries, you can decompose it into a the contraction of a series of smaller tensors, such that when contracted they will sufficiently approximate the original matrix. It turns out that when you train a tensor decomposition network to approximate your data, it will often learn rather interpretable features.</p>
+<p><img src="images/TensorNetwork/tensornet5.png" /></p>
+<p>Below, I've included some code for a linear (i.e. it cannot learn a non-linear function) tensor network that can be trained to classify FashionMNIST clothes. A 2-layer convolutional neural network with about 500,000 parameters can achieve over 92% accuracy, whereas this simple linear tensor network can achieve about 88.5% accuracy (but quite quickly). The reason for using a linear tensor network is mostly because a decently sized tensor network with non-linear topology (e.g. a hierarchical tree like the figure in the beginning of the post) would be too much code, and a bit too confusing to read with raw einsum notation.</p>
+<p>I do include a slightly more complex non-linear topology at the very end that does achieve up to 94% train/ 90% test accuracy, which is getting competitive conventional neural networks. Whether more complex topologies of tensor networks can achieve even better results is left as an exercise for the reader.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Training-a-(Linear)-Tensor-Network-on-Fashion-MNIST">Training a (Linear) Tensor Network on Fashion MNIST<a class="anchor-link" href="#Training-a-(Linear)-Tensor-Network-on-Fashion-MNIST">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Setup-a-training-function">Setup a training function<a class="anchor-link" href="#Setup-a-training-function">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [64]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">[],</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="n">train_loss</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">train_accu</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="c1"># trainning</span>
+        <span class="n">ave_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">correct_cnt</span><span class="p">,</span> <span class="n">ave_loss</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="n">total_cnt</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">target</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">shape</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">*</span><span class="n">shape</span><span class="p">))</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">ave_loss</span> <span class="o">=</span> <span class="n">ave_loss</span> <span class="o">*</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">pred_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total_cnt</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">correct_cnt</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">((</span><span class="n">pred_label</span> <span class="o">==</span> <span class="n">target</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+            <span class="n">acc</span> <span class="o">=</span> <span class="n">correct_cnt</span> <span class="o">/</span> <span class="n">total_cnt</span>
+            <span class="n">train_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+            <span class="n">train_accu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="sd">'''if (batch_idx+1) % 100 == 0 or (batch_idx+1) == len(train_loader):</span>
+<span class="sd">                print('==>>> epoch: {}, batch index: {}, train loss: {:.6f}, accuracy: {}'.format(</span>
+<span class="sd">                    epoch, batch_idx+1, ave_loss, acc))'''</span>
+        <span class="c1"># testing</span>
+        <span class="n">correct_cnt</span><span class="p">,</span> <span class="n">ave_loss</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="n">total_cnt</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_loader</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">shape</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">*</span><span class="n">shape</span><span class="p">))</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">pred_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total_cnt</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">correct_cnt</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">((</span><span class="n">pred_label</span> <span class="o">==</span> <span class="n">target</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+            <span class="c1"># smooth average</span>
+            <span class="n">ave_loss</span> <span class="o">=</span> <span class="n">ave_loss</span> <span class="o">*</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span>
+            <span class="n">acc</span> <span class="o">=</span> <span class="n">correct_cnt</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">total_cnt</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">batch_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">batch_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_loader</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">'==>>> epoch: </span><span class="si">{}</span><span class="s1">, batch index: </span><span class="si">{}</span><span class="s1">, test loss: </span><span class="si">{:.6f}</span><span class="s1">, acc: </span><span class="si">{:.3f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> \
+                      <span class="n">epoch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ave_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_accu</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Load-up-the-FashionMNIST-Data">Load up the FashionMNIST Data<a class="anchor-link" href="#Load-up-the-FashionMNIST-Data">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [65]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">import</span> <span class="nn">torchvision.datasets</span> <span class="k">as</span> <span class="nn">dset</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+
+<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,))])</span>
+
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="s2">"fashion_mnist"</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="s2">"fashion_mnist"</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+                 <span class="n">dataset</span><span class="o">=</span><span class="n">train_set</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                 <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">drop_last</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+                <span class="n">dataset</span><span class="o">=</span><span class="n">test_set</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'==>>> total trainning batch number: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'==>>> total testing batch number: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_loader</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>==>>> total trainning batch number: 600
+==>>> total testing batch number: 100
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Define-the-Tensor-Network">Define the Tensor Network<a class="anchor-link" href="#Define-the-Tensor-Network">¶</a></h4><h5 id="Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250">Total Num. Parameters: 784 * 25 * 25 + 25 * 25 * 10 = 496,250<a class="anchor-link" href="#Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250">¶</a></h5><p><img src="images/TensorNetwork/tensornet4a.png" width="350px" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this case I labeled each string with its dimension size, which is often called the <strong>bond dimension</strong>. As you'll see below, the 4 interior strings all have a bond dimension of 25.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [68]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">tensorNet2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sa,abc->sbc'</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">A</span><span class="p">)))</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sbc,bct->st'</span><span class="p">,(</span><span class="n">C</span><span class="p">,</span><span class="n">B</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Error: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Train">Train<a class="anchor-link" href="#Train">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [69]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+loss, acc = train(tensorNet2, epochs=50, params=[A,B], lr=0.1, shape=(784,))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/brandonbrown/anaconda3/envs/deeprl/lib/python3.6/site-packages/ipykernel/__main__.py:7: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+/Users/brandonbrown/anaconda3/envs/deeprl/lib/python3.6/site-packages/ipykernel/__main__.py:20: UserWarning: invalid index of a 0-dim tensor. This will be an error in PyTorch 0.5. Use tensor.item() to convert a 0-dim tensor to a Python number
+/Users/brandonbrown/anaconda3/envs/deeprl/lib/python3.6/site-packages/ipykernel/__main__.py:45: UserWarning: invalid index of a 0-dim tensor. This will be an error in PyTorch 0.5. Use tensor.item() to convert a 0-dim tensor to a Python number
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>==>>> epoch: 0, batch index: 100, test loss: 2.204465, acc: 0.795
+==>>> epoch: 1, batch index: 100, test loss: 2.199457, acc: 0.812
+==>>> epoch: 2, batch index: 100, test loss: 2.196803, acc: 0.823
+==>>> epoch: 3, batch index: 100, test loss: 2.194834, acc: 0.827
+==>>> epoch: 4, batch index: 100, test loss: 2.193722, acc: 0.837
+==>>> epoch: 5, batch index: 100, test loss: 2.191949, acc: 0.839
+==>>> epoch: 6, batch index: 100, test loss: 2.191317, acc: 0.844
+==>>> epoch: 7, batch index: 100, test loss: 2.190564, acc: 0.847
+==>>> epoch: 8, batch index: 100, test loss: 2.190050, acc: 0.850
+==>>> epoch: 9, batch index: 100, test loss: 2.189429, acc: 0.853
+==>>> epoch: 10, batch index: 100, test loss: 2.188894, acc: 0.856
+==>>> epoch: 11, batch index: 100, test loss: 2.188893, acc: 0.857
+==>>> epoch: 12, batch index: 100, test loss: 2.188916, acc: 0.859
+==>>> epoch: 13, batch index: 100, test loss: 2.187949, acc: 0.859
+==>>> epoch: 14, batch index: 100, test loss: 2.187448, acc: 0.861
+==>>> epoch: 15, batch index: 100, test loss: 2.187306, acc: 0.864
+==>>> epoch: 16, batch index: 100, test loss: 2.187102, acc: 0.863
+==>>> epoch: 17, batch index: 100, test loss: 2.187094, acc: 0.864
+==>>> epoch: 18, batch index: 100, test loss: 2.186368, acc: 0.866
+==>>> epoch: 19, batch index: 100, test loss: 2.186422, acc: 0.865
+==>>> epoch: 20, batch index: 100, test loss: 2.186429, acc: 0.867
+==>>> epoch: 21, batch index: 100, test loss: 2.185773, acc: 0.867
+==>>> epoch: 22, batch index: 100, test loss: 2.186021, acc: 0.867
+==>>> epoch: 23, batch index: 100, test loss: 2.185484, acc: 0.868
+==>>> epoch: 24, batch index: 100, test loss: 2.186032, acc: 0.870
+==>>> epoch: 25, batch index: 100, test loss: 2.185131, acc: 0.871
+==>>> epoch: 26, batch index: 100, test loss: 2.185170, acc: 0.872
+==>>> epoch: 27, batch index: 100, test loss: 2.185003, acc: 0.869
+==>>> epoch: 28, batch index: 100, test loss: 2.184911, acc: 0.873
+==>>> epoch: 29, batch index: 100, test loss: 2.184867, acc: 0.874
+==>>> epoch: 30, batch index: 100, test loss: 2.184924, acc: 0.874
+==>>> epoch: 31, batch index: 100, test loss: 2.184951, acc: 0.874
+==>>> epoch: 32, batch index: 100, test loss: 2.184638, acc: 0.875
+==>>> epoch: 33, batch index: 100, test loss: 2.184458, acc: 0.874
+==>>> epoch: 34, batch index: 100, test loss: 2.184469, acc: 0.874
+==>>> epoch: 35, batch index: 100, test loss: 2.184160, acc: 0.875
+==>>> epoch: 36, batch index: 100, test loss: 2.183932, acc: 0.876
+==>>> epoch: 37, batch index: 100, test loss: 2.184098, acc: 0.875
+==>>> epoch: 38, batch index: 100, test loss: 2.184113, acc: 0.878
+==>>> epoch: 39, batch index: 100, test loss: 2.183863, acc: 0.878
+==>>> epoch: 40, batch index: 100, test loss: 2.183771, acc: 0.878
+==>>> epoch: 41, batch index: 100, test loss: 2.184383, acc: 0.877
+==>>> epoch: 42, batch index: 100, test loss: 2.183535, acc: 0.878
+==>>> epoch: 43, batch index: 100, test loss: 2.183703, acc: 0.878
+==>>> epoch: 44, batch index: 100, test loss: 2.183593, acc: 0.878
+==>>> epoch: 45, batch index: 100, test loss: 2.183371, acc: 0.878
+==>>> epoch: 46, batch index: 100, test loss: 2.183289, acc: 0.880
+==>>> epoch: 47, batch index: 100, test loss: 2.183360, acc: 0.879
+==>>> epoch: 48, batch index: 100, test loss: 2.183175, acc: 0.881
+==>>> epoch: 49, batch index: 100, test loss: 2.183238, acc: 0.880
+CPU times: user 40min 35s, sys: 2min 23s, total: 42min 58s
+Wall time: 16min 17s
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Not too bad right?</p>
+<h3 id="Simple-Non-Linear-Tensor-Network">Simple Non-Linear Tensor Network<a class="anchor-link" href="#Simple-Non-Linear-Tensor-Network">¶</a></h3><h4 id="Total-Params:-784*20^2+4*20^2+20^4+20^3-=-479,200">Total Params: 784*20^2+4*20^2+20^4+20^3 = 479,200<a class="anchor-link" href="#Total-Params:-784*20^2+4*20^2+20^4+20^3-=-479,200">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="images/TensorNetwork/tensornet4.png" width="500px" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nl1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># a,b,c</span>
+<span class="n">nl2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># c,e</span>
+<span class="n">nl3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># d,f</span>
+<span class="n">nl4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># e,f,g</span>
+<span class="n">nl5</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># c,e</span>
+<span class="n">nl6</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># d,f</span>
+<span class="n">nl7</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># e,f,g</span>
+<span class="k">def</span> <span class="nf">tensorNet3</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'sb,bcd->scd'</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">nl1</span><span class="p">)))</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'scd,ce->se'</span><span class="p">,(</span><span class="n">r1</span><span class="p">,</span><span class="n">nl2</span><span class="p">)))</span>
+    <span class="n">r3</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'scd,df->sf'</span><span class="p">,(</span><span class="n">r1</span><span class="p">,</span><span class="n">nl3</span><span class="p">)))</span>
+    <span class="n">r4</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'se,sf,efgh->sgh'</span><span class="p">,(</span><span class="n">r2</span><span class="p">,</span><span class="n">r3</span><span class="p">,</span><span class="n">nl4</span><span class="p">)))</span>
+    <span class="n">r5</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'scd,ce->se'</span><span class="p">,(</span><span class="n">r4</span><span class="p">,</span><span class="n">nl5</span><span class="p">)))</span>
+    <span class="n">r6</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'scd,df->sf'</span><span class="p">,(</span><span class="n">r4</span><span class="p">,</span><span class="n">nl6</span><span class="p">)))</span>
+    <span class="n">r7</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">'se,sf,efg->sg'</span><span class="p">,(</span><span class="n">r5</span><span class="p">,</span><span class="n">r6</span><span class="p">,</span><span class="n">nl7</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">r7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+loss1b, acc1b = train(model1b, epochs=50, params=[nl1, nl2, nl3, nl4, nl5, nl6, nl7], lr=0.1, shape=(784,))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Unfortunately, this non-linear tensor network performs significantly better with the training data (getting over 94% accuracy at 50 epochs) but the test accuracy tops out at around 88%, similar to the linear network. This just demonstrates that with the added non-linear ability, we can much more easily overfit the data. One thing to try is to add trainable bias tensors into the network as we have in neural networks.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Tensor Networks can be seen as a generalization of neural networks where the non-linearity arises purely out of the network topology as a manifestation of copying data, and not by a particular choice of non-linear activation function. They can be used just about anywhere a neural network can be (albeit with unproven performance) and tensor decompositions offer a powerful way to learn features from data. Tensor Networks are being actively studied and improved and I believe it is likely they will be a great tool in your machine learning toolkit.</p>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="http://outlace.com/TensorNets1.html">posted at 23:40</a>
+                    by Brandon Brown
+                    &nbsp;&middot;&nbsp;<a href="http://outlace.com/category/tensor-networks/" rel="tag">Tensor Networks</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="http://outlace.com/tag/tensor-networks/" class="tags">Tensor-Networks</a>
+                    &nbsp;<a href="http://outlace.com/tag/nonlinearity/" class="tags">nonlinearity</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="http://outlace.com/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="http://outlace.com/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>

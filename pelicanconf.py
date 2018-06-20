@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Brandon'
+AUTHOR = 'Brandon Brown'
 SITENAME = 'Δ ℚuantitative √ourney'
 SITEURL = 'http://outlace.com'
 
@@ -43,13 +43,13 @@ THEME = 'blue-penguin'
 
 MARKUP = ('md', 'ipynb')
 
-STATIC_PATHS = ['images', 'pdfs', 'pages', 'js', 'extra/CNAME']
+STATIC_PATHS = ['images', 'pdfs', 'pages', 'js', 'extra/CNAME', 'notebooks']
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 STATIC_IMG = 'images'
 CONTACT_EMAIL = 'outlacedev@gmail.com'
 
 PLUGIN_PATHS = ['./plugins']
-PLUGINS = ['ipynb.markup', 'render_math']
+PLUGINS = ['ipynb.markup', 'render_math', 'pelican_alias']
 IPYNB_USE_META_SUMMARY = True
 IGNORE_FILES = ['.ipynb_checkpoints', '__pycache__']
 
@@ -78,8 +78,8 @@ DISPLAY_MENU   = True
 # provided as examples, they make ‘clean’ urls. used by MENU_INTERNAL_PAGES.
 '''TAGS_URL           = 'tags'
 TAGS_SAVE_AS       = 'tags/index.html'
-#AUTHORS_URL        = 'authors'
-#AUTHORS_SAVE_AS    = 'authors/index.html'
+AUTHORS_URL        = 'authors'
+AUTHORS_SAVE_AS    = 'authors/index.html'
 CATEGORIES_URL     = 'categories'
 CATEGORIES_SAVE_AS = 'categories/index.html'
 ARCHIVES_URL       = 'archives'
@@ -115,7 +115,7 @@ MENUITEMS = (
     #('GitHub', 'https://github.com/outlace'),
 )
 
-SITESUBTITLE = '∑ My experiences in learning quantitative applications'
+SITESUBTITLE = '∑ Our experiences in learning quantitative applications'
 
 #FAVICON = 'images/Deep_learning_icon.png'
 #ICON = 'images/Deep_learning_icon.png'
