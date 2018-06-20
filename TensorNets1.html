@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    
         <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Δ ℚuantitative √ourney | On Tensor Networks and the Nature of Non-Linearity</title>
@@ -614,8 +614,8 @@ div.output_area {
 div.output_area .MathJax_Display {
   text-align: left !important;
 }
-div.output_area
-div.output_area
+div.output_area 
+div.output_area 
 div.output_area img,
 div.output_area svg {
   max-width: 100%;
@@ -875,7 +875,7 @@ h6:hover .anchor-link {
 .text_cell.rendered .input_area {
   display: none;
 }
-.text_cell.rendered
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
 }
@@ -1028,7 +1028,7 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Teaser: Tensor Networks can be seen as a higher-order generalization of traditional deep neural networks, and yet they lack an explicit non-linearity such as applying the ReLU or sigmoid function as we do with neural nets. A deeper understanding of what nonlinearity actually means, however, reveals that tensor networks can indeed learn non-linear functions. The non-linearity of tensor networks arises soley from the architecture and topology of the network itself.</p>
-<p><img src="images/TensorNetwork/Tensor_Network.png" width="400px" /></p>
+<p><img src="images/Tensor_Network.png" width="400px" /></p>
 </div>
 </div>
 </div>
@@ -1051,7 +1051,7 @@ just a sequence of two operations composed to some depth: a linear transformatio
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Okay so depth is important. But why is the non-linear "activation" function so important for deep learning?
+<p>Okay so depth is important. But why is the non-linear "activation" function so important for deep learning? 
 An almost tautological answer is that for a neural network to model non-linear functions, it needs to have a source of
 non-linearity. We know neural networks are universal function approximators [1] and
 of course some functions are non-linear, thus it must be able to exhibit non-linear behavior.</p>
@@ -1059,7 +1059,7 @@ of course some functions are non-linear, thus it must be able to exhibit non-lin
 can always be "collapsed" into a single linear transformation. This is basic linear algebra; the product
 of any sequence of matrices (i.e. matrix composition, hence composition of linear transformations)
 can always be reduced to a single matrix/linear transformation. So without the non-linear function in each layer
-we forfeit the compositionality (depth) property of deep neural networks, which allow hierarchical abstraction as
+we forfeit the compositionality (depth) property of deep neural networks, which allow hierarchical abstraction as 
 you go deeper in the network.</p>
 </div>
 </div>
@@ -1081,8 +1081,8 @@ affine transformations can only uniformly stretch and shrink (scale), rotate, sh
 <div class="text_cell_render border-box-sizing rendered_html">
 <div style="display:table">
 <div style="display: table-row;">
-<div style="float:left;display: table-cell; margin-right:50px; "><img src="images/TensorNetwork/sigmoid_activation.png" width="350px" /></div>
-<div style="display: table-cell; "><img src="images/TensorNetwork/relu_activation.png" width="350px" /></div>
+<div style="float:left;display: table-cell; margin-right:50px; "><img src="images/sigmoid_activation.png" width="350px" /></div>
+<div style="display: table-cell; "><img src="images/relu_activation.png" width="350px" /></div>
 </div>
 </div>
 </div>
@@ -1102,8 +1102,8 @@ affine transformations can only uniformly stretch and shrink (scale), rotate, sh
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>(Definition 1.1: Linear Function)
 $$
-f : X \rightarrow Y  \\
-\text{$f$ is a function from some domain X to some codomain Y} \\
+f : X \rightarrow Y  \\ 
+\text{$f$ is a function from some domain X to some codomain Y} \\ 
 f(x_1 + x_2) = f(x_1) + f(x_2) \\
 f(a \times x) = a \times f(x)
 $$</p>
@@ -1185,7 +1185,7 @@ add some energy you'll cause them to react to produce water molecules. The reage
 <p>Note that although we can make a function such as $f(x) = x + x$, which appears to similarly clone its input, we can always reduce that expression to a non-cloned version, namely $f(x) = 2x$, hence it is linear. With $f(x) = x^2$ there is no way to reduce that expression to one where $x$ only appears once on the right hand side of the equation. In other words, if you were to write a computer program to calculate or even hand calculate $f(x) = x^2$ you would
 necessarily need to work with 2 copies of the value of $x$, whereas with $f(x) = 2x$ you could evaluate the result with just a single copy. This easily extends to multivariate functions, such as $g(x,y) = x + y$. In this case we would say $g(x,y)$ is linear with respect to each of its input arguments. Individually, $x$ and $y$ respect the linearity checklist and the no-cloning rule.</p>
 <p>The no-cloning rule for non-linearity is reminiscent of the law of conservation of energy from physics (and the no-cloning theorem of quantum mechanics); indeed it can be construed as the information theory equivalent: "information is neither created nor destroyed in an isolated process (function)". This analogy will prove useful later.</p>
-<p>With definitions 1.2 and 1.3 we now have a meaningful explanation for why the ReLU activation function is non-linear, it's because it uses the non-linear mechanism of copying. It violates the no-cloning rule. How? Well because it involves a conditional. Remember, $relu(x) = max(0,x)$ and
+<p>With definitions 1.2 and 1.3 we now have a meaningful explanation for why the ReLU activation function is non-linear, it's because it uses the non-linear mechanism of copying. It violates the no-cloning rule. How? Well because it involves a conditional. Remember, $relu(x) = max(0,x)$ and 
 $$
 \begin{align}
 max(0,x) & = 0, & x < 0, \\
@@ -1269,9 +1269,9 @@ give us about this fundamental concept in mathematics? Well, the limit definitio
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What does this have to do with calculus? Well let's convert $f(x)=x\cdot x \cdot x$ into a multi-linear function, i.e. $f(x,y,z) = x\cdot y \cdot z$, except that we know $x = y = z$ (or that they're highly correlated).</p>
 <p>So remember, we already remember from school that the derivative of $f(x)=x^3$ is $\frac{df}{dx} = 3x^2$. We can't take "the derivative" of our new multi-linear function anymore, we can only take partial derivatives with respect to each variable. To take the partial derivative of $x$, we assume the other variables $y,z$ are held as constants, and then it becomes a simple linear equation. We do the same for $y,z$.</p>
-<p>$$
+<p>$$ 
 \begin{align}
-\frac{\partial{f}}{\partial{x}} = yz && \frac{\partial{f}}{\partial{y}} = xz && \frac{\partial{f}}{\partial{z}} = yx
+\frac{\partial{f}}{\partial{x}} = yz && \frac{\partial{f}}{\partial{y}} = xz && \frac{\partial{f}}{\partial{z}} = yx 
 \end{align}
 $$</p>
 <p>But wait, we can't really hold the other variables constant because we know they're perfectly correlated (actually equal). What we're getting at is a case of the total derivative (see < <a href="https://en.wikipedia.org/wiki/Total_derivative">https://en.wikipedia.org/wiki/Total_derivative</a> >), which is how you take the derivative of a multivariable function with interacting variables. In this particular case, since $x = y = z$, we just need to combine (sum) all these partial derivatives together and make all the variables the same, say $x$.</p>
@@ -1390,8 +1390,8 @@ $$</p>
 <p>There is a convenient graphical representation of tensors that is really helpful in reasoning about tensor contractions and tensor networks. All you do is represent a tensor as some simple geometric shape, we'll use a square, and then for each index the tensor has, you draw that many number of "legs" or <strong>strings</strong> emanating from the box. For example, here is a matrix and a 3-tensor with 2 and 3 strings, respectively:</p>
 <div style="display:table">
 <div style="display: table-row;">
-<div style="float:left;display: table-cell;"><img src="images/TensorNetwork/matrix1.png" width="200px" /></div>
-<div style="display: table-cell;"><img src="images/TensorNetwork/3tensor1.png" width="200px" /></div>
+<div style="float:left;display: table-cell;"><img src="images/matrix1.png" width="200px" /></div>
+<div style="display: table-cell;"><img src="images/3tensor1.png" width="200px" /></div>
 </div>
 </div>
 </div>
@@ -1402,7 +1402,7 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Each index has been labeled. Now we can form tensor networks by connecting these tensors if they have compatible indices. For example, here is that inner product we just worked out:</p>
-<p><img src="images/TensorNetwork/inner_product1.png" /></p>
+<p><img src="images/inner_product1.png" /></p>
 </div>
 </div>
 </div>
@@ -1411,10 +1411,10 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And here is a matrix vector multiplication:</p>
-<p><img src="images/TensorNetwork/matrix_vector_mult.png" width="300px" />
+<p><img src="images/matrix_vector_mult.png" width="300px" />
 You can see the vector on the left since it only has one string exiting from it whereas the matrix on the right has two strings. Once they share a string (an index), that represents a contraction. Notice that the number of remaining open-ended strings represents the rank or order of the tensor that results after the contraction. The matrix-vector multiplication diagram has 1 open string, so we know this contraction returns a new vector.</p>
 <p>Since a simple feedforward neural network is nothing more than a series of matrix multiplications with non-linear activation functions, we can represent this easily diagrammatically:</p>
-<p><img src="images/TensorNetwork/nn3.png" width="370px" /></p>
+<p><img src="images/nn3.png" width="370px" /></p>
 <p>Where the $\sigma$ (sigma) symbol represents the non-linear function. If we removed that, we would have a tensor network. But remember, this whole post is about non-linearity and tensor networks, so how do we get back the non-linearity in a tensor network?</p>
 <p>Copying.</p>
 </div>
@@ -1428,8 +1428,8 @@ You can see the vector on the left since it only has one string exiting from it 
 <br /><br /></p>
 <div style="display:table">
 <div style="display: table-row;">
-<div style="float:left;display: table-cell; margin-right:50px; margin-bottom:25px;"><img src="images/TensorNetwork/tensornet1.png" width="350px" /></div>
-<div style="display: table-cell; "><img src="images/TensorNetwork/tensornet2.png" width="350px" /></div>
+<div style="float:left;display: table-cell; margin-right:50px; margin-bottom:25px;"><img src="images/tensornet1.png" width="350px" /></div>
+<div style="display: table-cell; "><img src="images/tensornet2.png" width="350px" /></div>
 </div>
 </div>
 </div>
@@ -1746,7 +1746,7 @@ Epoch: 4500 | Loss: 0.026810143142938614
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Define-the-Tensor-Network">Define the Tensor Network<a class="anchor-link" href="#Define-the-Tensor-Network">¶</a></h4><h5 id="Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250">Total Num. Parameters: 784 * 25 * 25 + 25 * 25 * 10 = 496,250<a class="anchor-link" href="#Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250">¶</a></h5><p><img src="images/TensorNetwork/tensornet2.png" width="350px" /></p>
+<h4 id="Define-the-Tensor-Network">Define the Tensor Network<a class="anchor-link" href="#Define-the-Tensor-Network">¶</a></h4><h5 id="Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250">Total Num. Parameters: 784 * 25 * 25 + 25 * 25 * 10 = 496,250<a class="anchor-link" href="#Total-Num.-Parameters:-784-*-25-*-25-+-25-*-25-*-10-=-496,250">¶</a></h5><p><img src="images/tensornet2.png" width="350px" /></p>
 </div>
 </div>
 </div>
@@ -1881,7 +1881,7 @@ Wall time: 16min 17s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="images/TensorNetwork/tensornet3.png" width="350px" /></p>
+<p><img src="images/tensornet3.png" width="350px" /></p>
 </div>
 </div>
 </div>
