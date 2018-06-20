@@ -1015,8 +1015,7 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1024,8 +1023,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1035,8 +1033,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1044,8 +1041,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1054,8 +1050,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1065,17 +1060,17 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 More precisely, a linear transformation $M\ :\ V_1 \rightarrow V_2$ is a map $M$ from the vector spaces $V_1$ to $V_2$ such that $M(V_1 + V_2) = M(V_1) + M(V_2)$ and $M(aV_1) = aM(V_1)$ where $a$ is a scalar.</p>
 </blockquote>
 <p>Let's say we want to map the real-valued volume $\mathbb R^3$ to the plane $\mathbb R^2$.</p>
-$$
+<p>$$
 \begin{aligned}
 V_1 &= span\{(1,0,0),(0,1,0),(0,0,1)\} \\
 V_2 &= span\{(1,0),(0,1)\}
 \end{aligned}
-$$<p>Now, what if I want to map $V_1$ to $V_2$, that is, I want to send every point in $V_1$ to a point in $V_2$. There are many reasons why I might want to do something like this. If I'm making a graphics application, for example, I want to offer an option to rotate images drawn, and this is simply a matter of applying a linear transformation on the pixels.</p>
+$$</p>
+<p>Now, what if I want to map $V_1$ to $V_2$, that is, I want to send every point in $V_1$ to a point in $V_2$. There are many reasons why I might want to do something like this. If I'm making a graphics application, for example, I want to offer an option to rotate images drawn, and this is simply a matter of applying a linear transformation on the pixels.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1086,25 +1081,26 @@ Similarly, we'll call the 2 basis elements of $V_2: \beta_1, \beta_2$. Hence, $V
 To prevent confusion between symbols that refer to scalars and symbols that refer vectors, I will henceforth add a little arrow over every vector $\vec{v}$ to denote it is a vector, not a scalar. Remember, the scalar is just a single element from the underlying field $F$ over which the vector space is defined.</p>
 </blockquote>
 <p>We can define our map $M(V_1) = V_2$ in this way:</p>
-$$
+<p>$$
 \begin{aligned}
 M(B_1) &= a\vec \beta_1 + b\vec \beta_2 \mid a,b \in \mathbb R \\
 M(B_2) &= c\vec \beta_1 + d\vec \beta_2 \mid c,d \in \mathbb R \\
 M(B_3) &= e\vec \beta_1 + f\vec \beta_2 \mid e,f \in \mathbb R \\
 \end{aligned}
-$$<p>That is, the map from each basis in $V_1$ is setup as a linear combination of the basis elements in $V_2$. This requires us to define a total of 6 new pieces of data: $a,b,c,d,e,f \in \mathbb R$ required for our mapping. We just have to keep track of the fact that $a,b$ are for mapping to $\beta_1$ and $d,e,f$ are for mapping to $\beta_2$. What's a convenient way to keep track of all of that? Oh I know, a matrix!</p>
-$$
+$$</p>
+<p>That is, the map from each basis in $V_1$ is setup as a linear combination of the basis elements in $V_2$. This requires us to define a total of 6 new pieces of data: $a,b,c,d,e,f \in \mathbb R$ required for our mapping. We just have to keep track of the fact that $a,b$ are for mapping to $\beta_1$ and $d,e,f$ are for mapping to $\beta_2$. What's a convenient way to keep track of all of that? Oh I know, a matrix!</p>
+<p>$$
 M = 
 \begin{pmatrix}
 a & c & e \\
 b & d & f \\
 \end{pmatrix}
-$$<p>That is a very convenient way to represent our map $M\ :\ V_1 \rightarrow V_2$ indeed. Notice that each <em>column</em> of this matrix corresponds to the "mapping equation" coefficients for each M(B_n). Also notice that the dimensions of this matrix, $2\times3$, corresponds to the dimensions of the two vector spaces we're mapping to and from. That is, any map $\mathbb R^n \rightarrow \mathbb R^m$ will be represented as an $m\times n$ matrix. It is important to keep in mind that since the linear map (and hence the matrix) depend on coefficients applied to a basis, then the matrix elements will change if one uses a different basis.</p>
+$$</p>
+<p>That is a very convenient way to represent our map $M\ :\ V_1 \rightarrow V_2$ indeed. Notice that each <em>column</em> of this matrix corresponds to the "mapping equation" coefficients for each M(B_n). Also notice that the dimensions of this matrix, $2\times3$, corresponds to the dimensions of the two vector spaces we're mapping to and from. That is, any map $\mathbb R^n \rightarrow \mathbb R^m$ will be represented as an $m\times n$ matrix. It is important to keep in mind that since the linear map (and hence the matrix) depend on coefficients applied to a basis, then the matrix elements will change if one uses a different basis.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1113,46 +1109,39 @@ $$<p>That is a very convenient way to represent our map $M\ :\ V_1 \rightarrow V
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-$$
-M(\vec v\ \in\ V_1)
-=
-\underbrace{
+<p>$$</p>
+<h1 id="M(\vec-v\-\in\-V_1)">M(\vec v\ \in\ V_1)<a class="anchor-link" href="#M(\vec-v\-\in\-V_1)">¶</a></h1><p>\underbrace{
 \begin{bmatrix}
 a & c & e \\
 b & d & f \\
 \end{bmatrix}}_{M:V_1\rightarrow V_2}
 \underbrace{
 \begin{pmatrix}
-x \\ y \\ z \\
-\end{pmatrix}}_{\vec v\ \in\ V_1}
-=
-\underbrace{
+x \ y \ z \</p>
+<h1 id="\end{pmatrix}}_{\vec-v\-\in\-V_1}">\end{pmatrix}}_{\vec v\ \in\ V_1}<a class="anchor-link" href="#\end{pmatrix}}_{\vec-v\-\in\-V_1}">¶</a></h1><p>\underbrace{
 \begin{bmatrix}
-a * x & c * y & e * z \\
-b * x & d * y & f * z \\
-\end{bmatrix}}_{M:V_1\rightarrow V_2}
-=
-\begin{pmatrix}
+a <em> x & c </em> y & e <em> z \
+b </em> x & d <em> y & f </em> z \</p>
+<h1 id="\end{bmatrix}}_{M:V_1\rightarrow-V_2}">\end{bmatrix}}_{M:V_1\rightarrow V_2}<a class="anchor-link" href="#\end{bmatrix}}_{M:V_1\rightarrow-V_2}">¶</a></h1><p>\begin{pmatrix}
 a * x + c * y + e * z \\
 b * x + d * y + f * z \\
 \end{pmatrix}
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ok now we know a matrix is a linear map between two vector spaces. But what happens if you multiply two matrices together? Well that is just a composition of maps. For example, we have three vector spaces $T, U, V$ and two linear maps $m_1, m_2$:</p>
-$$ T \stackrel{m_1}{\rightarrow} U \stackrel{m_2}{\rightarrow} V$$<p>To get from $T$ to $V$, we need to apply both maps: $m_2(m_1(T)) = V$. Hence, multiplying two matrices together gives us a composition of maps $m_2 \circ m_1$. The <em>identity</em> matrix is an identity map (i.e. it doesn't change the input) that takes the form where 1s are along the diagonal and 0s everywhere else, e.g.:</p>
-$$
+<p>$$ T \stackrel{m_1}{\rightarrow} U \stackrel{m_2}{\rightarrow} V$$</p>
+<p>To get from $T$ to $V$, we need to apply both maps: $m_2(m_1(T)) = V$. Hence, multiplying two matrices together gives us a composition of maps $m_2 \circ m_1$. The <em>identity</em> matrix is an identity map (i.e. it doesn't change the input) that takes the form where 1s are along the diagonal and 0s everywhere else, e.g.:</p>
+<p>$$
 m=
 \begin{bmatrix}
 \ddots & 0 & 0 & 0 & ⋰ \\
@@ -1163,31 +1152,30 @@ m=
 \end{bmatrix}
 \\
 m \vec V = \vec V
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Back-to-simplicial-homology-(again)">Back to simplicial homology (again)<a class="anchor-link" href="#Back-to-simplicial-homology-(again)">¶</a></h4><p>We learned all of that so we can represent the boundary map $\partial(C_n)$ as a <strong>matrix</strong> so we can apply the tools of linear algebra. This makes sense since we already know that the chain groups $C_n$ can be viewed as vector spaces when we allow scalar multiplication, so then a linear map between the chain vector spaces is the boundary map, that we can represent as a matrix.</p>
 <p>We represent an $n$-boundary map, i.e. $\partial(C_n)$, where $n$ is the dimension of the chain group, $k$ is the number of simplices in $C_n$ and $l$ is the number of simplices in $C_{n-1}$, as a matrix with $k$ columns and $l$ rows. Thus each column represents a simplex in $C_n$ and each row represents a simplex in $C_{n-1}$. We put a $1$ in a cell of the matrix if the simplex in that column maps to the simplex in that row. For example, $\partial([a,b]) = a - b$ if the field is $\mathbb Z$, so we will put a $1$ in the row for $a$ and $b$ since the 1-simplex $[a,b]$ maps to those two 0-simplices.</p>
 <p>Let's try calculating the homology groups of the previous simplicial complex (depicted below again) using matrices and vectors. We're going to go back to using $\mathbb Z_2$ as our field (so simplex orientation can be ignored) because it is computationally more efficient to do so.</p>
-$$ S = \text{ {[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]} } $$<p><img src="images/TDAimages/part4/simplicialcomplex5b.svg" /></p>
+<p>$$ S = \text{ {[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]} } $$</p>
+<p><img src="images/TDAimages/part4/simplicialcomplex5b.svg" /></p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Since we're using the (very small) finite field $\mathbb Z_2$ then we can actually list out all the vectors in our chain (group) vector space. We have 3 chain groups, namely the group of 0-simplices (vertices), 1-simplices (edges), and 2-simplices (triangle).</p>
 <p>In our example, we only have a single 2-simplex: [a,b,c], thus the group it generates over the field $\mathbb Z_2$ is only $\{0, [a,b,c]\}$ which is isomorphic to $\mathbb Z_2$. Recall, in general, the group generated by the number $n$ of $p$-simplices in a simplicial complex is isomorphic to $\mathbb Z^n_2$. For a computer to understand, we can encode the group elements just using their coefficients 1 or 1. So, for example, the group generated by $[a,b,c]$ can just be represented as $\{0,1\}$. Or the group generated by the 0-simplices $\{a, b, c, d\}$ can be represented by 4-dimensional vectors, for example, if a group element is $a+b+c$ then we encode this as $(1, 1, 1, 0)$ where each position represents the presence or abscence of $(a, b, c, d)$, respectively.</p>
 <p>Here are all the chain groups represented as vectors with just coefficients (I didn't list all elements for $C_1$ since there are so many [32]):</p>
-$$
+<p>$$
 \begin{align}
 C_0
 &=
@@ -1221,19 +1209,18 @@ C_2
 \right.
 & \cong \mathbb Z_2
 \end{align}
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To represent the boundary map (which is a linear map) of the group of $p$-simplices as a matrix, we set the columns to represent each $p$-simplex in the group, and the rows represent each $(p-1)$-simplex. We put a $1$ in each position of the matrix if the $(p-1)$-simplex row is a <em>face</em> of the $p$-simplex column.</p>
 <p>We index rows and columns as an ordered pair $(i, j)$ respectively. Thus the element $a_{2,3}$ is the element in the 2nd row (from the top) and the 3rd column (from the left).</p>
 <p>The generic boundary matrix is thus (each column is a $p$-simplex, each row is a $(p-1)$-simplex):</p>
-$$ \begin{align}
+<p>$$ \begin{align}
 \partial_p
 &=
 \begin{pmatrix}
@@ -1244,20 +1231,17 @@ a_{3,1} & a_{3,2} & a_{3,3} & \cdots & a_{3,j}  \\
 a_{i,1} & a_{i,2} & a_{i,3} & \cdots & a_{i,j}
 \end{pmatrix} 
 \end{align}
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We'll start by representing the boundary map $\partial(C_2)$ as a matrix. There's only one 2-simplex in $C_2$ so there is only one column, but there are five 1-simplices in $C_1$ so there are 5 rows.</p>
-$$
-\partial_2 
-=
-\begin{array}{c|lcr}
+<p>$$</p>
+<h1 id="\partial_2-">\partial_2 <a class="anchor-link" href="#\partial_2-">¶</a></h1><p>\begin{array}{c|lcr}
 \partial & [a,b,c] \\
 \hline
 [a,b] & 1 \\
@@ -1266,8 +1250,9 @@ $$
 [c,d] & 0 \\
 [d,b] & 0 \\
 \end{array}
-$$<p>We put a $1$ if each row-element was a face of the simplex $[a,b,c]$. This matrix makes sense as a linear map because if we multiply it by a vector element in $C_2$ (there's only 1, besides the 0 element) we get what we expect:</p>
-$$
+$$</p>
+<p>We put a $1$ if each row-element was a face of the simplex $[a,b,c]$. This matrix makes sense as a linear map because if we multiply it by a vector element in $C_2$ (there's only 1, besides the 0 element) we get what we expect:</p>
+<p>$$
 \begin{align}
 \begin{pmatrix}
 1 \\
@@ -1304,17 +1289,16 @@ $$
 0 \\
 \end{pmatrix}
 \end{align}
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Okay, let's move on to building the boundary matrix $\partial(C_1)$:</p>
-$$
+<p>$$
 \partial_1 =
 \begin{array}{c|lcr}
 \partial & [a,b] & [b,c] & [c,a] & [c,d] & [d,b] \\
@@ -1324,12 +1308,11 @@ b & 1 & 1 & 0 & 0 & 1 \\
 c & 0 & 1 & 1 & 1 & 0 \\
 d & 0 & 0 & 0 & 1 & 1 \\
 \end{array}
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1364,8 +1347,7 @@ $$
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1376,8 +1358,7 @@ $$\partial([a,b]+[c,a]+[c,d]) = a+b+c+a+c+d = \cancel{a}+b+\cancel{c}+\cancel{a}
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1391,8 +1372,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1401,8 +1381,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1426,8 +1405,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1440,12 +1418,11 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-$$
+<p>$$
 \partial_1 =
 \begin{array}{c|lcr}
 \partial & [a,b] & [b,c] & [c,a] & [c,d] & [d,b] \\
@@ -1455,12 +1432,11 @@ b & 1 & 1 & 0 & 0 & 1 \\
 c & 0 & 1 & 1 & 1 & 0 \\
 d & 0 & 0 & 0 & 1 & 1 \\
 \end{array}
-$$
+$$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1478,8 +1454,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1575,8 +1550,7 @@ Once we have the matrix in Smith normal form, we don't do any more operations. W
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1635,8 +1609,7 @@ Betti #0: 1
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1684,8 +1657,7 @@ Betti #0: 1
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1723,8 +1695,7 @@ I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1767,8 +1738,7 @@ I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1802,8 +1772,7 @@ I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1835,8 +1804,7 @@ Let $Y_1 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {0, 6}, {2, 6}, {4, 5}, {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1868,8 +1836,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1900,8 +1867,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1911,8 +1877,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1928,8 +1893,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1983,7 +1947,7 @@ Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +

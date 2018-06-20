@@ -1,0 +1,9 @@
+---
+Title: On Tensor Networks and the Nature of Non-Linearity
+Slug: TensorNets1
+Date: 2018-06-20 00:40
+Category: Tensor Networks
+Tags: Tensor-Networks, nonlinearity
+Authors: Brandon Brown
+Summary: Tensor Networks can be seen as a higher-order generalization of traditional deep neural networks, and yet they lack an explicit non-linearity such as applying the ReLU or sigmoid function as we do with neural nets. A deeper understanding of what nonlinearity actually means, however, reveals that tensor networks can indeed learn non-linear functions. The non-linearity of tensor networks arises soley from the architecture and topology of the network itself.
+---
