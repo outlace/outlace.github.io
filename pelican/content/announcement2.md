@@ -1,5 +1,5 @@
 Title: Deep Reinforcement Learning in Action (Announcement)
-Date: 2018-06-20 00:57
+Date: 2018-06-19 23:57
 Category: Announcement
 Author: Brandon Brown
 Summary: I'm co-authoring a book on Deep Reinforcement Learning!
