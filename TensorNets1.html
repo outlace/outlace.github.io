@@ -1215,7 +1215,7 @@ give us about this fundamental concept in mathematics? Well, the limit definitio
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Take our simple function $f(x) = x^3$ and expand it to make explicit the copying that is happening, $f(x) = x \cdot x \cdot x$. This function makes 3 copies of $x$ and then reacts them together (multiplication) to produce the final result. The copying operation is totally hidden with traditional function notation, but it happened. Where is the copy operation in traditional set-theoretic mathematics? Why is it always hidden in the notation of non-linear functions?</p>
-<p>The answer requires back-tracking to linear algebra. Remember how a matrix encodes a linear transformation? A full-rank square matrix will always result in a dimension-preserving transformation, e.g. a full-rank 2x2 matrix will always send a 2D vector to another 2D vector. A non-square matrix such as a 2x3 matrix, on the other hand, will send a 2D vector into a 3-dimensional space. A 2D vector is a vector that is described by the sum of two linearly-independent basis vectors usually called $\hat{i}$ and $\hat{j}$, so a 2x3 matrix will convert that 2D vector into a vector that is described by the sum of 3 basis vectors, $\hat{i}, \hat{j}, \hat{k}$.</p>
+<p>The answer requires back-tracking to linear algebra. Remember how a matrix encodes a linear transformation? A full-rank square matrix will always result in a dimension-preserving transformation, e.g. a full-rank 2x2 matrix will always send a 2D vector to another 2D vector. A non-square matrix such as a 2x3 matrix, on the other hand, will send a 2D vector into a 3-dimensional space.</p>
 </div>
 </div>
 </div>
@@ -1223,18 +1223,18 @@ give us about this fundamental concept in mathematics? Well, the limit definitio
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Thus the copy operation is the linear algebraic operation of embedding a lower-dimensional vector (even a scalar) into a higher-dimensional space. Thus we can think of $f(x) = x^3$ as a function that takes a scalar, embeds it in vector space, linearly transforms it, then collapses it back into a scalar. Thus $f(x) = x^3$ is somewhat deceptively simple.</p>
+<p>Thus the copy operation for scalars is the linear algebraic operation of projecting a lower-dimensional vector (even a scalar) into a higher-dimensional space. Thus we can think of $f(x) = x^3$ as a function that takes a scalar, copies its input 3 times, then multiplies them together.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clone</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clone</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">])</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span>
-<span class="n">clone</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">clone</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1244,14 +1244,9 @@ give us about this fundamental concept in mathematics? Well, the limit definitio
 <div class="output_area">
 <div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[3 3 3]
+<pre>[5 5 5]
+125
 </pre>
-</div>
-</div>
-<div class="output_area">
-<div class="prompt output_prompt">Out[24]:</div>
-<div class="output_text output_subarea output_execute_result">
-<pre>array([9])</pre>
 </div>
 </div>
 </div>
@@ -1261,8 +1256,16 @@ give us about this fundamental concept in mathematics? Well, the limit definitio
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here we used a matrix-vector multiplication to copy the single number 3 into a vector of three 3s.</p>
-<p>What does this have to do with calculus? Well let's convert $f(x)=x\cdot x \cdot x$ into a multi-linear function, i.e. $f(x,y,z) = x\cdot y \cdot z$, except that we know $x = y = z$ (or that they're highly correlated).</p>
+<p>$$ f(x) = \prod Ax = x^3$$</p>
+<p>Where $A$ is the "copy" matrix $\begin{bmatrix} 1 & 1 & 1 \end{bmatrix}$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What does this have to do with calculus? Well let's convert $f(x)=x\cdot x \cdot x$ into a multi-linear function, i.e. $f(x,y,z) = x\cdot y \cdot z$, except that we know $x = y = z$ (or that they're highly correlated). It is multi-linear because if we assumed data independence, then the function is linear with respect to each variable. For example, $f(5+3,y,z) = 8yz$ which is the same as $f(5,y,z) + f(3,y,z) = 5yz + 3yz = 8yz$. But since we know our data is not independent, technically this function <em>isn't</em> linear because we can't independently control for each variable. But let's for a momement pretend we didn't know our input data is correlated in this way.</p>
 <p>So remember, we already remember from school that the derivative of $f(x)=x^3$ is $\frac{df}{dx} = 3x^2$. We can't take "the derivative" of our new multi-linear function anymore, we can only take partial derivatives with respect to each variable. To take the partial derivative of $x$, we assume the other variables $y,z$ are held as constants, and then it becomes a simple linear equation. We do the same for $y,z$.</p>
 <p>$$ 
 \begin{align}
@@ -1943,6 +1946,44 @@ loss1b, acc1b = train(model1b, epochs=50, params=[nl1, nl2, nl3, nl4, nl5, nl6, 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Tensor Networks can be seen as a generalization of neural networks where the non-linearity arises purely out of the network topology as a manifestation of copying data, and not by a particular choice of non-linear activation function. They can be used just about anywhere a neural network can be (albeit with unproven performance) and tensor decompositions offer a powerful way to learn features from data. Tensor Networks are being actively studied and improved and I believe it is likely they will be a great tool in your machine learning toolkit.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Yau, D. (2015). Operads of Wiring Diagrams. Retrieved from <a href="http://arxiv.org/abs/1512.01602">http://arxiv.org/abs/1512.01602</a></li>
+<li>Maina, S. A. (2017). Graphical Linear Algebra.</li>
+<li>Cichocki, A. (2014). Era of Big Data Processing: A New Approach via Tensor Networks and Tensor Decompositions, 1–30. <a href="http://doi.org/abs/1403.2048">http://doi.org/abs/1403.2048</a></li>
+<li>Genovese, F. (2017). The Way of the Infinitesimal. Retrieved from <a href="http://arxiv.org/abs/1707.00459">http://arxiv.org/abs/1707.00459</a></li>
+<li>Mangan, T. (2008). A gentle introduction to tensors. J. Biomedical Science and Engineering, 1, 64–67. <a href="http://doi.org/10.1016/S0004-3702(98)00053-8">http://doi.org/10.1016/S0004-3702(98)00053-8</a></li>
+<li>Kissinger, A., & Quick, D. (2015). A first-order logic for string diagrams, 171–189. <a href="http://doi.org/10.4230/LIPIcs.CALCO.2015.171">http://doi.org/10.4230/LIPIcs.CALCO.2015.171</a></li>
+<li>Barber, A. G. (1997). Linear Type Theories , Semantics and Action Calculi. Computing. Retrieved from <a href="http://hdl.handle.net/1842/392">http://hdl.handle.net/1842/392</a></li>
+<li>Girard, J.-Y. (1995). Linear Logic: its syntax and semantics. Advances in Linear Logic, 1–42. <a href="http://doi.org/10.1017/CBO9780511629150.002">http://doi.org/10.1017/CBO9780511629150.002</a></li>
+<li>Wadler, P., Val, A., & Arr, V. A. (1990). Philip Wadler University of Glasgow, (April), 1–21.</li>
+<li>Martin, C. (2004). Tensor Decompositions Workshop Discussion Notes. Palo Alto, CA: American Institute of Mathematics (AIM), 1–27. Retrieved from <a href="http://scholar.google.com/scholar?hl=en&amp;btnG=Search&amp;q=intitle:Tensor+Decompositions+Workshop+Discussion+Notes#0">http://scholar.google.com/scholar?hl=en&btnG;=Search&q;=intitle:Tensor+Decompositions+Workshop+Discussion+Notes#0</a></li>
+<li>Kasai, H. (2017). Fast online low-rank tensor subspace tracking by CP decomposition using recursive least squares from incomplete observations, 1–21. Retrieved from <a href="http://arxiv.org/abs/1709.10276">http://arxiv.org/abs/1709.10276</a></li>
+<li>Zhang, Y., Zhou, G., Zhao, Q., Cichocki, A., & Wang, X. (2016). Fast nonnegative tensor factorization based on accelerated proximal gradient and low-rank approximation. Neurocomputing, 198, 148–154. <a href="http://doi.org/10.1016/j.neucom.2015.08.122">http://doi.org/10.1016/j.neucom.2015.08.122</a></li>
+<li>Smith, S., Beri, A., & Karypis, G. (2017). Constrained Tensor Factorization with Accelerated AO-ADMM. Proceedings of the International Conference on Parallel Processing, 111–120. <a href="http://doi.org/10.1109/ICPP.2017.20">http://doi.org/10.1109/ICPP.2017.20</a></li>
+<li>Stoudenmire, E. M., & Schwab, D. J. (2016). Supervised Learning with Tensor Networks. Advances in Neural Information Processing Systems 29 (NIPS 2016), (Nips), 4799–4807. Retrieved from <a href="https://papers.nips.cc/paper/6211-supervised-learning-with-tensor-networks.pdf%0Ahttps://papers.nips.cc/paper/6211-supervised-learning-with-tensor-networksAdvances">https://papers.nips.cc/paper/6211-supervised-learning-with-tensor-networks.pdf%0Ahttps://papers.nips.cc/paper/6211-supervised-learning-with-tensor-networksAdvances</a> in Neural Information Processing Systems 29 (NIPS 2016)%0A<a href="http://arxiv.org/abs/1605.05775">http://arxiv.org/abs/1605.05775</a></li>
+<li>Rabanser, S., Shchur, O., & Günnemann, S. (2017). Introduction to Tensor Decompositions and their Applications in Machine Learning, 1–13. Retrieved from <a href="http://arxiv.org/abs/1711.10781">http://arxiv.org/abs/1711.10781</a></li>
+<li>Zafeiriou, S. (2009). Discriminant nonnegative tensor factorization algorithms. IEEE Transactions on Neural Networks, 20(2), 217–235. <a href="http://doi.org/10.1109/TNN.2008.2005293">http://doi.org/10.1109/TNN.2008.2005293</a></li>
+<li>Cohen, J. E., & Gillis, N. (2018). Dictionary-Based Tensor Canonical Polyadic Decomposition. IEEE Transactions on Signal Processing, 66(7), 1876–1889. <a href="http://doi.org/10.1109/TSP.2017.2777393">http://doi.org/10.1109/TSP.2017.2777393</a></li>
+<li>Phan, A. H., & Cichocki, A. (2010). Tensor decompositions for feature extraction and classification of high dimensional datasets. Nonlinear Theory and Its Applications, IEICE, 1(1), 37–68. <a href="http://doi.org/10.1587/nolta.1.37">http://doi.org/10.1587/nolta.1.37</a></li>
+<li>Kossaifi, J., Lipton, Z. C., Khanna, A., Furlanello, T., & Anandkumar, A. (2017). Tensor Contraction & Regression Networks, 1–10. Retrieved from <a href="http://arxiv.org/abs/1707.08308">http://arxiv.org/abs/1707.08308</a></li>
+<li>Ecognition, R., Lipton, Z. C., & Anandkumar, A. (2018). D Eep a Ctive L Earning, 1–15.</li>
+<li>Stoudenmire, E. M. (2017). Learning Relevant Features of Data with Multi-scale Tensor Networks, 1–12. <a href="http://doi.org/10.1088/2058-9565/aaba1a">http://doi.org/10.1088/2058-9565/aaba1a</a></li>
+</ul>
 </div>
 </div>
 </div>
