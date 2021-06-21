@@ -43,55 +43,79 @@
 
 
 
-                <h2>Topological Data Analysis - Part 4 - Persistent Homology</h2>
+                <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>This is Part 4 in a series on topological data analysis.
 See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a href="TDApart3.html">Part 3</a> | <a href="TDApart5.html">Part 5</a></p>
 <p>In this part we learn more about how linear algebra can help us calculate topological features in a computationally efficient manner.</p>
-<h3>Linear algebra saves the day</h3>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Linear-algebra-saves-the-day">Linear algebra saves the day<a class="anchor-link" href="#Linear-algebra-saves-the-day">&#182;</a></h3>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>You might have noticed that calculating the homology groups and Betti numbers by hand can be very tedious and impractical for anything larger than the simple examples we've considered thus far. Fortunately, there are better ways. In particularly, we can represent most of the computation of homology groups in terms of vectors and matrices and computers are very efficient when working with vectors and matrices.</p>
 <p>Now, we already went over what a vector is (an element in a vector space) but what is a matrix? You probably think of a matrix has a kind of 2-dimensional grid of numbers, and you know you can multiply matrices by other matrices and vectors and what not. Well a grid of numbers is certainly a convenient notation for matrices, but that's not what they <em>are</em>.</p>
-<h5>What's a matrix?</h5>
-<p>By this point, you should be comfortable with the idea of a function or map. These are both ways of translating one type of mathematical structure into another (or at least mapping one element in a structure to a different element in the same structure). In particular, we've spent a good amount of time working with boundary maps that mapped a higher-dimensional chain group to a lower dimensional chain group that preserved the structure of the original group in some way (it is a homomorphism).</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h5 id="What's-a-matrix?">What's a matrix?<a class="anchor-link" href="#What's-a-matrix?">&#182;</a></h5><p>By this point, you should be comfortable with the idea of a function or map. These are both ways of translating one type of mathematical structure into another (or at least mapping one element in a structure to a different element in the same structure). In particular, we've spent a good amount of time working with boundary maps that mapped a higher-dimensional chain group to a lower dimensional chain group that preserved the structure of the original group in some way (it is a homomorphism).</p>
 <p>So just like we can have a map between two groups, we can have a map between two vector spaces. And we call (linear) maps between vector spaces, <strong>matrices</strong>. A matrix basically applies a linear transformation on a vector space (or individual vector element) producing new vector space. A <em>linear</em> transformation just implies that we can only transform the vector space via the normal vector operations of scaling by a constant and addition of a constant vector.</p>
-<blockquote>
-<p><strong>Definition (Linear Tansformation)</strong> <br />
-More precisely, a linear transformation <span class="math">\(M\ :\ V_1 \rightarrow V_2\)</span> is a map <span class="math">\(M\)</span> from the vector spaces <span class="math">\(V_1\)</span> to <span class="math">\(V_2\)</span> such that <span class="math">\(M(V_1 + V_2) = M(V_1) + M(V_2)\)</span> and <span class="math">\(M(aV_1) = aM(V_1)\)</span> where <span class="math">\(a\)</span> is a scalar.</p>
+<blockquote><p><strong>Definition (Linear Tansformation)</strong> <br />
+More precisely, a linear transformation $M\ :\ V_1 \rightarrow V_2$ is a map $M$ from the vector spaces $V_1$ to $V_2$ such that $M(V_1 + V_2) = M(V_1) + M(V_2)$ and $M(aV_1) = aM(V_1)$ where $a$ is a scalar.</p>
 </blockquote>
-<p>Let's say we want to map the real-valued volume <span class="math">\(\mathbb R^3\)</span> to the plane <span class="math">\(\mathbb R^2\)</span>.</p>
-<div class="math">$$
+<p>Let's say we want to map the real-valued volume $\mathbb R^3$ to the plane $\mathbb R^2$.</p>
+$$
 \begin{aligned}
 V_1 &amp;= span\{(1,0,0),(0,1,0),(0,0,1)\} \\
 V_2 &amp;= span\{(1,0),(0,1)\}
 \end{aligned}
-$$</div>
-<p>Now, what if I want to map <span class="math">\(V_1\)</span> to <span class="math">\(V_2\)</span>, that is, I want to send every point in <span class="math">\(V_1\)</span> to a point in <span class="math">\(V_2\)</span>. There are many reasons why I might want to do something like this. If I'm making a graphics application, for example, I want to offer an option to rotate images drawn, and this is simply a matter of applying a linear transformation on the pixels.</p>
-<p>So we want a map <span class="math">\(M : V_1 \rightarrow V_2\)</span>, and we'll call this map a matrix. Notice that <span class="math">\(V_1\)</span> has a basis with 3 elements, and <span class="math">\(V_2\)</span> has a basis with 2 elements. In order to map from one space to the other, we just need to map one basis set to another basis set. And remember, since this is a linear map, all we are allowed to do to a basis is multiply it by a scalar or add another vector to it; we can't do exotic things like square it or take the logarithm.</p>
-<p>Let's call the 3 basis elements of <span class="math">\(V_1: B_1, B_2, B_3\)</span>. Hence, <span class="math">\(V_1 = \langle{B_1, B_2, B_3}\rangle\)</span>.
-Similarly, we'll call the 2 basis elements of <span class="math">\(V_2: \beta_1, \beta_2\)</span>. Hence, <span class="math">\(V_2 = \langle{\beta_1, \beta_2}\rangle\)</span>. (Remember the angle brackets <span class="math">\(\langle\rangle\)</span> mean span, i.e. the set of all linear combinations of those elements). We can setup equations such that any vector in <span class="math">\(V_1\)</span> can be mapped to a vector in <span class="math">\(V_2\)</span> by using the fact that each vector space can be defined by their bases.</p>
-<blockquote>
-<p><em>New Notation (Vector)</em> <br />
-To prevent confusion between symbols that refer to scalars and symbols that refer vectors, I will henceforth add a little arrow over every vector <span class="math">\(\vec{v}\)</span> to denote it is a vector, not a scalar. Remember, the scalar is just a single element from the underlying field <span class="math">\(F\)</span> over which the vector space is defined.</p>
+$$<p>Now, what if I want to map $V_1$ to $V_2$, that is, I want to send every point in $V_1$ to a point in $V_2$. There are many reasons why I might want to do something like this. If I'm making a graphics application, for example, I want to offer an option to rotate images drawn, and this is simply a matter of applying a linear transformation on the pixels.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>So we want a map $M : V_1 \rightarrow V_2$, and we'll call this map a matrix. Notice that $V_1$ has a basis with 3 elements, and $V_2$ has a basis with 2 elements. In order to map from one space to the other, we just need to map one basis set to another basis set. And remember, since this is a linear map, all we are allowed to do to a basis is multiply it by a scalar or add another vector to it; we can't do exotic things like square it or take the logarithm.</p>
+<p>Let's call the 3 basis elements of $V_1: B_1, B_2, B_3$. Hence, $V_1 = \langle{B_1, B_2, B_3}\rangle$.
+Similarly, we'll call the 2 basis elements of $V_2: \beta_1, \beta_2$. Hence, $V_2 = \langle{\beta_1, \beta_2}\rangle$. (Remember the angle brackets $\langle\rangle$ mean span, i.e. the set of all linear combinations of those elements). We can setup equations such that any vector in $V_1$ can be mapped to a vector in $V_2$ by using the fact that each vector space can be defined by their bases.</p>
+<blockquote><p><em>New Notation (Vector)</em> <br />
+To prevent confusion between symbols that refer to scalars and symbols that refer vectors, I will henceforth add a little arrow over every vector $\vec{v}$ to denote it is a vector, not a scalar. Remember, the scalar is just a single element from the underlying field $F$ over which the vector space is defined.</p>
 </blockquote>
-<p>We can define our map <span class="math">\(M(V_1) = V_2\)</span> in this way:</p>
-<div class="math">$$
+<p>We can define our map $M(V_1) = V_2$ in this way:</p>
+$$
 \begin{aligned}
 M(B_1) &amp;= a\vec \beta_1 + b\vec \beta_2 \mid a,b \in \mathbb R \\
 M(B_2) &amp;= c\vec \beta_1 + d\vec \beta_2 \mid c,d \in \mathbb R \\
 M(B_3) &amp;= e\vec \beta_1 + f\vec \beta_2 \mid e,f \in \mathbb R \\
 \end{aligned}
-$$</div>
-<p>That is, the map from each basis in <span class="math">\(V_1\)</span> is setup as a linear combination of the basis elements in <span class="math">\(V_2\)</span>. This requires us to define a total of 6 new pieces of data: <span class="math">\(a,b,c,d,e,f \in \mathbb R\)</span> required for our mapping. We just have to keep track of the fact that <span class="math">\(a,b\)</span> are for mapping to <span class="math">\(\beta_1\)</span> and <span class="math">\(d,e,f\)</span> are for mapping to <span class="math">\(\beta_2\)</span>. What's a convenient way to keep track of all of that? Oh I know, a matrix!</p>
-<div class="math">$$
+$$<p>That is, the map from each basis in $V_1$ is setup as a linear combination of the basis elements in $V_2$. This requires us to define a total of 6 new pieces of data: $a,b,c,d,e,f \in \mathbb R$ required for our mapping. We just have to keep track of the fact that $a,b$ are for mapping to $\beta_1$ and $d,e,f$ are for mapping to $\beta_2$. What's a convenient way to keep track of all of that? Oh I know, a matrix!</p>
+$$
 M = 
 \begin{pmatrix}
 a &amp; c &amp; e \\
 b &amp; d &amp; f \\
 \end{pmatrix}
-$$</div>
-<p>That is a very convenient way to represent our map <span class="math">\(M\ :\ V_1 \rightarrow V_2\)</span> indeed. Notice that each <em>column</em> of this matrix corresponds to the "mapping equation" coefficients for each M(B_n). Also notice that the dimensions of this matrix, <span class="math">\(2\times3\)</span>, corresponds to the dimensions of the two vector spaces we're mapping to and from. That is, any map <span class="math">\(\mathbb R^n \rightarrow \mathbb R^m\)</span> will be represented as an <span class="math">\(m\times n\)</span> matrix. It is important to keep in mind that since the linear map (and hence the matrix) depend on coefficients applied to a basis, then the matrix elements will change if one uses a different basis.</p>
-<p>Knowing this we can easily see how vector-matrix multiplication <em>should</em> work and why the dimensions of a matrix and vector have to correspond. Namely, a <span class="math">\(n \times m\)</span> vector/matrix multiplied by a <span class="math">\(j \times k\)</span> vector/matrix must produce a <span class="math">\(n \times k\)</span> vector/matrix, and for it to work at all, <span class="math">\(m = j\)</span>.</p>
-<p>This is how we can multiply our matrix map <span class="math">\(M\)</span> by any vector in <span class="math">\(V_1\)</span> to produce the mapped-to vector in <span class="math">\(V_2\)</span>:</p>
-<div class="math">$$
+$$<p>That is a very convenient way to represent our map $M\ :\ V_1 \rightarrow V_2$ indeed. Notice that each <em>column</em> of this matrix corresponds to the "mapping equation" coefficients for each M(B_n). Also notice that the dimensions of this matrix, $2\times3$, corresponds to the dimensions of the two vector spaces we're mapping to and from. That is, any map $\mathbb R^n \rightarrow \mathbb R^m$ will be represented as an $m\times n$ matrix. It is important to keep in mind that since the linear map (and hence the matrix) depend on coefficients applied to a basis, then the matrix elements will change if one uses a different basis.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Knowing this we can easily see how vector-matrix multiplication <em>should</em> work and why the dimensions of a matrix and vector have to correspond. Namely, a $n \times m$ vector/matrix multiplied by a $j \times k$ vector/matrix must produce a $n \times k$ vector/matrix, and for it to work at all, $m = j$.</p>
+<p>This is how we can multiply our matrix map $M$ by any vector in $V_1$ to produce the mapped-to vector in $V_2$:</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+$$
 M(\vec v\ \in\ V_1)
 =
 \underbrace{
@@ -114,11 +138,14 @@ b * x &amp; d * y &amp; f * z \\
 a * x + c * y + e * z \\
 b * x + d * y + f * z \\
 \end{pmatrix}
-$$</div>
-<p>Ok now we know a matrix is a linear map between two vector spaces. But what happens if you multiply two matrices together? Well that is just a composition of maps. For example, we have three vector spaces <span class="math">\(T, U, V\)</span> and two linear maps <span class="math">\(m_1, m_2\)</span>:</p>
-<div class="math">$$ T \stackrel{m_1}{\rightarrow} U \stackrel{m_2}{\rightarrow} V$$</div>
-<p>To get from <span class="math">\(T\)</span> to <span class="math">\(V\)</span>, we need to apply both maps: <span class="math">\(m_2(m_1(T)) = V\)</span>. Hence, multiplying two matrices together gives us a composition of maps <span class="math">\(m_2 \circ m_1\)</span>. The <em>identity</em> matrix is an identity map (i.e. it doesn't change the input) that takes the form where 1s are along the diagonal and 0s everywhere else, e.g.:</p>
-<div class="math">$$
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Ok now we know a matrix is a linear map between two vector spaces. But what happens if you multiply two matrices together? Well that is just a composition of maps. For example, we have three vector spaces $T, U, V$ and two linear maps $m_1, m_2$:</p>
+$$ T \stackrel{m_1}{\rightarrow} U \stackrel{m_2}{\rightarrow} V$$<p>To get from $T$ to $V$, we need to apply both maps: $m_2(m_1(T)) = V$. Hence, multiplying two matrices together gives us a composition of maps $m_2 \circ m_1$. The <em>identity</em> matrix is an identity map (i.e. it doesn't change the input) that takes the form where 1s are along the diagonal and 0s everywhere else, e.g.:</p>
+$$
 m=
 \begin{bmatrix}
 \ddots &amp; 0 &amp; 0 &amp; 0 &amp; ⋰ \\
@@ -129,17 +156,24 @@ m=
 \end{bmatrix}
 \\
 m \vec V = \vec V
-$$</div>
-<h4>Back to simplicial homology (again)</h4>
-<p>We learned all of that so we can represent the boundary map <span class="math">\(\partial(C_n)\)</span> as a <strong>matrix</strong> so we can apply the tools of linear algebra. This makes sense since we already know that the chain groups <span class="math">\(C_n\)</span> can be viewed as vector spaces when we allow scalar multiplication, so then a linear map between the chain vector spaces is the boundary map, that we can represent as a matrix.</p>
-<p>We represent an <span class="math">\(n\)</span>-boundary map, i.e. <span class="math">\(\partial(C_n)\)</span>, where <span class="math">\(n\)</span> is the dimension of the chain group, <span class="math">\(k\)</span> is the number of simplices in <span class="math">\(C_n\)</span> and <span class="math">\(l\)</span> is the number of simplices in <span class="math">\(C_{n-1}\)</span>, as a matrix with <span class="math">\(k\)</span> columns and <span class="math">\(l\)</span> rows. Thus each column represents a simplex in <span class="math">\(C_n\)</span> and each row represents a simplex in <span class="math">\(C_{n-1}\)</span>. We put a <span class="math">\(1\)</span> in a cell of the matrix if the simplex in that column maps to the simplex in that row. For example, <span class="math">\(\partial([a,b]) = a - b\)</span> if the field is <span class="math">\(\mathbb Z\)</span>, so we will put a <span class="math">\(1\)</span> in the row for <span class="math">\(a\)</span> and <span class="math">\(b\)</span> since the 1-simplex <span class="math">\([a,b]\)</span> maps to those two 0-simplices.</p>
-<p>Let's try calculating the homology groups of the previous simplicial complex (depicted below again) using matrices and vectors. We're going to go back to using <span class="math">\(\mathbb Z_2\)</span> as our field (so simplex orientation can be ignored) because it is computationally more efficient to do so.</p>
-<div class="math">$$ S = \text{ {[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]} } $$</div>
-<p><img src="images/TDAimages/part4/simplicialcomplex5b.svg" /></p>
-<p>Since we're using the (very small) finite field <span class="math">\(\mathbb Z_2\)</span> then we can actually list out all the vectors in our chain (group) vector space. We have 3 chain groups, namely the group of 0-simplices (vertices), 1-simplices (edges), and 2-simplices (triangle).</p>
-<p>In our example, we only have a single 2-simplex: [a,b,c], thus the group it generates over the field <span class="math">\(\mathbb Z_2\)</span> is only <span class="math">\(\{0, [a,b,c]\}\)</span> which is isomorphic to <span class="math">\(\mathbb Z_2\)</span>. Recall, in general, the group generated by the number <span class="math">\(n\)</span> of <span class="math">\(p\)</span>-simplices in a simplicial complex is isomorphic to <span class="math">\(\mathbb Z^n_2\)</span>. For a computer to understand, we can encode the group elements just using their coefficients 1 or 1. So, for example, the group generated by <span class="math">\([a,b,c]\)</span> can just be represented as <span class="math">\(\{0,1\}\)</span>. Or the group generated by the 0-simplices <span class="math">\(\{a, b, c, d\}\)</span> can be represented by 4-dimensional vectors, for example, if a group element is <span class="math">\(a+b+c\)</span> then we encode this as <span class="math">\((1, 1, 1, 0)\)</span> where each position represents the presence or abscence of <span class="math">\((a, b, c, d)\)</span>, respectively.</p>
-<p>Here are all the chain groups represented as vectors with just coefficients (I didn't list all elements for <span class="math">\(C_1\)</span> since there are so many [32]):</p>
-<div class="math">$$
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Back-to-simplicial-homology-(again)">Back to simplicial homology (again)<a class="anchor-link" href="#Back-to-simplicial-homology-(again)">&#182;</a></h4><p>We learned all of that so we can represent the boundary map $\partial(C_n)$ as a <strong>matrix</strong> so we can apply the tools of linear algebra. This makes sense since we already know that the chain groups $C_n$ can be viewed as vector spaces when we allow scalar multiplication, so then a linear map between the chain vector spaces is the boundary map, that we can represent as a matrix.</p>
+<p>We represent an $n$-boundary map, i.e. $\partial(C_n)$, where $n$ is the dimension of the chain group, $k$ is the number of simplices in $C_n$ and $l$ is the number of simplices in $C_{n-1}$, as a matrix with $k$ columns and $l$ rows. Thus each column represents a simplex in $C_n$ and each row represents a simplex in $C_{n-1}$. We put a $1$ in a cell of the matrix if the simplex in that column maps to the simplex in that row. For example, $\partial([a,b]) = a - b$ if the field is $\mathbb Z$, so we will put a $1$ in the row for $a$ and $b$ since the 1-simplex $[a,b]$ maps to those two 0-simplices.</p>
+<p>Let's try calculating the homology groups of the previous simplicial complex (depicted below again) using matrices and vectors. We're going to go back to using $\mathbb Z_2$ as our field (so simplex orientation can be ignored) because it is computationally more efficient to do so.</p>
+$$ S = \text{ {[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]} } $$<p><img src="images/TDAimages/part4/simplicialcomplex5b.svg" /></p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Since we're using the (very small) finite field $\mathbb Z_2$ then we can actually list out all the vectors in our chain (group) vector space. We have 3 chain groups, namely the group of 0-simplices (vertices), 1-simplices (edges), and 2-simplices (triangle).</p>
+<p>In our example, we only have a single 2-simplex: [a,b,c], thus the group it generates over the field $\mathbb Z_2$ is only $\{0, [a,b,c]\}$ which is isomorphic to $\mathbb Z_2$. Recall, in general, the group generated by the number $n$ of $p$-simplices in a simplicial complex is isomorphic to $\mathbb Z^n_2$. For a computer to understand, we can encode the group elements just using their coefficients 1 or 1. So, for example, the group generated by $[a,b,c]$ can just be represented as $\{0,1\}$. Or the group generated by the 0-simplices $\{a, b, c, d\}$ can be represented by 4-dimensional vectors, for example, if a group element is $a+b+c$ then we encode this as $(1, 1, 1, 0)$ where each position represents the presence or abscence of $(a, b, c, d)$, respectively.</p>
+<p>Here are all the chain groups represented as vectors with just coefficients (I didn't list all elements for $C_1$ since there are so many [32]):</p>
+$$
 \begin{align}
 C_0
 &amp;=
@@ -173,11 +207,15 @@ C_2
 \right.
 &amp; \cong \mathbb Z_2
 \end{align}
-$$</div>
-<p>To represent the boundary map (which is a linear map) of the group of <span class="math">\(p\)</span>-simplices as a matrix, we set the columns to represent each <span class="math">\(p\)</span>-simplex in the group, and the rows represent each <span class="math">\((p-1)\)</span>-simplex. We put a <span class="math">\(1\)</span> in each position of the matrix if the <span class="math">\((p-1)\)</span>-simplex row is a <em>face</em> of the <span class="math">\(p\)</span>-simplex column.</p>
-<p>We index rows and columns as an ordered pair <span class="math">\((i, j)\)</span> respectively. Thus the element <span class="math">\(a_{2,3}\)</span> is the element in the 2nd row (from the top) and the 3rd column (from the left).</p>
-<p>The generic boundary matrix is thus (each column is a <span class="math">\(p\)</span>-simplex, each row is a <span class="math">\((p-1)\)</span>-simplex):</p>
-<div class="math">$$ \begin{align}
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>To represent the boundary map (which is a linear map) of the group of $p$-simplices as a matrix, we set the columns to represent each $p$-simplex in the group, and the rows represent each $(p-1)$-simplex. We put a $1$ in each position of the matrix if the $(p-1)$-simplex row is a <em>face</em> of the $p$-simplex column.</p>
+<p>We index rows and columns as an ordered pair $(i, j)$ respectively. Thus the element $a_{2,3}$ is the element in the 2nd row (from the top) and the 3rd column (from the left).</p>
+<p>The generic boundary matrix is thus (each column is a $p$-simplex, each row is a $(p-1)$-simplex):</p>
+$$ \begin{align}
 \partial_p
 &amp;=
 \begin{pmatrix}
@@ -188,9 +226,13 @@ a_{3,1} &amp; a_{3,2} &amp; a_{3,3} &amp; \cdots &amp; a_{3,j}  \\
 a_{i,1} &amp; a_{i,2} &amp; a_{i,3} &amp; \cdots &amp; a_{i,j}
 \end{pmatrix} 
 \end{align}
-$$</div>
-<p>We'll start by representing the boundary map <span class="math">\(\partial(C_2)\)</span> as a matrix. There's only one 2-simplex in <span class="math">\(C_2\)</span> so there is only one column, but there are five 1-simplices in <span class="math">\(C_1\)</span> so there are 5 rows.</p>
-<div class="math">$$
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We'll start by representing the boundary map $\partial(C_2)$ as a matrix. There's only one 2-simplex in $C_2$ so there is only one column, but there are five 1-simplices in $C_1$ so there are 5 rows.</p>
+$$
 \partial_2 
 =
 \begin{array}{c|lcr}
@@ -202,9 +244,8 @@ $$</div>
 [c,d] &amp; 0 \\
 [d,b] &amp; 0 \\
 \end{array}
-$$</div>
-<p>We put a <span class="math">\(1\)</span> if each row-element was a face of the simplex <span class="math">\([a,b,c]\)</span>. This matrix makes sense as a linear map because if we multiply it by a vector element in <span class="math">\(C_2\)</span> (there's only 1, besides the 0 element) we get what we expect:</p>
-<div class="math">$$
+$$<p>We put a $1$ if each row-element was a face of the simplex $[a,b,c]$. This matrix makes sense as a linear map because if we multiply it by a vector element in $C_2$ (there's only 1, besides the 0 element) we get what we expect:</p>
+$$
 \begin{align}
 \begin{pmatrix}
 1 \\
@@ -241,9 +282,13 @@ $$</div>
 0 \\
 \end{pmatrix}
 \end{align}
-$$</div>
-<p>Okay, let's move on to building the boundary matrix <span class="math">\(\partial(C_1)\)</span>:</p>
-<div class="math">$$
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Okay, let's move on to building the boundary matrix $\partial(C_1)$:</p>
+$$
 \partial_1 =
 \begin{array}{c|lcr}
 \partial &amp; [a,b] &amp; [b,c] &amp; [c,a] &amp; [c,d] &amp; [d,b] \\
@@ -253,38 +298,90 @@ b &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 \\
 c &amp; 0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 \\
 d &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \\
 \end{array}
-$$</div>
-<p>Does this make sense? Let's check with some python/numpy. Let's take an arbitrary element from the group of 1-chains, namely: <span class="math">\([a,b]+[c,a]+[c,d]\)</span> which we've encoded as <span class="math">\((1,0,1,1,0)\)</span> and apply the boundary matrix and see what we get. </p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Does this make sense? Let's check with some python/numpy. Let's take an arbitrary element from the group of 1-chains, namely: $[a,b]+[c,a]+[c,d]$ which we've encoded as $(1,0,1,1,0)$ and apply the boundary matrix and see what we get.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#boundary matrix C_1</span>
 <span class="n">el</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#random element from C_1</span>
 <span class="n">np</span><span class="o">.</span><span class="n">fmod</span><span class="p">(</span><span class="n">b1</span> <span class="o">*</span> <span class="n">el</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># we want integers modulo 2</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">matrix([[0],</span>
-<span class="err">        [1],</span>
-<span class="err">        [0],</span>
-<span class="err">        [1]])</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
-<p><span class="math">\(\require{cancel}\)</span></p>
-<p>Recall that <span class="math">\((0,1,0,1)\)</span> translates to <span class="math">\(b+d\)</span>. By hand we can calculate the boundary and compare: 
-</p>
-<div class="math">$$\partial([a,b]+[c,a]+[c,d]) = a+b+c+a+c+d = \cancel{a}+b+\cancel{c}+\cancel{a}+\cancel{c}+d = b+d = (0,1,0,1)$$</div>
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>matrix([[0],
+        [1],
+        [0],
+        [1]])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>$\require{cancel}$</p>
+<p>Recall that $(0,1,0,1)$ translates to $b+d$. By hand we can calculate the boundary and compare: 
+$$\partial([a,b]+[c,a]+[c,d]) = a+b+c+a+c+d = \cancel{a}+b+\cancel{c}+\cancel{a}+\cancel{c}+d = b+d = (0,1,0,1)$$</p>
 <p>It works!</p>
-<p>Lastly, we need the boundary matrix for <span class="math">\(C_0\)</span> which is trivial since the boundary of <span class="math">\(0\)</span>-simplices always maps to <span class="math">\(0\)</span>, so </p>
-<div class="math">$$
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Lastly, we need the boundary matrix for $C_0$ which is trivial since the boundary of $0$-simplices always maps to $0$, so $$
 \partial_0 =
 \begin{pmatrix}
 0 &amp; 0 &amp; 0 &amp; 0 \\
 \end{pmatrix}
-$$</div>
+$$</p>
 <p>Okay, now we have our three boundary matrices, how do we calculate the Betti numbers? Well recall that sequence of subgroups of a chain group: $ B_n \leq Z_n \leq C_n $ which are the group of boundaries, group of cycles, and chain group, respectively.</p>
-<p>Also recall that Betti <span class="math">\(b_n = dim(Z_n\ /\ B_n)\)</span>. But that's when things were represented as just sets with group structure, now everything is represented as vectors and matrices, so instead we define the Betti number <span class="math">\(b_n = rank(Z_n)\ -\ rank(B_n)\)</span>. What does <strong>rank</strong> mean? Rank and dimension are related but not the same. If we think of the columns of a matrix as a set basis vectors: <span class="math">\(\beta_1, \beta_2, \dots \beta_k\)</span> then the dimension of the span of those column vectors <span class="math">\(\langle \beta_1, \beta_2, \dots \beta_k \rangle\)</span> is the rank of the matrix. It turns out that you can also use the rows and it will have the same result. Importantly, however, dimension is defined on the smallest set of basis elements, i.e. the basis elements that are linearly independent.</p>
-<p>The boundary matrix <span class="math">\(\partial_n\)</span> contains the information for the chain group and cycles subgroup, and the <span class="math">\(B_{n-1}\)</span> boundary subgroup, all the information we need to calculate the Betti number. Unfortunately, in general, our naïve approach of building the boundary matrix is not in a form where the group and subgroup information is readily accessible. We need to modify the boundary matrix, without disturbing the mapping information it contains, into a new form called <strong>Smith normal form</strong>. Basically, the smith normal form of a matrix will have <span class="math">\(1\)</span>s along the diagonal starting from the top left of the matrix and <span class="math">\(0\)</span>s everywhere else.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Also recall that Betti $b_n = dim(Z_n\ /\ B_n)$. But that's when things were represented as just sets with group structure, now everything is represented as vectors and matrices, so instead we define the Betti number $b_n = rank(Z_n)\ -\ rank(B_n)$. What does <strong>rank</strong> mean? Rank and dimension are related but not the same. If we think of the columns of a matrix as a set basis vectors: $\beta_1, \beta_2, \dots \beta_k$ then the dimension of the span of those column vectors $\langle \beta_1, \beta_2, \dots \beta_k \rangle$ is the rank of the matrix. It turns out that you can also use the rows and it will have the same result. Importantly, however, dimension is defined on the smallest set of basis elements, i.e. the basis elements that are linearly independent.</p>
+<p>The boundary matrix $\partial_n$ contains the information for the chain group and cycles subgroup, and the $B_{n-1}$ boundary subgroup, all the information we need to calculate the Betti number. Unfortunately, in general, our naïve approach of building the boundary matrix is not in a form where the group and subgroup information is readily accessible. We need to modify the boundary matrix, without disturbing the mapping information it contains, into a new form called <strong>Smith normal form</strong>. Basically, the smith normal form of a matrix will have $1$s along the diagonal starting from the top left of the matrix and $0$s everywhere else.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>For example,
-</p>
-<div class="math">$$
+$$
 \begin{align}
 \text{Smith normal form}
 &amp;:\ 
@@ -296,15 +393,27 @@ $$</div>
 0 &amp; 0 &amp; 0 &amp; \cdots &amp; ?
 \end{pmatrix} 
 \end{align}
-$$</div>
-<p>Notice the <span class="math">\(1\)</span>s along the diagonal do not necessarily need to extend all the way down to the bottom right. And here's the information available once it's in Smith normal form (the red diagonal box indicates the <span class="math">\(1\)</span>s):
+$$</p>
+<p>Notice the $1$s along the diagonal do not necessarily need to extend all the way down to the bottom right. And here's the information available once it's in Smith normal form (the red diagonal box indicates the $1$s):
 <img src="images/TDAimages/part4/smithnormalformsubgroups.svg" />
 (Source: "COMPUTATIONAL TOPOLOGY" by Edelsbrunner and Harer, pg. 104)</p>
-<p>So how do we get a matrix into Smith normal form? We do so by playing a game involving manipulating the matrix according to some rules. Here are the two allowed operations on the matrix:
-1. You can swap any two columns or any two rows in the matrix.
-2. You can add a column to another column, or a row to another row.</p>
-<p>Now you just need to apply these operations until you get the matrix in Smith normal form. I should point out that this process is alot easier when we use the field <span class="math">\(\mathbb Z_2\)</span>. Let's try it out on the boundary matrix for <span class="math">\(C_1\)</span>.</p>
-<div class="math">$$
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>So how do we get a matrix into Smith normal form? We do so by playing a game involving manipulating the matrix according to some rules. Here are the two allowed operations on the matrix:</p>
+<ol>
+<li>You can swap any two columns or any two rows in the matrix.</li>
+<li>You can add a column to another column, or a row to another row.</li>
+</ol>
+<p>Now you just need to apply these operations until you get the matrix in Smith normal form. I should point out that this process is alot easier when we use the field $\mathbb Z_2$. Let's try it out on the boundary matrix for $C_1$.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+$$
 \partial_1 =
 \begin{array}{c|lcr}
 \partial &amp; [a,b] &amp; [b,c] &amp; [c,a] &amp; [c,d] &amp; [d,b] \\
@@ -314,11 +423,14 @@ b &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 \\
 c &amp; 0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 \\
 d &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \\
 \end{array}
-$$</div>
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>We already have 1s across the diagonal, but we have a lot of 1s not along the diagonal.<br />
 Steps: Add column 3 to 5, then add column 4 to 5, then add column 5 to 1, then swap columns 1 and 5:
-</p>
-<div class="math">$$
+$$
 \partial_1 =
 \begin{pmatrix}
 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
@@ -326,10 +438,14 @@ Steps: Add column 3 to 5, then add column 4 to 5, then add column 5 to 1, then s
 0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
 \end{pmatrix}
-$$</div>
+$$</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Steps: Add column 1 to 3, add column 2 to 3, swap columns 3 and 4, add row 1 to 2, add row 4 to 2, add row 3 to 2, add row 4 to 3, swap rows 3 and 2, swap rows 4 and 3. Stop.
-</p>
-<div class="math">$$
+$$
 \text{Smith normal form: }
 \begin{pmatrix}
 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
@@ -337,17 +453,24 @@ $$</div>
 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
 \end{pmatrix}
-$$</div>
-<p>
+$$
 Once we have the matrix in Smith normal form, we don't do any more operations. We could of course continue adding rows and columns together until we get a matrix of only 0s, but that wouldn't be very helpful! I sort of randomly added rows/columns to get it into the Smith normal form, but there really is an algorithm that can do it relatively efficiently.</p>
 <p>Rather than walk through the detailed implementation of the Smith normal form algorithm, I will merely use an <a href="https://triangleinequality.wordpress.com/2014/01/23/computing-homology/">existing algorithm</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">reduce_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">reduce_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
     <span class="c1">#Returns [reduced_matrix, rank, nullity]</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">matrix</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">m</span><span class="o">=</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">n</span><span class="o">=</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
+ 
     <span class="k">def</span> <span class="nf">_reduce</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="c1">#We recurse through the diagonal entries.</span>
         <span class="c1">#We move a 1 to the diagonal entry, then</span>
@@ -383,23 +506,70 @@ Once we have the matrix in Smith normal form, we don't do any more operations. W
     <span class="k">return</span> <span class="p">[</span><span class="n">matrix</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">rank</span><span class="p">]</span>
 
 <span class="c1"># Source: &lt; https://triangleinequality.wordpress.com/2014/01/23/computing-homology/ &gt;</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">reduce_matrix</span><span class="p">(</span><span class="n">b1</span><span class="p">)</span>
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reduce_matrix</span><span class="p">(</span><span class="n">b1</span><span class="p">)</span>
 <span class="c1">#Returns the matrix in Smith normal form as well as rank(B_n-1) and rank(Z_n)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">[matrix([[1, 0, 0, 0, 0],</span>
-<span class="err">         [0, 1, 0, 0, 0],</span>
-<span class="err">         [0, 0, 1, 0, 0],</span>
-<span class="err">         [0, 0, 0, 0, 0]]), 3, 2]</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>[matrix([[1, 0, 0, 0, 0],
+         [0, 1, 0, 0, 0],
+         [0, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0]]), 3, 2]</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>As you can see we got the same result by hand, but surely the algorithm was more efficient.</p>
-<p>Since each boundary map gives us <span class="math">\(Z_n\)</span> (cycles) and <span class="math">\(B_{n-1}\)</span> (boundary for (n-1)-chain group) we need both <span class="math">\(\partial_n\)</span> and <span class="math">\(\partial_{n+1}\)</span> in order to calculate the Betti number for chain group <span class="math">\(n\)</span>. Remember, we now calculate Betti numbers as <br />
-Betti <span class="math">\(b_n = rank(Z_n) - rank(B_n)\)</span></p>
+<p>Since each boundary map gives us $Z_n$ (cycles) and $B_{n-1}$ (boundary for (n-1)-chain group) we need both $\partial_n$ and $\partial_{n+1}$ in order to calculate the Betti number for chain group $n$. Remember, we now calculate Betti numbers as <br />
+Betti $b_n = rank(Z_n) - rank(B_n)$</p>
 <p>Let's start calculating those Betti numbers.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#Initialize boundary matrices</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Initialize boundary matrices</span>
 <span class="n">boundaryMap0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
 <span class="n">boundaryMap1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="n">boundaryMap2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
@@ -418,22 +588,56 @@ Betti <span class="math">\(b_n = rank(Z_n) - rank(B_n)\)</span></p>
 <span class="nb">print</span><span class="p">(</span><span class="n">smithBM1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">smithBM2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Betti #0: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Betti #1: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Betti #2: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">betti0</span><span class="p">,</span> <span class="n">betti1</span><span class="p">,</span> <span class="n">betti2</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">[matrix([[0, 0, 0, 0]]), 0, 4]</span>
-<span class="na">[matrix([[1, 0, 0, 0, 0],</span>
-        <span class="na">[0, 1, 0, 0, 0],</span>
-        <span class="na">[0, 0, 1, 0, 0],</span>
-        <span class="k">[0, 0, 0, 0, 0]]), 3, 2]</span>
-<span class="k">[matrix([[1, 0, 0, 0, 0]]), 1, 4]</span>
-<span class="na">Betti #0: 1 </span>
- <span class="na">Betti #1: 1 </span>
- <span class="na">Betti #2: 0</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[matrix([[0, 0, 0, 0]]), 0, 4]
+[matrix([[1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0]]), 3, 2]
+[matrix([[1, 0, 0, 0, 0]]), 1, 4]
+Betti #0: 1 
+ Betti #1: 1 
+ Betti #2: 0
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Great it worked!</p>
 <p>But we skipped an important step. We designed the boundary matrices by hand initially, in order to algorithm-ize the entire process from building a simplicial complex over data to computing Betti numbers, we need an algorithm that takes a simplicial complex and builds the boundary matrices. Let's tackle that now.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#return the n-simplices in a complex</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[138]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#return the n-simplices in a complex</span>
 <span class="k">def</span> <span class="nf">nSimplices</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">complex</span><span class="p">):</span>
     <span class="n">nchain</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">simplex</span> <span class="ow">in</span> <span class="nb">complex</span><span class="p">:</span>
@@ -450,7 +654,7 @@ Betti <span class="math">\(b_n = rank(Z_n) - rank(B_n)\)</span></p>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
-
+    
 <span class="c1">#build boundary matrix for dimension n ---&gt; (n-1) = p</span>
 <span class="k">def</span> <span class="nf">boundaryMatrix</span><span class="p">(</span><span class="n">nchain</span><span class="p">,</span> <span class="n">pchain</span><span class="p">):</span>
     <span class="n">bmatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">nchain</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">pchain</span><span class="p">)))</span>
@@ -462,26 +666,78 @@ Betti <span class="math">\(b_n = rank(Z_n) - rank(B_n)\)</span></p>
             <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">bmatrix</span><span class="o">.</span><span class="n">T</span>
-</code></pre></div>
+</pre></div>
 
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Those are very simple helper functions that we'll use to build the boundary matrix and then use the previously described reduction algorithm to get it into Smith normal form. Remember, the simplicial complex example we're using looks like this:
 <img src="images/TDAimages/part4/simplicialcomplex5b.svg" />
 I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
-<div class="highlight"><pre><span></span><code><span class="n">S</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span> <span class="c1">#this is our simplex from above</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[139]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span> <span class="c1">#this is our simplex from above</span>
 
 <span class="n">chain2</span> <span class="o">=</span> <span class="n">nSimplices</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
 <span class="n">chain1</span> <span class="o">=</span> <span class="n">nSimplices</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
 <span class="n">reduce_matrix</span><span class="p">(</span><span class="n">boundaryMatrix</span><span class="p">(</span><span class="n">chain2</span><span class="p">,</span> <span class="n">chain1</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">[array([[ 1.,  0.,  0.,  0.,  0.],</span>
-<span class="err">        [ 0.,  1.,  0.,  0.,  0.],</span>
-<span class="err">        [ 0.,  0.,  1.,  0.,  0.],</span>
-<span class="err">        [ 0.,  0.,  0.,  0.,  0.]]), 3, 2]</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[139]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>[array([[ 1.,  0.,  0.,  0.,  0.],
+        [ 0.,  1.,  0.,  0.,  0.],
+        [ 0.,  0.,  1.,  0.,  0.],
+        [ 0.,  0.,  0.,  0.,  0.]]), 3, 2]</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Now let's put everything together and make a function that will return all the Betti numbers of a simplicial complex.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">betti</span><span class="p">(</span><span class="nb">complex</span><span class="p">):</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[206]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">betti</span><span class="p">(</span><span class="nb">complex</span><span class="p">):</span>
     <span class="n">max_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">complex</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span> <span class="c1">#get the maximum dimension of the simplicial complex, 2 in our example</span>
     <span class="n">betti_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_dim</span><span class="p">)</span> <span class="c1">#setup array to store n-th dimensional Betti numbers</span>
     <span class="n">z_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_dim</span><span class="p">)</span> <span class="c1">#number of cycles (from cycle group)</span>
@@ -506,178 +762,296 @@ I've just replaced {a,b,c,d} with {0,1,2,3} so Python can understand it.</p>
             <span class="n">betti_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span> <span class="c1">#if there are no higher simplices, the boundary group of this chain is 0</span>
 
     <span class="k">return</span> <span class="n">betti_array</span>
-</code></pre></div>
+</pre></div>
 
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Alright, no we should have everything we need to calculate the set of Betti numbers on any arbitrary simplicial complex given in the right format. Keep in mind that all this code is for learning purposes so I've kept it intentionally simple. It is not production ready. It has basically no safety checks so it will just fail if it gets something even slightly unexpected.</p>
-<p>But let's see how versatile our procedure is by trying it out on various simplicial complexes. </p>
-<p>Let <span class="math">\(H = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }\)</span>
+<p>But let's see how versatile our procedure is by trying it out on various simplicial complexes.</p>
+<p>Let $H = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }$
 <img src="images/TDAimages/part4/simplicialComplex7a.png" /></p>
 <p>As you can tell this is the same simplicial complex we've been working with except now it has a disconnected edge on the right. Thus we should get Betti=2 for dimension 0 since there are 2 connect components.</p>
-<div class="highlight"><pre><span></span><code><span class="n">H</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[212]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
 <span class="n">betti</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">array([ 2.,  1.,  0.])</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[212]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([ 2.,  1.,  0.])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Let's try another one, now with 2 cycles and 2 connect components. <br />
-Let <span class="math">\(Y_1 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {0, 6}, {2, 6}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }\)</span>
+Let $Y_1 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {0, 6}, {2, 6}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }$
 <img src="images/TDAimages/part4/simplicialComplex7b.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">Y1</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[213]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y1</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
 <span class="n">betti</span><span class="p">(</span><span class="n">Y1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">array([ 2.,  2.,  0.])</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[213]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([ 2.,  2.,  0.])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Here's another. I just added a stranded vertex: <br />
-Let <span class="math">\(Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }\)</span>
+Let $Y_2 = \text{ { {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {0, 6}, {2, 6}, {4, 5}, {0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 1}, {0, 1, 2} } }$
 <img src="images/TDAimages/part4/simplicialComplex7c.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">Y2</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">7</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[214]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y2</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">7</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]</span>
 <span class="n">betti</span><span class="p">(</span><span class="n">Y2</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">array([ 3.,  2.,  0.])</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[214]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([ 3.,  2.,  0.])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>One last one. This is a hollow tetrahedron:
 <img src="images/TDAimages/part4/simplicialComplex8a.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">D</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}]</span>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[215]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="p">[{</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}]</span>
 <span class="n">betti</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">array([ 1.,  0.,  1.])</span>
-</code></pre></div>
+     </div>
+</div>
+</div>
+</div>
 
-<p>Exactly what we expect! Okay, it looks like we can reliably calculate Betti numbers for any arbitrary simplicial complex. </p>
-<h6>What's next?</h6>
-<p>These first 4 posts were all just exposition on the math and concepts behind persistent homology, but so far all we've done is (non-persistent) homology. Remember back in part 2 where we wrote an algorithm to build a simplicial complex from data? Well recall that we needed to arbitrarily choose a parameter <span class="math">\(\epsilon\)</span> that determined whether or not two vertices were close enough to connect with an edge. If we set a small <span class="math">\(\epsilon\)</span> then we'd have a very dense graph with a lot of edges, if we chose a large <span class="math">\(\epsilon\)</span> then we'd get a more sparse graph.</p>
-<p>The problem is we have no way of knowing what the "correct" <span class="math">\(\epsilon\)</span> value should be. We will get dramatically different simplicial complexes (and thus different homology groups and Betti numbers) with varying levels of <span class="math">\(\epsilon\)</span>. Persistent homology basically says: let's just continuously scale <span class="math">\(\epsilon\)</span> from 0 to the maximal value (where all vertices are edge-wise connected) and see which topological features <em>persist</em> the longest. We then believe that topological features (e.g. connected components, cycles) that are short-lived across scaling <span class="math">\(\epsilon\)</span> are noise whereas those that are long-lived (i.e. persistent) are <em>real</em> features of the data. So next time we will work on modifying our algorithms to be able to continuously vary <span class="math">\(\epsilon\)</span> while tracking changes in the calculated homology groups.</p>
-<h4>References (Websites):</h4>
-<ol>
-<li>http://dyinglovegrape.com/math/topology_data_1.php</li>
-<li>http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</li>
-<li>https://en.wikipedia.org/wiki/Group_(mathematics)</li>
-<li>https://jeremykun.com/2013/04/03/homology-theory-a-primer/</li>
-<li>http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</li>
-<li>http://www.mit.edu/~evanchen/napkin.html</li>
-<li>https://triangleinequality.wordpress.com/2014/01/23/computing-homology</li>
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[215]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([ 1.,  0.,  1.])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Exactly what we expect! Okay, it looks like we can reliably calculate Betti numbers for any arbitrary simplicial complex.</p>
+<h6 id="What's-next?">What's next?<a class="anchor-link" href="#What's-next?">&#182;</a></h6><p>These first 4 posts were all just exposition on the math and concepts behind persistent homology, but so far all we've done is (non-persistent) homology. Remember back in part 2 where we wrote an algorithm to build a simplicial complex from data? Well recall that we needed to arbitrarily choose a parameter $\epsilon$ that determined whether or not two vertices were close enough to connect with an edge. If we set a small $\epsilon$ then we'd have a very dense graph with a lot of edges, if we chose a large $\epsilon$ then we'd get a more sparse graph.</p>
+<p>The problem is we have no way of knowing what the "correct" $\epsilon$ value should be. We will get dramatically different simplicial complexes (and thus different homology groups and Betti numbers) with varying levels of $\epsilon$. Persistent homology basically says: let's just continuously scale $\epsilon$ from 0 to the maximal value (where all vertices are edge-wise connected) and see which topological features <em>persist</em> the longest. We then believe that topological features (e.g. connected components, cycles) that are short-lived across scaling $\epsilon$ are noise whereas those that are long-lived (i.e. persistent) are <em>real</em> features of the data. So next time we will work on modifying our algorithms to be able to continuously vary $\epsilon$ while tracking changes in the calculated homology groups.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="References-(Websites):">References (Websites):<a class="anchor-link" href="#References-(Websites):">&#182;</a></h4><ol>
+<li><a href="http://dyinglovegrape.com/math/topology_data_1.php">http://dyinglovegrape.com/math/topology_data_1.php</a></li>
+<li><a href="http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf">http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Group_(mathematics">https://en.wikipedia.org/wiki/Group_(mathematics</a>)</li>
+<li><a href="https://jeremykun.com/2013/04/03/homology-theory-a-primer/">https://jeremykun.com/2013/04/03/homology-theory-a-primer/</a></li>
+<li><a href="http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf">http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</a></li>
+<li><a href="http://www.mit.edu/~evanchen/napkin.html">http://www.mit.edu/~evanchen/napkin.html</a></li>
+<li><a href="https://triangleinequality.wordpress.com/2014/01/23/computing-homology">https://triangleinequality.wordpress.com/2014/01/23/computing-homology</a></li>
 </ol>
-<h4>References (Academic Publications):</h4>
-<ol>
-<li>
-<p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="References-(Academic-Publications):">References (Academic Publications):<a class="anchor-link" href="#References-(Academic-Publications):">&#182;</a></h4><ol>
+<li><p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from <a href="http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf">http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</a></p>
 </li>
-<li>
-<p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
+<li><p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
 </li>
-<li>
-<p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
+<li><p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
 </li>
-<li>
-<p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from http://www.cs.duke.edu/courses/fall06/cps296.1/</p>
+<li><p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from <a href="http://www.cs.duke.edu/courses/fall06/cps296.1/">http://www.cs.duke.edu/courses/fall06/cps296.1/</a></p>
 </li>
-<li>
-<p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
+<li><p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
 </li>
-<li>
-<p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
+<li><p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
 </li>
-<li>
-<p>Grigor’yan, A., Muranov, Y. V., &amp; Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. http://doi.org/10.4310/HHA.2014.v16.n1.a16</p>
+<li><p>Grigor’yan, A., Muranov, Y. V., &amp; Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. <a href="http://doi.org/10.4310/HHA.2014.v16.n1.a16">http://doi.org/10.4310/HHA.2014.v16.n1.a16</a></p>
 </li>
-<li>
-<p>Kaczynski, T., Mischaikow, K., &amp; Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. http://doi.org/10.4310/HHA.2003.v5.n2.a8</p>
+<li><p>Kaczynski, T., Mischaikow, K., &amp; Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. <a href="http://doi.org/10.4310/HHA.2003.v5.n2.a8">http://doi.org/10.4310/HHA.2003.v5.n2.a8</a></p>
 </li>
-<li>
-<p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
+<li><p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
 </li>
-<li>
-<p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
+<li><p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
 </li>
-<li>
-<p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
+<li><p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
 </li>
-<li>
-<p>Lakshmivarahan, S., &amp; Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
+<li><p>Lakshmivarahan, S., &amp; Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
 </li>
-<li>
-<p>Liu, X., Xie, Z., &amp; Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. http://doi.org/10.4310/HHA.2012.v14.n1.a11</p>
+<li><p>Liu, X., Xie, Z., &amp; Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. <a href="http://doi.org/10.4310/HHA.2012.v14.n1.a11">http://doi.org/10.4310/HHA.2012.v14.n1.a11</a></p>
 </li>
-<li>
-<p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
+<li><p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
 </li>
-<li>
-<p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., &amp; Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from http://arxiv.org/abs/1506.08903</p>
+<li><p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., &amp; Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from <a href="http://arxiv.org/abs/1506.08903">http://arxiv.org/abs/1506.08903</a></p>
 </li>
-<li>
-<p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
+<li><p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
 </li>
-<li>
-<p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
+<li><p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
 </li>
-<li>
-<p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</p>
+<li><p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</a></p>
 </li>
-<li>
-<p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. http://doi.org/10.1016/j.cag.2010.03.007</p>
+<li><p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. <a href="http://doi.org/10.1016/j.cag.2010.03.007">http://doi.org/10.1016/j.cag.2010.03.007</a></p>
 </li>
-<li>
-<p>Symmetry and Group Theory 1. (2016), 1–18. http://doi.org/10.1016/B978-0-444-53786-7.00026-5</p>
+<li><p>Symmetry and Group Theory 1. (2016), 1–18. <a href="http://doi.org/10.1016/B978-0-444-53786-7.00026-5">http://doi.org/10.1016/B978-0-444-53786-7.00026-5</a></p>
 </li>
 </ol>
+
+</div>
+</div>
+
+
+
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
         "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
         "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
         "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
         "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
         "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        inlineMath: [ ['$','$'] ], " +
         "        displayMath: [ ['$$','$$'] ]," +
         "        processEscapes: true," +
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>

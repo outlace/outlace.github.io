@@ -43,103 +43,120 @@
 
 
 
-                <h2>Topological Data Analysis - Part 3 - Persistent Homology</h2>
+                <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>This is Part 3 in a series on topological data analysis.
 See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a href="TDApart4.html">Part 4</a> | <a href="TDApart5.html">Part 5</a></p>
 <p>In this part we begin to apply our the math we learned from Parts 1-2 to actually calculating the interesting topological features of a simplicial complex.</p>
-<h4>Back to simplicial homology</h4>
-<p>We've finally covered enough group theory to be able to finish our calculations of homology groups on simplicial complexes. As you should recall, we had given definitions for the n-th homology group and the n-th Betti numbers.</p>
-<p>Betti number's are what we ultimately want. They nicely summarize the topological properties of a simplicial complex. If we have a simplicial complex that forms a single circular object, then <span class="math">\(b_0\)</span> (the 0th Betti Number) represents the number of connected components which is 1, <span class="math">\(b_1\)</span> is the number of 1-dimensional holes (i.e. cycles) which is 1, and <span class="math">\(b_n, n \gt 1\)</span> are the higher-dimensional holes of which there are zero.</p>
-<p>Let's see if we can calculate the Betti Numbers of a simple triangle simplicial complex. </p>
-<p>Recall that <span class="math">\(\mathcal T = \text{ {{a}, {b}, {c}, [a, b], [b, c], [c, a]} }\)</span>. (Depicted below).
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Back-to-simplicial-homology">Back to simplicial homology<a class="anchor-link" href="#Back-to-simplicial-homology">&#182;</a></h4><p>We've finally covered enough group theory to be able to finish our calculations of homology groups on simplicial complexes. As you should recall, we had given definitions for the n-th homology group and the n-th Betti numbers.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Betti number's are what we ultimately want. They nicely summarize the topological properties of a simplicial complex. If we have a simplicial complex that forms a single circular object, then $b_0$ (the 0th Betti Number) represents the number of connected components which is 1, $b_1$ is the number of 1-dimensional holes (i.e. cycles) which is 1, and $b_n, n \gt 1$ are the higher-dimensional holes of which there are zero.</p>
+<p>Let's see if we can calculate the Betti Numbers of a simple triangle simplicial complex.</p>
+<p>Recall that $\mathcal T = \text{ {{a}, {b}, {c}, [a, b], [b, c], [c, a]} }$. (Depicted below).
 <img src="images/TDAimages/triangleSimplex.svg" /></p>
-<p>Since we know, by visual inspection, that <span class="math">\(T\)</span> <em>should</em> have Betti numbers <span class="math">\(b_0 = 1\)</span> (1 connected component), <span class="math">\(b_1 = 1\)</span> (1 one-dimensional hole), we will only compute those Betti numbers.</p>
+<p>Since we know, by visual inspection, that $T$ <em>should</em> have Betti numbers $b_0 = 1$ (1 connected component), $b_1 = 1$ (1 one-dimensional hole), we will only compute those Betti numbers.</p>
 <p>Let's walk through the whole sequence of steps slowly. First we'll note the n-chains.</p>
-<p>The 0-chain is the set of 0-simplices: <span class="math">\(\text{ {{a}, {b}, {c} } }\)</span>
-The 1-chain is the set of 1-simplices: <span class="math">\(\text{ [a, b], [b, c], [c, a] }\)</span>
+<p>The 0-chain is the set of 0-simplices: $\text{ {{a}, {b}, {c} } }$
+The 1-chain is the set of 1-simplices: $\text{ [a, b], [b, c], [c, a] }$
 There are no higher-dimensional n-chains.</p>
-<p>Now we can use the n-chains to define our <em>chain groups</em>. We're going to be using coefficients from <span class="math">\(\mathbb Z_2\)</span>, which is a field, and remember there are only 2 elements <span class="math">\(\{0,1\}\)</span> where <span class="math">\(1+1=0\)</span>. </p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now we can use the n-chains to define our <em>chain groups</em>. We're going to be using coefficients from $\mathbb Z_2$, which is a field, and remember there are only 2 elements $\{0,1\}$ where $1+1=0$.</p>
 <p>The 0-chain group is defined as: 
-</p>
-<div class="math">$$C_0 = \{\{x*(a,0,0)\}, \{y*(0,b,0)\}, \{z*(0,0,c)\} \mid x,y,z \in \mathbb Z_2\} \\$$</div>
-<p> 
-Remember a group only has an addition operation defined but we're <em>building</em> the group by using a multiplication operation from the field <span class="math">\(\mathbb Z_2\)</span>. So this group is actually isomorphic to <span class="math">\(\mathbb Z_{2}^{3} = Z_{2} \oplus Z_{2} \oplus Z_{2}\)</span>.</p>
-<p>But we also want to represent our chain groups as a vector space. This means it becomes a structure where elements can be scaled up or down (i.e. multiplication operation) by elements of a field (in our case <span class="math">\(\mathbb Z_2\)</span>) and added together, with all results still contained in the structure. If we only pay attention to the addition operation then we're basically looking at its group structure, whereas if we pay attention to both the multiplcation and addition operations then we are considering it as a vector space.</p>
+$$C_0 = \{\{x*(a,0,0)\}, \{y*(0,b,0)\}, \{z*(0,0,c)\} \mid x,y,z \in \mathbb Z_2\} \\$$ 
+Remember a group only has an addition operation defined but we're <em>building</em> the group by using a multiplication operation from the field $\mathbb Z_2$. So this group is actually isomorphic to $\mathbb Z_{2}^{3} = Z_{2} \oplus Z_{2} \oplus Z_{2}$.</p>
+<p>But we also want to represent our chain groups as a vector space. This means it becomes a structure where elements can be scaled up or down (i.e. multiplication operation) by elements of a field (in our case $\mathbb Z_2$) and added together, with all results still contained in the structure. If we only pay attention to the addition operation then we're basically looking at its group structure, whereas if we pay attention to both the multiplcation and addition operations then we are considering it as a vector space.</p>
 <p>0-chain vector space is generated by: 
-</p>
-<div class="math">$$\mathscr C_0 = \{\{x*(a,0,0)\}, \{y*(0,b,0)\}, \{z*(0,0,c)\} \mid x,y,z \in \mathbb Z_2\} \\$$</div>
-<p>
+$$\mathscr C_0 = \{\{x*(a,0,0)\}, \{y*(0,b,0)\}, \{z*(0,0,c)\} \mid x,y,z \in \mathbb Z_2\} \\$$
 (Yes it's the same set that forms the group from above).</p>
-<p>The vector space is the set of elements we can multiply by 0 or 1, and add them together. For example, we can do: <span class="math">\(1*(a,0,0) + 1*(0,0,c) = (a,0,c)\)</span>. This vector space is so small <span class="math">\((2^3=8\ \text{elements})\)</span> we can actually list out all the elements. Here they are:</p>
-<div class="math">$$\mathscr{C_0} = \begin{Bmatrix} (a,0,0), (0,b,0), (0,0,c), (a,b,0) \\
- (a,b,c), (0,b,c), (a,0,c), (0,0,0) \end{Bmatrix} \\ $$</div>
-<p>You can see that we can add any two elements in this vector space and the result will be another element in the vector space. A random example: <span class="math">\((a,0,c) + (a,b,c) = (a+a,0+b,c+c) = (0,b,0)\)</span>. Recall addition is component-wise. We can also multiply vectors by an element in our field <span class="math">\(\mathbb Z_2\)</span> but since our field is finite with only 2 elements, it's not very interesting, e.g. <span class="math">\(1*(a,b,0) = (a,b,0)\)</span> and <span class="math">\(0*(a,b,0) = (0,0,0)\)</span>, but none the less, the multiplication operation still results in an element within our vector space.</p>
+<p>The vector space is the set of elements we can multiply by 0 or 1, and add them together. For example, we can do: $1*(a,0,0) + 1*(0,0,c) = (a,0,c)$. This vector space is so small $(2^3=8\ \text{elements})$ we can actually list out all the elements. Here they are:</p>
+$$\mathscr{C_0} = \begin{Bmatrix} (a,0,0), (0,b,0), (0,0,c), (a,b,0) \\
+ (a,b,c), (0,b,c), (a,0,c), (0,0,0) \end{Bmatrix} \\ $$<p>You can see that we can add any two elements in this vector space and the result will be another element in the vector space. A random example: $(a,0,c) + (a,b,c) = (a+a,0+b,c+c) = (0,b,0)$. Recall addition is component-wise. We can also multiply vectors by an element in our field $\mathbb Z_2$ but since our field is finite with only 2 elements, it's not very interesting, e.g. $1*(a,b,0) = (a,b,0)$ and $0*(a,b,0) = (0,0,0)$, but none the less, the multiplication operation still results in an element within our vector space.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>We can represent this vector space as a polynomial, so our 0-chain vector space can be defined equivalently as:
-</p>
-<div class="math">$$ \mathscr{C_0} = \{xa + yb + zc \mid z,y,z \in \mathbb Z_2\}$$</div>
-<p>
-We can easily translate a polynomial like <span class="math">\(a+b+c\)</span> to its ordered-set notation <span class="math">\((a,b,c)\)</span>. Or <span class="math">\(a+b\)</span> is <span class="math">\((a,b,0)\)</span>. The vector space seen as a set of polynomials looks like this:
-</p>
-<div class="math">$$ \mathscr{C_0} = \begin{Bmatrix} \text{ {a}, {b}, {c}, {a+b} $\\$
-{a+b+c}, {b+c}, {a+c}, {0} } \end{Bmatrix} \\ $$</div>
-<p>
-It's more convenient to work with the polynomial form, in general, because we can make familiar algebraic equations like </p>
-<div class="math">$$a+b=0 \\
+$$ \mathscr{C_0} = \{xa + yb + zc \mid z,y,z \in \mathbb Z_2\}$$
+We can easily translate a polynomial like $a+b+c$ to its ordered-set notation $(a,b,c)$. Or $a+b$ is $(a,b,0)$. The vector space seen as a set of polynomials looks like this:
+$$ \mathscr{C_0} = \begin{Bmatrix} \text{ {a}, {b}, {c}, {a+b} $\\$
+{a+b+c}, {b+c}, {a+c}, {0} } \end{Bmatrix} \\ $$
+It's more convenient to work with the polynomial form, in general, because we can make familiar algebraic equations like $$a+b=0 \\
 a = -b \\
-a = b $$</div>
-<p>
-(Recall that the inverse of an element in <span class="math">\(\mathbb Z_2\)</span> is just itself, hence <span class="math">\(-b = b\)</span> where "<span class="math">\(-\)</span>" denotes inverse).</p>
-<blockquote>
-<p><strong>NOTE</strong>: It is very important to keep track of whether we're talking about groups or vector spaces. I will use a normal letter <span class="math">\(C\)</span> to denote the chain <strong>group</strong> and the fancy script <span class="math">\(\mathscr{C}\)</span> to denote the chain <strong>(vector) space</strong>. They have the same underlying <em>set</em>, only different operations defined. If we talk about the group form we can only reference its addition operation, whereas if we talk about its vector space form we can talk about its multiplication and addition operation.</p>
+a = b $$
+(Recall that the inverse of an element in $\mathbb Z_2$ is just itself, hence $-b = b$ where "$-$" denotes inverse).</p>
+<blockquote><p><strong>NOTE</strong>: It is very important to keep track of whether we're talking about groups or vector spaces. I will use a normal letter $C$ to denote the chain <strong>group</strong> and the fancy script $\mathscr{C}$ to denote the chain <strong>(vector) space</strong>. They have the same underlying <em>set</em>, only different operations defined. If we talk about the group form we can only reference its addition operation, whereas if we talk about its vector space form we can talk about its multiplication and addition operation.</p>
 </blockquote>
-<p>Let's do the same for the 1-chains: <span class="math">\(\text{ [a, b], [b, c], [c, a] }\)</span>. We can use the 1-chain set to define another chain group, <span class="math">\(C_1\)</span>. It will be isomorphic to <span class="math">\(C_0\)</span> and hence <span class="math">\(\mathbb Z_{2}^{3}\)</span>.
-</p>
-<div class="math">$$C_1 = \{\ (\ x([a, b]), y([b, c]), z([c, a])\ ) \mid x,y,z \in \mathbb Z_2\ \} $$</div>
-<p>We can define a vector space, <span class="math">\(\mathscr C_1\)</span>, using this chain group in the same way we did for <span class="math">\(C_0\)</span>. I will use the polynomial form henceforth. Remember, the chain group and vector space have the same set, its just that the vector space has two binary operations instead of one.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Let's do the same for the 1-chains: $\text{ [a, b], [b, c], [c, a] }$. We can use the 1-chain set to define another chain group, $C_1$. It will be isomorphic to $C_0$ and hence $\mathbb Z_{2}^{3}$.
+$$C_1 = \{\ (\ x([a, b]), y([b, c]), z([c, a])\ ) \mid x,y,z \in \mathbb Z_2\ \} $$</p>
+<p>We can define a vector space, $\mathscr C_1$, using this chain group in the same way we did for $C_0$. I will use the polynomial form henceforth. Remember, the chain group and vector space have the same set, its just that the vector space has two binary operations instead of one.</p>
 <p>This is the full list of elements in the vector space:
-</p>
-<div class="math">$$\mathscr{C_1} = \begin{Bmatrix} \text{
+$$\mathscr{C_1} = \begin{Bmatrix} \text{
 {[a, b]}, {[b, c]}, {[c, a]}, {[a, b] + [b, c]}, $\\$
-{[b, c] + [c, a]}, {[a, b] + [c, a]}, {[a, b] + [b, c] + [c, a]}, {0} } \end{Bmatrix}  \\$$</div>
-<p>Just for clarification about the boundary map, here is a diagram of it. This shows how the boundary operator maps each element in <span class="math">\(C_1\)</span> to an element in <span class="math">\(C_0\)</span>.
+{[b, c] + [c, a]}, {[a, b] + [c, a]}, {[a, b] + [b, c] + [c, a]}, {0} } \end{Bmatrix}  \\$$</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Just for clarification about the boundary map, here is a diagram of it. This shows how the boundary operator maps each element in $C_1$ to an element in $C_0$.
 <img src="images/TDAimages/boundarymap1.png" /></p>
-<p>Now we can start computing the first Betti number, <span class="math">\(b_0\)</span>.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now we can start computing the first Betti number, $b_0$.</p>
 <p>Recall the definition of a Betti number is:</p>
-<blockquote>
-<p>The n-th Betti number, <span class="math">\(b_n = dim(H_n)\)</span>, where <span class="math">\(H_n\)</span> is the n-th homology group.</p>
+<blockquote><p>The n-th Betti number, $b_n = dim(H_n)$, where $H_n$ is the n-th homology group.</p>
 </blockquote>
 <p>And recall the definition of a homology group</p>
-<blockquote>
-<p>The <span class="math">\(n^{th}\)</span> Homology Group <span class="math">\(H_n\)</span> is defined as <span class="math">\(H_n\)</span> = Ker <span class="math">\(\partial_n \ / \ \text{Im } \partial_{n+1}\)</span>.</p>
+<blockquote><p>The $n^{th}$ Homology Group $H_n$ is defined as $H_n$ = Ker $\partial_n \ / \ \text{Im } \partial_{n+1}$.</p>
 </blockquote>
 <p>Lastly, recall the definition of a kernel:</p>
-<blockquote>
-<p>The kernel of <span class="math">\(\partial(C_n)\)</span>, denoted <span class="math">\(\text{Ker}(\partial(C_n))\)</span> is the group of <span class="math">\(n\)</span>-chains <span class="math">\(Z_n \subseteq C_n\)</span> such that <span class="math">\(\partial(Z_n) = 0\)</span></p>
+<blockquote><p>The kernel of $\partial(C_n)$, denoted $\text{Ker}(\partial(C_n))$ is the group of $n$-chains $Z_n \subseteq C_n$ such that $\partial(Z_n) = 0$</p>
 </blockquote>
-<p>So first we need the kernel of the boundary of <span class="math">\(C_0\)</span>, Ker <span class="math">\(\partial(C_0)\)</span>. Remember the boundary map <span class="math">\(\partial\)</span> gives us a map from <span class="math">\(C_n \rightarrow C_{n-1}\)</span>.</p>
-<p>In all cases, the boundary of a 0-chain is <span class="math">\(0\)</span>, thus the Ker <span class="math">\(\partial(C_0)\)</span> is the whole 0-chain.</p>
-<div class="math">$$\text{Ker} \partial(C_0) = \{a, b, c\}$$</div>
-<p> This forms another group we will denote <span class="math">\(Z_0\)</span> (or <span class="math">\(Z_n\)</span> generally), the group of 0-cycles, which in general is a subgroup of <span class="math">\(C_0\)</span>, i.e. <span class="math">\(Z_n \leq C_n\)</span>. With addition defined over <span class="math">\(\mathbb Z_2\)</span> then <span class="math">\(Z_0\)</span> is also ismorphic to <span class="math">\(\mathbb Z_2\)</span> and hence is the same as <span class="math">\(C_0\)</span>.</p>
-<p>The other thing we need to find the homology group <span class="math">\(H_0\)</span> is <span class="math">\(\text{Im } \partial_{1}\)</span>. This forms a subgroup of <span class="math">\(Z_0\)</span> that we denote <span class="math">\(B_0\)</span> (or more generally <span class="math">\(B_n\)</span>) which is the group of boundaries of the (n+1)-chain. Hence, <span class="math">\(B_n \leq Z_n \leq C_n\)</span>.</p>
-<div class="math">$$\partial{C_1} = \partial({[a, b], [b, c], [c, a]} = (a + b) + (b + c) + (c + a) \\
+<p>So first we need the kernel of the boundary of $C_0$, Ker $\partial(C_0)$. Remember the boundary map $\partial$ gives us a map from $C_n \rightarrow C_{n-1}$.</p>
+<p>In all cases, the boundary of a 0-chain is $0$, thus the Ker $\partial(C_0)$ is the whole 0-chain.</p>
+$$\text{Ker} \partial(C_0) = \{a, b, c\}$$<p>This forms another group we will denote $Z_0$ (or $Z_n$ generally), the group of 0-cycles, which in general is a subgroup of $C_0$, i.e. $Z_n \leq C_n$. With addition defined over $\mathbb Z_2$ then $Z_0$ is also ismorphic to $\mathbb Z_2$ and hence is the same as $C_0$.</p>
+<p>The other thing we need to find the homology group $H_0$ is $\text{Im } \partial_{1}$. This forms a subgroup of $Z_0$ that we denote $B_0$ (or more generally $B_n$) which is the group of boundaries of the (n+1)-chain. Hence, $B_n \leq Z_n \leq C_n$.</p>
+$$\partial{C_1} = \partial({[a, b], [b, c], [c, a]} = (a + b) + (b + c) + (c + a) \\
 \partial{C_1} = (a + b) + (b + c) + (c + a) = (a + a) + (b + b) + (c + c) = (0) + (0) + (0) = 0 \\
-\partial{C_1} = 0 $$</div>
-<p>
-So <span class="math">\(\text{Im } \partial_{1} = {0}\)</span></p>
-<p>Thus we compute the quotient group <span class="math">\(H_0 = Z_0\ /\ B_0\)</span>, which in this case is:
-</p>
-<div class="math">$$Z_0 = \text { { {a, b, c}, {0} } } \\
-B_0 = \{0\} $$</div>
-<p>
-so we take the left cosets of <span class="math">\(\{0\}\)</span> for the two elements in <span class="math">\(Z_0\)</span> to get the quotient group, which gives us:
-</p>
-<div class="math">$$ Z_0\ /\ B_0 = \text { { {a, b, c}, {0} } } = Z_0$$</div>
-<p>So in general, if <span class="math">\(B_n = \{0\}\)</span> then <span class="math">\(Z_n\ /\ B_n = Z_n\)</span>. Hence <span class="math">\(H_0 = Z_0\)</span>.</p>
-<p>The Betti number <span class="math">\(b_0\)</span> is the dimension of <span class="math">\(H_0 = Z_0\)</span>. What is the dimension of <span class="math">\(H_0\)</span>? Well, it has two elements, but the dimension is defined as the smallest set of generators for a group, and since this group is isomorphic to <span class="math">\(\mathbb Z_2\)</span>, it only has 1 generator. For <span class="math">\(\mathbb Z_2\)</span> the generator is <span class="math">\(1\)</span>, since the whole group can be formed by repeatedly applying the addition operation on <span class="math">\(1\)</span>, i.e. <span class="math">\(1+1=0, 1+1+1 = 1\)</span> and now we have the full <span class="math">\(\mathbb Z_2\)</span>. </p>
-<p>So <span class="math">\(b_0 = dim(H_0) = 1\)</span>, which is what we expected, this simplicial complex has 1 connected component.</p>
-<p>Now let's start calculating Betti <span class="math">\(b_1\)</span> for the 1-dimension. This time it will be a bit different because figuring out <span class="math">\(\text{Ker}\partial(C_1)\)</span> is going to be more involved. We're going to need to do some algebra.</p>
-<p>So, we first want <span class="math">\(Z_1\)</span>, the group of 1-cycles. This is the set of 1-simplices whose boundary is 0. Remember the 1-chain is <span class="math">\(\{ [a,b], [b,c], [c,a]\}\)</span> and forms the 1-chain group <span class="math">\(C_1\)</span> when applied over <span class="math">\(\mathbb Z_2\)</span>. We will setup an equation like this:</p>
-<div class="math">$$ 
+\partial{C_1} = 0 $$<p>So $\text{Im } \partial_{1} = {0}$</p>
+<p>Thus we compute the quotient group $H_0 = Z_0\ /\ B_0$, which in this case is:
+$$Z_0 = \text { { {a, b, c}, {0} } } \\
+B_0 = \{0\} $$
+so we take the left cosets of $\{0\}$ for the two elements in $Z_0$ to get the quotient group, which gives us:
+$$ Z_0\ /\ B_0 = \text { { {a, b, c}, {0} } } = Z_0$$</p>
+<p>So in general, if $B_n = \{0\}$ then $Z_n\ /\ B_n = Z_n$. Hence $H_0 = Z_0$.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The Betti number $b_0$ is the dimension of $H_0 = Z_0$. What is the dimension of $H_0$? Well, it has two elements, but the dimension is defined as the smallest set of generators for a group, and since this group is isomorphic to $\mathbb Z_2$, it only has 1 generator. For $\mathbb Z_2$ the generator is $1$, since the whole group can be formed by repeatedly applying the addition operation on $1$, i.e. $1+1=0, 1+1+1 = 1$ and now we have the full $\mathbb Z_2$.</p>
+<p>So $b_0 = dim(H_0) = 1$, which is what we expected, this simplicial complex has 1 connected component.</p>
+<p>Now let's start calculating Betti $b_1$ for the 1-dimension. This time it will be a bit different because figuring out $\text{Ker}\partial(C_1)$ is going to be more involved. We're going to need to do some algebra.</p>
+<p>So, we first want $Z_1$, the group of 1-cycles. This is the set of 1-simplices whose boundary is 0. Remember the 1-chain is $\{ [a,b], [b,c], [c,a]\}$ and forms the 1-chain group $C_1$ when applied over $\mathbb Z_2$. We will setup an equation like this:</p>
+$$ 
 \begin{aligned}
 \mathscr C_1 &amp;= \lambda_0([a,b]) + \lambda_1([b,c]) \lambda_2([c,a]) \text{ ... where $\lambda_n \in \mathbb Z_2$. $\\$ This is the general form of any element in the vector space $\mathscr C_1$} \\
 \lambda_0([a,b]) + \lambda_1([b,c]) + \lambda_2([c,a]) &amp;= 0 \text{ ... then take the boundary of that} \\
@@ -148,9 +165,13 @@ so we take the left cosets of <span class="math">\(\{0\}\)</span> for the two el
 \lambda_0{a} + \lambda_0{b} + \lambda_1{b} + \lambda_1{c} + \lambda_2{c} + \lambda_2{a} &amp;= 0 \\
 a(\lambda_0 + \lambda_2) + b(\lambda_0 + \lambda_1) + c(\lambda_1 + \lambda_2) &amp;= 0 \text{ ...factor out the a,b,c} \\
 \end{aligned}
-$$</div>
-<p>For this equation to be satisfied, then all the coefficients <span class="math">\(\lambda_n\)</span> for each term need to sum to 0 to make <span class="math">\(a,b,c\)</span> go to <span class="math">\(0\)</span>. That is, if the whole equation goes to <span class="math">\(0\)</span>, then each term like <span class="math">\(a(\lambda_0 + \lambda_2) = 0\)</span>, hence $(\lambda_0 + \lambda_2) = 0, $. So now we basically have a system of linear equations:</p>
-<div class="math">$$\lambda_0 + \lambda_2 = 0 \\
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>For this equation to be satisfied, then all the coefficients $\lambda_n$ for each term need to sum to 0 to make $a,b,c$ go to $0$. That is, if the whole equation goes to $0$, then each term like $a(\lambda_0 + \lambda_2) = 0$, hence $(\lambda_0 + \lambda_2) = 0, $. So now we basically have a system of linear equations:</p>
+$$\lambda_0 + \lambda_2 = 0 \\
 \lambda_0 + \lambda_1 = 0 \\
 \lambda_1 + \lambda_2 = 0 \\
 \text{...now solve...} \\
@@ -159,56 +180,66 @@ $$</div>
 \lambda_1 = \lambda_1 \\
 \lambda_0 = \lambda_1 = \lambda_2 \\
 \text{So for the equation above to be satisfied, all the coefficients $\lambda_n$ must be equal. Let's just replace all the lambdas with a single symbol, phi, i.e...} \\
-\lambda_0, \lambda_1, \lambda_2 = \phi$$</div>
-<p>Now, let's go back to the general expression for the 1-chain vector space <span class="math">\(\mathscr C_1 =  \lambda_0([a,b]) + \lambda_1([b,c]) + \lambda_2([c,a])\)</span>. When we take the boundary of that and set it to 0, we get <span class="math">\(\lambda_0 = \lambda_1 = \lambda_2\)</span>, and I proposed we just replace those with one symbol, <span class="math">\(\phi\)</span>. </p>
+\lambda_0, \lambda_1, \lambda_2 = \phi$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now, let's go back to the general expression for the 1-chain vector space $\mathscr C_1 =  \lambda_0([a,b]) + \lambda_1([b,c]) + \lambda_2([c,a])$. When we take the boundary of that and set it to 0, we get $\lambda_0 = \lambda_1 = \lambda_2$, and I proposed we just replace those with one symbol, $\phi$.</p>
 <p>Hence, the cycle group: 
-</p>
-<div class="math">$$Z_1 \leq \mathscr C_1 = \phi([a,b]) + \phi([b,c]) + \phi([c,a]) \\
+$$Z_1 \leq \mathscr C_1 = \phi([a,b]) + \phi([b,c]) + \phi([c,a]) \\
 Z_1 = \phi([a,b] + [b,c] + [c,a]), \text{ ...remember $\phi$ is from $\mathbb Z_2$ so it is either 0 or 1.}
-$$</div>
-<p>So the cycle group only contains two elements and is hence isomorphic to <span class="math">\(\mathbb Z_2\)</span>.</p>
-<blockquote>
-<p><strong>NOTE</strong>: I will introduce new notation. If two mathematical structures (e.g. groups) <span class="math">\(G_1, G_2\)</span> are isomorphic, we denote it as <span class="math">\(G_1 \cong G_2\)</span></p>
+$$</p>
+<p>So the cycle group only contains two elements and is hence isomorphic to $\mathbb Z_2$.</p>
+<blockquote><p><strong>NOTE</strong>: I will introduce new notation. If two mathematical structures (e.g. groups) $G_1, G_2$ are isomorphic, we denote it as $G_1 \cong G_2$</p>
 </blockquote>
-<p>If <span class="math">\(\phi = 0\)</span>, then we get <span class="math">\(\phi([a,b] + [b,c] + [c,a]) = 0([a,b] + [b,c] + [c,a]) = 0 \\\)</span>
-, whereas if <span class="math">\(\phi = 1\)</span>, then <span class="math">\(\phi([a,b] + [b,c] + [c,a]) = 1([a,b] + [b,c] + [c,a]) = [a,b] + [b,c] + [c,a] \\\)</span> 
+<p>If $\phi = 0$, then we get $\phi([a,b] + [b,c] + [c,a]) = 0([a,b] + [b,c] + [c,a]) = 0 \\$
+, whereas if $\phi = 1$, then $\phi([a,b] + [b,c] + [c,a]) = 1([a,b] + [b,c] + [c,a]) = [a,b] + [b,c] + [c,a] \\$ 
 So the full group is:
-</p>
-<div class="math">$$Z_1 = \begin{Bmatrix} [a,b] + [b,c] + [c,a] \\ 0 \end{Bmatrix}$$</div>
-<p>The boundary group <span class="math">\(B_1 = Im\partial(C_2)\)</span> but since <span class="math">\(C_2\)</span> is an empty set, <span class="math">\(B_1 = \{0\}\)</span>.</p>
+$$Z_1 = \begin{Bmatrix} [a,b] + [b,c] + [c,a] \\ 0 \end{Bmatrix}$$</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The boundary group $B_1 = Im\partial(C_2)$ but since $C_2$ is an empty set, $B_1 = \{0\}$.</p>
 <p>So once again we can compute the homology group:
-</p>
-<div class="math">$$H_1 = Z_1 / B_1 = \begin{Bmatrix} [a,b] + [b,c] + [c,a] \\ 0 \end{Bmatrix}$$</div>
-<p>And Betti <span class="math">\(b_1 = dim(H_1) = 1\)</span> since we only have one generator in the group <span class="math">\(H_1\)</span>.</p>
+$$H_1 = Z_1 / B_1 = \begin{Bmatrix} [a,b] + [b,c] + [c,a] \\ 0 \end{Bmatrix}$$</p>
+<p>And Betti $b_1 = dim(H_1) = 1$ since we only have one generator in the group $H_1$.</p>
 <p>So that's it for that very simple simplicial complex. We'll move on to a bigger complex. This time I won't be as verbose and will use a lot of the simplifying notation and conventions that I've already defined or described.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Let's do the same but with a slightly more complicated simplicial complex that we've seen before:
-</p>
-<div class="math">$$S = \text{{[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]}}$$</div>
-<p> (Depicted below).
+$$S = \text{{[a], [b], [c], [d], [a, b], [b, c], [c, a], [c, d], [d, b], [a, b, c]}}$$ (Depicted below).
 <img src="images/TDAimages/simplicialcomplex5b.svg" /></p>
 <p>Notice we now have a 2-simplex [a, b, c], depicted as the filled in triangle.</p>
-<p>This time we will use the full integer field <span class="math">\(\mathbb Z\)</span> for our coefficients, thus the resulting vector spaces will be infinite instead of finite spaces that we could list out. Since we're using <span class="math">\(\mathbb Z\)</span>, we must define what it means to be a "negative" simplex, e.g. what does <span class="math">\(-[c,a]\)</span> <em>mean</em>? Well we discussed this previously. Basically we define two ways a simplex can be oriented and opposite orientation to the original definition will be assigned the "negative" value of a simplex.</p>
-<p>So <span class="math">\([a,c] = -[c,a]\)</span>. But what about <span class="math">\([a,b,c]\)</span>? There are more than two ways to permute a 3 element list, but there only two orientations. <br />
+<p>This time we will use the full integer field $\mathbb Z$ for our coefficients, thus the resulting vector spaces will be infinite instead of finite spaces that we could list out. Since we're using $\mathbb Z$, we must define what it means to be a "negative" simplex, e.g. what does $-[c,a]$ <em>mean</em>? Well we discussed this previously. Basically we define two ways a simplex can be oriented and opposite orientation to the original definition will be assigned the "negative" value of a simplex.</p>
+<p>So $[a,c] = -[c,a]$. But what about $[a,b,c]$? There are more than two ways to permute a 3 element list, but there only two orientations. <br />
 If you look at the oriented simplex from before:
 <img src="images/TDAimages/trianglesimplex.svg" />
 There are only two ways you can "go around" the loop. Either clockwise or counterclockwise.<br />
-<span class="math">\([a,b,c]\)</span> is clockwise (and we'll call it positive).<br />
-<span class="math">\([c,a,b]\)</span> is also clockwise (so <span class="math">\([c,a,b] = [a,b,c]\)</span>)<br />
-<span class="math">\([a,c,b]\)</span> is a counterclockwise, as well as <span class="math">\([b,c,a]\)</span>, so <span class="math">\([a,b,c] = [c,a,b] = -[a,c,b] = -[b,c,a]\)</span>.<br /></p>
+$[a,b,c]$ is clockwise (and we'll call it positive).<br />
+$[c,a,b]$ is also clockwise (so $[c,a,b] = [a,b,c]$)<br />
+$[a,c,b]$ is a counterclockwise, as well as $[b,c,a]$, so $[a,b,c] = [c,a,b] = -[a,c,b] = -[b,c,a]$.<br /></p>
 <p>Let's start by listing our chain groups.
-</p>
-<div class="math">$$ C_0 = \langle{a,b,c,d}\rangle \cong \mathbb Z^4 \\
+$$ C_0 = \langle{a,b,c,d}\rangle \cong \mathbb Z^4 \\
 C_1 = \langle{[a, b], [b, c], [c, a], [c, d], [d, b]}\rangle \cong \mathbb Z^5 \\
-C_2 = \langle{[a, b, c]}\rangle \cong \mathbb Z \\ $$</div>
-<p>Recall the angle brackets mean <em>span</em>, i.e. the set of all linear combinations of the elements between the angle brackets. This is obviously much more succinct than how we we're building the groups in our last example. And note how each group is isomorphic to the vector space <span class="math">\(\mathbb Z^n\)</span> where <span class="math">\(n\)</span> is the number of simplices in the n-chain.<br /></p>
+C_2 = \langle{[a, b, c]}\rangle \cong \mathbb Z \\ $$</p>
+<p>Recall the angle brackets mean <em>span</em>, i.e. the set of all linear combinations of the elements between the angle brackets. This is obviously much more succinct than how we we're building the groups in our last example. And note how each group is isomorphic to the vector space $\mathbb Z^n$ where $n$ is the number of simplices in the n-chain.<br /></p>
 <p>We can thus describe our <em>chain complex</em> as:</p>
-<div class="math">$$C_2 \stackrel{\partial_1}\rightarrow C_1 \stackrel{\partial_0}\rightarrow C_0$$</div>
-<p>We know, since we can easily visualize the simplicial complex, that it has one connected component and one 1-cycle (one 1-dimensional hole). Hence, Betti <span class="math">\(b_0 = 1, b_1 = 1\)</span>. But we need to calculate that for ourselves.</p>
+$$C_2 \stackrel{\partial_1}\rightarrow C_1 \stackrel{\partial_0}\rightarrow C_0$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We know, since we can easily visualize the simplicial complex, that it has one connected component and one 1-cycle (one 1-dimensional hole). Hence, Betti $b_0 = 1, b_1 = 1$. But we need to calculate that for ourselves.</p>
 <p>Let's start from the higher-dimensional chain group, the 2-chain group.</p>
-<p>Remember, <span class="math">\(Z_n = \text{Ker}\partial(C_n)\)</span> the group of n-cycles, which is a subgroup of <span class="math">\(C_n\)</span>. And <span class="math">\(B_n = \text{Im}\partial(C_{n+1})\)</span> is the group of n-boundaries, which is a subgroup of the n-cycles. Hence <span class="math">\(B_n \leq Z_n \leq C_n\)</span>. Also recall, the homology group <span class="math">\(H_n = Z_n\ /\ B_n\)</span> and the n-th Betti number is the dimension of the n-th homology group.</p>
-<p>To find <span class="math">\(Z_n\)</span>, we have to setup our expression for a general element in <span class="math">\(C_n\)</span>.
-</p>
-<div class="math">$$
+<p>Remember, $Z_n = \text{Ker}\partial(C_n)$ the group of n-cycles, which is a subgroup of $C_n$. And $B_n = \text{Im}\partial(C_{n+1})$ is the group of n-boundaries, which is a subgroup of the n-cycles. Hence $B_n \leq Z_n \leq C_n$. Also recall, the homology group $H_n = Z_n\ /\ B_n$ and the n-th Betti number is the dimension of the n-th homology group.</p>
+<p>To find $Z_n$, we have to setup our expression for a general element in $C_n$.
+$$
 \begin{aligned}
 C_2 &amp;= \lambda_0{[a,b,c]},  \lambda_0 \in \mathbb{Z} \\
 Z_2 &amp;= \text{Ker}\partial{(C_2)} \\ 
@@ -220,10 +251,15 @@ Z_2 &amp;= \text{Ker}\partial{(C_2)} \\
 ... \\
 \text{Ker}\partial{(C_2)} &amp;= \{0\} \\
 \end{aligned}
-$$</div>
-<p>Since there are no 3-simplices or higher, <span class="math">\(B_2 = {0}\)</span>. Thus Betti <span class="math">\(b_2 = dim(\{0\} / \{0\}) = 0\)</span>. This is what we expect, there are no 2-dimensional holes in the simplicial complex.</p>
-<p>Let's do the same for <span class="math">\(C_1\)</span>.</p>
-<div class="math">$$
+$$</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Since there are no 3-simplices or higher, $B_2 = {0}$. Thus Betti $b_2 = dim(\{0\} / \{0\}) = 0$. This is what we expect, there are no 2-dimensional holes in the simplicial complex.</p>
+<p>Let's do the same for $C_1$.</p>
+$$
 \begin{aligned}
 C_1 &amp;= \lambda_0[a, b] + \lambda_1[b, c] + \lambda_2[c, a] + \lambda_3[c, d] + \lambda_4[d, b],  \lambda_n \in \mathbb{Z} \\
 Z_1 &amp;= \text{Ker}\partial{(C_1)} \\ 
@@ -242,10 +278,13 @@ a(\lambda_0 - \lambda_2) + b(\lambda_1 - \lambda_0 - \lambda_4) + c(\lambda_2 - 
 \text{Ker}\partial{(C_1)} &amp;= \lambda_0([a,b] + [b,c] + [c,a]) + \lambda_3([b,c] + [c,d] + [d,b]) \\
 Z_1 = \text{Ker}\partial{(C_1)} &amp;\cong \mathbb Z^2
 \end{aligned}
-$$</div>
-<p>Now to get the boundaries <span class="math">\(B_1 = Im\partial(C_2)\)</span>.
-</p>
-<div class="math">$$
+$$
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now to get the boundaries $B_1 = Im\partial(C_2)$.
+$$
 \begin{aligned}
 \partial(C_2) &amp;= \lambda_0{([b,c])} - \lambda_0{([a,c])} + \lambda_0{([a,b])} \text {... remember $-[a,c] = [c,a]$ ...} \\
 \partial(C_2) &amp;= \lambda_0{([b,c] + [c,a] + [a,b])} \\
@@ -254,140 +293,115 @@ B_1 &amp;\cong Z \\
 H_1 = Z_1\ /\ B_1 &amp;= \{\lambda_0([a,b] + [b,c] + [c,a]) + \lambda_3([b,c] + [c,d] + [d,b])\}\ /\ \{\lambda_0{([b,c] + [c,a] + [a,b])}\} \\
 H_1 &amp;= \{\lambda_3([b,c] + [c,d] + [d,b])\} \cong \mathbb Z
 \end{aligned}
-$$</div>
-<p>Another way to more easily take the quotient group <span class="math">\(H_1 = Z_1\ /\ B_1\)</span> is to just pay attention to what <span class="math">\(Z_n, B_n\)</span> are isomorphic to in terms of <span class="math">\(\mathbb Z^n\)</span>. In this case:
-</p>
-<div class="math">$$ Z_1 \cong \mathbb Z^2 \\
+$$</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Another way to more easily take the quotient group $H_1 = Z_1\ /\ B_1$ is to just pay attention to what $Z_n, B_n$ are isomorphic to in terms of $\mathbb Z^n$. In this case:
+$$ Z_1 \cong \mathbb Z^2 \\
 B_1 \cong \mathbb Z^1 \\
-H_1 = \mathbb Z^2\ /\  \mathbb Z = \mathbb Z$$</div>
-<p>So since <span class="math">\(H_1 \cong \mathbb Z\)</span>, the Betti number for <span class="math">\(H_1\)</span> is 1 because the dimension of <span class="math">\(\mathbb Z\)</span> is 1 (it only has one generator or basis).</p>
-<p>So I think you get the point by now, I'm not going to go through all the details of calculating Betti <span class="math">\(b_0\)</span>, it should be 1 since there is only one connected component.</p>
-<h5>Next time...</h5>
-<p>We've learned how to calculate homology groups and Betti numbers of simple simplicial complexes by hand. But we're going to need to develop some new tools so that we can let computer algorithms handle these calculations for the real, and generally much larger, simplicial complexes. Next time we'll see how linear algebra gives us an efficient means of doing this.</p>
-<h4>References (Websites):</h4>
-<ol>
-<li>http://dyinglovegrape.com/math/topology_data_1.php</li>
-<li>http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</li>
-<li>https://en.wikipedia.org/wiki/Group_(mathematics)</li>
-<li>https://jeremykun.com/2013/04/03/homology-theory-a-primer/</li>
-<li>http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</li>
-<li>http://www.mit.edu/~evanchen/napkin.html</li>
+H_1 = \mathbb Z^2\ /\  \mathbb Z = \mathbb Z$$</p>
+<p>So since $H_1 \cong \mathbb Z$, the Betti number for $H_1$ is 1 because the dimension of $\mathbb Z$ is 1 (it only has one generator or basis).</p>
+<p>So I think you get the point by now, I'm not going to go through all the details of calculating Betti $b_0$, it should be 1 since there is only one connected component.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h5 id="Next-time...">Next time...<a class="anchor-link" href="#Next-time...">&#182;</a></h5><p>We've learned how to calculate homology groups and Betti numbers of simple simplicial complexes by hand. But we're going to need to develop some new tools so that we can let computer algorithms handle these calculations for the real, and generally much larger, simplicial complexes. Next time we'll see how linear algebra gives us an efficient means of doing this.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="References-(Websites):">References (Websites):<a class="anchor-link" href="#References-(Websites):">&#182;</a></h4><ol>
+<li><a href="http://dyinglovegrape.com/math/topology_data_1.php">http://dyinglovegrape.com/math/topology_data_1.php</a></li>
+<li><a href="http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf">http://www.math.uiuc.edu/~r-ash/Algebra/Chapter4.pdf</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Group_(mathematics">https://en.wikipedia.org/wiki/Group_(mathematics</a>)</li>
+<li><a href="https://jeremykun.com/2013/04/03/homology-theory-a-primer/">https://jeremykun.com/2013/04/03/homology-theory-a-primer/</a></li>
+<li><a href="http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf">http://suess.sdf-eu.org/website/lang/de/algtop/notes4.pdf</a></li>
+<li><a href="http://www.mit.edu/~evanchen/napkin.html">http://www.mit.edu/~evanchen/napkin.html</a></li>
 </ol>
-<h4>References (Academic Publications):</h4>
-<ol>
-<li>
-<p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="References-(Academic-Publications):">References (Academic Publications):<a class="anchor-link" href="#References-(Academic-Publications):">&#182;</a></h4><ol>
+<li><p>Basher, M. (2012). On the Folding of Finite Topological Space. International Mathematical Forum, 7(15), 745–752. Retrieved from <a href="http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf">http://www.m-hikari.com/imf/imf-2012/13-16-2012/basherIMF13-16-2012.pdf</a></p>
 </li>
-<li>
-<p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
+<li><p>Day, M. (2012). Notes on Cayley Graphs for Math 5123 Cayley graphs, 1–6.</p>
 </li>
-<li>
-<p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
+<li><p>Doktorova, M. (2012). CONSTRUCTING SIMPLICIAL COMPLEXES OVER by, (June).</p>
 </li>
-<li>
-<p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from http://www.cs.duke.edu/courses/fall06/cps296.1/</p>
+<li><p>Edelsbrunner, H. (2006). IV.1 Homology. Computational Topology, 81–87. Retrieved from <a href="http://www.cs.duke.edu/courses/fall06/cps296.1/">http://www.cs.duke.edu/courses/fall06/cps296.1/</a></p>
 </li>
-<li>
-<p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
+<li><p>Erickson, J. (1908). Homology. Computational Topology, 1–11.</p>
 </li>
-<li>
-<p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
+<li><p>Evan Chen. (2016). An Infinitely Large Napkin.</p>
 </li>
-<li>
-<p>Grigor’yan, A., Muranov, Y. V., &amp; Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. http://doi.org/10.4310/HHA.2014.v16.n1.a16</p>
+<li><p>Grigor’yan, A., Muranov, Y. V., &amp; Yau, S. T. (2014). Graphs associated with simplicial complexes. Homology, Homotopy and Applications, 16(1), 295–311. <a href="http://doi.org/10.4310/HHA.2014.v16.n1.a16">http://doi.org/10.4310/HHA.2014.v16.n1.a16</a></p>
 </li>
-<li>
-<p>Kaczynski, T., Mischaikow, K., &amp; Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. http://doi.org/10.4310/HHA.2003.v5.n2.a8</p>
+<li><p>Kaczynski, T., Mischaikow, K., &amp; Mrozek, M. (2003). Computing homology. Homology, Homotopy and Applications, 5(2), 233–256. <a href="http://doi.org/10.4310/HHA.2003.v5.n2.a8">http://doi.org/10.4310/HHA.2003.v5.n2.a8</a></p>
 </li>
-<li>
-<p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
+<li><p>Kerber, M. (2016). Persistent Homology – State of the art and challenges 1 Motivation for multi-scale topology. Internat. Math. Nachrichten Nr, 231(231), 15–33.</p>
 </li>
-<li>
-<p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
+<li><p>Khoury, M. (n.d.). Lecture 6 : Introduction to Simplicial Homology Topics in Computational Topology : An Algorithmic View, 1–6.</p>
 </li>
-<li>
-<p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
+<li><p>Kraft, R. (2016). Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology.</p>
 </li>
-<li>
-<p>Lakshmivarahan, S., &amp; Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
+<li><p>Lakshmivarahan, S., &amp; Sivakumar, L. (2016). Cayley Graphs, (1), 1–9.</p>
 </li>
-<li>
-<p>Liu, X., Xie, Z., &amp; Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. http://doi.org/10.4310/HHA.2012.v14.n1.a11</p>
+<li><p>Liu, X., Xie, Z., &amp; Yi, D. (2012). A fast algorithm for constructing topological structure in large data. Homology, Homotopy and Applications, 14(1), 221–238. <a href="http://doi.org/10.4310/HHA.2012.v14.n1.a11">http://doi.org/10.4310/HHA.2012.v14.n1.a11</a></p>
 </li>
-<li>
-<p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
+<li><p>Naik, V. (2006). Group theory : a first journey, 1–21.</p>
 </li>
-<li>
-<p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., &amp; Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from http://arxiv.org/abs/1506.08903</p>
+<li><p>Otter, N., Porter, M. A., Tillmann, U., Grindrod, P., &amp; Harrington, H. A. (2015). A roadmap for the computation of persistent homology. Preprint ArXiv, (June), 17. Retrieved from <a href="http://arxiv.org/abs/1506.08903">http://arxiv.org/abs/1506.08903</a></p>
 </li>
-<li>
-<p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
+<li><p>Semester, A. (2017). § 4 . Simplicial Complexes and Simplicial Homology, 1–13.</p>
 </li>
-<li>
-<p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
+<li><p>Singh, G. (2007). Algorithms for Topological Analysis of Data, (November).</p>
 </li>
-<li>
-<p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</p>
+<li><p>Zomorodian, A. (2009). Computational Topology Notes. Advances in Discrete and Computational Geometry, 2, 109–143. Retrieved from <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.7483</a></p>
 </li>
-<li>
-<p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. http://doi.org/10.1016/j.cag.2010.03.007</p>
+<li><p>Zomorodian, A. (2010). Fast construction of the Vietoris-Rips complex. Computers and Graphics (Pergamon), 34(3), 263–271. <a href="http://doi.org/10.1016/j.cag.2010.03.007">http://doi.org/10.1016/j.cag.2010.03.007</a></p>
 </li>
-<li>
-<p>Symmetry and Group Theory 1. (2016), 1–18. http://doi.org/10.1016/B978-0-444-53786-7.00026-5</p>
+<li><p>Symmetry and Group Theory 1. (2016), 1–18. <a href="http://doi.org/10.1016/B978-0-444-53786-7.00026-5">http://doi.org/10.1016/B978-0-444-53786-7.00026-5</a></p>
 </li>
 </ol>
+
+</div>
+</div>
+
+
+
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
     mathjaxscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
         "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
         "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
         "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
         "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
         "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        inlineMath: [ ['$','$'] ], " +
         "        displayMath: [ ['$$','$$'] ]," +
         "        processEscapes: true," +
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>
