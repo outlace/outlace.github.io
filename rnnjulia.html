@@ -43,464 +43,278 @@
 
 
 
-                <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Assumptions:">Assumptions:<a class="anchor-link" href="#Assumptions:">&#182;</a></h4>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>I assume you know how basic feedforward neural nets work and can implement and train at least a 2-layer neural net using backpropagation and gradient descent. I'm using the same ultra-simple problem found in this article: <a href="http://iamtrask.github.io/2015/07/12/basic-python-network/">http://iamtrask.github.io/2015/07/12/basic-python-network/</a> so I encourage you to go through that first if you need some more background.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Summary-&amp;-Motivations">Summary &amp; Motivations<a class="anchor-link" href="#Summary-&amp;-Motivations">&#182;</a></h3>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>You may have noticed I already have an article about building a simple recurrent network (in Python). Why am I making another one? Well, in that article, I show how to build an RNN that solves a temporal XOR problem and then how to do sequence prediction of characters. I think that article betrayed my mission of making things as simple as possible. Additionally, I ended up using a scipy optimizer to find the weights instead of implementing my own gradient descent. This article is meant as a prequel to that one. Here we're going to build an RNN that solves a temporal/sequential version of the problem in the aforementioned <code>i am trask</code> article where $y=1$ if and only if $x_1$ in a $(x_1, x_2)$ tuple is $1$. This problem is actually a lot easier for a neural network to learn than XOR because it doesn't require any hidden units in an ordinary feedforward architecture (we <em>will</em> use hidden units in our RNN implementation). Since this problem is easier, I can demonstrate how we can train the network using ordinary backpropagation like <code>i am trask</code> does in his article. No need for optimization libraries.</p>
+                <h4>Assumptions:</h4>
+<p>I assume you know how basic feedforward neural nets work and can implement and train at least a 2-layer neural net using backpropagation and gradient descent. I'm using the same ultra-simple problem found in this article: http://iamtrask.github.io/2015/07/12/basic-python-network/ so I encourage you to go through that first if you need some more background.</p>
+<h3>Summary &amp; Motivations</h3>
+<p>You may have noticed I already have an article about building a simple recurrent network (in Python). Why am I making another one? Well, in that article, I show how to build an RNN that solves a temporal XOR problem and then how to do sequence prediction of characters. I think that article betrayed my mission of making things as simple as possible. Additionally, I ended up using a scipy optimizer to find the weights instead of implementing my own gradient descent. This article is meant as a prequel to that one. Here we're going to build an RNN that solves a temporal/sequential version of the problem in the aforementioned <code>i am trask</code> article where <span class="math">\(y=1\)</span> if and only if <span class="math">\(x_1\)</span> in a <span class="math">\((x_1, x_2)\)</span> tuple is <span class="math">\(1\)</span>. This problem is actually a lot easier for a neural network to learn than XOR because it doesn't require any hidden units in an ordinary feedforward architecture (we <em>will</em> use hidden units in our RNN implementation). Since this problem is easier, I can demonstrate how we can train the network using ordinary backpropagation like <code>i am trask</code> does in his article. No need for optimization libraries.</p>
 <p>Additionally, I wanted to try out Julia.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Why-Julia?">Why Julia?<a class="anchor-link" href="#Why-Julia?">&#182;</a></h3>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3>Why Julia?</h3>
 <p>My previous posts all use Python and Python is surely a darling of the data science/machine learning world. I can unequivocally say that Python is my hands-down favorite programming language. Python's main strengths are its clean and simple syntax and of course the massive community and number of libraries available. Unfortunately, Python's strength of clean syntax completely disappears when you have to use numpy for linear algebra. Take this line for example:</p>
-<div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)))</span>
+</code></pre></div>
+
 <p>It looks terrible. It looks nothing like how we think about a linear algebra operation. This is where Python breaks down as a clean, readable language. This is where it becomes clear why (unfortunately) so many people in industry and academia prefer proprietary tools like Matlab. This is what the above line looks like in Julia and what it should look like in any language purporting to be for scientific computing.</p>
-<div class="highlight"><pre><span></span><span class="n">vec1</span> <span class="o">.*</span> <span class="n">vec2</span> <span class="o">.*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">vec1</span> <span class="o">.*</span> <span class="n">vec2</span> <span class="o">.*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)</span>
+</code></pre></div>
+
 <p>I'm betting on Julia because I think it takes the strengths of Python and combines them with Matlab and R's cleaner scientific and mathematical syntax, while providing dramatic performance improvements over all 3 of those. If Julia becomes popular, I think it would be extremely well-suited for data science and machine learning applications. I strongly recommend at least trying out Julia. Even though it's not a mature language yet, if you're mostly doing data science/machine learning fundamentals like me, it will serve this purpose very well. If you need a production-ready language, then stick with Python, R or Matlab.</p>
 <p>But if you disagree with all of this or simply have no interest in Julia, that's fine. The following code is almost exactly the same as Matlab/Octave syntax and if you don't have Matlab experience, then it should still be very obvious what's going on, and I of course will do my best to explain. If there's interest, I may supply a downloadable IPython notebook version of this.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="A-Simple(r)-RNN">A Simple(r) RNN<a class="anchor-link" href="#A-Simple(r)-RNN">&#182;</a></h4>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4>A Simple(r) RNN</h4>
 <p>Here is the truth table for the problem we're going to solve:</p>
-<p><table></p>
-<p><tr><td>$x_1$</td><td>$x_2$</td><td>$y$</td></tr></p>
-<p><tr><td>0</td><td>0</td><td>0</td></tr></p>
-<p><tr><td>0</td><td>1</td><td>0</td></tr></p>
-<p><tr><td>1</td><td>0</td><td>1</td></tr></p>
-<p><tr><td>1</td><td>1</td><td>1</td></tr>
-&lt;/table&gt;
-As you can see, the result $y$ is only $1$ if the left bit is $1$. The right bit, $x_2$ has no contribution to what the output $y$ is. Let's call this function $LEFTBIT$ from now on.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<table>
+<tr><td>$x_1$</td><td>$x_2$</td><td>$y$</td></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td></tr>
+</table>
+<p>As you can see, the result <span class="math">\(y\)</span> is only <span class="math">\(1\)</span> if the left bit is <span class="math">\(1\)</span>. The right bit, <span class="math">\(x_2\)</span> has no contribution to what the output <span class="math">\(y\)</span> is. Let's call this function <span class="math">\(LEFTBIT\)</span> from now on.</p>
 <p>The strength of RNNs is that they have "memory." They can retain information about previous inputs through time. The degree and duration of this memory depends on the implementation. Our implementation here is very simple and has a relatively short memory. This memory allows RNNs to process information differently than a feedforward network, they can process information as a stream of information through time. This makes them very useful for time series predictions and for problems where the input and outputs may need to be variable length vectors.</p>
 <p>To be clear, there is really no reason to use an RNN for our <code>LEFTBIT</code> problem. The problem has a well-definied 2-length vector input and 1-length vector output in a feedforward architecture and works very well. But nonetheless, it serves as a good toy problem to learn how to build and train an RNN.</p>
-<p>Now, we can design an RNN to have any number of input units and output units just like a feedforward network. We could design our RNN to accept an $X_1, X_2$ tuple like the feedforward version, but then it wouldn't really need a memory at all. So in order to demonstrate it's memory capability, we will only feed one input at a time. Thus it must accept an $X_1$, wait for us to give it the $X_2$, and remember what $X_1$ was to give the proper output for <code>LEFTBIT</code>.</p>
+<p>Now, we can design an RNN to have any number of input units and output units just like a feedforward network. We could design our RNN to accept an <span class="math">\(X_1, X_2\)</span> tuple like the feedforward version, but then it wouldn't really need a memory at all. So in order to demonstrate it's memory capability, we will only feed one input at a time. Thus it must accept an <span class="math">\(X_1\)</span>, wait for us to give it the <span class="math">\(X_2\)</span>, and remember what <span class="math">\(X_1\)</span> was to give the proper output for <code>LEFTBIT</code>.</p>
 <p>Here's how we'll present the data:</p>
-<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="o">?</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-<p>I put a <code>?</code> as the first element of Y because the RNN can't compute <code>LEFTBIT</code> until it has received 2 consecutive inputs. But the way we implement the network, it will output <em>something</em> everytime it receives an input, but we will simply ignore the first output. In our actual code, we of course can't use a <code>?</code> but I will simply make it a 0 (arbitrarily).</p>
-<p>Here's the flow for how the network will process our sequential <code>LEFTBIT</code> data.</p>
-<ol>
-<li>We will feed the network each element from $X$ starting with 0.</li>
-<li>The network will output something because it has to, but we ignore it's first output.</li>
-<li>We then feed the second element from $X$, also a 0.</li>
-<li>The network should compute the <code>LEFTBIT</code> of these 2 sequential bits (0,0), and output 0. It must remember the previous bit to do so.</li>
-<li>We continue to feed the third element from $X$, this time a 1.</li>
-<li>The network should compute the <code>LEFTBIT</code> of the (0,1) now since those are the last consecutive two bits.</li>
-<li>And we just continue this process until we reach the end of $X$.</li>
-</ol>
+</code></pre></div>
 
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>I put a <code>?</code> as the first element of Y because the RNN can't compute <code>LEFTBIT</code> until it has received 2 consecutive inputs. But the way we implement the network, it will output <em>something</em> everytime it receives an input, but we will simply ignore the first output. In our actual code, we of course can't use a <code>?</code> but I will simply make it a 0 (arbitrarily).</p>
+<p>Here's the flow for how the network will process our sequential <code>LEFTBIT</code> data.
+1. We will feed the network each element from <span class="math">\(X\)</span> starting with 0.
+2. The network will output something because it has to, but we ignore it's first output.
+3. We then feed the second element from <span class="math">\(X\)</span>, also a 0.
+4. The network should compute the <code>LEFTBIT</code> of these 2 sequential bits (0,0), and output 0. It must remember the previous bit to do so.
+5. We continue to feed the third element from <span class="math">\(X\)</span>, this time a 1.
+6. The network should compute the <code>LEFTBIT</code> of the (0,1) now since those are the last consecutive two bits.
+7. And we just continue this process until we reach the end of <span class="math">\(X\)</span>.</p>
 <p>Here's a schematic of our simple RNN:
 <img src="images/SimpleRNN/XORrnn.png" /></p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Here, $t-1$ refers to the previous time step (and e.g. $t-2$ would refer to 2 time steps ago). Thus, for each time step, we feed the output of the hidden layer from the last time step back into the hidden layer of the current time step. This is how we achieve the memory. It turns out implementing this is actually really simple, and we can do so by re-imagining our network as a feedforward network with some additional input units called <em>contex units</em>. These context units are treated exactly like ordinary input units, with weighted connections to the hidden layer and no activation function. Unlike a normal input unit, however, we aren't supplying the data, the context units simply return the output of $t-1$'s hidden layer. In this way, we've just created a feedforward architecture again. Take a look at how the network looks showing all the units:
+<p>Here, <span class="math">\(t-1\)</span> refers to the previous time step (and e.g. <span class="math">\(t-2\)</span> would refer to 2 time steps ago). Thus, for each time step, we feed the output of the hidden layer from the last time step back into the hidden layer of the current time step. This is how we achieve the memory. It turns out implementing this is actually really simple, and we can do so by re-imagining our network as a feedforward network with some additional input units called <em>contex units</em>. These context units are treated exactly like ordinary input units, with weighted connections to the hidden layer and no activation function. Unlike a normal input unit, however, we aren't supplying the data, the context units simply return the output of <span class="math">\(t-1\)</span>'s hidden layer. In this way, we've just created a feedforward architecture again. Take a look at how the network looks showing all the units:
 <img src="images/SimpleRNN/RNN_leftbit.png" /></p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Notice, we only have one <em>real</em> input unit, but we have 3 additional context units (C1 -&gt; C3) that act as inputs and of course we have our bias unit. This type of RNN is called an <b>Elman neural network</b>. There is a similar type of architecture called a Jordan neural network where instead of the context units returning the hidden layer output from $t-1$, they return the output from the output unit from $t-1$.</p>
-<p>Notice how we have 3 context units and 3 hidden units. That's not a coincidence, an Elman network by definition has the same number of context units as it does hidden units so that each context unit is matched with a corresponding hidden unit. That is, the output from hidden unit 1 (H1) from $t-1$ is stored and returned by context unit 1 (C1) at the current time step.</p>
-<p>Also note that the context units return the hidden output <b>without manipulation</b>. That is, if H1 output 0.843 in the last time step, $t-1$, then C1 will save that exactly, and use that as its output in the current time step, $t$. Of course the value 0.843 will be sent over to the hidden layer after it's been weighted.</p>
+<p>Notice, we only have one <em>real</em> input unit, but we have 3 additional context units (C1 -&gt; C3) that act as inputs and of course we have our bias unit. This type of RNN is called an <b>Elman neural network</b>. There is a similar type of architecture called a Jordan neural network where instead of the context units returning the hidden layer output from <span class="math">\(t-1\)</span>, they return the output from the output unit from <span class="math">\(t-1\)</span>.</p>
+<p>Notice how we have 3 context units and 3 hidden units. That's not a coincidence, an Elman network by definition has the same number of context units as it does hidden units so that each context unit is matched with a corresponding hidden unit. That is, the output from hidden unit 1 (H1) from <span class="math">\(t-1\)</span> is stored and returned by context unit 1 (C1) at the current time step.</p>
+<p>Also note that the context units return the hidden output <b>without manipulation</b>. That is, if H1 output 0.843 in the last time step, <span class="math">\(t-1\)</span>, then C1 will save that exactly, and use that as its output in the current time step, <span class="math">\(t\)</span>. Of course the value 0.843 will be sent over to the hidden layer after it's been weighted.</p>
 <p>The reason I chose 3 hidden units is just a matter of training performance. 2 units works too but has a harder time training.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Since we've re-imagined the RNN's recurrent connections as a feedforward network with some additional inputs, we can train it exactly the same way we would any other feedforward NN (FFNNs): backpropagation and gradient descent. The only difference is that training RNNs happens to be much more difficult than FFNNs for reasons I won't detail here. Modern RNN implementations like the Long Short Term Memory (LSTM) networks laregely solve this training problem with additional complexities.</p>
 <p>So that's actually all the theory behind our simple RNN. It's really not much more complicated than a feedforward network. Let's get to work..</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Let's-build-it,-in-Julia,-a-few-lines-at-a-time">Let's build it, in Julia, a few lines at a time<a class="anchor-link" href="#Let's-build-it,-in-Julia,-a-few-lines-at-a-time">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[293]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<h3>Let's build it, in Julia, a few lines at a time</h3>
+<div class="highlight"><pre><span></span><code><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
+<p>Here I've simply defined our input <span class="math">\(X\)</span> vector and our expected output <span class="math">\(Y\)</span> vector. I arbitrarily chose a sequence of 1s and 0s for the <span class="math">\(X\)</span> vector and then manually computed the <code>LEFTBIT</code> of each consecutive pair of bits and stored those in the <span class="math">\(Y\)</span> vector. Remember that I chose to keep the Y vector the same length as the X vector by adding a 0 in the beginning, but for the purposes of training, we will ignore the first output of the network since it can't compute the <code>LEFTBIT</code> of only one bit.</p>
+<p>Note: These are both <em>column</em> vectors. We will not be using the entire <span class="math">\(X\)</span> vector as an input. We will access the each element of the <span class="math">\(X\)</span> vector in order and feed those one by one into our network. We will refer to the corresponding element in our <span class="math">\(Y\)</span> vector to calculate the error of our network.</p>
+<div class="highlight"><pre><span></span><code><span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Here I've simply defined our input $X$ vector and our expected output $Y$ vector. I arbitrarily chose a sequence of 1s and 0s for the $X$ vector and then manually computed the <code>LEFTBIT</code> of each consecutive pair of bits and stored those in the $Y$ vector. Remember that I chose to keep the Y vector the same length as the X vector by adding a 0 in the beginning, but for the purposes of training, we will ignore the first output of the network since it can't compute the <code>LEFTBIT</code> of only one bit.</p>
-<p>Note: These are both <em>column</em> vectors. We will not be using the entire $X$ vector as an input. We will access the each element of the $X$ vector in order and feed those one by one into our network. We will refer to the corresponding element in our $Y$ vector to calculate the error of our network.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[294]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Here I define some variables that control how many input units, hidden layer units, and output units our network has. You can change the number of hidden units without having to modify anything else and see how it affects performance. You can't change the number of input or output units without also changing how we structure the input and output data.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[295]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">theta1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> 
+<div class="highlight"><pre><span></span><code><span class="n">theta1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> 
 <span class="n">theta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span> <span class="p">)</span> 
 <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
 <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>First, I'm randomly initializing our weight vectors (I tend to use the terms "weights" and "theta" interchangeably. theta1 and theta2 are the weights for the input-to-hidden layer and hidden-to-output layer, respectively.)</p>
 <p>I'm initializing the theta vectors by using the randn() function that returns an array of random values from the normal distribution. I've scaled up these random numbers a bit by multiplying by 2. There is no right way to initialize weights, only wrong ways. People try all sorts of different methods. I've chosen this way because it works relatively well for this particular NN and because it's simple. There are much more complicated ways to initialize weights that may work better. The general wisdom here is to make the weights random and well-distributed but constrained within the limits of what makes sense for the particular neural network (often from trial and error).</p>
 <p>The second block is to intitialize our gradient vectors to zero vectors, which will store and accumulate the gradients during backpropagation.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[296]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">60000</span>
+<div class="highlight"><pre><span></span><code><span class="n">epochs</span> <span class="o">=</span> <span class="mi">60000</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">;</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Some additional parameters for the backpropagation training. Epochs refers to the number of iterations we will train. Yes, 60000 is a big number but RNNs are hard to train. We want to train until the network's error stops decreasing.</p>
 <p><code>alpha</code> is our learning rate (i.e. how big each gradient descent step is). <code>epsilon</code> is our momentum rate. We will be using the momentum method as part of our gradient descent implementation which I will explain in further detail below. Note that I set these constants from trial and error.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[297]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">hid_last</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">hid_last</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">last_change1</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
 <span class="n">last_change2</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">)</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c"># m = the number of elements in the X vector;</span>
-</pre></div>
+<span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># m = the number of elements in the X vector;</span>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><code>hid_last</code> is a vector that will store the output from the hidden layer units for use in the next time step. We just initialize to zeros at first.</p>
 <p><code>last_change1</code> and <code>last_change2</code> are for the momentum learning. In momentum learning, we attempt to prevent gradient descent from getting stuck in local optima by giving the weight updates <em>momentum</em>, e.g. if a weight is rapidly decreasing at one point, we will try to keep it going in that same direction by making the next weight update take into account the previous weight update. These vectors simply store the weight updates from the previous iteration. The simplest implementation of gradient descent-based weight updates uses this equation:
-$$\theta_j = \theta_j - \alpha * \frac{\partial C}{\partial \theta_j}$$
-where $\theta_j$ refers to a particular weight, $\alpha$ is the learning rate, and $\frac{\partial C}{\partial \theta_j}$ is the gradient of the cost function $C$ for that particular weight, $\theta_j$.</p>
+</p>
+<div class="math">$$\theta_j = \theta_j - \alpha * \frac{\partial C}{\partial \theta_j}$$</div>
+<p>
+where <span class="math">\(\theta_j\)</span> refers to a particular weight, <span class="math">\(\alpha\)</span> is the learning rate, and <span class="math">\(\frac{\partial C}{\partial \theta_j}\)</span> is the gradient of the cost function <span class="math">\(C\)</span> for that particular weight, <span class="math">\(\theta_j\)</span>.</p>
 <p>With momentum, the weight update takes this form:
-$$\theta_j = \theta_j - \alpha\frac{\partial C}{\partial \theta_j} + \epsilon\Delta_{t-1}\theta_j$$
-Where all notation remains the same, except that $\epsilon$ is our momentum rate and $\Delta_{t-1}\theta_j$ refers to the weight change from the previous iteration. Thus, how much we change the weight <em>this</em> iteration partially depends on how much we changed the weight <em>last</em> iteration. And we can scale this term up or down by changing $\epsilon$</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[298]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">function</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</p>
+<div class="math">$$\theta_j = \theta_j - \alpha\frac{\partial C}{\partial \theta_j} + \epsilon\Delta_{t-1}\theta_j$$</div>
+<p>
+Where all notation remains the same, except that <span class="math">\(\epsilon\)</span> is our momentum rate and <span class="math">\(\Delta_{t-1}\theta_j\)</span> refers to the weight change from the previous iteration. Thus, how much we change the weight <em>this</em> iteration partially depends on how much we changed the weight <em>last</em> iteration. And we can scale this term up or down by changing <span class="math">\(\epsilon\)</span></p>
+<div class="highlight"><pre><span></span><code><span class="n">function</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
-<span class="k">end</span><span class="p">;</span>
-</pre></div>
+<span class="n">end</span><span class="p">;</span>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>This will define the sigmoid activation function we will use for our neurons. Should be fairly self-explanatory.</p>
 <p>Now let's get to the meat of our training code:</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[299]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">epochs</span>
-    <span class="c">#forward propagation</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c">#random number between 1 and number of elements minus 1</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">s</span><span class="o">:</span><span class="n">m</span> <span class="c">#for every training element</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="o">:</span><span class="p">]</span> <span class="c">#set our expect output, y, to be the corresponding element in Y vector</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span> <span class="c">#update our context units to hold t-1&#39;s hidden layer output</span>
-        <span class="n">x1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="o">:</span><span class="p">]</span> <span class="c">#our single input value, from the X vector</span>
-        <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#add context units and bias unit to input layer; 5x1 vector</span>
-        <span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">a1</span> <span class="c">#theta1 = 5x3, a1 5x1. So theta1&#39; * a1 = 3x5 * 5x1 = 3x1 vector</span>
-        <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#calculate output, add bias to hidden layer; </span>
-        <span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c">#store the output values for next time step, but ignore bias</span>
-        <span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">a2</span> <span class="c">#theta2 = 4x1, a2 = 4x1. So theta2&#39; * a2 = 1x4 * 4x1 = 1x1 vector</span>
-        <span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="c">#compute final output</span>
-        <span class="c">#Ignore first output in training</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">epochs</span>
+    <span class="c1">#forward propagation</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">:(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c1">#random number between 1 and number of elements minus 1</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">s</span><span class="p">:</span><span class="n">m</span> <span class="c1">#for every training element</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span> <span class="c1">#set our expect output, y, to be the corresponding element in Y vector</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span> <span class="c1">#update our context units to hold t-1&#39;s hidden layer output</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span> <span class="c1">#our single input value, from the X vector</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c1">#add context units and bias unit to input layer; 5x1 vector</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="s1">&#39; * a1 #theta1 = 5x3, a1 5x1. So theta1&#39;</span> <span class="o">*</span> <span class="n">a1</span> <span class="o">=</span> <span class="mi">3</span><span class="n">x5</span> <span class="o">*</span> <span class="mi">5</span><span class="n">x1</span> <span class="o">=</span> <span class="mi">3</span><span class="n">x1</span> <span class="n">vector</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span> <span class="c1">#calculate output, add bias to hidden layer; </span>
+        <span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#store the output values for next time step, but ignore bias</span>
+        <span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="s1">&#39; * a2 #theta2 = 4x1, a2 = 4x1. So theta2&#39;</span> <span class="o">*</span> <span class="n">a2</span> <span class="o">=</span> <span class="mi">1</span><span class="n">x4</span> <span class="o">*</span> <span class="mi">4</span><span class="n">x1</span> <span class="o">=</span> <span class="mi">1</span><span class="n">x1</span> <span class="n">vector</span>
+        <span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="c1">#compute final output</span>
+        <span class="c1">#Ignore first output in training</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">s</span>
-            <span class="c">#calculate delta errors</span>
+            <span class="c1">#calculate delta errors</span>
             <span class="n">d3</span> <span class="o">=</span> <span class="p">(</span><span class="n">a3</span> <span class="o">-</span> <span class="n">y</span><span class="p">);</span>
             <span class="n">d2</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta2</span> <span class="o">*</span> <span class="n">d3</span><span class="p">)</span> <span class="o">.*</span> <span class="p">(</span><span class="n">a2</span> <span class="o">.*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">))</span>
-            <span class="c">#accumulate gradients</span>
-            <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">theta1_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="n">numHid</span><span class="p">,</span> <span class="o">:</span><span class="p">]</span> <span class="o">*</span> <span class="n">a1</span><span class="sc">&#39;)&#39;</span><span class="p">;</span>
-            <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">theta2_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d3</span> <span class="o">*</span> <span class="n">a2</span><span class="sc">&#39;)&#39;</span>
-        <span class="k">end</span>
-    <span class="k">end</span>
-    <span class="c">#calculate our weight updates</span>
+            <span class="c1">#accumulate gradients</span>
+            <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">theta1_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">numHid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">a1</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
+            <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">theta2_grad</span> <span class="o">+</span> <span class="p">(</span><span class="n">d3</span> <span class="o">*</span> <span class="n">a2</span><span class="s1">&#39;)&#39;</span>
+        <span class="n">end</span>
+    <span class="n">end</span>
+    <span class="c1">#calculate our weight updates</span>
     <span class="n">theta1_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change1</span><span class="p">;</span>
     <span class="n">theta2_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta2_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change2</span><span class="p">;</span>
-    <span class="c">#update the weights</span>
+    <span class="c1">#update the weights</span>
     <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">theta1_change</span><span class="p">;</span>
     <span class="n">theta2</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">-</span> <span class="n">theta2_change</span><span class="p">;</span>
-    <span class="c">#store the weight updates for next time (momentum method)</span>
+    <span class="c1">#store the weight updates for next time (momentum method)</span>
     <span class="n">last_change1</span> <span class="o">=</span> <span class="n">theta1_change</span><span class="p">;</span>
     <span class="n">last_change2</span> <span class="o">=</span> <span class="n">theta2_change</span><span class="p">;</span>
-    <span class="c">#reset gradients</span>
+    <span class="c1">#reset gradients</span>
     <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
     <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
-<span class="k">end</span>
-</pre></div>
+<span class="n">end</span>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>If you've gone through my tutorial on backpropagation and gradient descent, most of this code will look very familiar so I'm not going to explain every single line. I've also commented it well. But let's go over the important/new parts of the code.</p>
-<div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-</pre></div>
-<p>For every training iteration, we initialize s to be a random number between 1 and <code>(m - 1)</code> where <code>m</code> is the number of elements in $X$. This is sort of a mini-batch, stochastic gradient descent implementation because we're training on a random subset of our input sequence each training iteration. This will hopefully ensure our network learns how to actually compute <code>LEFTBIT</code> and not just memorize the original sequence we gave it to train on (which would be overfitting).</p>
-<div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+<div class="highlight"><pre><span></span><code><span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+
+<p>For every training iteration, we initialize s to be a random number between 1 and <code>(m - 1)</code> where <code>m</code> is the number of elements in <span class="math">\(X\)</span>. This is sort of a mini-batch, stochastic gradient descent implementation because we're training on a random subset of our input sequence each training iteration. This will hopefully ensure our network learns how to actually compute <code>LEFTBIT</code> and not just memorize the original sequence we gave it to train on (which would be overfitting).</p>
+<div class="highlight"><pre><span></span><code><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
 <span class="n">x1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="o">:</span><span class="p">]</span>
 <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-</pre></div>
-<p>This is where we build up our input layer. First we get the element from the input $X$ vector that we're currently training on and add it to our input layer $a1$, then we add in our context units, and finally add in the bias value of 1. The rest is ordinary feedforward logic.</p>
-<div class="highlight"><pre><span></span><span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
+</code></pre></div>
+
+<p>This is where we build up our input layer. First we get the element from the input <span class="math">\(X\)</span> vector that we're currently training on and add it to our input layer <span class="math">\(a1\)</span>, then we add in our context units, and finally add in the bias value of 1. The rest is ordinary feedforward logic.</p>
+<div class="highlight"><pre><span></span><code><span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+
 <p>We save the current hidden layer output in the <code>hid_last</code> vector that we defined and initialized outside of the training loop.</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">s</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">s</span>
+</code></pre></div>
+
 <p>this block calculates the network deltas and gradients (backpropagation) but not if this is the first element in the sequence because the network can't compute <code>LEFTBIT</code> on only 1 input bit. Thus is wouldn't make sense to calculate an error for the first bit when it's impossible for the RNN to get it correct.</p>
-<div class="highlight"><pre><span></span><span class="n">theta1_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change1</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="n">theta1_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change1</span><span class="p">;</span>
 <span class="n">theta2_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta2_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change2</span><span class="p">;</span>
 <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">theta1_change</span><span class="p">;</span>
 <span class="n">theta2</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">-</span> <span class="n">theta2_change</span><span class="p">;</span>
-</pre></div>
+</code></pre></div>
+
 <p>This is where we calculate the weight updates based on the learning rate alpha, the gradients, and the previous weight update (momentum method).</p>
-<p>To continue with the momentum method in the next iteration, we save how much we updated the weights in this iteration in our last_change vectors:</p>
-<div class="highlight"><pre><span></span><span class="n">last_change1</span> <span class="o">=</span> <span class="n">theta1_change</span>
+<p>To continue with the momentum method in the next iteration, we save how much we updated the weights in this iteration in our last_change vectors: </p>
+<div class="highlight"><pre><span></span><code><span class="n">last_change1</span> <span class="o">=</span> <span class="n">theta1_change</span>
 <span class="n">last_change2</span> <span class="o">=</span> <span class="n">theta2_change</span>
-</pre></div>
-<div class="highlight"><pre><span></span><span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
 <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
-</pre></div>
+</code></pre></div>
+
 <p>Here we reset the gradients for the next epoch (and thus training 'mini-batch'). We don't want to keep accumulating gradients forever. We reset them after accumulating gradients for each training sequence.</p>
 <hr>
 <p>Okay, so that is how we implement and train our simple RNN to compute <code>LEFTBIT</code> on an arbitrary binary sequence.
 After training it, let's run the network forward over a new binary sequence to see if it learned.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[300]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">[]</span> <span class="c">#vector to store the output values of the network</span>
-<span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c">#Arbitrary new input data to test our network</span>
-<span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">size</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c">#for every training element</span>
+<div class="highlight"><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">Float64</span><span class="p">[]</span> <span class="c1">#vector to store the output values of the network</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#Arbitrary new input data to test our network</span>
+<span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#for every training element</span>
     <span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
-    <span class="n">x1</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="o">:</span><span class="p">]</span>
-    <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#add bias, context units to input layer</span>
-    <span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">a1</span>
-    <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">);</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#output hidden layer</span>
-    <span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">a2</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c1">#add bias, context units to input layer</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">theta1</span><span class="s1">&#39; * a1</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">);</span> <span class="mi">1</span><span class="p">]</span> <span class="c1">#output hidden layer</span>
+    <span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="n">theta2</span><span class="s1">&#39; * a2</span>
     <span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span>
-    <span class="n">push!</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">a3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c">#add current output to results vector</span>
-<span class="k">end</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Results:  &quot;</span>  <span class="o">*</span> <span class="n">string</span><span class="p">(</span><span class="n">int</span><span class="p">(</span><span class="n">round</span><span class="p">(</span><span class="n">results</span><span class="p">))))</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Expected: &quot;</span> <span class="o">*</span> <span class="n">string</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
-</pre></div>
+    <span class="n">push</span><span class="err">!</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">a3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#add current output to results vector</span>
+<span class="n">end</span>
+<span class="n">println</span><span class="p">(</span><span class="s2">&quot;Results:  &quot;</span>  <span class="o">*</span> <span class="n">string</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">results</span><span class="p">))))</span>
+<span class="n">println</span><span class="p">(</span><span class="s2">&quot;Expected: &quot;</span> <span class="o">*</span> <span class="n">string</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Results:  [0,1,0,0,1,1,0]
+<div class="highlight"><pre><span></span><code>Results:  [0,1,0,0,1,1,0]
 Expected: [0,1,0,0,1,1,0]
-</pre>
-</div>
-</div>
+</code></pre></div>
 
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><b>It worked!</b> As you can see our neural network output exactly what we expected. Keep in mind we ignore the first bit in the output vector. Although in this case the network happened to output 0 as the first bit like we defined in our $Y$ vector, it could have also output 1 and it would still be correct since the rest of the output sequence is indeed the computed <code>LEFTBIT</code> of each sequential pair of bits in our input vector.</p>
+<p><b>It worked!</b> As you can see our neural network output exactly what we expected. Keep in mind we ignore the first bit in the output vector. Although in this case the network happened to output 0 as the first bit like we defined in our <span class="math">\(Y\)</span> vector, it could have also output 1 and it would still be correct since the rest of the output sequence is indeed the computed <code>LEFTBIT</code> of each sequential pair of bits in our input vector.</p>
 <p>I literally copy and pasted the code from above in our training code to just run the network forward but added a <code>results</code> vector to store the sequence of output results.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Closing-Words...">Closing Words...<a class="anchor-link" href="#Closing-Words...">&#182;</a></h4>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Hopefully this was easy to follow. This was really a bare-bones implementation of a simple recurrent neural network (other than the fact we added in the momentum method to help it learn better). To take this further, I suggest you try defining a cost function (e.g. the cross-entropy cost function) and graph the cost versus the epochs. Then you can vary the hyperparameters of the network (e.g. $\alpha, \epsilon, $ the number of hidden units, etc) and see how it effects the gradient descent.</p>
+<h4>Closing Words...</h4>
+<p>Hopefully this was easy to follow. This was really a bare-bones implementation of a simple recurrent neural network (other than the fact we added in the momentum method to help it learn better). To take this further, I suggest you try defining a cost function (e.g. the cross-entropy cost function) and graph the cost versus the epochs. Then you can vary the hyperparameters of the network (e.g. $\alpha, \epsilon, $ the number of hidden units, etc) and see how it effects the gradient descent. </p>
 <p>I also really hope you can appreciate the beauty and value of Julia as a language for modern scientific computing. I will continue to write articles using Python but will likely increasingly use Julia.</p>
 <p>As always, please email me (outlacedev@gmail.com) to let me know about errors or if you have other comments or questions.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="References:">References:<a class="anchor-link" href="#References:">&#182;</a></h3>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3>References:</h3>
 <ol>
-<li><a href="https://www.youtube.com/watch?v=e2sGq_vI41s">https://www.youtube.com/watch?v=e2sGq_vI41s</a></li>
-<li><a href="http://iamtrask.github.io/2015/07/12/basic-python-network/">http://iamtrask.github.io/2015/07/12/basic-python-network/</a> </li>
+<li>https://www.youtube.com/watch?v=e2sGq_vI41s</li>
+<li>http://iamtrask.github.io/2015/07/12/basic-python-network/ </li>
 </ol>
-
-</div>
-</div>
-
-
-
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
         "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
         "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: 'center'," +
-        "    displayIndent: '0em'," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
         "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
         "    tex2jax: { " +
-        "        inlineMath: [ ['$','$'] ], " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
         "        displayMath: [ ['$$','$$'] ]," +
         "        processEscapes: true," +
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
-        " linebreaks: { automatic: true, width: '95% container' }, " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
-        "    } " +
-        "}); ";
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>

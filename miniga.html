@@ -43,78 +43,50 @@
 
 
 
-                <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+                <h1>Genetic Algorithm in 15 lines of Python code</h1>
 <h4>A simple yet powerful genetic algorithm implementation used to train a neural network in 15 lines of code.</h4>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p style="font-size:smaller;"><b>Disclaimer: </b> I am not a machine learning expert by any means, I mostly do web development, so this is not my forte at all, but I have enjoyed messing around writing basic neural nets and genetic algorithms and am just trying to share what little I've learned to other neophytes out there.</p>
+
 <p><b>Summary:</b>
 This is a spinoff of a really great tutorial called "A Neural Network in 11 lines of Python" found here: < http://iamtrask.github.io/2015/07/12/basic-python-network/ > So please go through that article first otherwise this may not make any sense. <br />
 Here I will show you how I wrote a basic genetic algorithm (GA) that finds an optimal set of weights to train the neural network. I'm not going to go into detail about what a genetic algorithm is, so if you're already not familiar with them, please do some googling. 
 <p style="font-size:small;">By the way, GAs are generally much slower than good ol' gradient descent, but I think applying GAs to a simple neural net is a more fun way to learn it. Also, GAs may be good for finding an optimal set of <em>hyperparameters</em> for a neural net (e.g. the net architecture).</p>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+
 <h3>Just Give Me The Code:</h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
+
+
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
-	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
-	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
-	<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-</pre></div>
+    <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+    <span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+    <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+    <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><br />Ok, so I'm assuming that code is completely not helpful at this point, and in fact, it won't even run if you tried to copy and paste and run it because you also need the code for the Neural Network, which I stored in a separate file and imported. Let's first talk about the general steps in implementing a genetic algorithm and then we'll break down the code line by line, add in some print() statements to see what's going on, and maybe even make some fancy graphs.<p>Essentially, a genetic algorithm is a search algorithm that will hopefully find an optimal solution through a process that simulates natural selection and evolution. Here's the overall flow for how they work:</p></p>
 
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ul>
-<li>We generate a population of random potential solutions</li>
-<li>Then we iterate through this population and assess the fitness of (i.e. how good of a solution) each solution</li>
-<li>We prefentially select solutions with higher fitness to survive and make it to the next generation.
-Solutions with higher fitness have a higher probability of being selected</li>
-<li>These "winner" solutions then "mate" and produce offspring solutions. For example, if our solutions are simply 
-vectors of integers, then mating vector1 with vector2 involves taking a few elements from vector1 and combining it with a few elements of vector2 to make a new offspring vector of the same dimensions. Vector1: [1 2 3], Vector2: [4 5 6]. Vector1 mates with Vector2 to produce [4 5 3] and [1 2 6]</li>
-<li>So now we have a new population with the top solutions from the last generation along with new offspring solutions, at this point, we will iterate over our solutions and randomly mutate some of them to make sure to introduce new "genetic diversity" into every generation to prevent premature convergence on a local optimum.</li>
-<li>Repeat this process for X number of generations or until we have a sufficiently good solution</li>
-</ul>
+<br />Ok, so I'm assuming that code is completely not helpful at this point, and in fact, it won't even run if you tried to copy and paste and run it because you also need the code for the Neural Network, which I stored in a separate file and imported. Let's first talk about the general steps in implementing a genetic algorithm and then we'll break down the code line by line, add in some print() statements to see what's going on, and maybe even make some fancy graphs.<p>Essentially, a genetic algorithm is a search algorithm that will hopefully find an optimal solution through a process that simulates natural selection and evolution. Here's the overall flow for how they work:</p>
 
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>As a quick review, the iamtrask article shows you how to implement a really simple 2-layer (1 input layer, 1 output layer) neural network that is trained to solve this problem:</p>
-<p><table class="tg" style="width: 234px; margin-right: 65vw;">
++ We generate a population of random potential solutions
++ Then we iterate through this population and assess the fitness of (i.e. how good of a solution) each solution
++ We prefentially select solutions with higher fitness to survive and make it to the next generation.
+Solutions with higher fitness have a higher probability of being selected
++ These "winner" solutions then "mate" and produce offspring solutions. For example, if our solutions are simply 
+vectors of integers, then mating vector1 with vector2 involves taking a few elements from vector1 and combining it with a few elements of vector2 to make a new offspring vector of the same dimensions. Vector1: [1 2 3], Vector2: [4 5 6]. Vector1 mates with Vector2 to produce [4 5 3] and [1 2 6]
++ So now we have a new population with the top solutions from the last generation along with new offspring solutions, at this point, we will iterate over our solutions and randomly mutate some of them to make sure to introduce new "genetic diversity" into every generation to prevent premature convergence on a local optimum.
++ Repeat this process for X number of generations or until we have a sufficiently good solution
+
+As a quick review, the iamtrask article shows you how to implement a really simple 2-layer (1 input layer, 1 output layer) neural network that is trained to solve this problem:
+<table class="tg" style="width: 234px; margin-right: 65vw;">
   <tbody><tr>
     <th class="tg-5rcs" colspan="3">Inputs</th>
     <th class="tg-5rcs">Output</th>
@@ -144,68 +116,26 @@ vectors of integers, then mating vector1 with vector2 involves taking a few elem
     <td class="tg-4kyz">0</td>
   </tr>
 </tbody></table>
-&lt;/p&gt;</p>
+</p>
 
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>As you can see, the output simply depends on whether the first input is a 1 or not. The 2nd input is irrelevant and the 3rd input is our bias (explained elsewhere).</p>
 <p>If you train the 2-layer neural net (thus one set of weights) using gradient descent using the implementation in the iamtrask article, you will get a set of weights close to this:</p>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<blockquote><p>[[ 9.67299303],[-0.2078435],[-4.62963669]]</p>
-</blockquote>
 
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<blockquote>
+<p>[[ 9.67299303],[-0.2078435],[-4.62963669]]</p>
+</blockquote>
 <p>And if you calculate the cost using these weights (the cost function is a simple difference between expected and actual output values), you get...</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<blockquote><p>Cost: 0.0557587344696</p>
+<blockquote>
+<p>Cost: 0.0557587344696</p>
 </blockquote>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Pretty low right? Now just to jump ahead a bit, when I tuned the genetic algorithm and ran it a couple of times, it found a completely different set of weights:</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<blockquote><p>[[  3.09686945e+05  -7.88485054e-03  -1.67477116e+03]]
+<blockquote>
+<p>[[  3.09686945e+05  -7.88485054e-03  -1.67477116e+03]]
 <br />Cost: 0.0</p>
 </blockquote>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Obviously these weights resulted in a significantly lower cost (better fitness). In all honesty however, for this simplistic problem, the difference in cost is pretty inconsequential. In more complex problems, a cost that low is probably resulting in overfitting. Not to mention, genetic algorithms almost certainly will take longer to converge than gradient descent. But let's ignore all those details, we just want to build a genetic algorithm because they're cool.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Before I jump into the details of the genetic algorithm, I want to revisit the neural net. Here's the code for the neural net I implemented, which is an adaptation from the one by iamtrask:</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#training data X</span>
@@ -213,419 +143,111 @@ vectors of integers, then mating vector1 with vector2 involves taking a few elem
 <span class="n">syn0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1">#randomize intial weights (Theta)</span>
 
 <span class="k">def</span> <span class="nf">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span> <span class="c1">#this runs our net and returns the output</span>
-	<span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span> <span class="c1">#our cost function, simply determines the arithmetic difference between the expected y and our actual y</span>
-	<span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
-	<span class="n">hThetaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
-	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">hThetaX</span><span class="p">))</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">hThetaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">hThetaX</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">x</span><span class="p">))</span> <span class="c1">#Just our run-of-the-mill sigmoid function</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>You should be able to figure this out if you've run through the iamtrask article or already have an understanding of neural nets. Just a note: I call the weights Theta. Let's go ahead and run this network just to make sure it's working right.</p>
+<div class="highlight"><pre><span></span><code><span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">syn0</span><span class="p">)</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">syn0</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>array([ 0.31364485])
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>array([ 0.31364485])</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>We expect to get about [ 0 ] for an input of [0,1,1], but obviously when we use random weights, that's not likely to happen. Let's try again with those weights I got from doing gradient descent (not shown here).</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">9.67299303</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.2078435</span><span class="p">],[</span><span class="o">-</span><span class="mf">4.62963669</span><span class="p">]])</span>
+<div class="highlight"><pre><span></span><code><span class="n">optimal_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">9.67299303</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.2078435</span><span class="p">],[</span><span class="o">-</span><span class="mf">4.62963669</span><span class="p">]])</span>
 <span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
+<div class="highlight"><pre><span></span><code>array([ 0.00786466])
+</code></pre></div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>array([ 0.00786466])</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>As you can see, we get a value pretty close to 0, as expected. Nice. Okay, so now let's try the weights I got from running the genetic algorithm.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">optimal_theta_ga</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.09686945e+05</span><span class="p">,</span><span class="o">-</span><span class="mf">7.88485054e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.67477116e+03</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="n">optimal_theta_ga</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.09686945e+05</span><span class="p">,</span><span class="o">-</span><span class="mf">7.88485054e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.67477116e+03</span><span class="p">])</span>
 <span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta_ga</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/IPython/kernel/__main__.py:14: RuntimeWarning: overflow encountered in exp
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+<div class="highlight"><pre><span></span><code>/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/IPython/kernel/__main__.py:14: RuntimeWarning: overflow encountered in exp
 
 
 
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>0.0</pre>
-</div>
 
-</div>
+0.0
+</code></pre></div>
 
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Wow! The result we get here is so close to zero we get an overflow warning. Just ignore that, the point is, the error/cost is really, really low. (Again, this is not necessarily a good thing...becauase of potential overfitting, but for this particular problem, overfitting is fine). Just to make things really clear, let's take a look at what these weights are doing diagramatically.</p>
 <div>
 <img src="images/NNDiagram1.png" width="200px" style="display:inline-block;" /><img style="display:inline-block;"  src="images/NNDiagram2.png" width="200px" />
 </div>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+
 <p>So as you can see on the right, whenever the bottom (left-most) input is 1, a really, really big number gets sent over to our sigmoid function, which will of course return something very close to 1.</p>
 <p>Alright, so enough about the neural network. Let's go line by line with the genetic algorithm (skipping imports).</p>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1">#These are just some parameters for the GA, defined below in order:</span>
+
+<div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1">#These are just some parameters for the GA, defined below in order:</span>
 <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Nothing too interesting there, but just noting that params[3] (solution length) refers to the number of elements in each individual solution. Since our solutions are weights to the 2-layer neural net, each solution is a 3 element vector (numpy array). Also need to note the last parameter, params[4] refers to how many solutions we will pick as winners from each generation to populate the new generation. So out of total population of 100, every generation we will preferentially pick the top 20 solutions, populate the new generation with them and their offspring.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>The top line is the most important here. Basically we're creating a matrix 100x3 with an initial population of random solutions. We're using the np.arange() function to create a bunch of values -15, -14.99, -14.89....15  in order in a long array, then we use np.random.choice() to randomly choose 100x3 = 300 of them to build the 100x3 matrix of initial solutions. This isn't the most computationally efficient way to do things, but I've found it works really well. This is certainly not the only way to do it, and I encourage you to mess around with different ways to intialize your population. It turns out this step is really important to how well it does. If your initial population is not well randomized and not very diverse, you won't get good results.</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+    <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>params[2] is our number of generations, so this is our main, outer loop to go through the whole flow each generation.
 Our first step is to calculate the cost/error of each solution (there's 100) and add it to a matrix called <b>fitVec</b>. Each element of fitVec is an array consisting of the index of the solution in curPop and its cost, e.g. [0, 2.54] means that the 0th element in curPop (first solution) has an error of 2.54</p>
+<div class="highlight"><pre><span></span><code><span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>We initialize a new matrix called <b>winners</b>; this will hold our winning solutions temporarily until we move them to the next generation.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span>	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Now we're in a loop to populate the winners matrix. We use np.random.choice() to randomly pick params[4]/2 (20/2=10) solutions. We're gonna use a <b>tournament style selection</b> process where we randomly choose a subset of our population, and then pick the best solution from that subset and add it to our winners array. Obviously higher fitness (lower error) solutions have a higher chance of making it to the winners array, but we don't just pick the top 20 solutions because we want to maintain some genetic diversity in each generation, so have a few higher error solutions is generally a good thing.</p>
+<div class="highlight"><pre><span></span><code>        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span>        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>So the array 'selected' contains 10 random solutions (actually the indices to 10 solutions) from our population. Now we reference fitVec to find the actual elements, use np.argmin() to pick the one with the smallest error/cost and assign the index of that winning element to a variable, 'wnr'</p>
+<div class="highlight"><pre><span></span><code>        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span>        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Then we reference the winner in curPop, the array of all solutions of the current generation, and copy it to our 'winners' array.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span>	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>nextPop is the array containing all the solutions for the next generation. We populate the first 20 elements of nextPop with our winning solutions from 'winners' array.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span>	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Okay, yeah this is a really long line and it's not very readable. I kind of cheated to make this all in 15 lines.
 This line is our <b>mating</b> process, and it's probably the most complicated part of a genetic algorithm. Let's start with the core of this nasty line. <br /></p>
-<blockquote><p><code>np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0)</code> <br /></p>
+<blockquote>
+<p><code>np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0)</code> <br /></p>
 </blockquote>
 <p>Basically np.repeat() will duplicate our 20x3 matrix to create a 80x3 matrix. We already populated the first 20 elements of nextPop with the winners from last generation. Now we want to populate the last 80 elements with their offspring.</p>
-<blockquote><p><code>np.random.permutation(np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0))</code></p>
+<blockquote>
+<p><code>np.random.permutation(np.repeat(winners[:, x], ((params[0] - len(winners))/len(winners)), axis=0))</code></p>
 </blockquote>
 <p>Now we just use np.random.permutation() to shuffle the columns of this next 80x3 matrix. This is how we accomplish the crossover functional. Imagine we have a 3x3 matrix (2 solutions) like this:<br /> <code>np.array([[1,2,3],[4,5,6],[7,8,9]])</code> , when we run the permutation function, it will change it something like:<br /> <code>np.array([[7,5,3],[1,8,9],[4,2,3]])</code>
 <br />Go look at the numpy documentation to learn more about permutation if you still don't understand how it's working here.</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span>	<span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Ahh. Our last line of code! This is our <b>mutation</b> process. I'm using a list comprehension to build a matrix of the same dimensions as nextPop, but filled with 1s. However, with a probability of params[1] (our mutation rate), we randomly "mutate" some of the elements. Our mutation is basically using a random value from numpy.random.normal() instead of 1. So we end up with a matrix like this (I've shrunk it to 10x3 to make it fit here and changed the mutation rate to 20% so you can see more mutated elements):</p>
+<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.20</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
 
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.20</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>matrix([[ 1.        ,  1.        , -0.274611  ],
+<div class="highlight"><pre><span></span><code>matrix([[ 1.        ,  1.        , -0.274611  ],
         [ 1.        ,  1.        ,  1.        ],
         [ 1.        ,  1.        ,  1.        ],
         [ 1.        ,  0.05055137,  1.98058061],
@@ -634,72 +256,40 @@ This line is our <b>mating</b> process, and it's probably the most complicated p
         [ 1.        ,  1.        ,  1.        ],
         [ 1.        ,  1.        , -1.96160288],
         [ 1.        ,  1.        ,  1.0381105 ],
-        [-0.64245344,  2.04278346,  1.        ]])</pre>
-</div>
+        [-0.64245344,  2.04278346,  1.        ]])
+</code></pre></div>
 
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Then we multiply this matrix (element-wise multiplication) to our nextPop matrix. Most of the time we're multiplying each element in nextPop by 1, so leaving them unchanged, but sometimes we multiply by one of the mutated values and thus will randomly change some elements in nextPop. This adds genetic diversity to our next generation. So now we've filled up nextPop with a new generation of higher fitness solutions. We just repeat this process for how ever many generations we defined in params.</p>
 <p><h4>Alright, so we're done! That's it! We made a genetic algorithm that trains a neural network, cool!</h4></p>
 <p>...Okay, yeah technically we did, but let's actually watch it do something. Here we go...</p>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#initialize current population to random values within range</span>
 <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="c1">#1st col is indices, 2nd col is cost</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span> <span class="c1">#iterate through num generations</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c1">#Create vec of all errors from cost function</span>
-	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(Gen: #</span><span class="si">%s</span><span class="s2">) Total error: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])))</span>
-	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
-	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
-	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
-	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c1">#randomly mutate part of the population</span>
-	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+    <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c1">#Create vec of all errors from cost function</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(Gen: #</span><span class="si">%s</span><span class="s2">) Total error: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])))</span>
+    <span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+    <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
+    <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
+    <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c1">#randomly mutate part of the population</span>
+    <span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
 
 <span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>(Gen: #0) Total error: 360.621647726
+<div class="highlight"><pre><span></span><code>(Gen: #0) Total error: 360.621647726
 
 (Gen: #1) Total error: 164.147038902
 
@@ -732,294 +322,70 @@ hThetaX =
  [ 1.]
  [ 0.]
  [ 1.]]
-</pre>
-</div>
-</div>
+</code></pre></div>
 
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><h3>Sweet!</h3>
-Looks like it converged, finding a solution with a cost of only 0.007, pretty close to the error of the solution found with gradient descent. Notice I only ran it for 10 generations 1) because clearly that's all it takes and 2) because I didn't want a 20 page long document here.</p>
+<h3>Sweet!</h3>
+<p>Looks like it converged, finding a solution with a cost of only 0.007, pretty close to the error of the solution found with gradient descent. Notice I only ran it for 10 generations 1) because clearly that's all it takes and 2) because I didn't want a 20 page long document here.</p>
 <p><h2>Where to go from here?</h2>
 First off, thanks. If you made it this far, I must've done something right. <br />
 But if you want to do more, then I really encourage you to play around with the parameters, maybe change up the neural network, or change the neural network cost function, etc and see what happens. The best way to learn is to get your hands dirty. Keep in mind this GA was kind of hard-wired for our little neural net by iamtrask, but if you understand the concepts and methods, you should be able to adapt it to more complex problems.
 </p>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+
 <h3>Bonus! Let's graph the population errors vs the generation #</h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
 
-     </div>
-</div>
-</div>
-</div>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#initialize current population to random values within range</span>
 <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="c1">#1st col is indices, 2nd col is cost</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span> <span class="c1">#iterate through num generations</span>
-	<span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c1">#Create vec of all errors from cost function</span>
-	<span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
-	<span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
-	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
-		<span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-		<span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-		<span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-	<span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
-	<span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
-	<span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c1">#randomly mutate part of the population</span>
-	<span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
+    <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span> <span class="c1">#Create vec of all errors from cost function</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">#20x2</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span> <span class="c1">#for n in range(10)</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+    <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span> <span class="c1">#populate new gen with winners</span>
+    <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span> <span class="c1">#Populate the rest of the generation with offspring of mating pairs</span>
+    <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="c1">#randomly mutate part of the population</span>
+    <span class="n">curPop</span> <span class="o">=</span> <span class="n">nextPop</span>
 
 <span class="n">best_soln</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</pre></div>
+</code></pre></div>
 
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Sol&#39;n:
-[[ 625.07750262  -48.12579247 -532.48348958]]
-Cost:1.11272735801e-231
-When X = 
-[[0 1]
- [1 1]
- [0 0]
- [1 0]] 
-hThetaX = 
-[[ 0.]
- [ 1.]
- [ 0.]
- [ 1.]]
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="highlight"><pre><span></span><code><span class="nv">Best</span> <span class="nv">Sol</span><span class="s1">&#39;</span><span class="s">n:</span>
+[[ <span class="mi">625</span>.<span class="mi">07750262</span>  <span class="o">-</span><span class="mi">48</span>.<span class="mi">12579247</span> <span class="o">-</span><span class="mi">532</span>.<span class="mi">48348958</span>]]
+<span class="nv">Cost</span>:<span class="mi">1</span>.<span class="mi">11272735801</span><span class="nv">e</span><span class="o">-</span><span class="mi">231</span>
+<span class="nv">When</span> <span class="nv">X</span> <span class="o">=</span> 
+[[<span class="mi">0</span> <span class="mi">1</span>]
+ [<span class="mi">1</span> <span class="mi">1</span>]
+ [<span class="mi">0</span> <span class="mi">0</span>]
+ [<span class="mi">1</span> <span class="mi">0</span>]] 
+<span class="nv">hThetaX</span> <span class="o">=</span> 
+[[ <span class="mi">0</span>.]
+ [ <span class="mi">1</span>.]
+ [ <span class="mi">0</span>.]
+ [ <span class="mi">1</span>.]]
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>/Users/brandonbrown/Desktop/Projects/MiniGAandNN/NeuralNet.py:15: RuntimeWarning: overflow encountered in exp
-  def sigmoid(x): return 1 / (1 + np.exp(- x))
-</pre>
-</div>
-</div>
+<span class="o">/</span><span class="nv">Users</span><span class="o">/</span><span class="nv">brandonbrown</span><span class="o">/</span><span class="nv">Desktop</span><span class="o">/</span><span class="nv">Projects</span><span class="o">/</span><span class="nv">MiniGAandNN</span><span class="o">/</span><span class="nv">NeuralNet</span>.<span class="nv">py</span>:<span class="mi">15</span>: <span class="nv">RuntimeWarning</span>: <span class="nv">overflow</span> <span class="nv">encountered</span> <span class="nv">in</span> <span class="nv">exp</span>
+  <span class="nv">def</span> <span class="nv">sigmoid</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>: <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="ss">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nv">np</span>.<span class="nv">exp</span><span class="ss">(</span><span class="o">-</span> <span class="nv">x</span><span class="ss">))</span>
+</code></pre></div>
 
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
-LWfQS1LL/X8e/85GQ5DVkwAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img alt="png" src="Mini%20GA%20and%20NN_files/Mini%20GA%20and%20NN_50_2.png"></p>
 <p>Looks like we converge after just <b>4</b> generations! Also notice we get these little bumps in error every 10 generations or so, likely due to a particularly dramatic mutation round.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-
-
-
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: 'center'," +
-        "    displayIndent: '0em'," +
-        "    showMathMenu: true," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['$','$'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        " linebreaks: { automatic: true, width: '95% container' }, " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
-        "    } " +
-        "}); ";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
                 <div class="clear"></div>
 
                 <div class="info">

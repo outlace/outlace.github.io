@@ -328,10 +328,10 @@ code {
     font-size: 12.6px;
     line-height: 18px;
     padding-bottom: 2px;
-    padding-left: 4px;
+    padding-left: 0px;
     padding-right: 4px;
     padding-top: 2px;
-    white-space: nowrap;
+    white-space: pre;
 }
 
 footer {
