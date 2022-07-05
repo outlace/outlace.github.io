@@ -163,18 +163,18 @@ comment
 
 <p>It works, if we subtract one from 2 we get 1. Notice that the expression <code>zero.succ.succ</code> is equivalent to <code>succ (succ zero)</code> but easier to read as it avoids parentheses. Again, this is one challenge in learning Lean; there are many ways to do the same thing. But ultimately these are ways to save keystrokes and improve readability, at the expense of taking longer to learn.</p>
 <p>We can also write a function where we explicitly name the inputs and then pattern match on them:</p>
-<div class="highlight"><pre><span></span><code><span class="n">def</span> <span class="n">sub_one</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span>
-  <span class="k">match</span> <span class="n">a</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="n">zero</span> <span class="o">=&gt;</span> <span class="n">zero</span>
-  <span class="o">|</span> <span class="n">succ</span> <span class="n">b</span> <span class="o">=&gt;</span> <span class="n">b</span>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">sub_one</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">nat</span> <span class="kt">:=</span>
+  <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">zero</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="n">b</span>
 </code></pre></div>
 
 <p>In this style we name the inputs and annotate their types and then we give the output type after the last free colon.</p>
 <p>Now let's define the addition function on natural numbers.</p>
-<div class="highlight"><pre><span></span><code><span class="n">def</span> <span class="n">add</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span>
-  <span class="k">match</span> <span class="n">b</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="n">zero</span> <span class="o">=&gt;</span> <span class="n">a</span>
-  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="n">succ</span> <span class="o">(</span><span class="n">add</span> <span class="n">a</span> <span class="n">c</span><span class="o">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">add</span> <span class="p">(</span><span class="n">a</span> <span class="n">b</span> <span class="kt">:</span> <span class="n">nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">nat</span> <span class="kt">:=</span>
+  <span class="n">match</span> <span class="n">b</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">a</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="ow">=&gt;</span> <span class="n">succ</span> <span class="p">(</span><span class="n">add</span> <span class="n">a</span> <span class="n">c</span><span class="p">)</span>
 </code></pre></div>
 
 <p>We define our function <code>add</code> to take two inputs named <code>a</code> and <code>b</code> and both are of type <code>nat</code> so we include them together separated by a space. The output type of our function is also of type <code>nat</code>. We then match the pattern of input <code>b</code> to define the computation of the function.</p>
