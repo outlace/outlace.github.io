@@ -63,7 +63,7 @@
 <span class="nf">end</span> <span class="n">nat</span>
 </code></pre></div>
 
-<p>The namespace section is what is sounds like and works similarly to how namespaces work in other programming languages.</p>
+<p>The namespace section is what it sounds like and works similarly to how namespaces work in other programming languages. Outside the namespace you have to refer to identifiers inside the namespace by prefixing <code>[namespace name].[identifier]</code> (without the brackets).</p>
 <p>First, the keyword <strong><em>inductive</em></strong> means we are defining a a new (inductive) type. In Lean's type theory, there are basically just two classes of types, inductive types and function types, so we will use <strong><em>inductive</em></strong> a lot.</p>
 <p>After the keyword <strong><em>inductive</em></strong> comes the name of the type we are defining, in this case, we are calling it <code>nat</code>, for natural numbers. After the name of the type comes a colon and the keyword <strong><em>Type</em></strong>. </p>
 <p>Recall, <em>every expression in Lean must have a type</em>, even the new type we are defining must itself be assigned a type. So in general, new inductive types will by default be assigned the type <strong><em>Type</em></strong>, which is an alias for <strong><em>Type 0</em></strong>, because if you ask Lean what the type of <strong><em>Type</em></strong> is, it must give you an answer, so it just creates an infinite hierarchy of types <strong><em>Type : Type 1, Type 1 : Type 2</em></strong> etc., meaning that the type of Type is Type 1.</p>
