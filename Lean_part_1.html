@@ -4,7 +4,7 @@
     
         <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Δ ℚuantitative √ourney | Numbers in Lean (Part 1)</title>
+    <title>Δ ℚuantitative √ourney | Learning Lean (Part 1)</title>
     <link rel="shortcut icon" type="image/png" href="http://outlace.com/favicon.png">
     <link rel="shortcut icon" type="image/x-icon" href="http://outlace.com/favicon.ico">
     <link href="http://outlace.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
@@ -38,7 +38,7 @@
 
             <article class="post">
                 <h2 class="title">
-                    <a href="http://outlace.com/Lean_part_1.html" rel="bookmark" title="Permanent Link to &quot;Numbers in Lean (Part 1)&quot;">Numbers in Lean (Part 1)</a>
+                    <a href="http://outlace.com/Lean_part_1.html" rel="bookmark" title="Permanent Link to &quot;Learning Lean (Part 1)&quot;">Learning Lean (Part 1)</a>
                 </h2>
 
 
@@ -109,7 +109,9 @@ comment
 <span class="o">|</span> <span class="n">succ</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span>
 </code></pre></div>
 
-<p>So after the <code>where</code> keyword, we start a new line beginning with the pipe <code>|</code> character. This is where we start to define the <strong><em>terms</em></strong> (aka elements, values or members) of our new type. First, we invent a name for a value of type <code>Nat</code>, in this case I am declaring that the string of characters <code>zero</code> is hereby defined to be a value (or term) of type <code>Nat</code>. We could stop here and we'd have a new (inductive) type with a single value, but that wouldn't help us create numbers, which we expect to be indefinite (infinite).</p>
+<p>So after the <code>where</code> keyword, we start a new line beginning with the pipe <code>|</code> character. Each line beginning with <code>|</code> is called a <em>constructor</em> since these lines specify how to construct terms (aka elements, values or members) of the new inductive type.</p>
+<p>First, we invent a name for a value of type <code>Nat</code>, in this case I am declaring that the string of characters <code>zero</code> is hereby defined to be a term (or value) of type <code>Nat</code>. </p>
+<p>We could stop here and we'd have a new (inductive) type with a single value, but that wouldn't help us create numbers, which we expect to be indefinite (infinite).</p>
 <p>Next, we start a new line beginning with a pipe, and this time instead of declaring a new term of type <code>Nat</code>, we declare the first function that operates on terms of type <code>Nat</code>. We call this function <code>succ</code> (short for successor). We know that <code>succ</code> is a function and not a term because we assign it the type <code>Nat → Nat</code> after the colon. Whenever you see the pattern <em>some type</em> → <em>some type</em>, you're looking at a function type. </p>
 <p>Functions are programs that map terms from one type to another (or the same) type. In this case, <code>succ</code> is a function that does not compute anything, in fact it doesn't do anything at all. All we can do with it is <strong><em>apply</em></strong> it.</p>
 <div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">check</span> <span class="kt">Nat</span><span class="o">.</span><span class="n">succ</span> <span class="p">(</span><span class="kt">Nat</span><span class="o">.</span><span class="n">succ</span> <span class="kt">Nat</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span>
@@ -130,25 +132,38 @@ comment
 <p>Let's define our first function on our new <code>Nat</code> type. In Lean, all functions are pure as we discussed earlier, and they are also <em>total</em>. A total function is one where every possible input term gets mapped to an output term. That means for a function of type <code>Nat → Nat</code>, every natural number must get mapped to some output term that is also a natural number. You cannot have input terms that are left undefined. In mathematics, if we treat division as a function, we say that <span class="math">\(\frac{x}{0}\)</span> is <em>undefined</em>. In Lean, that is not acceptable, even <span class="math">\(\frac{x}{0}\)</span> is defined.</p>
 <p>Total functions can sometimes be an onerous constraint when using Lean for non-mathematical purposes, especially as you have to prove to Lean that your function is total, so Lean does provide a way to define <em>partial</em> functions, but we will not address that yet.</p>
 <p>Here's our first function:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">nat_id</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span> <span class="n">fun</span> <span class="n">x</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="ow">=&gt;</span> <span class="n">x</span>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">natId</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span> <span class="n">fun</span> <span class="n">x</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="ow">=&gt;</span> <span class="n">x</span>
 </code></pre></div>
 
-<p>First we define a new function using the <code>def</code> keyword, then the name of our function, in this case we're calling it <code>nat_id</code>, then we have a colon, which indicates we're going to be assigning a type and after the colon we have the type <code>Nat → Nat</code>. Following that, we have the symbol <code>:=</code> which is an assignment operator, and then we have the body of the function which is <code>fun x : Nat =&gt; x</code></p>
+<p>First we define a new function using the <code>def</code> keyword, then the name of our function, in this case we're calling it <code>natId</code>, then we have a colon, which indicates we're going to be assigning a type and after the colon we have the type <code>Nat → Nat</code>. Following that, we have the symbol <code>:=</code> which is an assignment operator, and then we have the body of the function which is <code>fun x : Nat =&gt; x</code></p>
 <p>This last part is called an anonymous function (or lambda function). An anonymous function is a function expression without giving it a name. As is clear, an anonymous function is declared using the <code>fun</code> keyword, following by an identifier (can be more than one) representing the input, then its type annotation, then the <code>=&gt;</code> symbol following by the function body, which in this case just returns the input <code>x</code>, and hence this is defining the identity function that does nothing but return its input unadulterated.</p>
-<p>One challenge when getting started with Lean is that Lean has a lot of syntactic sugar, so there are often multiple ways to express the same thing. Here are 2 other ways we could have defined the same identity function:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">nat_id2</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span>
+<p>One challenge when getting started with Lean is that Lean has a lot of syntactic sugar, so there are often multiple ways to express the same thing. Here are 3 other ways we could have defined the same identity function:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">natId2</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span>
     <span class="n">fun</span> <span class="n">a</span> <span class="ow">=&gt;</span>
         <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
             <span class="o">|</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>
 </code></pre></div>
 
 <p>And:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">nat_id2</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">natId3</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span>
 <span class="o">|</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>And:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">natId4</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="kt">:=</span> <span class="n">a</span>
 </code></pre></div>
 
 <p>The first of these alternatives also uses an anonymous function but then has a <code>match ... with</code> pattern. As we discussed, inductive types are essentially defined as a set of base terms and then one or more functions that define a pattern for creating other terms of that type using the base terms. So since we construct types by defining base terms and patterns over those base terms, we also define functions on types by deconstructing types into their base terms and patterns over those base terms, and then map each deconstructed pattern into terms of another type.</p>
 <p>Notice that the variable <code>a</code> after <code>fun</code> represents the input term and we can name it whatever we want. For multiple input functions we will have to introduce multiple input variables after <code>fun</code>.</p>
+<p>Also we can check how Lean actually defines types by using the <code>#print</code> command. Let's check the last of these alternatives for <code>idNat4</code></p>
+<div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">print</span> <span class="n">natId4</span>
+<span class="o">/-</span> 
+<span class="kt">Output:</span> 
+<span class="nf">def</span> <span class="kt">Tutorial</span><span class="o">.</span><span class="n">natId4</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span> <span class="n">fun</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>
+<span class="o">-/</span>
+</code></pre></div>
+
+<p>As you can see, even though Lean lets us omit the explicit anonymous function, behind the scenes it is filling in the anonymous function for us.</p>
 <p>Let's write a simple function that just subtracts one from any natural number.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">subOne</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span>
   <span class="n">fun</span> <span class="n">a</span> <span class="ow">=&gt;</span>
