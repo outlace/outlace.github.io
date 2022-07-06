@@ -113,14 +113,15 @@ comment
 &lt;p&gt;Notice that the variable &lt;code&gt;a&lt;/code&gt; after &lt;code&gt;fun&lt;/code&gt; represents the input term and we can name it whatever we want. For multiple input functions we will have to introduce multiple input variables after &lt;code&gt;fun&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Also we can check how Lean actually defines types by using the &lt;code&gt;#print&lt;/code&gt; command. Let's check the last of these alternatives for &lt;code&gt;idNat4&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;natId4&lt;/span&gt;
-&lt;span class="o"&gt;/-&lt;/span&gt; 
+
+&lt;span class="o"&gt;/-&lt;/span&gt;    
 &lt;span class="kt"&gt;Output:&lt;/span&gt; 
-&lt;span class="nf"&gt;def&lt;/span&gt; &lt;span class="kt"&gt;Tutorial&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;natId4&lt;/span&gt; &lt;span class="kt"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;Nat&lt;/span&gt; &lt;span class="err"&gt;→&lt;/span&gt; &lt;span class="kt"&gt;Nat&lt;/span&gt; &lt;span class="kt"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;fun&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+&lt;span class="nf"&gt;def&lt;/span&gt; &lt;span class="kt"&gt;Tutorial&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;natId4&lt;/span&gt; &lt;span class="kt"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;Nat&lt;/span&gt; &lt;span class="err"&gt;→&lt;/span&gt; &lt;span class="kt"&gt;Nat&lt;/span&gt; &lt;span class="kt"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;fun&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;   
 &lt;span class="o"&gt;-/&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;As you can see, even though Lean lets us omit the explicit anonymous function, behind the scenes it is filling in the anonymous function for us.&lt;/p&gt;
-&lt;p&gt;Let's write a simple function that just subtracts one from any natural number.&lt;/p&gt;
+&lt;p&gt;Okay, moving on. Let's write a simple function that just subtracts one from any natural number.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nf"&gt;def&lt;/span&gt; &lt;span class="n"&gt;subOne&lt;/span&gt; &lt;span class="kt"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;Nat&lt;/span&gt; &lt;span class="err"&gt;→&lt;/span&gt; &lt;span class="kt"&gt;Nat&lt;/span&gt; &lt;span class="kt"&gt;:=&lt;/span&gt;
   &lt;span class="n"&gt;fun&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;=&amp;gt;&lt;/span&gt;
     &lt;span class="n"&gt;match&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt;

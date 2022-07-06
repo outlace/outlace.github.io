@@ -157,14 +157,15 @@ comment
 <p>Notice that the variable <code>a</code> after <code>fun</code> represents the input term and we can name it whatever we want. For multiple input functions we will have to introduce multiple input variables after <code>fun</code>.</p>
 <p>Also we can check how Lean actually defines types by using the <code>#print</code> command. Let's check the last of these alternatives for <code>idNat4</code></p>
 <div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">print</span> <span class="n">natId4</span>
-<span class="o">/-</span> 
+
+<span class="o">/-</span>    
 <span class="kt">Output:</span> 
-<span class="nf">def</span> <span class="kt">Tutorial</span><span class="o">.</span><span class="n">natId4</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span> <span class="n">fun</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>
+<span class="nf">def</span> <span class="kt">Tutorial</span><span class="o">.</span><span class="n">natId4</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span> <span class="n">fun</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>   
 <span class="o">-/</span>
 </code></pre></div>
 
 <p>As you can see, even though Lean lets us omit the explicit anonymous function, behind the scenes it is filling in the anonymous function for us.</p>
-<p>Let's write a simple function that just subtracts one from any natural number.</p>
+<p>Okay, moving on. Let's write a simple function that just subtracts one from any natural number.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">subOne</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span> <span class="kt">:=</span>
   <span class="n">fun</span> <span class="n">a</span> <span class="ow">=&gt;</span>
     <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
