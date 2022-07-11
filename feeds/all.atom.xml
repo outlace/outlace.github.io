@@ -21,7 +21,7 @@
 
 &lt;p&gt;Almost every expression in Lean is either an inductive type or a function type (constructed using &lt;code&gt;def&lt;/code&gt;), but again, Lean has &lt;em&gt;a lot&lt;/em&gt; of syntactic sugar and aliases for things. The keyword &lt;code&gt;theorem&lt;/code&gt; is just an alias for &lt;code&gt;def&lt;/code&gt;, and indeed, theorems are just terms of a specified type (in fact, often theorems are just functions). We used the &lt;code&gt;def&lt;/code&gt; keyword in the last post to define functions, but as the name suggests, it is a general way to define a named term of some specific type, or in other words, it lets you assign a type and expression or value to an identifier.&lt;/p&gt;
 &lt;p&gt;For example,
-&lt;code&gt;def x : Nat = succ zero&lt;/code&gt;&lt;/p&gt;
+&lt;code&gt;def x : Nat := succ zero&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;We've defined a term named &lt;code&gt;x&lt;/code&gt; of type &lt;code&gt;Nat&lt;/code&gt; assigned to the value &lt;code&gt;zero&lt;/code&gt;. Now you can use it in other expressions, such as:
 &lt;code&gt;#reduce add x x&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Back to the theorem. &lt;/p&gt;

@@ -65,7 +65,7 @@
 
 <p>Almost every expression in Lean is either an inductive type or a function type (constructed using <code>def</code>), but again, Lean has <em>a lot</em> of syntactic sugar and aliases for things. The keyword <code>theorem</code> is just an alias for <code>def</code>, and indeed, theorems are just terms of a specified type (in fact, often theorems are just functions). We used the <code>def</code> keyword in the last post to define functions, but as the name suggests, it is a general way to define a named term of some specific type, or in other words, it lets you assign a type and expression or value to an identifier.</p>
 <p>For example,
-<code>def x : Nat = succ zero</code></p>
+<code>def x : Nat := succ zero</code></p>
 <p>We've defined a term named <code>x</code> of type <code>Nat</code> assigned to the value <code>zero</code>. Now you can use it in other expressions, such as:
 <code>#reduce add x x</code></p>
 <p>Back to the theorem. </p>
