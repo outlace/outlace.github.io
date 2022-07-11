@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Δ ℚuantitative √ourney | Numbers in Lean (Part 2)</title>
+    <link rel="shortcut icon" type="image/png" href="http://outlace.com/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="http://outlace.com/favicon.ico">
+    <link href="http://outlace.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Δ ℚuantitative √ourney Full Atom Feed" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://outlace.com/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Brandon Brown" />
+
+    <meta name="keywords" content="Lean" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="http://outlace.com/">Home</a></li>
+                <li><a href="http://outlace.com/pages/about.html">About</a></li>
+                <li><a href="http://outlace.com/tags/">Tags</a></li>
+                <li><a href="http://outlace.com/categories/">Categories</a></li>
+                <li><a href="http://outlace.com/archives/{slug}/">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="http://outlace.com/">Δ ℚuantitative √ourney</a></h1>
+            <h2>Science, Math, Statistics, Machine Learning ...</h2>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Jul 10, 2022</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="http://outlace.com/Lean_part_2.html" rel="bookmark" title="Permanent Link to &quot;Numbers in Lean (Part 2)&quot;">Numbers in Lean (Part 2)</a>
+                </h2>
+
+
+
+                <p>In <a href="http://outlace.com/Lean_part_1.html">part 1</a> we learned some basics about Lean and we defined the natural numbers as a type <code>Nat</code> and the addition function for <code>Nat</code>. </p>
+<div class="highlight"><pre><span></span><code><span class="nf">namespace</span> <span class="kt">Tutorial</span>
+
+<span class="nf">inductive</span> <span class="kt">Nat</span> <span class="kt">:</span> <span class="kt">Type</span> <span class="kr">where</span>
+<span class="o">|</span> <span class="n">zero</span> <span class="kt">:</span> <span class="kt">Nat</span>
+<span class="o">|</span> <span class="n">succ</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="err">→</span> <span class="kt">Nat</span>
+
+<span class="nf">def</span> <span class="n">add</span> <span class="p">(</span><span class="n">a</span> <span class="n">b</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="kt">Nat</span> <span class="kt">:=</span>
+  <span class="n">match</span> <span class="n">b</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">a</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="ow">=&gt;</span> <span class="n">succ</span> <span class="p">(</span><span class="n">add</span> <span class="n">a</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="nf">end</span> <span class="kt">Tutorial</span>
+</code></pre></div>
+
+<p>Now we will learn how to prove our first theorems about the natural numbers. [Note that all of the code in these posts are in the namespace <code>Tutorial</code> to avoid name clashes with types and functions in Lean's standard library.]</p>
+<p>Here we declare our first theorem:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero_zero</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span> <span class="kt">:=</span> <span class="n">sorry</span>
+</code></pre></div>
+
+<p>Almost every expression in Lean is either an inductive type or a function type (constructed using <code>def</code>), but again, Lean has <em>a lot</em> of syntactic sugar and aliases for things. The keyword <code>theorem</code> is just an alias for <code>def</code>, and indeed, theorems are just terms of a specified type (in fact, often theorems are just functions). We used the <code>def</code> keyword in the last post to define functions, but as the name suggests, it is a general way to define a named term of some specific type, or in other words, it lets you assign a type and expression or value to an identifier.</p>
+<p>For example,
+<code>def x : Nat = succ zero</code></p>
+<p>We've defined a term named <code>x</code> of type <code>Nat</code> assigned to the value <code>zero</code>. Now you can use it in other expressions, such as:
+<code>#reduce add x x</code></p>
+<p>Back to the theorem. </p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero_zero</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span> <span class="kt">:=</span> <span class="n">sorry</span>
+</code></pre></div>
+
+<p>So we are defining a theorem called <code>add_zero_zero</code> and this term has the type <code>add zero zero = zero</code>. We have assigned the term to the expression <code>sorry</code>, which is a keyword in Lean that serves as a placeholder when you want to be able to state a theorem without proving it yet.</p>
+<p>It is interesting that this theorem has the type <code>add zero zero = zero</code>, what is going on here? We are trying to state the theorem that <code>0 + 0 = 0</code> (but we haven't built the nice <code>+</code> notation for our <code>Nat</code> type yet), and we do so by defining a term with that type. If we can actually specify an expression after the assignment operator <code>:=</code> that constructs a term of type <code>0 + 0 = 0</code>, then our term will <em>type check</em> as a valid term, or in this context, Lean will verify we have proved the theorem.</p>
+<p>Firstly, it might seem ridiculous that we should prove <code>0 + 0 = 0</code>, isn't that totally obvious? Well Lean is a powerful programming environment but it doesn't generate theorems automatically, it doesn't know what we care about, so even extremely trivial statements like this must be explicitly stated and proved. However, Lean does agree that proving this is obvious in the sense that the proof is trivial. And recall, by proof we mean an implementation of an expression that generates a term of this type.</p>
+<p>Well what exactly is this type <code>add zero zero = zero</code>? We are trying to prove two things are equal, and recall the (mostly true) mantra <em>everything in Lean is an inductive type or function type</em>, so this expression must be one of those. Indeed, this is an equality type, and the equality type is defined in Lean as an inductive type. Here's how it is defined:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">inductive</span> <span class="kt">Eq</span> <span class="p">{</span><span class="n">α</span> <span class="kt">:</span> <span class="kt">Sort</span> <span class="kr">_</span><span class="p">}</span> <span class="kt">:</span> <span class="n">α</span> <span class="err">→</span> <span class="n">α</span> <span class="err">→</span> <span class="kt">Prop</span> <span class="kr">where</span>
+  <span class="o">|</span> <span class="n">refl</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>Okay there's a lot more going on here than our <code>Nat</code> type, and we will need to learn more features of Lean to understand it. First, notice this is defining an inductive type called <code>Eq</code>, but then there are these curly braces and an alpha symbol and sort... Confusing.</p>
+<p><code>{α : Sort _}</code> is an <em>implicit</em> input to this type. </p>
+<p>Recall our identity function,
+<code>def natId (a : Nat) : Nat := a</code></p>
+<p>The <code>a</code> is an explicit input to this function; without supplying a term <code>a</code>, this function doesn't work. However, some functions have inputs that do not need to be supplied explicitly, but can be inferred by Lean automatically. When this is the case, these inputs can be put in curly braces instead of parentheses.</p>
+<p>As an example, let's make a more general version of our identity function. Before our identity function only worked on terms of type <code>Nat</code>, but we can make a <em>polymorphic</em> identity function that works on terms of any type.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">id</span> <span class="p">{</span> <span class="n">α</span> <span class="kt">:</span> <span class="kt">Type</span> <span class="kr">_</span> <span class="p">}</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:=</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>This function has one <em>implicit</em> (optional because it can be automatically inferred) input <code>α</code> (which you can type in Visual Studio Code by typing <code>\a</code>) and one <em>explicit</em> (required) <code>a</code>. If you apply the function <code>id</code> to a term of <em>any</em> type it will work and just return that term unchanged.</p>
+<p>The implicit input <code>α</code> is assigned the type <code>Type _</code> because it is itself representing some type, and we want to make sure our function works on all types in the type hierarchy <code>Type 0, Type 1, Type 2 ...</code> that we discussed in the last post. These numbered type levels are called <em>universes</em>, by the way. The underscore character <code>_</code> is like a "wildcard" that tells lean to infer what should go there based on the context.</p>
+<p>When we apply <code>id</code> to a term of type <code>Nat</code>,</p>
+<div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">check</span> <span class="n">id</span> <span class="n">zero</span>
+<span class="c1">--Output: id zero : Nat</span>
+</code></pre></div>
+
+<p>Lean will infer that <code>α</code> must be <code>Nat</code> and <code>Nat</code> lives in the type universe <code>Type 0</code>, so the wildcard <code>_</code> can be inferred to be <code>0</code>. The underscore wildcard is quite useful as Lean can often infer simple <em>holes</em> we leave for it.</p>
+<p>Okay, back to trying to understand the equality type.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">inductive</span> <span class="kt">Eq</span> <span class="p">{</span><span class="n">α</span> <span class="kt">:</span> <span class="kt">Sort</span> <span class="kr">_</span><span class="p">}</span> <span class="kt">:</span> <span class="n">α</span> <span class="err">→</span> <span class="n">α</span> <span class="err">→</span> <span class="kt">Prop</span> <span class="kr">where</span>
+  <span class="o">|</span> <span class="n">refl</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>We now know what the <code>{α : Sort _}</code> means, oh wait, no we don't, because it says <code>Sort _</code> instead of <code>Type _</code>. Ok, so <code>Type u</code> (where <code>u</code> is some non-negative number) is actually an alias for <code>Sort (u + 1)</code>, so e.g. <code>Type 0 = Sort 1</code>. What's the point of this alias? Well, because <code>Sort 0</code> is special. <code>Sort 0</code> itself has another alias, namely <code>Prop</code>. <code>Prop</code> (<code>Sort 0</code>) is a special type universe because it is where <em>propositions</em> live. </p>
+<p>A proposition is a statement with a truth value, i.e. something that we think is either true or false, like <code>0 + 0 = 0</code>. A proposition in Lean, therefore, is just a type that lives in the <code>Prop</code> universe, but everything else we've talked about with regard to "regular" types and universes like <code>Nat</code> and <code>Type 0</code> still applies. And as mentioned earlier, a proof of a proposition (or theorem) is just an expression that generates or constructs a term of that specific type, and that type will itself have the type <code>Prop</code>. </p>
+<p>So the type <code>0 + 0 = 0</code> is of type <code>Prop</code> (aka <code>Sort 0</code>), and a proof of <code>0 + 0 = 0</code> is an expression that constructs a term of type <code>0 + 0 = 0</code>.</p>
+<p>Oh, and the main reason <code>Prop</code> is special is that in Lean, any two terms of a given <code>Prop</code> are considered definitionally equal. So if we came up with two different ways of proving that <code>0 + 0 = 0</code>, then Lean will consider them definitionally equal, unlike in other type universes <code>Type 0, Type 1,</code> etc... If we have proved a proposition to be true, it no logner matters in <code>Prop</code> how exactly it was proved, we just care that it was indeed proved.</p>
+<p>And again, let's get back to trying to understand the equality type.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">inductive</span> <span class="kt">Eq</span> <span class="p">{</span><span class="n">α</span> <span class="kt">:</span> <span class="kt">Sort</span> <span class="kr">_</span><span class="p">}</span> <span class="kt">:</span> <span class="n">α</span> <span class="err">→</span> <span class="n">α</span> <span class="err">→</span> <span class="kt">Prop</span> <span class="kr">where</span>
+  <span class="o">|</span> <span class="n">refl</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>So far we have explained everything up to the colon. After the colon, we are defining the type of our new inductive type, and unlike <code>Nat</code> which has the (default) type <code>Type 0</code>, <code>Eq</code> is given the type <code>α → α → Prop</code>, which you should recognize as a function type. The input types to functions are all the types before the last type after a chain <code>... → ... → ...</code>. So in this case, this function has two inputs of type <code>α</code>, and remember, <code>α</code> is an implicit input type that Lean will infer for us. </p>
+<p>Inductive types like this are actually defining a <em>family</em> of inductive types, each family is parameterized by the specific <code>α</code> given. If we parameterize <code>Eq</code> with <code>Nat</code>, then we get a family of inductive equality types where some expression of <code>Nat</code> (propositionally) equals some other expression of type <code>Nat</code>.</p>
+<p>We can force <em>implicit</em> inputs to become explicit inputs to a function by prefixing the function name with the <code>@</code> character, for example:</p>
+<div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">check</span> <span class="o">@</span><span class="kt">Eq</span> <span class="kt">Nat</span>
+<span class="c1">--Output: Eq : Nat → Nat → Prop</span>
+</code></pre></div>
+
+<p>This defines the family of equality propositions between natural numbers. A specific proposition in this family of equality types <code>Nat → Nat → Prop</code> would be what we have been trying to prove, namely <code>add zero zero = zero</code> (aka <code>0 + 0 = 0</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">check</span> <span class="kt">Eq</span> <span class="p">(</span><span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span><span class="p">)</span> <span class="n">zero</span>
+<span class="c1">-- Which is the same as:</span>
+<span class="o">#</span><span class="n">check</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span>
+<span class="c1">--Output: add zero zero = zero : Prop</span>
+</code></pre></div>
+
+<p>By supplying <code>Eq</code> with two terms of type <code>Nat</code>, we get a proposition, as the type signature <code>Nat → Nat → Prop</code> would predict.</p>
+<p>Back to the equality type.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">inductive</span> <span class="kt">Eq</span> <span class="p">{</span><span class="n">α</span> <span class="kt">:</span> <span class="kt">Sort</span> <span class="kr">_</span><span class="p">}</span> <span class="kt">:</span> <span class="n">α</span> <span class="err">→</span> <span class="n">α</span> <span class="err">→</span> <span class="kt">Prop</span> <span class="kr">where</span>
+  <span class="o">|</span> <span class="n">refl</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>We should now understand the top line, now let's figure out what's going on in the one constructor for this type. The one constructor is called <code>refl</code> for <em>reflexivity</em>, which is a math term, and it allows us a construct a term of type <code>Eq _ _</code> (there are those wildcards again) simply by giving it a term of type <code>α</code>.</p>
+<p>For example,</p>
+<div class="highlight"><pre><span></span><code><span class="o">#</span><span class="n">check</span> <span class="kt">Eq</span><span class="o">.</span><span class="n">refl</span> <span class="n">zero</span>
+<span class="c1">--Output: Eq.refl zero : zero = zero</span>
+</code></pre></div>
+
+<p>The only things that are equal are those terms that are literally the same term, e.g. <code>zero = zero</code>. This defines <em>syntactic</em> equality, the notion that expressions in Lean are equal only when they represent the exact same string of characters. There is another kind of equality in Lean that is not an inductive type, namely, <em>definitional</em> equality. If I define <code>def x := zero</code> then <code>x = zero</code> by definition, because anywhere there is an <code>x</code> in an expression it can be replaced with <code>zero</code>.</p>
+<p>Now we can get back to studying our first theorem.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero_zero</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span> <span class="kt">:=</span> <span class="n">sorry</span>
+</code></pre></div>
+
+<p>We now know that in order to prove this theorem (replace the <code>sorry</code> with a valid expression of type <code>add zero zero = zero</code>), we need to construct an equality term, and we now know the way to do that is using equality's single constructor <code>refl</code>.</p>
+<p>At long last, we are ready for the proof.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero_zero</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span> <span class="kt">:=</span> <span class="kt">Eq</span><span class="o">.</span><span class="n">refl</span> <span class="n">zero</span>
+</code></pre></div>
+
+<p>We proved this theorem with <code>Eq.refl zero</code>. How do we know it is proved? Because Lean doesn't give us any errors and if we do
+<code>#check add_zero_zero</code> we don't get an error.</p>
+<p>But wait, what just happened when we did <code>Eq.refl zero</code>? Well, Lean will automatically compute (or reduce) <code>add zero zero</code>, which reduces to <code>zero</code>, so the proposition becomes <code>zero = zero</code>, which is a type whose term is constructed with <code>Eq.refl zero</code>. What this illustrates is that proofs of equality where one side of the equality expression can be automatically reduced (by definition of the function) can be proved by <code>Eq.refl _</code>. This pattern occurs frequently enough that, yep, there is an alias for it called <code>rfl</code>.</p>
+<p>So this does the same thing, and is more commonly used:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero_zero</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span> <span class="kt">:=</span> <span class="n">rfl</span>
+</code></pre></div>
+
+<p>Here <code>rfl</code> is essentially an alias for <code>Eq.refl _</code> where again, the wildcard <code>_</code> tells Lean to infer, in this case, that <code>_</code> needs to be <code>zero</code> for the expression to type check.</p>
+<p>Okay, so now we understand how to state the proposition that <code>0 + 0 = 0</code> and how to prove it Lean.</p>
+<p>Let's prove something slightly more general, namely that for any <code>a : Nat</code>, <code>a + zero = a</code>, or in math-y notation that <span class="math">\(\forall a \in \mathbb{N},\ a + 0 = a\)</span>, where the upside down A <span class="math">\(\forall\)</span> means "for all", <span class="math">\(\in\)</span> means "in", and <span class="math">\(\mathbb{N}\)</span> is the standard notation for the set of natural numbers, if that isn't already familiar to you.</p>
+<p>Actually, let me take some time to degress to talk about the difference between mathematics in Lean and mathematics in say a typical university-level mathematics course. One could think of mathematics in very broad strokes as starting with some rules that are assumed to be true (i.e. axioms) and then just seeing what you can create from there. In this sense, a game like Chess or Go are mathematical because we can study the space of things that can happen given the rules.</p>
+<p>It is possible to come up with all sorts of different starting rules (axioms), but one must take care that they do not lead to inconsistencies such as being able to prove <code>0 = 1</code>, or like a board game where no one can win. But there are many axiom systems that are consistent, and many of them can be proved to be equivalent to other axiom systems, in the sense that expressions in one system can be faithfully translated into another system.</p>
+<p>But it seems that by historical happenstance, modern mathematics worldwide is dominated by a particular axiom system called Zermelo–Fraenkel (with Choice) set theory, typically abbreviated ZFC. In ZFC, everything in mathematics is a <em>set</em>, which is an unordered collection of things without repeats. Then there are a bunch of rules (axioms) about how sets work and what you can do with them. Sets are denoted using curly braces, for example, we can say <span class="math">\(\{1,2,3\}\)</span> is a set of the numbers <span class="math">\(1,2,3\)</span>. However, in set theory, <em>everything</em> is a set, even the numbers. You denote that some element is in a set using the <span class="math">\(\in\)</span> notation, e.g. <span class="math">\(1 \in \{1,2,3\}\)</span>.</p>
+<p>Many propositions in set theory are stated as propositions <em>for all</em> members of a set, such as our proposition that <span class="math">\(\forall a \in \mathbb{N},\ a + 0 = a\)</span>. Another form of proposition is the existence of some element or set, for example, <span class="math">\(\forall a \in \mathbb{N}, \exists b \in \mathbb{N}, b &gt; a\)</span>, which is read as "for all natural numbers <span class="math">\(a\)</span>, there exists another natural number <span class="math">\(b\)</span> such that <span class="math">\(b\)</span> is greater than <span class="math">\(a\)</span>.</p>
+<p>My goal is not to explain set theory because I only know the basics myself and that's a whole massive subject in its own right. The point I have been leading up to is that Lean does not use ZFC set theory as it's logical/mathematical foundation (i.e. axiom system). Lean uses <em>type theory</em>, which is actually a family of axiom systems. Lean uses a particular type theory called the Calculus of Constructions, which doesn't matter for our purposes unless you're into that sort of thing.</p>
+<p>In type theory, everything is not a set, everything is a type as I have already exclaimed earlier. Types and sets are very similar, and as far as I know, unless you're a set theorist or into studying axiom systems, we can mostly ignore the differences. It turns out that every expression in Lean's type theory
+can be translated into ZFC set theory and vice versa, so all the mathematics that has been developed on top of ZFC can be easily translated into Lean's type theory. Perhaps in parallel universe, modern mathematics was developed in type theory rather than set theory.</p>
+<p>In any case, the main reason for that digression was to point out that if we state our theorem in Lean and check its type:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">a</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> <span class="n">sorry</span>
+<span class="o">#</span><span class="n">check</span> <span class="n">add_zero</span>
+<span class="c1">-- Output: ∀ (a : Nat), add a zero = a</span>
+</code></pre></div>
+
+<p>The type of <code>add_zero</code> is actually <code>∀ (a : Nat), add a zero = a</code>, unlike what we actually typed in, which did not include the <span class="math">\(\forall\)</span> "for all" symbol. Remember that <code>theorem</code> is just an alias for <code>def</code>, and in this particular theorem we have an explicit input <code>a</code>, so this theorem is actually a function that takes an <code>a</code> (of type <code>Nat</code>) and produces a proposition <code>add a zero = a</code>, which recall, is an equality type. </p>
+<p>But remember that the equality type is actually parameterized by two inputs of the same type, and when it is parameterized the equality type has the type <code>Prop</code> instead of <code>Type</code>. Remember we said Lean is a dependently-typed functional programming language? Well here is our first introduction to dependent types. The concrete output type of our theorem (function in this case) <code>add_zero</code> <em>depends on</em> the first input type. Hence, it is a dependent function type.</p>
+<p>We actually already saw an example of a dependent function type when we made a polymorphic identity type: </p>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">id</span> <span class="p">{</span> <span class="n">α</span> <span class="kt">:</span> <span class="kt">Type</span> <span class="kr">_</span> <span class="p">}</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:=</span> <span class="n">a</span>
+<span class="o">#</span><span class="n">check</span> <span class="n">id</span>
+<span class="c1">-- Output: {α : Type u_1} → α → α</span>
+</code></pre></div>
+
+<p>This function is a dependent function type because the output type will <em>depend on</em> the input type. But there's none of that <code>∀</code> notation here... But watch what happens when we change <code>Type _</code> to <code>Prop</code></p>
+<div class="highlight"><pre><span></span><code><span class="nf">def</span> <span class="n">id</span> <span class="p">{</span> <span class="n">α</span> <span class="kt">:</span> <span class="kt">Prop</span> <span class="p">}</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="n">α</span><span class="p">)</span> <span class="kt">:=</span> <span class="n">a</span>
+<span class="o">#</span><span class="n">check</span> <span class="n">id</span>
+<span class="c1">-- Output: ∀ {α : Prop}, α → α</span>
+</code></pre></div>
+
+<p>We get that <code>∀</code> notation again. There is nothing fundamenetally different going on in these two examples, we're just changing the type universe that <code>α</code> lives in. But by default, Lean will utilize the <code>∀</code> notation in place of the <code>→</code> notation in the <code>Prop</code> type level, because when we're restricting ourselves to <code>Prop</code> it's usually because we're doing mathematics, and then the <code>∀</code> notation is more convenient.</p>
+<p>Now, this sort of type polymorphism is present in non-dependently typed functional programming languages, so the real power of dependent types comes from the fact that the output type can depend on specific values (terms), and not just types. For example, we can (and will in a later post), define lists of a specific length, so the type will depend on a particular term of type natural number.</p>
+<p>Okay, that was another digression to explain some more Lean syntactic sugar. Back to our theorem.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">a</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> <span class="n">sorry</span>
+</code></pre></div>
+
+<p>If you look back at our definition for the <code>add</code> function, you will see that when the second input is <code>zero</code>, it will just return the first input. So Lean can automatically reduce <code>add a zero</code> to just <code>a</code>, so we will get <code>a = a</code>. How do we construct a term of type <code>a = a</code>? We use the one constructor for the equality type, <code>Eq.refl</code>. So we can easily prove this theorem:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">a</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> <span class="kt">Eq</span><span class="o">.</span><span class="n">refl</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>Or equivalently:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">a</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> <span class="kt">Eq</span><span class="o">.</span><span class="n">refl</span> <span class="kr">_</span>
+</code></pre></div>
+
+<p>Or equivalently:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">add_zero</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">a</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> <span class="n">rfl</span>
+</code></pre></div>
+
+<p>Let's move on to proving something very similar appearing, but significantly more difficult to prove:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">zero_add</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> <span class="n">sorry</span>
+</code></pre></div>
+
+<p>So instead of proving <code>a + 0 = a</code> like we just did, we want to prove <code>0 + a = a</code>. We know that in math <code>a + b = b + a</code>, because addition is commutative (the order of the inputs doesn't matter). But we haven't proved that yet, and in fact our proof of the commutativity of addition will use our proof of <code>zero_add</code> and <code>add_zero</code>.</p>
+<p>Why is <code>zero_add</code> harder than proving <code>add_zero</code>? Because <code>0 + a</code> is not reduced to <code>a</code> by definition. Look back at our addition function, if the first argument is <code>zero</code> and the second argument is <code>a</code>, then without knowing what <code>a</code> is, Lean can't just reduce it. So in this case, since we don't know what <code>a</code> is, we have to do a <code>match</code> on it, and we will have a branch of code for if <code>a</code> is <code>zero</code> and a separate branch of code for if <code>a</code> has the pattern <code>succ b</code> where <code>b</code> is another natural number.</p>
+<p>I'm going to build up the proof incrementally and explain the steps.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">zero_add</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> 
+  <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="kr">_</span>
+
+<span class="o">/-</span> 
+<span class="kt">Proof</span> <span class="n">state</span><span class="kt">:</span>
+<span class="nf">a</span><span class="kt">:</span> <span class="kt">Nat</span>
+<span class="err">⊢</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">zero</span> <span class="ow">=</span> <span class="n">zero</span>
+<span class="o">-/</span>
+</code></pre></div>
+
+<p>I've started a proof for our theorem, and I've left a wildcard <code>_</code>. In this case, I'm not asking Lean to infer what to put there, because it can't, but what Lean will do is tell me what data I have access to and what term I need to construct in place of the wildcard. You should be able to see this by putting your cursor after the <code>_</code> in Visual Studio Code and looking at the <em>Lean Infoview</em> pane. This is what makes Lean an interactive theorem prover, because Visual Studio Code is continuously running Lean in the background and updating the state depending on where our cursor is.</p>
+<p>The expression after the turnstile <code>⊢</code> symbol shows us that for the case where <code>a = zero</code>, we need to prove that <code>add zero zero = zero</code>. Well we already know how to do this, we can just use <code>rfl</code>.</p>
+<p>Let's keep going.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">zero_add</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> 
+  <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">rfl</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="ow">=&gt;</span> <span class="kr">_</span>
+
+<span class="o">/-</span>
+<span class="kt">Proof</span> <span class="n">state</span><span class="kt">:</span>
+<span class="nf">a</span> <span class="n">c</span><span class="kt">:</span> <span class="kt">Nat</span>
+<span class="err">⊢</span> <span class="n">add</span> <span class="n">zero</span> <span class="p">(</span><span class="n">succ</span> <span class="n">c</span><span class="p">)</span> <span class="ow">=</span> <span class="n">succ</span> <span class="n">c</span>
+<span class="o">-/</span>
+</code></pre></div>
+
+<p>We've "closed the subgoal" where <code>a = zero</code>, but in order to prove the general case that <code>0 + a = a</code> we also need to prove that it holds when <code>a = succ c</code>. We see that this sub-goal is <code>add zero (succ c) = succ c</code>. So now we are stuck. We cannot prove this with <code>rfl</code>. However, look back at our definition for <code>add</code>. Notice that by definition <code>add a (succ b) =&gt; succ (add a b)</code>. So we can use this fact to change the (sub)goal expression a bit:</p>
+<div class="highlight"><pre><span></span><code><span class="err">⊢</span> <span class="n">add</span> <span class="n">zero</span> <span class="p">(</span><span class="n">succ</span> <span class="n">c</span><span class="p">)</span> <span class="ow">=</span> <span class="n">succ</span> <span class="n">c</span>
+<span class="c1">-- By definition we can change it to:</span>
+<span class="err">⊢</span> <span class="n">succ</span> <span class="p">(</span><span class="n">add</span> <span class="n">zero</span> <span class="n">c</span><span class="p">)</span> <span class="ow">=</span> <span class="n">succ</span> <span class="n">c</span>
+</code></pre></div>
+
+<p>Let's take stock of what we already know. We have already proved a subgoal that <code>add zero c = c</code> when <code>c = zero</code> (the base case). Can we use that proof to produce a proof of <code>succ (add zero c) = succ c</code>? If we could somehow apply <code>succ</code> to both sides of the equation, we could, but Lean doesn't know if that is a valid move yet.</p>
+<p>In order to solve this, we need to prove an intermediate proposition or theorem, that if <code>a = b</code> then that implies <code>succ a = succ b</code>. This should be obviously true, because a function has to map equal input terms to the same output term, otherwise it would be a non-deterministic function. But even the obvious things need to be stated and formally proved.</p>
+<p>So here we go.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">congr</span> <span class="p">{</span><span class="n">a</span> <span class="n">b</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">}</span> <span class="p">(</span><span class="n">h</span> <span class="kt">:</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">b</span><span class="p">)</span> <span class="kt">:</span> <span class="p">(</span><span class="n">succ</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">succ</span> <span class="n">b</span><span class="p">)</span> <span class="kt">:=</span> <span class="n">sorry</span>
+</code></pre></div>
+
+<p>We are stating a theorem named <code>congr</code> (for <em>congruence</em>), which takes two implicit parameters <code>a</code> and <code>b</code> and a term (called a hypothesis in this context) <code>h : a = b</code> and is of the type <code>succ a = succ b</code>.</p>
+<p>If we check the type of this theorem, we get
+<code>∀ {a b : Nat}, a = b → succ a = succ b</code>
+To translate this into English: "For all natural numbers <code>a</code> and <code>b</code>, if we have a proof that <code>a = b</code> then that implies that <code>succ a = succ b</code>."</p>
+<p>In type theory, implication is simply a function type, so we can interpret the arrow as "... implies ..." </p>
+<p>Let me show you the proof of this:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">congr</span> <span class="p">{</span><span class="n">a</span> <span class="n">b</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">}</span> <span class="p">(</span><span class="n">h</span> <span class="kt">:</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">b</span><span class="p">)</span> <span class="kt">:</span> <span class="p">(</span><span class="n">succ</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">succ</span> <span class="n">b</span><span class="p">)</span> <span class="kt">:=</span> <span class="n">by</span> <span class="n">rw</span> <span class="p">[</span><span class="n">h</span><span class="p">]</span>
+</code></pre></div>
+
+<p>The proof is <code>by rw [h]</code>, which is something we haven't seen before. This is opening a can of worms that we cannot fully explain in this post, but I will introduce it here. The keyword <code>by</code> puts us into <em>tactic mode</em>. Tactic mode is a high-level Lean language feature that lets us use <em>tactics</em>. Tactics are metaprograms, which is to say they are not regular language constructs but can read, construct and manipulate the regular language. These metaprograms can make proving theorems a lot easier. For one, they allow us to write proofs in a sequential manner, avoiding the hassle that comes with pure functional programming. Secondly, they can do a lot of automation behind the scenes for us. That's as much as I'll say about tactics in this post as that is not the focus of this post and we will learn more about tactics later.</p>
+<p>The <code>rw</code> tactic stands for <em>rewrite</em>, as it allows us to rewrite expressions in terms of equalities that are known to us. In our case of proving <code>∀ {a b : Nat}, a = b → succ a = succ b</code>, we rewrite the final goal <code>succ a = succ b</code> with the hypothesis <code>h : a = b</code>, which gives us a new goal <code>succ b = succ b</code>, which is true by <code>rfl</code>.</p>
+<p>Now that we have this intermediate theorem <code>congr</code> available, we can get back to proving that <code>0 + a = a</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">zero_add</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> 
+  <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">rfl</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="ow">=&gt;</span> <span class="kr">_</span>
+
+<span class="o">/-</span>
+<span class="kt">Proof</span> <span class="n">state</span><span class="kt">:</span>
+<span class="nf">a</span> <span class="n">c</span><span class="kt">:</span> <span class="kt">Nat</span>
+<span class="err">⊢</span> <span class="n">add</span> <span class="n">zero</span> <span class="p">(</span><span class="n">succ</span> <span class="n">c</span><span class="p">)</span> <span class="ow">=</span> <span class="n">succ</span> <span class="n">c</span>
+<span class="o">-/</span>
+</code></pre></div>
+
+<p>The goal is technically <code>add zero (succ c) = succ c</code> but as we previously discussed, that is definitionally equal to <code>succ (add zero c) = succ c</code>, which Lean knows, so we can treat the goal as the latter. Since we proved the base case that <code>add zero c = c</code> when <code>c = zero</code>, we can use this as our hypothesis <code>h</code> in the <code>congr</code> theorem to get a proof that <code>succ (add zero c) = succ c</code>. Thus to prove this theorem we use recursion, which is going to be a common approach. As we will learn later, proving theorems using recursion is identical to the mathematical concept of <em>proof by induction</em>.</p>
+<p>So here's the final proof.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">zero_add</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> 
+  <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">rfl</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="ow">=&gt;</span> <span class="n">congr</span> <span class="p">(</span><span class="n">zero_add</span> <span class="n">c</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Let's work through a concrete input, because remember <code>zero_add</code> is a function, so we can apply it as a function.</p>
+<p>Let's say we give it the input <code>a = zero.succ.succ</code> (which, recall is the number 2). It will match the pattern <code>succ c</code>, and the output will be <code>congr (zero_add zero.succ)</code>. Now we do the recursive call with <code>zero_add zero.succ</code>, and again, we match the pattern <code>succ c</code>, so we get <code>congr (zero_add zero)</code>. We do another recursive call, this time matching the base case <code>zero =&gt; rfl</code>, which will return <code>zero = zero</code>.</p>
+<p>So now we can start subtituting these recursive outputs back into the first function call; here's the sequence of steps happening:</p>
+<p><code>congr (zero_add zero.succ)</code>   <br>
+<code>congr (congr (zero_add zero))</code>   <br>
+<code>congr (congr (zero = zero))</code>   <br>
+<code>congr (succ zero = succ zero)</code>   <br>
+<code>succ succ zero = succ succ zero</code>     </p>
+<p>And this will of course work the same way for any natural number, hence the theorem is proved for all natural numbers.</p>
+<p>The theorem <code>congr</code> we proved only works for inputs of type <code>Nat</code>, but this theorem must be true for any type and any function on that type, because if it were not true then the function would not be deterministic, and all functions in Lean are pure, which implies they are deterministic. The Lean standard library includes a polymorphic version of this theorem called <code>congrArg</code>, and we could have used that in place of our own.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">theorem</span> <span class="n">zero_add</span> <span class="p">(</span><span class="n">a</span> <span class="kt">:</span> <span class="kt">Nat</span><span class="p">)</span> <span class="kt">:</span> <span class="n">add</span> <span class="n">zero</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">a</span> <span class="kt">:=</span> 
+  <span class="n">match</span> <span class="n">a</span> <span class="n">with</span>
+  <span class="o">|</span> <span class="n">zero</span> <span class="ow">=&gt;</span> <span class="n">rfl</span>
+  <span class="o">|</span> <span class="n">succ</span> <span class="n">c</span> <span class="ow">=&gt;</span> <span class="n">congrArg</span> <span class="n">succ</span> <span class="p">(</span><span class="n">zero_add</span> <span class="n">c</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The only difference is that <code>congrArg</code> also requires the function <code>succ</code> as input, because it is a theorem that <code>∀ {α : Sort u_1} {β : Sort u_2} {a₁ a₂ : α} (f : α → β), a₁ = a₂ → f a₁ = f a₂</code>, which is read as "for some types <code>α</code> and <code>β</code>, some terms <code>a₁ a₂ : α</code>, and a function <code>f : α → β</code>, if we have a proof that <code>a₁ = a₂</code>, then that implies <code>f a₁ = f a₂</code>. So we need to supply the function <code>f</code> which is <code>succ</code> in this case.</p>
+<p>That's it for now. Next time we will take a brief pause from the natural numbers to discuss type classes, structures, custom notation, and construct some other kinds of types.</p>
+<h5>References</h5>
+<ol>
+<li>https://golem.ph.utexas.edu/category/2013/01/from_set_theory_to_type_theory.html</li>
+<li>https://leanprover.github.io/lean4/doc/</li>
+<li>https://leanprover.github.io/theorem_proving_in_lean4/</li>
+<li>Friendly people in the Lean zulip.</li>
+</ol>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="http://outlace.com/Lean_part_2.html">posted at 22:35</a>
+                    by Brandon Brown
+                    &nbsp;&middot;&nbsp;<a href="http://outlace.com/category/lean/" rel="tag">Lean</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="http://outlace.com/tag/lean/" class="tags">Lean</a>
+                </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'outlace';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <!--- <a href="http://outlace.com/feeds/all.atom.xml" rel="alternate">Atom Feed</a> --->
+                <a href="mailto:outlacedev@gmail.com"><i class="svg-icon email"></i></a>
+                <a href="http://github.com/outlace"><i class="svg-icon github"></i></a>
+                <a href="http://outlace.com/feeds/all.atom.xml"><i class="svg-icon rss"></i></a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-65814776-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+</body>
+</html>
