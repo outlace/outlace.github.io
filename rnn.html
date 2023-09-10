@@ -49,35 +49,33 @@
 <p>This blog is my journey into learning the fundamentals of machine learning and other quantitative principles and applications and is generally in chronological order of my learning. After I successfully learned how to make feedforward neural networks and train them, I really wanted to learn how to make recurrent neural networks (RNNs). I understood that they were for temporal/sequential data and thus they could learn relationships through time. But I could not for the life of me figure out how to make the jump from a feedforward neural net to an RNN until I watched this youtube video: https://www.youtube.com/watch?v=e2sGq_vI41s (which I highly suggest you watch) by Jeff Heaton. Then I understood that RNNs can be implemented almost exactly like an ordinary feedforward neural network. I will re-explain some of the contents of that video here as I build a simple recurrent (Elman) neural network to solve a temporal version of the XOR problem (my favorite toy problem). I will also show you how to do basic time series/sequence prediction with a mini-mini-char-RNN implementation.</p>
 <h4>Converting to Sequential Data: XOR</h4>
 <p>We're going to build a simple recurrent neural network to solve a sequential/temporal version of the XOR problem.
-<br />Just as a reminder, here is the truth table for XOR.</p>
+<br />Just as a reminder, here is the truth table for XOR.
 <table>
-<tr><td>$x_1$</td><td>$x_2$</td><td>$y$</td></tr>
-<tr><td>$0$</td><td>$0$</td><td>$0$</td></tr>
-<tr><td>$0$</td><td>$1$</td><td>$1$</td></tr>
-<tr><td>$1$</td><td>$0$</td><td>$1$</td></tr>
-<tr><td>$1$</td><td>$1$</td><td>$0$</td></tr>
+<tr><td><span class="math">\(x_1\)</span></td><td><span class="math">\(x_2\)</span></td><td><span class="math">\(y\)</span></td></tr>
+<tr><td><span class="math">\(0\)</span></td><td><span class="math">\(0\)</span></td><td><span class="math">\(0\)</span></td></tr>
+<tr><td><span class="math">\(0\)</span></td><td><span class="math">\(1\)</span></td><td><span class="math">\(1\)</span></td></tr>
+<tr><td><span class="math">\(1\)</span></td><td><span class="math">\(0\)</span></td><td><span class="math">\(1\)</span></td></tr>
+<tr><td><span class="math">\(1\)</span></td><td><span class="math">\(1\)</span></td><td><span class="math">\(0\)</span></td></tr>
 </table>
 <p>
-So normally, in a feedforward neural network, we would feed each training example as a tuple $(x_1, x_2)$ and we would expect an output $h(x)$ that closely matches $y$ if the network has been trained. As review, here's what our ordinary feedforward XOR architecture looks like:
-
-<img src="images/SimpleRNN/XORnormal.png" />
-
-In an RNN, we're going to add in the time dimension. But how? Well we simply reformat our training data to be in a time-dependent sequence.</p>
+So normally, in a feedforward neural network, we would feed each training example as a tuple <span class="math">\((x_1, x_2)\)</span> and we would expect an output <span class="math">\(h(x)\)</span> that closely matches <span class="math">\(y\)</span> if the network has been trained. As review, here's what our ordinary feedforward XOR architecture looks like:</p>
+<p><img src="images/SimpleRNN/XORnormal.png" /></p>
+<p>In an RNN, we're going to add in the time dimension. But how? Well we simply reformat our training data to be in a time-dependent sequence.</p>
 <p>Here's our new (temporal) training data:</p>
 <table style="width:150px;">
-<tr><td>$x$</td><td>$y$</td><td>$t$</td></tr>
-<tr><td>$0$</td><td>?</td><td>$0$</td></tr>
-<tr><td>$0$</td><td>0</td><td>$1$</td></tr>
-<tr><td>$1$</td><td>1</td><td>$2$</td></tr>
-<tr><td>$1$</td><td>0</td><td>$3$</td></tr>
-<tr><td>$0$</td><td>1</td><td>$4$</td></tr>
-<tr><td>$...x_n$</td><td>$...y_n$</td><td>$...t_n$</td></tr>
-</table>
-
+<tr><td><span class="math">\(x\)</span></td><td><span class="math">\(y\)</span></td><td><span class="math">\(t\)</span></td></tr>
+<tr><td><span class="math">\(0\)</span></td><td>?</td><td><span class="math">\(0\)</span></td></tr>
+<tr><td><span class="math">\(0\)</span></td><td>0</td><td><span class="math">\(1\)</span></td></tr>
+<tr><td><span class="math">\(1\)</span></td><td>1</td><td><span class="math">\(2\)</span></td></tr>
+<tr><td><span class="math">\(1\)</span></td><td>0</td><td><span class="math">\(3\)</span></td></tr>
+<tr><td><span class="math">\(0\)</span></td><td>1</td><td><span class="math">\(4\)</span></td></tr>
+<tr><td><span class="math">\(...x_n\)</span></td><td><span class="math">\(...y_n\)</span></td><td><span class="math">\(...t_n\)</span></td></tr>
+</table></p>
 <p>Where <span class="math">\(x ... x_n\)</span> represents our training data, <span class="math">\(y...y_n\)</span> are the corresponding expected values, and <span class="math">\(t ... t_n $ represents our time steps. I arranged a sequence of bits [0 0 1 1 0] such that we can XOR the current bit and the previous bit to get the result. For every-time step our RNN is going to make output the XOR of the previous 2 bits, so notice that after the first bit $y=?\)</span> because there is no previous bit to XOR, so we just ignore what the RNN outputs. But for <span class="math">\(x=0, t=1\)</span> we see that <span class="math">\(y=0\)</span> because XOR(0,0)=0.  Also notice how <span class="math">\(time\)</span> is in discrete, integer, steps. Some algorithms may actually have continous time implementation and that's something I'll likely explore in a future post. Let's take another look at our sequential data written horizontally as numpy code:</p>
-<div class="highlight"><pre><span></span><code><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[0;0;1;1;0]&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[0;0;1;1;0]&#39;</span><span class="p">)</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[0;0;1;0;1]&#39;</span><span class="p">)</span> <span class="c1">#first bit should be ignored, just arbitrarily putting 0</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>
 So what do we do with our sequential XOR data and what does our neural network look like? Well, we're simply going to feed each (one at a time) $x$ value into our neural network and expect one output value at a time. Instead of having 2 input units (excluding bias), we only need one now:
@@ -86,19 +84,24 @@ So what do we do with our sequential XOR data and what does our neural network l
 
 <p>What's that loop and $t-1$ thing? Well it means we're going to take our output from the hidden layer at time $t_n$ and feed it back into our hidden layer as additional input at $t_{n+1}$ (the next time step), or we could rephrase that to say that our hidden layer input at $t_n$ includes the output of the hidden layer from $t_{n-1}$ (the previous time step).
 </p>
+
 <p>
 You might be wondering how this is any more useful than an ordinary feedforward NN, and the answer is it's not really. For a problem like XOR, I can't think of a reason why you'd ever want to use an RNN over a feedforward. We're just using it here because it's familiar and I'm a reductionist. But after we get this down, we'll move onto something where RNNs really shine: sequence prediction (in our case, predicting the next character in a sequence).
 </p>
 
 <h3>The Elman Neural Network</h3>
 <p>An Elman network is in the class of "simple recurrent neural networks" (presumably because they really are simple, with no frills) and it's the type of RNN we're going to build to solve our temporal XOR problem. Here's what it looks like when applied to our XOR problem:</p>
+
 <p><img src="images/SimpleRNN/XORrnnFull.png" /></p>
 <p>where $\theta_1$ refers to the weights between the input layer and the hidden layer (a 6x4 matrix) and $\theta_2$ refers to our weights in between the hidden layer and our output layer (a 5x1 matrix).</p>
+
 <p>
 Okay so everything should make sense here except those 4 units labeled $C_1 - C_4$. Those are called <em>context</em> units in the parlance of simple RNNs. These context units are additional input units that feed the output from $t_{n-1}$'s hidden layer back into $t_n$'s hidden layer. They're treated exactly like a normal input unit, with adjustable weights. (At $t = 0$ there is no history to remember, so we have to initialize our network's context units with something, generally 0s.) Notice that we have the <b>same number of context units as we do hidden units</b>, that's by design and is simply the architecture of an Elman network.
 </p>
+
 <p>
 So what we've done here by adding context units that feed the previous time step's state into the current time step is to turn that diagram with the t-1 loop into essentially an ordinary feedforward neural network. And since it's a feedforward neural network, we can train it exactly like we do with a feed forward XOR neural network: backpropagation (it often get's called <em>backpropagation through time</em> but it's just a different name for the same thing).</p>
+
 <p>
 Let's walk through the flow of how this works in the feedforward direction for 2 time steps.
 <ul>
@@ -112,6 +115,7 @@ Let's walk through the flow of how this works in the feedforward direction for 2
 <li>8. Then our output unit uses the hidden layer outputs to produce the final output, $g(x)$</li>
 </ul>
 </p>
+
 <p>
 <b>Important Notes:</b> As mentioned before, we treat the context units just like ordinary input units, that means they have weighted connections between them and the hidden layer, but their input does not go through any activation function nor do we manipulate those values in anyway before we feed them back in the next time step.
 </p>
@@ -128,7 +132,7 @@ If you have taken Andrew Ng's machine learning course, then you should be famili
 </ul>
 </p>
 
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sigmoid</span> <span class="kn">import</span> <span class="n">sigmoid</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <span class="kn">import</span> <span class="nn">cost_xorRNN</span> <span class="k">as</span> <span class="nn">cr</span> <span class="c1">#I defined the cost function in a separate file</span>
@@ -167,25 +171,29 @@ If you have taken Andrew Ng's machine learning course, then you should be famili
 
 <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;[1;0;0;1;1;0]&#39;</span><span class="p">)</span> <span class="c1">#test it out on some new data</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[[ 0.  1.  0.  1.  0.  1.]]
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>[[ 0.  1.  0.  1.  0.  1.]]
+</pre></div>
+
 
 <p>
 Cool! It worked. Remember, ignore the first bit of the output, it can't XOR just 1 digit. The rest of the sequence [1 0 1 0 1] matches with XOR of each pair of bits along the sequence. You might have to run this code a couple of times before it works because even when using a fancy optimizer, this thing is hard to train. Also try changing how we initialize the weights. Unfortunately scipy's `fmin_tnc` doesn't seem to work as well as Matlab's `fmincg` (I originally wrote this in Matlab and ported to Python; `fmincg` trains it alot more reliably) and I'm not sure why (email me if you know).
 </p>
+
 <p>
 Also note I imported "sigmoid" which is a separate file that only contains the sigmoid function and 'cost_xorRNN' which is the cost function.. I'll reproduce both below so you can run everything on your own.
 </p>
 
-<div class="highlight"><pre><span></span><code><span class="c1">#sigmoid.py</span>
+<div class="highlight"><pre><span></span><span class="c1">#sigmoid.py</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c1">#cost_xorRNN.py</span>
+
+<div class="highlight"><pre><span></span><span class="c1">#cost_xorRNN.py</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sigmoid</span> <span class="kn">import</span> <span class="n">sigmoid</span>
 <span class="k">def</span> <span class="nf">costRNN</span><span class="p">(</span><span class="n">thetaVec</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -231,15 +239,18 @@ Also note I imported "sigmoid" which is a separate file that only contains the s
     <span class="n">J</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">J</span>
     <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta1_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">theta2_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#unroll our gradients</span>
     <span class="k">return</span> <span class="n">J</span><span class="p">,</span> <span class="n">grad</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Everything should look fairly familiar if you've gone through my post on gradient descent and backpropagation, or already have a decent handle on building an XOR-capable feedforward network, but let me walk through the important/new parts of the code.
 </p>
+
 <p>1. Every training iteration, we temporarily save the hidden layer outputs in `hid_last` and then at the start of the next training iteration, we initialize our context units to what we stored in `hid_last`.
 </p>
 
-<div class="highlight"><pre><span></span><code><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
+</pre></div>
+
 
 <p>
 2. We have 4 context units, we add/concatenate them with our 1 input unit $X_1$ (and the bias of course), so our total input layer contains 6 units. This means our `theta1` is a 6x4 matrix (6 inputs projecting to 4 hidden units). Our hidden layer has 4 hidden units + 1 bias, so `theta2` is a 5x1 matrix. Other than these manipulations, the network is virtually identical to an ordinary feedforward network.
@@ -251,22 +262,26 @@ Also note I imported "sigmoid" which is a separate file that only contains the s
 4. Let's discuss the scipy optimizer.
 </p>
 
-<div class="highlight"><pre><span></span><code><span class="n">opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fmin_tnc</span><span class="p">(</span><span class="n">cr</span><span class="o">.</span><span class="n">costRNN</span><span class="p">,</span> <span class="n">thetaVec</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">fmin_tnc</span><span class="p">(</span><span class="n">cr</span><span class="o">.</span><span class="n">costRNN</span><span class="p">,</span> <span class="n">thetaVec</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">maxfun</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+</pre></div>
+
 
 <p>
 Scipy's optimizer `fmin_tnc` just wants the reference to our cost function (i.e we're passing the object itself, not calling the function, hence we don't do `cr.costRNN(...)`. But if we do that, how do we pass in the arguments it expects? Well `fmin_tnc` will assume that the first argument of our cost function is supposed to be the unrolled theta vector and thus the 2nd argument to `fmin_tnc` is `thetaVec` which we randomly initialize. The optmizer will iteratively modify and improve the thetaVec we originally pass in.</p>
+
 <p>But wait, our cost function also expects `X` and `Y` parameters! We defined the second argument in our cost function to be `*args` which essentially allows us to accept a tuple of arguments there, and that's what `fmin_tnc` is going to do. We give `fmin_tnc` an `args=()` parameter which is a tuple of additional arguments to pass into our cost function. In our case, we just want to pass in our X and Y vectors.
 </p>
+
 <p>
 The 4th parameter we give to `fmin_tnc` is `maxfun=5000` which refers to the maximum number of times the optimizer is allowed to call our cost function. It isn't necessary to set this, but I decided to set it to be higher than default to allow it to hopefully find a better optimum.
 </p>
+
 <p>
 What does `fmin_tnc` return to us? It returns 3 items by default in an array. The first is the only thing we really care about, our optimal weights stored in an unrolled vector. Hence I retrieve it with this line: `optTheta = np.array(opt[0])`  The other 2 return values are the number of times it called our cost function, and a return code string. You can see the documentation here: http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_tnc.html
 </p>
 
 <h4>Why is it so difficult to train this thing?</h4>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">cost_xorRNN</span> <span class="k">as</span> <span class="nn">cr</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
@@ -290,7 +305,8 @@ What does `fmin_tnc` return to us? It returns 3 items by default in an array. Th
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;thetaVec[2]&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">thetaVec_f</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="XOR%20RNN%20Tutorial_files/XOR%20RNN%20Tutorial_26_0.png"></p>
 <p>You don't really need to understand the code behind this graph. Essentially what I'm doing is taking the set of optimal weights returned from the optimization function, and then changing the third weight (arbitrarily chosen) in the unrolled weight vector to between the values of -1 to -10 and calculating the cost for each new set of weights (but of the 29 total weights, only one individual weight is changed). So we're only looking at the cost as a function of <b>1</b> individual weight. The graph looks different if you look at a different weight, but the point is, this is not a nice cost surface. If our initial weight lands somewhere left of 6, then we'll probably be able to gradient descent down to the minimum, but if it lands to the right, we'll probably get stuck in that local minimum. Now imagine all 29 weights in our network having a cost surface like this and you can see how it gets ugly. <b>The take-away here is that RNNs have a lot of local optima that make it really difficult to train with the typical methods we use in feedforward networks.</b> Ideally, we want a cost function that is smooth and convex.
@@ -303,7 +319,7 @@ What does `fmin_tnc` return to us? It returns 3 items by default in an array. Th
 <p>3) We're going to expand the hidden layer from 4 to 10. Seems to make training faster.</p>
 <p>4) Thus the input layer will now contain: 4 inputs + 10 context units + 1 bias = 11 total. And the output will contain  4 units since each letter is a vector of length 4.</p>
 <p>As before, I'll reproduce the code below (two separate files: RNNoptim.py and cost_charRNN.py; but you could put it all in one file if you want) and explain the important points.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#cost_charRNN.py OUR COST FUNCTION FILE</span>
+<div class="highlight"><pre><span></span><span class="c1">#cost_charRNN.py OUR COST FUNCTION FILE</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sigmoid</span> <span class="kn">import</span> <span class="n">sigmoid</span>
 <span class="k">def</span> <span class="nf">costRNN</span><span class="p">(</span><span class="n">thetaVec</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -344,10 +360,11 @@ What does `fmin_tnc` return to us? It returns 3 items by default in an array. Th
     <span class="n">J</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">J</span>
     <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta1_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">theta2_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">J</span><span class="p">,</span> <span class="n">grad</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>That's our cost function file. It accepts an unrolled theta vector and the input data and returns the cost and the gradients. It is virtually the same as before besides the changed layer architecture and the fact that our <span class="math">\(y\)</span> (expected output) is just <span class="math">\(X[j+1]\)</span></p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sigmoid</span> <span class="kn">import</span> <span class="n">sigmoid</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 <span class="c1">#Vocabulary h,e,l,o</span>
@@ -382,27 +399,31 @@ What does `fmin_tnc` return to us? It returns 3 items by default in an array. Th
 <span class="c1">#This spells &#39;hell&#39; and we expect it to return &#39;ello&#39; as it predicts the next character for each input</span>
 <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="s1">&#39;0,0,1,0; 0,1,0,0; 0,0,0,1; 0,0,0,1&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">)))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">[[ 0.  1.  0.  0.]</span>
- <span class="k">[ 0.  0.  0.  1.]</span>
- <span class="k">[ 0.  0.  0.  1.]</span>
- <span class="k">[ 1.  0.  0.  0.]]</span>
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">[[ 0.  1.  0.  0.]</span>
+<span class="w"> </span><span class="k">[ 0.  0.  0.  1.]</span>
+<span class="w"> </span><span class="k">[ 0.  0.  0.  1.]</span>
+<span class="w"> </span><span class="k">[ 1.  0.  0.  0.]]</span>
+</pre></div>
+
 
 <p><b>That's cool.</b> Do you remember our encoding? h = [0,0,1,0], e = [0,1,0,0], l = [0,0,0,1], o = [1,0,0,0]
 <br />
-So we gave it 'hell' and it returned 'ello' ! That means, when it received the first character, [0,0,1,0] ("h"), it returned [ 0.  1.  0.  0.] ("e"). It knew what letter is supposed to come next! Neat.</p>
+So we gave it 'hell' and it returned 'ello' ! That means, when it received the first character, [0,0,1,0] ("h"), it returned [ 0.  1.  0.  0.] ("e"). It knew what letter is supposed to come next! Neat.
 <p>
 Again, this is virtually identical to the network we built for XOR just that our input layer accepts binary 4 element vectors and returns 4 element vectors representing characters. We also increased the hidden layer size to 10.
-</p>
-
+</p></p>
 <h4>Closing Words</h4>
 <p>If you want to take this farther, try increasing the number of characters you can encode by increasing the input and output layers. I tried (not shown here) up to 11 element vectors, using the letters "e t a o i n s h r d" (which are the top 10 highest frequency letters in english) and the space character. With just those 11 characters you can encode alot of words, even sentences. While I got it to work on individual words, training became increasingly difficult for longer input sequences (I tried expanding the hidden layer). My guess is that it just doesn't have enough 'memory' to remember more than a couple of characters back, therefore it won't be able to learn the character sequences of a long word or sentence. Hence why anyone doing 'real' character prediction (like the Karpathy charRNN) uses a much more sophisticated RNN, an LSTM network.</p>
+
 <p>
 I also attempted to build a character generator from this code, so that we train it on a word or small sentence and then tell it to generate some sequence of characters based on a seed/starting character or word. That didn't work well enough to present here, but if I get it working, I'll make a new post.
 </p>
+
 <p>Do note that I wrote this code for readability, thus it doesn't follow best coding practices like DRY.</p>
+
 <p>Also, like I mentioned before, I had to resort to using a scipy optimizer to help train the network rather than use my own implementation of gradient descent like I did with the normal feedforward XOR network in my previous post. I suppose I was experiencing the exploding/vanishing gradient problem and I just didn't have a sophisticated enough gradient descent implementation. If you have any expertise to lend here then please email me (outlacedev@gmail.com). And please email me if you spot any errors.</p>
 
 <h3>References:</h3>

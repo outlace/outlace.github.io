@@ -44,6 +44,7 @@
 
 
                 <h1>Genetic Algorithm in 15 lines of Python code</h1>
+
 <h4>A simple yet powerful genetic algorithm implementation used to train a neural network in 15 lines of code.</h4>
 
 <p><b>Summary:</b>
@@ -53,9 +54,7 @@ Here I will show you how I wrote a basic genetic algorithm (GA) that finds an op
 
 <h3>Just Give Me The Code:</h3>
 
-
-
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
@@ -70,22 +69,21 @@ Here I will show you how I wrote a basic genetic algorithm (GA) that finds an op
     <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
     <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
     <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
 
 
-
-<br />Ok, so I'm assuming that code is completely not helpful at this point, and in fact, it won't even run if you tried to copy and paste and run it because you also need the code for the Neural Network, which I stored in a separate file and imported. Let's first talk about the general steps in implementing a genetic algorithm and then we'll break down the code line by line, add in some print() statements to see what's going on, and maybe even make some fancy graphs.<p>Essentially, a genetic algorithm is a search algorithm that will hopefully find an optimal solution through a process that simulates natural selection and evolution. Here's the overall flow for how they work:</p>
-
-+ We generate a population of random potential solutions
-+ Then we iterate through this population and assess the fitness of (i.e. how good of a solution) each solution
-+ We prefentially select solutions with higher fitness to survive and make it to the next generation.
-Solutions with higher fitness have a higher probability of being selected
-+ These "winner" solutions then "mate" and produce offspring solutions. For example, if our solutions are simply 
-vectors of integers, then mating vector1 with vector2 involves taking a few elements from vector1 and combining it with a few elements of vector2 to make a new offspring vector of the same dimensions. Vector1: [1 2 3], Vector2: [4 5 6]. Vector1 mates with Vector2 to produce [4 5 3] and [1 2 6]
-+ So now we have a new population with the top solutions from the last generation along with new offspring solutions, at this point, we will iterate over our solutions and randomly mutate some of them to make sure to introduce new "genetic diversity" into every generation to prevent premature convergence on a local optimum.
-+ Repeat this process for X number of generations or until we have a sufficiently good solution
-
-As a quick review, the iamtrask article shows you how to implement a really simple 2-layer (1 input layer, 1 output layer) neural network that is trained to solve this problem:
+<p><br />Ok, so I'm assuming that code is completely not helpful at this point, and in fact, it won't even run if you tried to copy and paste and run it because you also need the code for the Neural Network, which I stored in a separate file and imported. Let's first talk about the general steps in implementing a genetic algorithm and then we'll break down the code line by line, add in some print() statements to see what's going on, and maybe even make some fancy graphs.<p>Essentially, a genetic algorithm is a search algorithm that will hopefully find an optimal solution through a process that simulates natural selection and evolution. Here's the overall flow for how they work:</p></p>
+<ul>
+<li>We generate a population of random potential solutions</li>
+<li>Then we iterate through this population and assess the fitness of (i.e. how good of a solution) each solution</li>
+<li>We prefentially select solutions with higher fitness to survive and make it to the next generation.
+Solutions with higher fitness have a higher probability of being selected</li>
+<li>These "winner" solutions then "mate" and produce offspring solutions. For example, if our solutions are simply 
+vectors of integers, then mating vector1 with vector2 involves taking a few elements from vector1 and combining it with a few elements of vector2 to make a new offspring vector of the same dimensions. Vector1: [1 2 3], Vector2: [4 5 6]. Vector1 mates with Vector2 to produce [4 5 3] and [1 2 6]</li>
+<li>So now we have a new population with the top solutions from the last generation along with new offspring solutions, at this point, we will iterate over our solutions and randomly mutate some of them to make sure to introduce new "genetic diversity" into every generation to prevent premature convergence on a local optimum.</li>
+<li>Repeat this process for X number of generations or until we have a sufficiently good solution</li>
+</ul>
+<p>As a quick review, the iamtrask article shows you how to implement a really simple 2-layer (1 input layer, 1 output layer) neural network that is trained to solve this problem:
 <table class="tg" style="width: 234px; margin-right: 65vw;">
   <tbody><tr>
     <th class="tg-5rcs" colspan="3">Inputs</th>
@@ -116,11 +114,9 @@ As a quick review, the iamtrask article shows you how to implement a really simp
     <td class="tg-4kyz">0</td>
   </tr>
 </tbody></table>
-</p>
-
-<p>As you can see, the output simply depends on whether the first input is a 1 or not. The 2nd input is irrelevant and the 3rd input is our bias (explained elsewhere).</p>
-<p>If you train the 2-layer neural net (thus one set of weights) using gradient descent using the implementation in the iamtrask article, you will get a set of weights close to this:</p>
-
+</p></p>
+<p>As you can see, the output simply depends on whether the first input is a 1 or not. The 2nd input is irrelevant and the 3rd input is our bias (explained elsewhere).
+<p>If you train the 2-layer neural net (thus one set of weights) using gradient descent using the implementation in the iamtrask article, you will get a set of weights close to this:</p></p>
 <blockquote>
 <p>[[ 9.67299303],[-0.2078435],[-4.62963669]]</p>
 </blockquote>
@@ -135,7 +131,7 @@ As a quick review, the iamtrask article shows you how to implement a really simp
 </blockquote>
 <p>Obviously these weights resulted in a significantly lower cost (better fitness). In all honesty however, for this simplistic problem, the difference in cost is pretty inconsequential. In more complex problems, a cost that low is probably resulting in overfitting. Not to mention, genetic algorithms almost certainly will take longer to converge than gradient descent. But let's ignore all those details, we just want to build a genetic algorithm because they're cool.</p>
 <p>Before I jump into the details of the genetic algorithm, I want to revisit the neural net. Here's the code for the neural net I implemented, which is an adaptation from the one by iamtrask:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#training data X</span>
@@ -149,85 +145,99 @@ As a quick review, the iamtrask article shows you how to implement a really simp
     <span class="n">hThetaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">hThetaX</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">x</span><span class="p">))</span> <span class="c1">#Just our run-of-the-mill sigmoid function</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>You should be able to figure this out if you've run through the iamtrask article or already have an understanding of neural nets. Just a note: I call the weights Theta. Let's go ahead and run this network just to make sure it's working right.</p>
-<div class="highlight"><pre><span></span><code><span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">syn0</span><span class="p">)</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">syn0</span><span class="p">)</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>array([ 0.31364485])
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>array([ 0.31364485])
+</pre></div>
+
 
 <p>We expect to get about [ 0 ] for an input of [0,1,1], but obviously when we use random weights, that's not likely to happen. Let's try again with those weights I got from doing gradient descent (not shown here).</p>
-<div class="highlight"><pre><span></span><code><span class="n">optimal_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">9.67299303</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.2078435</span><span class="p">],[</span><span class="o">-</span><span class="mf">4.62963669</span><span class="p">]])</span>
+<div class="highlight"><pre><span></span><span class="n">optimal_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">9.67299303</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.2078435</span><span class="p">],[</span><span class="o">-</span><span class="mf">4.62963669</span><span class="p">]])</span>
 <span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>array([ 0.00786466])
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>array([ 0.00786466])
+</pre></div>
+
 
 <p>As you can see, we get a value pretty close to 0, as expected. Nice. Okay, so now let's try the weights I got from running the genetic algorithm.</p>
-<div class="highlight"><pre><span></span><code><span class="n">optimal_theta_ga</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.09686945e+05</span><span class="p">,</span><span class="o">-</span><span class="mf">7.88485054e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.67477116e+03</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><span class="n">optimal_theta_ga</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.09686945e+05</span><span class="p">,</span><span class="o">-</span><span class="mf">7.88485054e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.67477116e+03</span><span class="p">])</span>
 <span class="n">runForward</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">optimal_theta_ga</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code>/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/IPython/kernel/__main__.py:14: RuntimeWarning: overflow encountered in exp
+</pre></div>
 
 
+<div class="highlight"><pre><span></span><span class="o">/</span><span class="nx">Library</span><span class="o">/</span><span class="nx">Frameworks</span><span class="o">/</span><span class="nx">Python</span><span class="p">.</span><span class="nx">framework</span><span class="o">/</span><span class="nx">Versions</span><span class="o">/</span><span class="m m-Double">3.4</span><span class="o">/</span><span class="nx">lib</span><span class="o">/</span><span class="nx">python3</span><span class="m m-Double">.4</span><span class="o">/</span><span class="nx">site</span><span class="o">-</span><span class="nx">packages</span><span class="o">/</span><span class="nx">IPython</span><span class="o">/</span><span class="nx">kernel</span><span class="o">/</span><span class="nx">__main__</span><span class="p">.</span><span class="nx">py</span><span class="p">:</span><span class="mi">14</span><span class="p">:</span><span class="w"> </span><span class="nx">RuntimeWarning</span><span class="p">:</span><span class="w"> </span><span class="nx">overflow</span><span class="w"> </span><span class="nx">encountered</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">exp</span>
 
 
 
-0.0
-</code></pre></div>
 
-<p>Wow! The result we get here is so close to zero we get an overflow warning. Just ignore that, the point is, the error/cost is really, really low. (Again, this is not necessarily a good thing...becauase of potential overfitting, but for this particular problem, overfitting is fine). Just to make things really clear, let's take a look at what these weights are doing diagramatically.</p>
+
+<span class="m m-Double">0.0</span>
+</pre></div>
+
+
+<p>Wow! The result we get here is so close to zero we get an overflow warning. Just ignore that, the point is, the error/cost is really, really low. (Again, this is not necessarily a good thing...becauase of potential overfitting, but for this particular problem, overfitting is fine). Just to make things really clear, let's take a look at what these weights are doing diagramatically.
 <div>
 <img src="images/NNDiagram1.png" width="200px" style="display:inline-block;" /><img style="display:inline-block;"  src="images/NNDiagram2.png" width="200px" />
-</div>
-
-<p>So as you can see on the right, whenever the bottom (left-most) input is 1, a really, really big number gets sent over to our sigmoid function, which will of course return something very close to 1.</p>
-<p>Alright, so enough about the neural network. Let's go line by line with the genetic algorithm (skipping imports).</p>
-
-<div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1">#These are just some parameters for the GA, defined below in order:</span>
+</div></p>
+<p>So as you can see on the right, whenever the bottom (left-most) input is 1, a really, really big number gets sent over to our sigmoid function, which will of course return something very close to 1.
+<p>Alright, so enough about the neural network. Let's go line by line with the genetic algorithm (skipping imports).</p></p>
+<div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1">#These are just some parameters for the GA, defined below in order:</span>
 <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Nothing too interesting there, but just noting that params[3] (solution length) refers to the number of elements in each individual solution. Since our solutions are weights to the 2-layer neural net, each solution is a 3 element vector (numpy array). Also need to note the last parameter, params[4] refers to how many solutions we will pick as winners from each generation to populate the new generation. So out of total population of 100, every generation we will preferentially pick the top 20 solutions, populate the new generation with them and their offspring.</p>
-<div class="highlight"><pre><span></span><code><span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">nextPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curPop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>The top line is the most important here. Basically we're creating a matrix 100x3 with an initial population of random solutions. We're using the np.arange() function to create a bunch of values -15, -14.99, -14.89....15  in order in a long array, then we use np.random.choice() to randomly choose 100x3 = 300 of them to build the 100x3 matrix of initial solutions. This isn't the most computationally efficient way to do things, but I've found it works really well. This is certainly not the only way to do it, and I encourage you to mess around with different ways to intialize your population. It turns out this step is really important to how well it does. If your initial population is not well randomized and not very diverse, you won't get good results.</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
     <span class="n">fitVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">curPop</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>params[2] is our number of generations, so this is our main, outer loop to go through the whole flow each generation.
 Our first step is to calculate the cost/error of each solution (there's 100) and add it to a matrix called <b>fitVec</b>. Each element of fitVec is an array consisting of the index of the solution in curPop and its cost, e.g. [0, 2.54] means that the 0th element in curPop (first solution) has an error of 2.54</p>
-<div class="highlight"><pre><span></span><code><span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">winners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</pre></div>
+
 
 <p>We initialize a new matrix called <b>winners</b>; this will hold our winning solutions temporarily until we move them to the next generation.</p>
-<div class="highlight"><pre><span></span><code>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
+<div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)):</span>
         <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fitVec</span><span class="p">)),</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Now we're in a loop to populate the winners matrix. We use np.random.choice() to randomly pick params[4]/2 (20/2=10) solutions. We're gonna use a <b>tournament style selection</b> process where we randomly choose a subset of our population, and then pick the best solution from that subset and add it to our winners array. Obviously higher fitness (lower error) solutions have a higher chance of making it to the winners array, but we don't just pick the top 20 solutions because we want to maintain some genetic diversity in each generation, so have a few higher error solutions is generally a good thing.</p>
-<div class="highlight"><pre><span></span><code>        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>        <span class="n">wnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
 
 <p>So the array 'selected' contains 10 random solutions (actually the indices to 10 solutions) from our population. Now we reference fitVec to find the actual elements, use np.argmin() to pick the one with the smallest error/cost and assign the index of that winning element to a variable, 'wnr'</p>
-<div class="highlight"><pre><span></span><code>        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>        <span class="n">winners</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">curPop</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fitVec</span><span class="p">[</span><span class="n">selected</span><span class="p">[</span><span class="n">wnr</span><span class="p">]][</span><span class="mi">0</span><span class="p">])]</span>
+</pre></div>
+
 
 <p>Then we reference the winner in curPop, the array of all solutions of the current generation, and copy it to our 'winners' array.</p>
-<div class="highlight"><pre><span></span><code>    <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>    <span class="n">nextPop</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)]</span> <span class="o">=</span> <span class="n">winners</span>
+</pre></div>
+
 
 <p>nextPop is the array containing all the solutions for the next generation. We populate the first 20 elements of nextPop with our winning solutions from 'winners' array.</p>
-<div class="highlight"><pre><span></span><code>    <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>    <span class="n">nextPop</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">):]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">winners</span><span class="p">[:,</span> <span class="n">x</span><span class="p">],</span> <span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">winners</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">winners</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+
 
 <p>Okay, yeah this is a really long line and it's not very readable. I kind of cheated to make this all in 15 lines.
 This line is our <b>mating</b> process, and it's probably the most complicated part of a genetic algorithm. Let's start with the core of this nasty line. <br /></p>
@@ -240,14 +250,16 @@ This line is our <b>mating</b> process, and it's probably the most complicated p
 </blockquote>
 <p>Now we just use np.random.permutation() to shuffle the columns of this next 80x3 matrix. This is how we accomplish the crossover functional. Imagine we have a 3x3 matrix (2 solutions) like this:<br /> <code>np.array([[1,2,3],[4,5,6],[7,8,9]])</code> , when we run the permutation function, it will change it something like:<br /> <code>np.array([[7,5,3],[1,8,9],[4,2,3]])</code>
 <br />Go look at the numpy documentation to learn more about permutation if you still don't understand how it's working here.</p>
-<div class="highlight"><pre><span></span><code>    <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>    <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">nextPop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nextPop</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</pre></div>
+
 
 <p>Ahh. Our last line of code! This is our <b>mutation</b> process. I'm using a list comprehension to build a matrix of the same dimensions as nextPop, but filled with 1s. However, with a probability of params[1] (our mutation rate), we randomly "mutate" some of the elements. Our mutation is basically using a random value from numpy.random.normal() instead of 1. So we end up with a matrix like this (I've shrunk it to 10x3 to make it fit here and changed the mutation rate to 20% so you can see more mutated elements):</p>
-<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.20</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.20</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>matrix([[ 1.        ,  1.        , -0.274611  ],
+
+<div class="highlight"><pre><span></span>matrix([[ 1.        ,  1.        , -0.274611  ],
         [ 1.        ,  1.        ,  1.        ],
         [ 1.        ,  1.        ,  1.        ],
         [ 1.        ,  0.05055137,  1.98058061],
@@ -257,13 +269,13 @@ This line is our <b>mating</b> process, and it's probably the most complicated p
         [ 1.        ,  1.        , -1.96160288],
         [ 1.        ,  1.        ,  1.0381105 ],
         [-0.64245344,  2.04278346,  1.        ]])
-</code></pre></div>
+</pre></div>
 
-<p>Then we multiply this matrix (element-wise multiplication) to our nextPop matrix. Most of the time we're multiplying each element in nextPop by 1, so leaving them unchanged, but sometimes we multiply by one of the mutated values and thus will randomly change some elements in nextPop. This adds genetic diversity to our next generation. So now we've filled up nextPop with a new generation of higher fitness solutions. We just repeat this process for how ever many generations we defined in params.</p>
+
+<p>Then we multiply this matrix (element-wise multiplication) to our nextPop matrix. Most of the time we're multiplying each element in nextPop by 1, so leaving them unchanged, but sometimes we multiply by one of the mutated values and thus will randomly change some elements in nextPop. This adds genetic diversity to our next generation. So now we've filled up nextPop with a new generation of higher fitness solutions. We just repeat this process for how ever many generations we defined in params.
 <p><h4>Alright, so we're done! That's it! We made a genetic algorithm that trains a neural network, cool!</h4></p>
-<p>...Okay, yeah technically we did, but let's actually watch it do something. Here we go...</p>
-
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<p>...Okay, yeah technically we did, but let's actually watch it do something. Here we go...</p> </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#initialize current population to random values within range</span>
@@ -287,9 +299,10 @@ This line is our <b>mating</b> process, and it's probably the most complicated p
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>(Gen: #0) Total error: 360.621647726
+
+<div class="highlight"><pre><span></span>(Gen: #0) Total error: 360.621647726
 
 (Gen: #1) Total error: 164.147038902
 
@@ -322,9 +335,11 @@ hThetaX =
  [ 1.]
  [ 0.]
  [ 1.]]
-</code></pre></div>
+</pre></div>
+
 
 <h3>Sweet!</h3>
+
 <p>Looks like it converged, finding a solution with a cost of only 0.007, pretty close to the error of the solution found with gradient descent. Notice I only ran it for 10 generations 1) because clearly that's all it takes and 2) because I didn't want a 20 page long document here.</p>
 <p><h2>Where to go from here?</h2>
 First off, thanks. If you made it this far, I must've done something right. <br />
@@ -333,11 +348,12 @@ But if you want to do more, then I really encourage you to play around with the 
 
 <h3>Bonus! Let's graph the population errors vs the generation #</h3>
 
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">NeuralNet</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [Init pop (pop=100), mut rate (=5%), num generations (250), chromosome/solution length (3), # winners/per gen]</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#initialize current population to random values within range</span>
@@ -361,31 +377,33 @@ But if you want to do more, then I really encourage you to play around with the 
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code><span class="nv">Best</span> <span class="nv">Sol</span><span class="s1">&#39;</span><span class="s">n:</span>
-[[ <span class="mi">625</span>.<span class="mi">07750262</span>  <span class="o">-</span><span class="mi">48</span>.<span class="mi">12579247</span> <span class="o">-</span><span class="mi">532</span>.<span class="mi">48348958</span>]]
-<span class="nv">Cost</span>:<span class="mi">1</span>.<span class="mi">11272735801</span><span class="nv">e</span><span class="o">-</span><span class="mi">231</span>
-<span class="nv">When</span> <span class="nv">X</span> <span class="o">=</span> 
-[[<span class="mi">0</span> <span class="mi">1</span>]
- [<span class="mi">1</span> <span class="mi">1</span>]
- [<span class="mi">0</span> <span class="mi">0</span>]
- [<span class="mi">1</span> <span class="mi">0</span>]] 
-<span class="nv">hThetaX</span> <span class="o">=</span> 
-[[ <span class="mi">0</span>.]
- [ <span class="mi">1</span>.]
- [ <span class="mi">0</span>.]
- [ <span class="mi">1</span>.]]
+</pre></div>
 
 
-<span class="o">/</span><span class="nv">Users</span><span class="o">/</span><span class="nv">brandonbrown</span><span class="o">/</span><span class="nv">Desktop</span><span class="o">/</span><span class="nv">Projects</span><span class="o">/</span><span class="nv">MiniGAandNN</span><span class="o">/</span><span class="nv">NeuralNet</span>.<span class="nv">py</span>:<span class="mi">15</span>: <span class="nv">RuntimeWarning</span>: <span class="nv">overflow</span> <span class="nv">encountered</span> <span class="nv">in</span> <span class="nv">exp</span>
-  <span class="nv">def</span> <span class="nv">sigmoid</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>: <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="ss">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nv">np</span>.<span class="nv">exp</span><span class="ss">(</span><span class="o">-</span> <span class="nv">x</span><span class="ss">))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="nv">Best</span><span class="w"> </span><span class="nv">Sol</span><span class="err">&#39;n:</span>
+<span class="err">[[ 625.07750262  -48.12579247 -532.48348958]]</span>
+<span class="err">Cost:1.11272735801e-231</span>
+<span class="err">When X = </span>
+<span class="err">[[0 1]</span>
+<span class="err"> [1 1]</span>
+<span class="err"> [0 0]</span>
+<span class="err"> [1 0]] </span>
+<span class="err">hThetaX = </span>
+<span class="err">[[ 0.]</span>
+<span class="err"> [ 1.]</span>
+<span class="err"> [ 0.]</span>
+<span class="err"> [ 1.]]</span>
+
+
+<span class="err">/Users/brandonbrown/Desktop/Projects/MiniGAandNN/NeuralNet.py:15: RuntimeWarning: overflow encountered in exp</span>
+<span class="err">  def sigmoid(x): return 1 / (1 + np.exp(- x))</span>
+</pre></div>
+
 
 <p><img alt="png" src="Mini%20GA%20and%20NN_files/Mini%20GA%20and%20NN_50_2.png"></p>
 <p>Looks like we converge after just <b>4</b> generations! Also notice we get these little bumps in error every 10 generations or so, likely due to a particularly dramatic mutation round.</p>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
+<div class="highlight"><pre><span></span>
+</pre></div>
                 <div class="clear"></div>
 
                 <div class="info">

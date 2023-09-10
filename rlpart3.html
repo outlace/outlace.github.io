@@ -71,7 +71,7 @@
 <p>We're going to implement 3 variants of the game in order of increasing difficulty. The first version will initialize a grid in exactly the same way each time. That is, every new game starts with the player (P), goal (+), pit (-), and wall (W) in exactly the same positions. Thus the algorithm just needs to learn how to take the player from a known starting position to a known end position without hitting the pit, which gives out negative rewards.</p>
 <p>The second implementation is slightly more difficult. The goal, pit and wall will always be initialized in the same positions, but the player will be placed randomly on the grid on each new game. The third implementation is the most difficult to learn, and that's where all elements are randomly placed on the grid each game.</p>
 <p>Let's get to coding.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">def</span> <span class="nf">randPair</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
@@ -141,7 +141,8 @@
         <span class="k">return</span> <span class="n">initGridRand</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">state</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>The state is a 3-dimensional numpy array (4x4x4). You can think of the first two dimensions as the positions on the board; e.g. row 1, column 2 is the position (1,2) [zero indexed] on the board. The 3rd dimension encodes the object/element at that position. Since there are 4 different possible objects, the 3rd dimension of the state contains vectors of length 4. We're using a one-hot encoding for the elements except that the empty position is just a vector of all zeros. So with a 4 length vector we're encoding 5 possible options at each grid position: empty, player, goal, pit, or wall.</p>
 <p>You can also think of the 3rd dimension as being divided into 4 separate grid planes, where each plane represents the position of each element. So below is an example where the player is at grid position (3,0), the wall is at (0,0), the pit is at (0,1) and the goal is at (1,0). [All other elements are 0s]</p>
@@ -149,7 +150,7 @@
 <p>In our simple implementation it's possible for the board to be initialized such that some of the objects contain a 1 at the same "x,y" position (but different "z" positions), which indicates they're at the same position on the grid. Obviously we don't want to initialize the board in this way, so for the last 2 variants of the game that involve some element of random initialization, we check if we can find "clean" arrays (only one "1" in the 'Z' dimension of a particular grid position) of the various element types on the grid and if not, we just recursively call the initialize grid function until we get a state where elements are not superimposed.</p>
 <p>When the player successfully plays the game and lands on the goal, the player and goal positions <em>will</em> be superimposed and that is how we know the player has won (likewise if the player hits the pit and loses). The wall is supposed to block the movement of the player so we prevent the player from taking an action that would place them at the same position as the wall. Additionally, the grid is "enclosed" so that player cannot walk through the edges of the grid.</p>
 <p>Now we will implement the movement function.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
     <span class="c1">#need to locate player in grid</span>
     <span class="c1">#need to determine what object (if any) is in the new grid spot the player is moving to</span>
     <span class="n">player_loc</span> <span class="o">=</span> <span class="n">findLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
@@ -176,12 +177,13 @@
     <span class="n">state</span><span class="p">[</span><span class="n">goal</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">state</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>The first thing we do is try to find the positions of each element on the grid (state). Then it's just a few simple if-conditions. We need to make sure the player isn't trying to step on the wall and make sure that the player isn't stepping outside the bounds of the grid.</p>
 <p>Now we implement <code>getLoc</code> which is similar to <code>findLoc</code> but can identify superimposed elements, whereas <code>findLoc</code> would miss it (intentionally) if there was superimposition. Additionally, we'll implement our reward function, which will award +10 if the player steps onto the goal, -10 if the player steps into the pit, and -1 for any other move. These rewards are pretty arbitrary, as long as the goal has a significantly higher reward than the pit, the algorithm should do fine.</p>
 <p>Lastly, I've implemented a function that will display our grid as a text array so we can see what's going on.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">getLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getLoc</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">][</span><span class="n">level</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
@@ -218,43 +220,48 @@
         <span class="n">grid</span><span class="p">[</span><span class="n">pit</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span> <span class="c1">#pit</span>
 
     <span class="k">return</span> <span class="n">grid</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>And that's it. That's the entire gridworld game implementation. Not too bad right? As with my part 2 blackjack implementation, this game is not using OOP-style and implemented in a functional style where we just pass around states.</p>
 <p>Let's demonstrate some gameplay. I'll be using the <code>initGridRand()</code> variant so that all items are placed randomly.</p>
-<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">=</span> <span class="n">initGridRand</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">initGridRand</span><span class="p">()</span>
 <span class="n">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>array([[&#39;P&#39;, &#39;-&#39;, &#39; &#39;, &#39; &#39;],
-       [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;],
-       [&#39; &#39;, &#39; &#39;, &#39;W&#39;, &#39; &#39;],
-       [&#39; &#39;, &#39;+&#39;, &#39; &#39;, &#39; &#39;]], 
-      dtype=&#39;&lt;U2&#39;)
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="nx">array</span><span class="p">([[</span><span class="sc">&#39;P&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;W&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;+&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">]],</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">dtype</span><span class="p">=</span><span class="err">&#39;</span><span class="p">&lt;</span><span class="nx">U2</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+
 
 <p>As you can see, I clearly need to move 3 spaces down, and 1 space to the right to land on the goal.
 Remember, our action encoding is: 0 = up, 1 = down, 2 = left, 3 = right.</p>
-<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">state</span> <span class="o">=</span> <span class="n">makeMove</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">getReward</span><span class="p">(</span><span class="n">state</span><span class="p">),))</span>
 <span class="n">dispGrid</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code><span class="n">Reward</span><span class="o">:</span> <span class="mi">10</span>
+</pre></div>
 
 
+<div class="highlight"><pre><span></span><span class="n">Reward</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span>
 
 
 
-<span class="n">array</span><span class="o">([[</span><span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39;-&#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">],</span>
-       <span class="o">[</span><span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">],</span>
-       <span class="o">[</span><span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39;W&#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">],</span>
-       <span class="o">[</span><span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">]],</span> 
-      <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;&lt;U2&#39;</span><span class="o">)</span>
-</code></pre></div>
+
+
+<span class="n">array</span><span class="o">([[</span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">],</span>
+<span class="w">       </span><span class="o">[</span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">],</span>
+<span class="w">       </span><span class="o">[</span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">],</span>
+<span class="w">       </span><span class="o">[</span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="o">]],</span><span class="w"> </span>
+<span class="w">      </span><span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;&lt;U2&#39;</span><span class="o">)</span>
+</pre></div>
+
 
 <p>We haven't implemented a display for when the player is on the goal or pit so the player and goal just disappear when that happens. </p>
 <h3>Neural Network as our Q function</h3>
@@ -262,12 +269,13 @@ Remember, our action encoding is: 0 = up, 1 = down, 2 = left, 3 = right.</p>
 <p><strong>Important Note</strong>:
 Up until now, I've been talking about how the neural network can serve the role of <span class="math">\(Q(s, a)\)</span>, and that's absolutely true. However, I will be implementing our neural network in the same way that Google DeepMind did for its Atari playing algorithm. Instead of a neural network architecture that accepts a state and an action as inputs and outputs the value of that single state-action pair, DeepMind built a network that just accepts a state and outputs separate Q-values for each possible action in its output layer. This is pretty clever because in Q-learning we need to get the <span class="math">\(maxQ(s', a')\)</span> [max of the Q values for every possible action in the new state s']. Rather than having to run our network forward for every action, we just need to run it forward once. The result is the same, however, it's just more efficient.</p>
 <p><img src="images/RL/rl3net.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Activation</span>
 <span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">RMSprop</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">164</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;lecun_uniform&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,)))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
 <span class="c1">#model.add(Dropout(0.2)) I&#39;m not using dropout, but maybe you wanna give it a try?</span>
@@ -281,14 +289,17 @@ Up until now, I've been talking about how the neural network can serve the role 
 
 <span class="n">rms</span> <span class="o">=</span> <span class="n">RMSprop</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">rms</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1">#just to show an example output; read outputs left to right: up/down/left/right</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>array([[-0.02812552, -0.04649779, -0.08819015, -0.00723661]])
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>array([[-0.02812552, -0.04649779, -0.08819015, -0.00723661]])
+</pre></div>
+
 
 <p>So that's the network I've designed. An input layer of 64 units (because our state has a total of 64 elements, remember its a 4x4x4 numpy array), 2 hidden layers of 164 and 150 units, and an output layer of 4, one for each of our possible actions (up, down, left, right) [in that order].</p>
 <p>Why did I make the network like this? Honestly, I have no good answer for that. I just messed around with different hidden layer architectures and this one seemed to work fairly well. Feel free to change it up. There's probably a better configuration. (If you discover or know of a much better network architecture for this, let me know).</p>
@@ -304,17 +315,19 @@ Up until now, I've been talking about how the neural network can serve the role 
 8. Given that we have 4 outputs and we only want to update/train the output associated with the action we just took, our target output vector is the same as the output vector from the first run, except we change the one output associated with our action to: <code>reward + (gamma * maxQ)</code>
 9. Train the model on this 1 sample. Repeat process 2-9</p>
 <p>Just to be clear, when we first run our neural network and get an output of action-values like this</p>
-<div class="highlight"><pre><span></span><code><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.08819015</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.08819015</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
+</pre></div>
+
 
 <p>our target vector for one iteration may look like this:</p>
-<div class="highlight"><pre><span></span><code><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.02812552</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.04649779</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723661</span><span class="p">]])</span>
+</pre></div>
+
 
 <p>Also note, I initialize epsilon (for the <span class="math">\(\epsilon\)</span>-greedy action selection) to be 1. It decrements by a small amount on every iteration and will eventually reach 0.1 where it stays. Google DeepMind also used an <span class="math">\(\epsilon\)</span>-greedy action selection and also initialized epsilon to be 1 and decremented during the game play.
 if taking action 2 one step (left) resulted in reaching the goal. So we just keep all other outputs the same as before and just change the one for the action we took.</p>
 <p>Okay, so let's go ahead and train our algorithm to learn the easiest variant of the game, where all elements are placed deterministically at the same positions every time.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
 <span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -355,15 +368,17 @@ if taking action 2 one step (left) resulted in reaching the goal. So we just kee
         <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
         <span class="n">epsilon</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">epochs</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Game #: 999
+
+<div class="highlight"><pre><span></span>Game #: 999
 Epoch 1/1
 1/1 [==============================] - 0s - loss: 0.0265
-</code></pre></div>
+</pre></div>
+
 
 <p>Alright, so I've empirically tested this and it trains on the easy variant with just 1000 epochs (keep in mind every epoch is a full game played to completion). Below I've implemented a function we can use to test our trained algorithm to see if it has properly learned how to play the game. It basically just uses the neural network model to calculate action-values for the current state and selects the action with the highest Q-value. It just repeats this forever until the game is won or lost. I've made it break out of this loop if it is making more than 10 moves because this probably means it hasn't learned how to win and we don't want an infinite loop running.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">if</span> <span class="n">init</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">initGrid</span><span class="p">()</span>
@@ -390,43 +405,46 @@ Epoch 1/1
         <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Game lost; too many moves.&quot;</span><span class="p">)</span>
             <span class="k">break</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="nt">Initial</span> <span class="nt">State</span><span class="o">:</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">0</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">3</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">1</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">3</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">2</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">1</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">3</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">1</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39;P&#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">4</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">1</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Reward</span><span class="o">:</span> <span class="nt">10</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nt">Initial</span><span class="w"> </span><span class="nt">State</span><span class="o">:</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">4</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Reward</span><span class="o">:</span><span class="w"> </span><span class="nt">10</span>
+</pre></div>
+
 
 <p>Can we get a round of applause for our gridworld player here? Clearly it knows what its doing; it went straight for the prize!</p>
 <h3>Playing the the harder variant, catastrophic forgetting, and experience replay</h3>
@@ -444,7 +462,7 @@ Epoch 1/1
 6. Use <code>X_train</code> and <code>y_train</code> as a minibatch for batch training. For subsequent epochs where the array is full, just overwrite old values in our experience replay memory array.</p>
 <p>Thus, in addition to learning the action-value for the action we just took, we're also going to use a random sample of our past experiences to train on to prevent catastrophic forgetting.</p>
 <p>So here's the same training algorithm from above except with experience replay added. Remember, this time we're training it on the harder variant of the game where the player is randomly placed on the grid.</p>
-<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">rms</span><span class="p">)</span><span class="c1">#reset weights of neural network</span>
+<div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">rms</span><span class="p">)</span><span class="c1">#reset weights of neural network</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">3000</span>
 <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.975</span>
 <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span>
@@ -510,86 +528,92 @@ Epoch 1/1
         <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span> <span class="c1">#decrement epsilon over time</span>
         <span class="n">epsilon</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">epochs</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Game #: 2999
+
+<div class="highlight"><pre><span></span>Game #: 2999
 Epoch 1/1
 40/40 [==============================] - 0s - loss: 0.0018
-</code></pre></div>
+</pre></div>
+
 
 <p>I've increased the training epochs to 3000 just based on empiric testing. So let's see how it does, we'll run our <code>testAlgo()</code> function a couple times to see how it handles randomly initialized player scenarios.</p>
-<div class="highlight"><pre><span></span><code><span class="n">testAlgo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#run testAlgo using random player placement =&gt; initGridPlayer()</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">testAlgo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#run testAlgo using random player placement =&gt; initGridPlayer()</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="nt">Initial</span> <span class="nt">State</span><span class="o">:</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">0</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">3</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">1</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">0</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39;P&#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">2</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">0</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39;P&#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">3</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">2</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Reward</span><span class="o">:</span> <span class="nt">10</span>
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="nt">Initial</span><span class="w"> </span><span class="nt">State</span><span class="o">:</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Reward</span><span class="o">:</span><span class="w"> </span><span class="nt">10</span>
+</pre></div>
+
 
 <p>Fantastic. Let's run the <code>testAlgo()</code> one more time just to prove it has generalized.</p>
-<div class="highlight"><pre><span></span><code><span class="n">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Of course, I ran it many times more than I&#39;m showing here</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">testAlgo</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Of course, I ran it many times more than I&#39;m showing here</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="nt">Initial</span> <span class="nt">State</span><span class="o">:</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">0</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">2</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">1</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">0</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39;P&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">2</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">0</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">3</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">3</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">4</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">3</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;P&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;+&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Move</span> <span class="err">#</span><span class="o">:</span> <span class="nt">5</span><span class="o">;</span> <span class="nt">Taking</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">1</span>
-<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39;W&#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span>
- <span class="cp">[</span><span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span> <span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
-<span class="nt">Reward</span><span class="o">:</span> <span class="nt">10</span>
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="nt">Initial</span><span class="w"> </span><span class="nt">State</span><span class="o">:</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">4</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">3</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;P&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39;+&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Move</span><span class="w"> </span><span class="err">#</span><span class="o">:</span><span class="w"> </span><span class="nt">5</span><span class="o">;</span><span class="w"> </span><span class="nt">Taking</span><span class="w"> </span><span class="nt">action</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span>
+<span class="cp">[</span><span class="err">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;W&#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span>
+<span class="w"> </span><span class="cp">[</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="cp">]</span><span class="o">]</span>
+<span class="nt">Reward</span><span class="o">:</span><span class="w"> </span><span class="nt">10</span>
+</pre></div>
+
 
 <p>I'll be darned. It seems to have learned to play the game from any starting position! Pretty neat.</p>
 <h3>The Hardest Variant</h3>

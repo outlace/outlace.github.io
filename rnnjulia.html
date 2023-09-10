@@ -50,32 +50,35 @@
 <p>Additionally, I wanted to try out Julia.</p>
 <h3>Why Julia?</h3>
 <p>My previous posts all use Python and Python is surely a darling of the data science/machine learning world. I can unequivocally say that Python is my hands-down favorite programming language. Python's main strengths are its clean and simple syntax and of course the massive community and number of libraries available. Unfortunately, Python's strength of clean syntax completely disappears when you have to use numpy for linear algebra. Take this line for example:</p>
-<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vec2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)))</span>
+</pre></div>
+
 
 <p>It looks terrible. It looks nothing like how we think about a linear algebra operation. This is where Python breaks down as a clean, readable language. This is where it becomes clear why (unfortunately) so many people in industry and academia prefer proprietary tools like Matlab. This is what the above line looks like in Julia and what it should look like in any language purporting to be for scientific computing.</p>
-<div class="highlight"><pre><span></span><code><span class="n">vec1</span> <span class="o">.*</span> <span class="n">vec2</span> <span class="o">.*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">vec2</span><span class="p">)</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">vec1</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="n">vec2</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vec2</span><span class="p">)</span>
+</pre></div>
+
 
 <p>I'm betting on Julia because I think it takes the strengths of Python and combines them with Matlab and R's cleaner scientific and mathematical syntax, while providing dramatic performance improvements over all 3 of those. If Julia becomes popular, I think it would be extremely well-suited for data science and machine learning applications. I strongly recommend at least trying out Julia. Even though it's not a mature language yet, if you're mostly doing data science/machine learning fundamentals like me, it will serve this purpose very well. If you need a production-ready language, then stick with Python, R or Matlab.</p>
 <p>But if you disagree with all of this or simply have no interest in Julia, that's fine. The following code is almost exactly the same as Matlab/Octave syntax and if you don't have Matlab experience, then it should still be very obvious what's going on, and I of course will do my best to explain. If there's interest, I may supply a downloadable IPython notebook version of this.</p>
 <h4>A Simple(r) RNN</h4>
-<p>Here is the truth table for the problem we're going to solve:</p>
+<p>Here is the truth table for the problem we're going to solve:
 <table>
-<tr><td>$x_1$</td><td>$x_2$</td><td>$y$</td></tr>
+<tr><td><span class="math">\(x_1\)</span></td><td><span class="math">\(x_2\)</span></td><td><span class="math">\(y\)</span></td></tr>
 <tr><td>0</td><td>0</td><td>0</td></tr>
 <tr><td>0</td><td>1</td><td>0</td></tr>
 <tr><td>1</td><td>0</td><td>1</td></tr>
 <tr><td>1</td><td>1</td><td>1</td></tr>
 </table>
-<p>As you can see, the result <span class="math">\(y\)</span> is only <span class="math">\(1\)</span> if the left bit is <span class="math">\(1\)</span>. The right bit, <span class="math">\(x_2\)</span> has no contribution to what the output <span class="math">\(y\)</span> is. Let's call this function <span class="math">\(LEFTBIT\)</span> from now on.</p>
+As you can see, the result <span class="math">\(y\)</span> is only <span class="math">\(1\)</span> if the left bit is <span class="math">\(1\)</span>. The right bit, <span class="math">\(x_2\)</span> has no contribution to what the output <span class="math">\(y\)</span> is. Let's call this function <span class="math">\(LEFTBIT\)</span> from now on.</p>
 <p>The strength of RNNs is that they have "memory." They can retain information about previous inputs through time. The degree and duration of this memory depends on the implementation. Our implementation here is very simple and has a relatively short memory. This memory allows RNNs to process information differently than a feedforward network, they can process information as a stream of information through time. This makes them very useful for time series predictions and for problems where the input and outputs may need to be variable length vectors.</p>
 <p>To be clear, there is really no reason to use an RNN for our <code>LEFTBIT</code> problem. The problem has a well-definied 2-length vector input and 1-length vector output in a feedforward architecture and works very well. But nonetheless, it serves as a good toy problem to learn how to build and train an RNN.</p>
 <p>Now, we can design an RNN to have any number of input units and output units just like a feedforward network. We could design our RNN to accept an <span class="math">\(X_1, X_2\)</span> tuple like the feedforward version, but then it wouldn't really need a memory at all. So in order to demonstrate it's memory capability, we will only feed one input at a time. Thus it must accept an <span class="math">\(X_1\)</span>, wait for us to give it the <span class="math">\(X_2\)</span>, and remember what <span class="math">\(X_1\)</span> was to give the proper output for <code>LEFTBIT</code>.</p>
 <p>Here's how we'll present the data:</p>
-<div class="highlight"><pre><span></span><code><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="o">?</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">?</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
 
 <p>I put a <code>?</code> as the first element of Y because the RNN can't compute <code>LEFTBIT</code> until it has received 2 consecutive inputs. But the way we implement the network, it will output <em>something</em> everytime it receives an input, but we will simply ignore the first output. In our actual code, we of course can't use a <code>?</code> but I will simply make it a 0 (arbitrarily).</p>
 <p>Here's the flow for how the network will process our sequential <code>LEFTBIT</code> data.
@@ -97,37 +100,42 @@
 <p>Since we've re-imagined the RNN's recurrent connections as a feedforward network with some additional inputs, we can train it exactly the same way we would any other feedforward NN (FFNNs): backpropagation and gradient descent. The only difference is that training RNNs happens to be much more difficult than FFNNs for reasons I won't detail here. Modern RNN implementations like the Long Short Term Memory (LSTM) networks laregely solve this training problem with additional complexities.</p>
 <p>So that's actually all the theory behind our simple RNN. It's really not much more complicated than a feedforward network. Let's get to work..</p>
 <h3>Let's build it, in Julia, a few lines at a time</h3>
-<div class="highlight"><pre><span></span><code><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Here I've simply defined our input <span class="math">\(X\)</span> vector and our expected output <span class="math">\(Y\)</span> vector. I arbitrarily chose a sequence of 1s and 0s for the <span class="math">\(X\)</span> vector and then manually computed the <code>LEFTBIT</code> of each consecutive pair of bits and stored those in the <span class="math">\(Y\)</span> vector. Remember that I chose to keep the Y vector the same length as the X vector by adding a 0 in the beginning, but for the purposes of training, we will ignore the first output of the network since it can't compute the <code>LEFTBIT</code> of only one bit.</p>
 <p>Note: These are both <em>column</em> vectors. We will not be using the entire <span class="math">\(X\)</span> vector as an input. We will access the each element of the <span class="math">\(X\)</span> vector in order and feed those one by one into our network. We will refer to the corresponding element in our <span class="math">\(Y\)</span> vector to calculate the error of our network.</p>
-<div class="highlight"><pre><span></span><code><span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">numIn</span><span class="p">,</span> <span class="n">numHid</span><span class="p">,</span> <span class="n">numOut</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span>
+</pre></div>
+
 
 <p>Here I define some variables that control how many input units, hidden layer units, and output units our network has. You can change the number of hidden units without having to modify anything else and see how it affects performance. You can't change the number of input or output units without also changing how we structure the input and output data.</p>
-<div class="highlight"><pre><span></span><code><span class="n">theta1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> 
+<div class="highlight"><pre><span></span><span class="n">theta1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span> <span class="p">)</span> 
 <span class="n">theta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">randn</span><span class="p">(</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span> <span class="p">)</span> 
 <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
 <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>First, I'm randomly initializing our weight vectors (I tend to use the terms "weights" and "theta" interchangeably. theta1 and theta2 are the weights for the input-to-hidden layer and hidden-to-output layer, respectively.)</p>
 <p>I'm initializing the theta vectors by using the randn() function that returns an array of random values from the normal distribution. I've scaled up these random numbers a bit by multiplying by 2. There is no right way to initialize weights, only wrong ways. People try all sorts of different methods. I've chosen this way because it works relatively well for this particular NN and because it's simple. There are much more complicated ways to initialize weights that may work better. The general wisdom here is to make the weights random and well-distributed but constrained within the limits of what makes sense for the particular neural network (often from trial and error).</p>
 <p>The second block is to intitialize our gradient vectors to zero vectors, which will store and accumulate the gradients during backpropagation.</p>
-<div class="highlight"><pre><span></span><code><span class="n">epochs</span> <span class="o">=</span> <span class="mi">60000</span>
+<div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">60000</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Some additional parameters for the backpropagation training. Epochs refers to the number of iterations we will train. Yes, 60000 is a big number but RNNs are hard to train. We want to train until the network's error stops decreasing.</p>
 <p><code>alpha</code> is our learning rate (i.e. how big each gradient descent step is). <code>epsilon</code> is our momentum rate. We will be using the momentum method as part of our gradient descent implementation which I will explain in further detail below. Note that I set these constants from trial and error.</p>
-<div class="highlight"><pre><span></span><code><span class="n">hid_last</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">hid_last</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">last_change1</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">)</span>
 <span class="n">last_change2</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">)</span>
 <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># m = the number of elements in the X vector;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><code>hid_last</code> is a vector that will store the output from the hidden layer units for use in the next time step. We just initialize to zeros at first.</p>
 <p><code>last_change1</code> and <code>last_change2</code> are for the momentum learning. In momentum learning, we attempt to prevent gradient descent from getting stuck in local optima by giving the weight updates <em>momentum</em>, e.g. if a weight is rapidly decreasing at one point, we will try to keep it going in that same direction by making the next weight update take into account the previous weight update. These vectors simply store the weight updates from the previous iteration. The simplest implementation of gradient descent-based weight updates uses this equation:
@@ -140,14 +148,15 @@ where <span class="math">\(\theta_j\)</span> refers to a particular weight, <spa
 <div class="math">$$\theta_j = \theta_j - \alpha\frac{\partial C}{\partial \theta_j} + \epsilon\Delta_{t-1}\theta_j$$</div>
 <p>
 Where all notation remains the same, except that <span class="math">\(\epsilon\)</span> is our momentum rate and <span class="math">\(\Delta_{t-1}\theta_j\)</span> refers to the weight change from the previous iteration. Thus, how much we change the weight <em>this</em> iteration partially depends on how much we changed the weight <em>last</em> iteration. And we can scale this term up or down by changing <span class="math">\(\epsilon\)</span></p>
-<div class="highlight"><pre><span></span><code><span class="n">function</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
 <span class="n">end</span><span class="p">;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>This will define the sigmoid activation function we will use for our neurons. Should be fairly self-explanatory.</p>
 <p>Now let's get to the meat of our training code:</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">epochs</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">epochs</span>
     <span class="c1">#forward propagation</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">:(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c1">#random number between 1 and number of elements minus 1</span>
     <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">s</span><span class="p">:</span><span class="n">m</span> <span class="c1">#for every training element</span>
@@ -183,48 +192,56 @@ Where all notation remains the same, except that <span class="math">\(\epsilon\)
     <span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
     <span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
 <span class="n">end</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>If you've gone through my tutorial on backpropagation and gradient descent, most of this code will look very familiar so I'm not going to explain every single line. I've also commented it well. But let's go over the important/new parts of the code.</p>
-<div class="highlight"><pre><span></span><code><span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
 
 <p>For every training iteration, we initialize s to be a random number between 1 and <code>(m - 1)</code> where <code>m</code> is the number of elements in <span class="math">\(X\)</span>. This is sort of a mini-batch, stochastic gradient descent implementation because we're training on a random subset of our input sequence each training iteration. This will hopefully ensure our network learns how to actually compute <code>LEFTBIT</code> and not just memorize the original sequence we gave it to train on (which would be overfitting).</p>
-<div class="highlight"><pre><span></span><code><span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
-<span class="n">x1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="o">:</span><span class="p">]</span>
-<span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hid_last</span>
+<span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="o">:</span><span class="p">]</span>
+<span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
 
 <p>This is where we build up our input layer. First we get the element from the input <span class="math">\(X\)</span> vector that we're currently training on and add it to our input layer <span class="math">\(a1\)</span>, then we add in our context units, and finally add in the bias value of 1. The rest is ordinary feedforward logic.</p>
-<div class="highlight"><pre><span></span><code><span class="n">hid_last</span> <span class="o">=</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">hid_last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
 
 <p>We save the current hidden layer output in the <code>hid_last</code> vector that we defined and initialized outside of the training loop.</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">s</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">s</span>
+</pre></div>
+
 
 <p>this block calculates the network deltas and gradients (backpropagation) but not if this is the first element in the sequence because the network can't compute <code>LEFTBIT</code> on only 1 input bit. Thus is wouldn't make sense to calculate an error for the first bit when it's impossible for the RNN to get it correct.</p>
-<div class="highlight"><pre><span></span><code><span class="n">theta1_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change1</span><span class="p">;</span>
-<span class="n">theta2_change</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta2_grad</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">last_change2</span><span class="p">;</span>
-<span class="n">theta1</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">theta1_change</span><span class="p">;</span>
-<span class="n">theta2</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">-</span> <span class="n">theta2_change</span><span class="p">;</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">theta1_change</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta1_grad</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">epsilon</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">last_change1</span><span class="p">;</span>
+<span class="n">theta2_change</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">theta2_grad</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">epsilon</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">last_change2</span><span class="p">;</span>
+<span class="n">theta1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">theta1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theta1_change</span><span class="p">;</span>
+<span class="n">theta2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">theta2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theta2_change</span><span class="p">;</span>
+</pre></div>
+
 
 <p>This is where we calculate the weight updates based on the learning rate alpha, the gradients, and the previous weight update (momentum method).</p>
 <p>To continue with the momentum method in the next iteration, we save how much we updated the weights in this iteration in our last_change vectors: </p>
-<div class="highlight"><pre><span></span><code><span class="n">last_change1</span> <span class="o">=</span> <span class="n">theta1_change</span>
-<span class="n">last_change2</span> <span class="o">=</span> <span class="n">theta2_change</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">last_change1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">theta1_change</span>
+<span class="n">last_change2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">theta2_change</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span> <span class="o">+</span> <span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numHid</span><span class="p">);</span>
-<span class="n">theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numOut</span><span class="p">);</span>
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">theta1_grad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zeros</span><span class="p">(</span><span class="n">numIn</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">numHid</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">numHid</span><span class="p">);</span>
+<span class="n">theta2_grad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zeros</span><span class="p">(</span><span class="n">numHid</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">numOut</span><span class="p">);</span>
+</pre></div>
+
 
 <p>Here we reset the gradients for the next epoch (and thus training 'mini-batch'). We don't want to keep accumulating gradients forever. We reset them after accumulating gradients for each training sequence.</p>
 <hr>
 <p>Okay, so that is how we implement and train our simple RNN to compute <code>LEFTBIT</code> on an arbitrary binary sequence.
 After training it, let's run the network forward over a new binary sequence to see if it learned.</p>
-<div class="highlight"><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">Float64</span><span class="p">[]</span> <span class="c1">#vector to store the output values of the network</span>
+<div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">Float64</span><span class="p">[]</span> <span class="c1">#vector to store the output values of the network</span>
 <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#Arbitrary new input data to test our network</span>
 <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#for every training element</span>
     <span class="n">context</span> <span class="o">=</span> <span class="n">hid_last</span>
@@ -239,11 +256,13 @@ After training it, let's run the network forward over a new binary sequence to s
 <span class="n">end</span>
 <span class="n">println</span><span class="p">(</span><span class="s2">&quot;Results:  &quot;</span>  <span class="o">*</span> <span class="n">string</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">results</span><span class="p">))))</span>
 <span class="n">println</span><span class="p">(</span><span class="s2">&quot;Expected: &quot;</span> <span class="o">*</span> <span class="n">string</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Results:  [0,1,0,0,1,1,0]
+
+<div class="highlight"><pre><span></span>Results:  [0,1,0,0,1,1,0]
 Expected: [0,1,0,0,1,1,0]
-</code></pre></div>
+</pre></div>
+
 
 <p><b>It worked!</b> As you can see our neural network output exactly what we expected. Keep in mind we ignore the first bit in the output vector. Although in this case the network happened to output 0 as the first bit like we defined in our <span class="math">\(Y\)</span> vector, it could have also output 1 and it would still be correct since the rest of the output sequence is indeed the computed <code>LEFTBIT</code> of each sequential pair of bits in our input vector.</p>
 <p>I literally copy and pasted the code from above in our training code to just run the network forward but added a <code>results</code> vector to store the sequence of output results.</p>

@@ -67,30 +67,33 @@ That is, the expected reward at play <em>k</em> for action <span class="math">\(
 This equation/rule states that the expected reward for the current play <em>k</em> for taking action <span class="math">\(A\)</span> is equal to the maximum average reward of all previous actions taken. In other words, we use our above reward function <span class="math">\(Q_k(a)\)</span> on all the possible actions and select the one that returns the maximum average reward. Since <span class="math">\(Q_k(a)\)</span> depends on a record of our previous actions and their associated rewards, this method will not select actions that we haven't already explored. Thus we might have previously tried lever 1 and lever 3, and noticed that lever 3 gives us a higher reward, but with this method, we'll never think to try another lever, say #6, which, unbeknownst to us, actually gives out the highest average reward. This method of simply choosing the best lever that we know of so far is called a "greedy" method.</p>
 <p>Obviously, we need to have some exploration of other levers (slot machines) going on to discover the true best action. One simple modification to our above algorithm is to change it to an <span class="math">\(\epsilon\)</span> (epsilon)-greedy algorithm, such that, with a probability <span class="math">\(\epsilon\)</span>, we will choose an action <span class="math">\(a\)</span> at random, and the rest of the time (probability <span class="math">\(1-\epsilon\)</span>) we will choose the best lever based on what we currently know from past plays. So most of the time we play greedy, but sometimes we take some risks and choose a random lever and see what happens. This will of course influence our future greedy actions.</p>
 <p>Alright, I think that's an in-depth enough discussion of the problem and how we want to try to solve it with a rudimentary RL algorithm. Let's start implementing this with Python.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#imports, nothing to see here</span>
+<div class="highlight"><pre><span></span><span class="c1">#imports, nothing to see here</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+
+<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">arms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.1</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Per our casino example, we will be solving a 10-armed bandit problem, hence <em>n</em> = 10. I've also defined a numpy array of length <em>n</em> filled with random floats that can be understood as probabilities. The way I've chosen to implement our reward probability distributions for each arm/lever/slot machine is this: Each arm will have a probability, e.g. 0.7. The maximum reward is \$10. We will setup a for loop to 10 and at each step, it will add +1 to the reward if a random float is less than the arm's probability. Thus on the first loop, it makes up a random float (e.g. 0.4). 0.4 is less than 0.7, so reward += 1. On the next iteration, it makes up another random float (e.g. 0.6) which is also less than 0.7, thus reward += 1. This continues until we complete 10 iterations and then we return the final total reward, which could be anything 0 to 10. With an arm probability of 0.7, the <em>average</em> reward of doing this to infinity would be 7, but on any single play, it could be more or less.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">reward</span><span class="p">(</span><span class="n">prob</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reward</span><span class="p">(</span><span class="n">prob</span><span class="p">):</span>
     <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">prob</span><span class="p">:</span>
             <span class="n">reward</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">reward</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>The next function we define is our greedy strategy of choosing the best arm so far. This function will accept a memory array that stores in a key-value sort of way the history of all actions and their rewards. It is a <span class="math">\(2\ x\ k\)</span> matrix where each row is an index reference to our arms array (1st element) and the reward received (2nd element). For example, if a row in our memory array is [2, 8] it means that action 2 was taken (the 3rd element in our arms array) and we received a reward of 8 for taking that action.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#initialize memory array; has 1 row defaulted to random action index</span>
+<div class="highlight"><pre><span></span><span class="c1">#initialize memory array; has 1 row defaulted to random action index</span>
 <span class="n">av</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#av = action-value</span>
 
 <span class="c1">#greedy method to select best arm based on memory array (historical results)</span>
@@ -103,10 +106,11 @@ This equation/rule states that the expected reward for the current play <em>k</e
             <span class="n">bestMean</span> <span class="o">=</span> <span class="n">avg</span>
             <span class="n">bestArm</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">bestArm</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>And here is the main loop for each play. I've set it to play 500 times and display a matplotlib scatter plot of the mean reward against plays. Hopefully we'll see that the mean reward increases as we play more times.</p>
-<div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Plays&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Plays&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Avg Reward&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span> <span class="c1">#greedy arm selection</span>
@@ -122,7 +126,8 @@ This equation/rule states that the expected reward for the current play <em>k</e
     <span class="c1">#calculate the mean reward</span>
     <span class="n">runningMean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">av</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">runningMean</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="rlpart1_files/rlpart1_10_0.png"></p>
 <p>As you can see, the average reward does indeed improve after many plays. Our algorithm is <em>learning</em>, it is getting reinforced by previous good plays! And yet it is such a simple algorithm.</p>
@@ -136,7 +141,7 @@ This equation/rule states that the expected reward for the current play <em>k</e
 <div class="math">$$Q_{k+1} = Q_k + \frac{1}{k}[R_k - Q_k]$$</div>
 <p>
 where <span class="math">\(Q_k\)</span> is the running average reward for action <span class="math">\(a\)</span> so far and <span class="math">\(R_k\)</span> is the reward we received right now for taking action <span class="math">\(A_k\)</span>, and <span class="math">\(k\)</span> is the number of plays so far.</p>
-<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">arms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.1</span>
 
@@ -176,19 +181,22 @@ where <span class="math">\(Q_k\)</span> is the running average reward for action
     <span class="c1">#have to use np.average and supply the weights to get a weighted average</span>
     <span class="n">runningMean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">av</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">counts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">))]))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">runningMean</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="rlpart1_files/rlpart1_13_0.png"></p>
 <p>This method achieves the same result, getting us better and better rewards over time as it learns which lever is the best option. I had to create a separate array <code>counts</code> to keep track of how many times each action is taken to properly recalculate the running reward averages for each action. Importantly, this implementation is simpler and more memory/computationally efficient.</p>
 <h3>Softmax Action Selection</h3>
 <p>Imagine another type of bandit problem: A newly minted doctor specializes in treating patients with heart attacks. She has 10 treatment options of which she can choose only one to treat each patient she sees. For some reason, all she knows is that these 10 treatments have different efficacies and risk-profiles for treating heart attacks, and she doesn't know which one is the best yet. We could still use our same <span class="math">\(\epsilon\)</span>-greedy algorithm from above, however, we might want to reconsider our <span class="math">\(\epsilon\)</span> policy of completely randomly choosing a treatment once in awhile. In this new problem, randomly choosing a treatment could result in patient death, not just losing some money. So we really want to make sure to not choose the worst treatment but still have some ability to explore our options to find the best one.</p>
-<p>This is where a softmax selection might be the most appropriate. Instead of just choosing an action at random during exploration, softmax gives us a probability distribution across our options. The option with the largest probability would be equivalent to our best arm action from above, but then we have some idea about what are the 2nd and 3rd best actions for example. This way, we can randomly choose to explore other options while avoiding the very worst options. Here's the softmax equation:</p>
+<p>This is where a softmax selection might be the most appropriate. Instead of just choosing an action at random during exploration, softmax gives us a probability distribution across our options. The option with the largest probability would be equivalent to our best arm action from above, but then we have some idea about what are the 2nd and 3rd best actions for example. This way, we can randomly choose to explore other options while avoiding the very worst options. Here's the softmax equation:
 <div style="font-size:20px;">
-$$\frac{e^{Q_k(a)/\tau}}{\sum_{i=1}^n{e^{Q_k(i)/\tau}}}$$
+</p>
+<div class="math">$$\frac{e^{Q_k(a)/\tau}}{\sum_{i=1}^n{e^{Q_k(i)/\tau}}}$$</div>
+<p>
 </div>
-<p><span class="math">\(\tau\)</span> is a parameter called temperature the scales the probability distribution of actions. A high temperature will tend the probabilities to be very simmilar, whereas a low temperature will exaggerate differences in probabilities between actions. Selecting this parameter requires an educated guess and some trial and error.</p>
+<span class="math">\(\tau\)</span> is a parameter called temperature the scales the probability distribution of actions. A high temperature will tend the probabilities to be very simmilar, whereas a low temperature will exaggerate differences in probabilities between actions. Selecting this parameter requires an educated guess and some trial and error.</p>
 <p>When we implement the slot machine 10-armed bandit problem from above using softmax, we don't need our <code>bestArm()</code> function anymore. Since softmax produces a weighted probability distribution across our possible actions, we will just randomly (but weighted) select actions according to their relative probabilities. That is, our best action will get chosen more often because it will have the highest softmax probability, but other actions will be chosen at random at lesser frequency.</p>
-<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">arms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
 <span class="n">av</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c1">#initialize action-value array, stores running reward mean</span>
@@ -227,7 +235,8 @@ $$\frac{e^{Q_k(a)/\tau}}{\sum_{i=1}^n{e^{Q_k(i)/\tau}}}$$
 
     <span class="n">runningMean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">av</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">counts</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">))]))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">runningMean</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="rlpart1_files/rlpart1_16_0.png"></p>
 <p>Softmax action selection seems to do at least as well as epsilon-greedy, perhaps even better; it looks like it converges on an optimal policy faster. The downside to softmax is having to manually select the <span class="math">\(\tau\)</span> parameter. Softmax here was pretty sensitive to <span class="math">\(\tau\)</span> and it took awhile of playing with it to find a good value for it. Obviously with epsilon-greedy we had the parameter epsilon to set, but choosing that parameter was much more intuitive.</p>

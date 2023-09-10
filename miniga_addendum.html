@@ -58,7 +58,7 @@
 I'm not going to go line-by-line and explain what's going on here, because I really haven't changed much from my previous post and this isn't meant to be a tutorial, it's an exploration. Here's the code for the XOR neural network (which I store in a separate file and import into the GA file).
 </p>
 
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1">#the third element in each tuple is the bias value (1)</span>
@@ -88,24 +88,26 @@ I'm not going to go line-by-line and explain what's going on here, because I rea
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimal theta: </span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cost: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">costFunction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">)))</span>
 <span class="n">demoRun</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">Random</span> <span class="nv">theta</span>: 
-[[ <span class="mi">0</span>.<span class="mi">71</span>]
- [ <span class="mi">0</span>.<span class="mi">53</span>]
- [ <span class="mi">0</span>.<span class="mi">74</span>]
- [ <span class="mi">0</span>.<span class="mi">7</span> ]]
 
-<span class="nv">Cost</span>: <span class="mi">2</span>.<span class="mi">13729248257</span>
+<div class="highlight"><pre><span></span><span class="k">Random</span><span class="w"> </span><span class="nv">theta</span>:<span class="w"> </span>
+[[<span class="w"> </span><span class="mi">0</span>.<span class="mi">71</span>]
+<span class="w"> </span>[<span class="w"> </span><span class="mi">0</span>.<span class="mi">53</span>]
+<span class="w"> </span>[<span class="w"> </span><span class="mi">0</span>.<span class="mi">74</span>]
+<span class="w"> </span>[<span class="w"> </span><span class="mi">0</span>.<span class="mi">7</span><span class="w"> </span>]]
 
-<span class="nv">Optimal</span> <span class="nv">theta</span>: 
-[[ <span class="mi">0</span>.]
- [ <span class="mi">1</span>.]
- [ <span class="mi">1</span>.]
- [ <span class="mi">0</span>.]]
+<span class="nv">Cost</span>:<span class="w"> </span><span class="mi">2</span>.<span class="mi">13729248257</span>
 
-<span class="nv">Cost</span>: <span class="mi">0</span>.<span class="mi">00107762026703</span>
-</code></pre></div>
+<span class="nv">Optimal</span><span class="w"> </span><span class="nv">theta</span>:<span class="w"> </span>
+[[<span class="w"> </span><span class="mi">0</span>.]
+<span class="w"> </span>[<span class="w"> </span><span class="mi">1</span>.]
+<span class="w"> </span>[<span class="w"> </span><span class="mi">1</span>.]
+<span class="w"> </span>[<span class="w"> </span><span class="mi">0</span>.]]
+
+<span class="nv">Cost</span>:<span class="w"> </span><span class="mi">0</span>.<span class="mi">00107762026703</span>
+</pre></div>
+
 
 <p>Okay, just making sure the neural network works properly...and it does...</p>
 <p>Keep in mind that we're working with 'unrolled' theta (weight) vectors. Unlike my previous post that only had one set of weights between the two layers, now we have 3 layers but our GA is only going to generate and use 1-dimensional vectors of length 13, then our neural network will just slice that up to get two weight vectors, theta1 and theta2. I.e. theta1 = the first 9 elements reshaped to a 3x3 matrix, and theta2 = the last 4 elements reshaped to a 4x1 matrix.</p>
@@ -118,7 +120,7 @@ I'm not going to go line-by-line and explain what's going on here, because I rea
 <li>Increased the solution length from 3 to 13 (since our new unrolled theta vector is of length 13)</li>
 </ol>
 <p>Alright, let's watch it run with those parameters:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
@@ -158,9 +160,10 @@ I'm not going to go line-by-line and explain what's going on here, because I rea
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Best Sol&#39;n:
+
+<div class="highlight"><pre><span></span>Best Sol&#39;n:
 [[-10.27649069 -14.03        10.45888659   9.12        14.87       -21.50294038
     1.85       -13.28        -0.15360052 -11.21345025  35.77912716  11.05
    -2.49589577]]
@@ -175,12 +178,13 @@ hThetaX =
  [ 1.]
  [ 1.]
  [ 0.]]
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="MiniGA_XOR_files/MiniGA_XOR_4_1.png"></p>
 <p>You can see it converges after about 10 generations, a little over twice as long as it took for the simple 2-layer neural network despite our search space is more than 4 times bigger. With the parameters I've used here, it properly converges almost every time I run it.</p>
 <p>Now I want to demonstrate what it looks like when we change the mutation rate to <strong>10%</strong> (I've removed all the comments to reduce the code size a bit).</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
@@ -211,9 +215,10 @@ hThetaX =
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Best Sol&#39;n:
+
+<div class="highlight"><pre><span></span>Best Sol&#39;n:
 [[ -8.01259712e+00   3.14587352e+01   1.40600000e+01   6.65543028e-02
     1.01012825e+02  -8.45144543e+01   8.72955079e+00  -1.04300000e+01
    -4.53000000e+00  -1.74629574e+01   2.64781112e+01   6.63253301e+01
@@ -229,12 +234,13 @@ hThetaX =
  [ 1.]
  [ 1.]
  [ 1.]]
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="MiniGA_XOR_files/MiniGA_XOR_6_1.png"></p>
 <p>With a mutation rate of 10% the error trends downward but fails to converge (trust me, I ran it a few times, it almost never converges). This mutation rate is too big, any good solution is likely to just get destroyed by the mutation process.</p>
 <p>Let's try a really low mutation rate, actually let's just make the mutation rate <strong>0%</strong>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
@@ -265,9 +271,10 @@ hThetaX =
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Best Sol&#39;n:
+
+<div class="highlight"><pre><span></span>Best Sol&#39;n:
 [[  5.08 -12.1    6.61   0.48  14.44  -8.22  -9.47   1.94   8.45 -13.2
    -4.37  -4.07   6.79]]
 Cost:0.92032599599
@@ -281,14 +288,15 @@ hThetaX =
  [ 1.]
  [ 1.]
  [ 0.]]
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="MiniGA_XOR_files/MiniGA_XOR_8_1.png"></p>
 <p>Here the error trends downward and just flatlines every time. From running this a few times, it converges most of the time but not as frequently as with a mutation rate of 1%. Also, you'll notice that the total error at the end is <strong>0.92</strong> and it generally stays about the same from a few runs. However, looking back when we used mutRate=0.01, the error get's really, really low at about <strong>0.0011</strong></p>
 <p>This demonstrates how a good mutation rate can help the GA escape local minima and maintain 'genetic diversity' in every generation.</p>
 <p>Now let's return to our good mutation rate of 1% but let's disable the 'mating' process by commenting out that line of code and see what happens.</p>
 <h5>Mating disabled:</h5>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">NeuralNetXOR</span> <span class="k">as</span> <span class="nn">NN</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="n">initPop</span><span class="p">,</span> <span class="n">mutRate</span><span class="p">,</span> <span class="n">numGen</span><span class="p">,</span> <span class="n">solLen</span><span class="p">,</span> <span class="n">numWin</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">10</span>
 <span class="n">curPop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">initPop</span><span class="p">,</span> <span class="n">solLen</span><span class="p">),</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
@@ -319,9 +327,10 @@ hThetaX =
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">runForward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Sol&#39;n:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">Cost:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_soln</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">costFunction</span><span class="p">(</span><span class="n">NN</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">NN</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">best_soln</span><span class="o">.</span><span class="n">T</span><span class="p">))))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;When X = </span><span class="se">\n</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">hThetaX = </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">,))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Best Sol&#39;n:
+
+<div class="highlight"><pre><span></span>Best Sol&#39;n:
 [[ 17.04173136  10.77       -28.33009951 -10.72        -0.30622293
   -20.70366345  13.6         -3.37855753   3.62        13.16        -4.68347871
   -17.17325518  -1.88      ]]
@@ -336,7 +345,8 @@ hThetaX =
  [ 1.]
  [ 1.]
  [ 1.]]
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="MiniGA_XOR_files/MiniGA_XOR_10_1.png"></p>
 <p>This is a particularly interesting run (I ran it with these parameters about 8 times). It only correctly converged once (but didn't achieve the really low error rate we got in the beginning with 1% mut rate and mating enabled). The error vs. num generations graph looked quite different each time I ran it but I'm displaying this one because I think it illustrates nicely what happens when there's no mating.</p>

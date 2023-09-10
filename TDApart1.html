@@ -53,7 +53,11 @@ See <a href="TDApart2.html">Part 2</a> | <a href="TDApart3.html">Part 3</a> | <a
 <p>Persistent homology (henceforth just <strong>PH</strong>) gives us a way to find interesting patterns in data without having to "downgrade" the data in anyway so we can see it. PH let's us leave our data in it's original, ultra-high dimensional space and tells us how many clusters there are, and how many loop-like structures there are in the data, all without being able to actually see it.</p>
 <p>As an example, consider a biologist studying some genes in cells. She uses fancy equipment to measure the expression levels of 100 genes in 900 different cells. She's interested in genes that might play a role in cell division. Being the cutting-edge biologist she is, she utilizes persistent homology to analyze her data and PH reports her data has a prominent <em>cycle</em>, which she further analyzes and is able to confirm that a subset of her 100 genes seem to have a cyclical expression pattern.</p>
 <p>The field of topology in mathematics studies properties of spaces where all we care about is the relationship of points to one another, unlike geometry, where exact distances and angles are important. Thus PH let's us ask topological questions of our data in a reliable way without having to adulterate the data in anyway. The conventional output from persistent homology is a "barcode" graph that looks like this:
-<img src="images/TDAimages/PHbarcodeExample.png" width="600px" />
+<figure>
+  <img src="images/TDAimages/PHbarcodeExample.png" width="600px" alt="Example persistent homology barcode">
+  <figcaption>Reference: Topaz, C. M., Ziegelmeier, L., &amp; Halverson, T. (2015). Topological data analysis of biological aggregation models. PloS one, 10(5), e0126383.</figcaption>
+</figure>
+<!-- <img src="images/TDAimages/PHbarcodeExample.png" width="600px" /> -->
 This graph encodes all the topological features we're interested in a compact and visual way.</p>
 <h4>Intended audience</h4>
 <p>As usual, my intended audience is people like me. I'm a programmer with an interest in TDA. I majored in Neuroscience in college so I have no formal mathematics training beyond high school. Everything else has been self-taught. If you have a degree in mathematics, this is not the post for you, but you can take a look at my extensive reference list.</p>
@@ -259,15 +263,14 @@ Well, there are actually many different types of simplicial complex construction
 <p>We will focus on just one, the <strong>Vietoris-Rips (VR) complex</strong>, as it is fairly easy to describe and reasonably practical from a computational standpoint. I will briefly describe other complexes as appropriate.</p>
 <h5>Constructing a Vietoris-Rips Complex</h5>
 <p>Intuitively, we construct a Vietoris-Rips (VR) complex from a point cloud <span class="math">\(P \subseteq \mathbb R^d\)</span> (a subset <span class="math">\(P\)</span> of some <span class="math">\(d\)</span>-dimensional space) by initially connecting points in <span class="math">\(P\)</span> with edges that are less than some arbitrarily defined distance <span class="math">\(\epsilon\)</span> from each other. This will construct a 1-complex, which is essentially just a graph as described above (a set of vertices and a set of edges between those vertices). Next we need to fill in the higher-dimensional simplices, e.g. any triangles, tetrahedrons, etc. so we won't have a bunch of empty holes.</p>
-<p>Here's a visualization of the major steps (from left to right) of constructing a VR complex on a small point cloud in <span class="math">\(\mathbb R^2\)</span> that was sampled from a circular structure:</p>
+<p>Here's a visualization of the major steps (from left to right) of constructing a VR complex on a small point cloud in <span class="math">\(\mathbb R^2\)</span> that was sampled from a circular structure:
 <div>
     <div style="width:20%; float:left; margin:10px 35px 25px 10px;"><img src="images/TDAimages/pointcloud3.svg" /></div>
     <div style="width:20%; float:left; margin:10px 35px 25px 10px;"><img src="images/TDAimages/VRcomplex1.svg" /></div>
     <div style="width:20%; float:left; margin:10px 35px 25px 10px;"><img src="images/TDAimages/VRcomplex2.svg" /></div>
     <div style="width:20%; float:left; margin:10px 0px 25px 0px;"><img src="images/TDAimages/VRcomplex3.svg" /></div>
 </div>
-<div style="clear: both;"></div>
-
+<div style="clear: both;"></div></p>
 <p>As you can see, we take what are called the <strong><span class="math">\(\epsilon\)</span>-balls</strong> around each point in <span class="math">\(P\)</span> (the dotted circles of radius <span class="math">\(\epsilon\)</span>) and build edges between that point and all other points within its ball. I only drew in the balls for a few of the points on the left because it would get too hard to see if I drew them all. More generally, a <strong>ball</strong> around a d-dimensional point is the (d-1)-dimensional generalization of a sphere around that point. So the ball of a point in <span class="math">\(\mathbb R\)</span> (the real number line) is simply a line segment around that point, the ball of a point in <span class="math">\(\mathbb R^2\)</span> is a circle, a ball around a point in <span class="math">\(\mathbb R^3\)</span> is a sphere, and so on. It is important to realize that a particular VR construction depends not only on the point cloud data but also on a parameter <span class="math">\(\epsilon\)</span> that is arbitrarily chosen. </p>
 <blockquote>
 <p><strong>Note</strong> (How to choose <span class="math">\(\epsilon\)</span>) <br />
@@ -355,8 +358,9 @@ If we have a set of points <span class="math">\(P\)</span> of dimension <span cl
 <p>Symmetry and Group Theory 1. (2016), 1–18. http://doi.org/10.1016/B978-0-444-53786-7.00026-5</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

@@ -82,7 +82,7 @@
 <p>This implementation is completely functional and stateless. I mean that this implementation is just a group of functions that accept data, transform that data and return new data. I intentionally avoided using OOP classes because I think it complicates things and I think functional-style programming is useful in machine learning (see my post about computational graphs to learn more). It is particularly useful in our case because it demonstrates how blackjack is an MDP. The game does not store any information, it is stateless. It merely accepts states and returns new states. The player is responsible for saving states if they want.</p>
 <p>The state is just a Python tuple where the first element is the player's card total, the 2nd element is a boolean of whether or not the player has a useable ace. The 3rd element is the card total for the dealer and then another boolean of whether or not its a useable ace. The last element is a single integer that represents the status of the state (whether the game is in progress, the player has won, the dealer has won, or it was a draw).</p>
 <p>We actually could implement this in a more intuitive way where we just store each player's cards and not whether or not they have a useable ace (useable means, can the ace be an 11 without losing the game by going over 21, because aces in blackjack can either be a 1 or an 11). However, as you'll see, storing the player card total and an useable ace boolean is equivalent and yet compresses our state space (without losing any information) so we can have a smaller lookup table.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="c1">#each value card has a 1:13 chance of being selected (we don&#39;t care about suits for blackjack)</span>
 <span class="c1">#cards (value): Ace (1), 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack (10), Queen (10), King (10)</span>
@@ -174,36 +174,45 @@
 
     <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">player_hand</span><span class="p">,</span> <span class="n">dealer_hand</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">state</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>There you have it. We've implemented a simplified blackjack game (no double downs or splitting) with just a few functions that basically just consist of some if-else conditions. Here's some sample game-play so you know how to use it.</p>
-<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">=</span> <span class="n">initGame</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">initGame</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>((7, False), (5, False), 1)
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">=</span> <span class="n">play</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#Player has total of 7, let&#39;s hit</span>
+<div class="highlight"><pre><span></span>((7, False), (5, False), 1)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">play</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#Player has total of 7, let&#39;s hit</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>((9, False), (5, False), 1)
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">=</span> <span class="n">play</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#player has a total of 9, let&#39;s hit</span>
+<div class="highlight"><pre><span></span>((9, False), (5, False), 1)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">play</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#player has a total of 9, let&#39;s hit</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>((15, False), (5, False), 1)
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">=</span> <span class="n">play</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#player has a total of 15, let&#39;s stay</span>
+<div class="highlight"><pre><span></span>((15, False), (5, False), 1)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">play</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#player has a total of 15, let&#39;s stay</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>((15, False), (20, False), 4)
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>((15, False), (20, False), 4)
+</pre></div>
+
 
 <p>Damn, I lost. Oh well, that should demonstrate how to use the blackjack game. As a user, we only have to concern ourselves with the <code>initGame()</code> and <code>play()</code> functions. <code>initGame()</code> just creates a random state by dealing the player 2 random cards and the dealer one random card and setting the game status to 1 ('in progress'). <code>play()</code> accepts a state and an action (either 0 or 1, for 'stay' and 'hit', respectively). Please keep in mind the distinction between a blackjack game state and the state with respect to our Reinforcement Learning (RL) algorithm. We will compress the states a bit by ignoring the useable ace boolean for the dealer's hand because the dealer only shows a single card and if it's an ace the player has no idea if it's useable or not, so it offers no additional information to us.</p>
 <h3>Time for Reinforcement Learning</h3>
@@ -221,7 +230,7 @@
 </ol>
 <p>In essence, with Monte Carlo we are playing randomly initialized games, sampling the state-action pair space and recording returns. In doing so, we can iteratively update our policy <span class="math">\(\pi\)</span>.</p>
 <p>Let's get to coding.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1">#Create a list of all the possible states</span>
 <span class="k">def</span> <span class="nf">initStateSpace</span><span class="p">():</span>
@@ -271,10 +280,11 @@
     <span class="n">player_hand</span><span class="p">,</span> <span class="n">dealer_hand</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">player_val</span><span class="p">,</span> <span class="n">player_ace</span> <span class="o">=</span> <span class="n">player_hand</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">player_val</span><span class="p">,</span> <span class="n">player_ace</span><span class="p">,</span> <span class="n">dealer_hand</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Above we've defined basically all the functions we need to run our Monte Carlo algorithm. We initialize our state and state-action space, define methods to calculate rewards and update our state-action table (Q-value table). Below is where we'll actually run 5,000,000 Monte Carlo simulations of blackjack and fill out our Q-value table.</p>
-<div class="highlight"><pre><span></span><code><span class="n">epochs</span> <span class="o">=</span> <span class="mi">5000000</span> <span class="c1">#takes just a minute or two on my Macbook Air</span>
+<div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">5000000</span> <span class="c1">#takes just a minute or two on my Macbook Air</span>
 <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
 
 <span class="n">state_space</span> <span class="o">=</span> <span class="n">initStateSpace</span><span class="p">()</span>
@@ -312,14 +322,16 @@
         <span class="n">returns</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">calcReward</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="n">av_table</span> <span class="o">=</span> <span class="n">updateQtable</span><span class="p">(</span><span class="n">av_table</span><span class="p">,</span> <span class="n">av_count</span><span class="p">,</span> <span class="n">returns</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Done
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>Done
+</pre></div>
+
 
 <p>Okay, so we just ran a Monte Carlo simulation of blackjack 5,000,000 times and built up an action-value (Q-value) table that we can use to determine what the optimal action is when we're in a particular state.</p>
 <p>How do we know if it worked? Well, below I've written some code that will show us a 3d plot of the dealer's card, player's total and the Q-value for that state (limited to when the player does not have a useable ace). You can compare to a very similar plot shown in the Sutton &amp; Barto text on page 117, compare to this (http://waxworksmath.com/Authors/N_Z/Sutton/WWW/Chapter_5/op_bj_results.html)</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#3d plot of state-value space where no useable Aces are present</span>
+<div class="highlight"><pre><span></span><span class="c1">#3d plot of state-value space where no useable Aces are present</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
@@ -340,10 +352,12 @@
         <span class="n">z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_value</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">azim</span> <span class="o">=</span> <span class="mi">230</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot_trisurf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">.02</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">mpl_toolkits</span><span class="o">.</span><span class="n">mplot3d</span><span class="o">.</span><span class="n">art3d</span><span class="o">.</span><span class="n">Poly3DCollection</span> <span class="n">at</span> <span class="mh">0x1105d2358</span><span class="o">&gt;</span>
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">mpl_toolkits</span><span class="o">.</span><span class="n">mplot3d</span><span class="o">.</span><span class="n">art3d</span><span class="o">.</span><span class="n">Poly3DCollection</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mh">0x1105d2358</span><span class="o">&gt;</span>
+</pre></div>
+
 
 <p><img alt="png" src="rlpart2_files/rlpart2_17_1.png"></p>
 <p>Looks pretty good to me. This isn't a major point, but notice that I plotted the State-Value on the z-axis, not an action value. I calculated the state value by simply taking the largest action value for a state from our state-action lookup table. Thus, the value of a state is equivalent to the average rewards following the best action.</p>
@@ -365,8 +379,9 @@
 <li>https://inst.eecs.berkeley.edu/~cs188/sp08/projects/blackjack/blackjack.py (Adapted some code from here)</li>
 <li>http://waxworksmath.com/Authors/N_Z/Sutton/WWW/Chapter_5/op_bj_results.html</li>
 </ol>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

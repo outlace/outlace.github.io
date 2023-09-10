@@ -52,109 +52,128 @@
 <p>I assume you know how to write a simple neural network in Python (including training it with gradient descent/backpropagation). I also assume you've at least browsed through the Theano <a href="http://deeplearning.net/software/theano/index.html">documentation</a> and have a feel for what it's about (I didn't do it justice in my explanation of "why Theano" above).</p>
 <h3>Let's get started</h3>
 <p>First, let's import all the goodies we'll need.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">theano</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
 <span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="k">as</span> <span class="nn">T</span>
 <span class="kn">import</span> <span class="nn">theano.tensor.nnet</span> <span class="k">as</span> <span class="nn">nnet</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Before we actually build the neural network, let's just get familiarized with how Theano works. Let's do something really simple, we'll simply ask Theano to give us the derivative of a simple mathematical expression like
 </p>
 <div class="math">$$ f(x) = e^{sin{(x^2)}} $$</div>
 <p>
 As you can see, this is an equation of a single variable <span class="math">\(x\)</span>. So let's use Theano to symbolically define our variable <span class="math">\(x\)</span>. What do I mean by symbolically? Well, we're going to be building a Theano expression using variables and numbers similar to how we'd write this equation down on paper. We're not actually computing anything yet. Since Theano is a Python library, we define these expression variables as one of many kinds of Theano variable types.</p>
-<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">()</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">()</span>
+</pre></div>
+
 
 <p>So dscalar() is a type of Theano variable or data type that is computationally represented as a float64. There are many other data types available (see <a href="http://deeplearning.net/software/theano/library/tensor/basic.html">here</a>), but we're interested in just defining a single variable that is a scalar.</p>
 <p>Now let's build out the expression.</p>
-<div class="highlight"><pre><span></span><code><span class="n">fx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">fx</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+
 
 <p>Here I've defined our expression that is equivalent to the mathematical one above. <code>fx</code> is now a variable itself that depends on the <code>x</code> variable.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">type</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span> <span class="c1">#just to show you that fx is a theano variable type</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span> <span class="c1">#just to show you that fx is a theano variable type</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">theano</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="k">var</span><span class="o">.</span><span class="n">TensorVariable</span>
-</code></pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">theano</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="k">var</span><span class="o">.</span><span class="n">TensorVariable</span>
+</pre></div>
+
 
 <p>Okay, so that's nice. What now? Well, now we need to "compile" this expression into a Theano function. Theano will do some magic behind the scenes including building a computational graph, optimizing operations, and compiling to C code to get this to run fast and allow it to compute gradients.</p>
-<div class="highlight"><pre><span></span><code><span class="n">f</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">fx</span><span class="p">])</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">fx</span><span class="p">])</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">f</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code>[array(0.602681965908778)]
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>[array(0.602681965908778)]
+</pre></div>
+
 
 <p>We compiled our <code>fx</code> expression into a Theano function. As you can see, <code>theano.function</code> has two required arguments, inputs and outputs. Our only input is our Theano variable <code>x</code> and our output is our <code>fx</code> expression. Then we ran the f() function supplying it with the value <code>10</code> and it accurately spit out the computation. So up until this point we could have easily just <code>np.exp(np.sin(100))</code> using numpy and get the same result. But that would be an exact, imperative, computation and not a symbolic computational graph. Now let's show off Theano's autodifferentiation.</p>
 <p>To do that, we'll use <code>T.grad()</code> which will give us a symbolically differentiated expression of our function, then we pass it to <code>theano.function</code> to compile a new function to call it. <code>wrt</code> stands for 'with respect to', i.e. we're deriving our expression <code>fx</code> with respect to it's variable <code>x</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">fp</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">fp</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
 <span class="n">fprime</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="n">fp</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">fprime</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code>array(4.347404090286685)
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">fprime</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>array(4.347404090286685)
+</pre></div>
+
 
 <p>4.347 is indeed the derivative of our expression evaluated at <span class="math">\(x=15\)</span>, don't worry, I checked with WolframAlpha. And to be clear, Theano can take the derivative of arbitrarily complex expressions. Don't be fooled by our extremely simple starter expression here. Automatically calculating gradients is a huge help since it saves us the time of having to manually come up with the gradient expressions for whatever neural network we build.</p>
 <p>So there you have it. Those are the very basics of Theano. We're going to utilize a few other features of Theano in the neural net we'll build but not much.</p>
 <h4>Now, for an XOR neural network</h4>
 <p>We're going to symbolically define two Theano variables called <code>x</code> and <code>y</code>. We're going to build our familiar XOR network with 2 input units (+ a bias), 2 hidden units (+ a bias), and 1 output unit. So our <code>x</code> variable will always be a 2-element vector (e.g. [0,1]) and our <code>y</code> variable will always be a scalar and is our expected value for each pair of <code>x</code> values.</p>
-<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dvector</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dvector</span><span class="p">()</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Now let's define a Python function that will be a matrix multiplier and sigmoid function, so it will accept and <code>x</code> vector (and concatenate in a bias value of 1) and a <code>w</code> weight matrix, multiply them, and then run them through a sigmoid function. Theano has the sigmoid function built in the <code>nnet</code> class that we imported above. We'll use this function as our basic layer output function.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
     <span class="n">new_x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">new_x</span><span class="p">)</span> <span class="c1">#theta1: 3x3 * x: 3x1 = 3x1 ;;; theta2: 1x4 * 4x1</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">nnet</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">h</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Theano can be a bit touchy. In order to concatenate a scalar value of 1 to our 1-dimensional vector <code>x</code>, we create a numpy array with a single element (<code>1</code>), and explicitly pass in the <code>dtype</code> parameter to make it a float64 and compatible with our Theano vector variable. You'll also notice that Theano provides its own version of many numpy functions, such as the dot product that we're using. Theano can work with numpy but in the end it all has to get converted to Theano types.</p>
 <p>This feels a little bit premature, but let's go ahead and implement our gradient descent function. Don't worry, it's very simple. We're just going to have a function that defines a learning rate <code>alpha</code> and accepts a cost/error expression and a weight matrix. It will use Theano's <code>grad()</code> function to compute the gradient of the cost function with respect to the given weight matrix and return an updated weight matrix.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grad_desc</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad_desc</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1">#learning rate</span>
     <span class="k">return</span> <span class="n">theta</span> <span class="o">-</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">theta</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>We're making good progress. At this point we can define our weight matrices and initialize them to random values.
 Since our weight matrices will take on definite values, they're not going to be represented as Theano variables, they're going to be defined as Theano's <em>shared</em> variable. A shared variable is what we use for things we want to give a definite value but we also want to update. Notice that I didn't define the <code>alpha</code> or <code>b</code> (the bias term) as shared variables, I just hard-coded them as strict values because I am never going to update/modify them.</p>
-<div class="highlight"><pre><span></span><code><span class="n">theta1</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">))</span> <span class="c1"># randomly initialize</span>
+<div class="highlight"><pre><span></span><span class="n">theta1</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">))</span> <span class="c1"># randomly initialize</span>
 <span class="n">theta2</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">))</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>So here we've defined our two weight matrices for our 3 layer network and initialized them using numpy's random class. Again we specifically define the dtype parameter so it will be a float64, compatible with our Theano <code>dscalar</code> and <code>dvector</code> variable types.</p>
 <p>Here's where the fun begins. We can start actually doing our computations for each layer in the network. Of course we'll start by computing the hidden layer's output using our previously defined <code>layer</code> function, and pass in the Theano <code>x</code> variable we defined above and our <code>theta1</code> matrix.</p>
-<div class="highlight"><pre><span></span><code><span class="n">hid1</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta1</span><span class="p">)</span> <span class="c1">#hidden layer</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">hid1</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta1</span><span class="p">)</span> <span class="c1">#hidden layer</span>
+</pre></div>
+
 
 <p>We can do the same for our final output layer. Notice I use the T.sum() function on the outside which is the same as numpy's sum(). This is only because Theano will complain if you don't make it explicitly clear that our output is returning a scalar and not a matrix. Our matrix dimensional analysis is sure to return a 1x1 single element vector but we need to convert it to a scalar since we're substracting <code>out1</code> from <code>y</code> in our cost expression that follows.</p>
-<div class="highlight"><pre><span></span><code><span class="n">out1</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">layer</span><span class="p">(</span><span class="n">hid1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">))</span> <span class="c1">#output layer</span>
+<div class="highlight"><pre><span></span><span class="n">out1</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">layer</span><span class="p">(</span><span class="n">hid1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">))</span> <span class="c1">#output layer</span>
 <span class="n">fc</span> <span class="o">=</span> <span class="p">(</span><span class="n">out1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="c1">#cost expression</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Ahh, almost done. We're going to compile two Theano functions. One will be our cost expression (for training), and the other will be our output layer expression (to run the network forward).</p>
-<div class="highlight"><pre><span></span><code><span class="n">cost</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">updates</span><span class="o">=</span><span class="p">[</span>
+<div class="highlight"><pre><span></span><span class="n">cost</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">updates</span><span class="o">=</span><span class="p">[</span>
         <span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">grad_desc</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">theta1</span><span class="p">)),</span> 
         <span class="p">(</span><span class="n">theta2</span><span class="p">,</span> <span class="n">grad_desc</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">theta2</span><span class="p">))])</span>
 <span class="n">run_forward</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">out1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Our <code>theano.function</code> call looks a bit different than in our first example. Yeah, we have this additional <code>updates</code> parameter. <code>updates</code> allows us to update our shared variables according to an expression. <code>updates</code> expects a list of 2-tuples: </p>
-<div class="highlight"><pre><span></span><code><span class="n">updates</span><span class="o">=</span><span class="p">[(</span><span class="n">shared_variable</span><span class="p">,</span> <span class="n">update_value</span><span class="p">),</span> <span class="o">...</span><span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">updates</span><span class="o">=</span><span class="p">[(</span><span class="n">shared_variable</span><span class="p">,</span> <span class="n">update_value</span><span class="p">),</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+
 
 <p>The second part of each tuple can be an expression or function that returns the new value we want to update the first part to. In our case, we have two shared variables we want to update, <code>theta1</code> and <code>theta2</code> and we want to use our <code>grad_desc</code> function to give us the updated data. Of course our <code>grad_desc</code> function expects two arguments, a cost function and a weight matrix, so we pass those in. <code>fc</code> is our cost expression. So every time we invoke/call the <code>cost</code> function that we've compiled with Theano, it will also update our shared variables according to our <code>grad_desc</code> rule. Pretty convenient!</p>
 <p>Additionally, we've compiled a <code>run_forward</code> function just so we can run the network forward and make sure it has trained properly. We don't need to update anything there.</p>
 <p>Now let's define our training data and setup a <code>for</code> loop to iterate through our training epochs.</p>
-<div class="highlight"><pre><span></span><code><span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#training data X</span>
+<div class="highlight"><pre><span></span><span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#training data X</span>
 <span class="n">exp_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="c1">#training data Y</span>
 <span class="n">cur_cost</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
@@ -162,42 +181,46 @@ Since our weight matrices will take on definite values, they're not going to be 
         <span class="n">cur_cost</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">exp_y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="c1">#call our Theano-compiled cost function, it will auto update weights</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">#only print the cost every 500 epochs/iterations (to save space)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cost: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cur_cost</span><span class="p">,))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">Cost</span><span class="o">:</span> <span class="mf">0.6729492014975456</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.23521333773509118</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.20385060705569344</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.09715044753510742</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.039259128265329804</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.027491611330928263</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.013058140670015577</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.007656970860067689</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.005215440091514665</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0038843551856147704</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.003063599050987251</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.002513378114127917</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0021217874358153673</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0018303604198688056</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0016058512119977342</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0014280751222236468</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.001284121957016395</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0011653769062277865</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.0010658859592106108</span>
-<span class="n">Cost</span><span class="o">:</span> <span class="mf">0.000981410600338758</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c1">#Training done! Let&#39;s test it out</span>
+<div class="highlight"><pre><span></span><span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.6729492014975456</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.23521333773509118</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.20385060705569344</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.09715044753510742</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.039259128265329804</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.027491611330928263</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.013058140670015577</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.007656970860067689</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.005215440091514665</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0038843551856147704</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.003063599050987251</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.002513378114127917</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0021217874358153673</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0018303604198688056</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0016058512119977342</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0014280751222236468</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.001284121957016395</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0011653769062277865</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0010658859592106108</span>
+<span class="n">Cost</span><span class="o">:</span><span class="w"> </span><span class="mf">0.000981410600338758</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Training done! Let&#39;s test it out</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">run_forward</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">run_forward</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">run_forward</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">run_forward</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="mf">0.9752392598335232</span>
+
+<div class="highlight"><pre><span></span><span class="mf">0.9752392598335232</span>
 <span class="mf">0.03272599279350485</span>
 <span class="mf">0.965279382474992</span>
 <span class="mf">0.030138157640063574</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>It works!</p>
 <h4>Closing words</h4>
@@ -208,8 +231,9 @@ Since our weight matrices will take on definite values, they're not going to be 
 <li>http://deeplearning.net/software/theano/index.html</li>
 <li>https://gist.github.com/honnibal/6a9e5ef2921c0214eeeb</li>
 </ol>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

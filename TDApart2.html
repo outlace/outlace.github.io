@@ -56,7 +56,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart3.html">Part 3</a> | <a
 <span class="math">\(y=b+r\sin(\theta)\)</span> <br />
 where <span class="math">\((a,b)\)</span> is the center point of the circle, <span class="math">\(\theta\)</span> is a parameter from <span class="math">\(0 \text{ to } 2\pi\)</span>, and <span class="math">\(r\)</span> is the radius.</p>
 <p>The following code will generate the discrete points of sampled circle and graph it.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1">#number of points to generate</span>
@@ -72,16 +72,18 @@ where <span class="math">\((a,b)\)</span> is the center point of the circle, <sp
 <span class="c1">#code to plot the circle for visualization</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart2_files/TDApart2_3_0.png"></p>
 <p>Okay, let's stochastically sample from this (somewhat) perfect circle, basically add some jitteriness.</p>
-<div class="highlight"><pre><span></span><code><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="c1">#add some &quot;jitteriness&quot; to the points</span>
+<div class="highlight"><pre><span></span><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="c1">#add some &quot;jitteriness&quot; to the points</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart2_files/TDApart2_5_0.png"></p>
 <p>As you can tell, the generated points look "circular" as in there is a clear loop with a hole, so we want our simplicial complex to capture that property.</p>
@@ -118,17 +120,18 @@ $$</div>
 <p>So the math above is saying that our Vietoris-Rips complex is the set that is the union of all the vertices and edges in our neighborhood graph (which takes us to a 1-complex), and the union of all simplices <span class="math">\(\sigma\)</span> (remember <span class="math">\(\sigma\)</span> is just a set of vertices) where each possible combination of 2 vertices in <span class="math">\(\sigma\)</span> is in <span class="math">\(E\)</span> (hence the <span class="math">\(\left ({\sigma}\above 0pt {2} \right ) \subseteq E\)</span> part). </p>
 <p>The next part defines the weight function for each simplex in our VR complex, from individual 0-simplices (vertices) to the highest dimensional simplex. If the simplex is a 0-simplex (just a vertex), then the weight of that simplex is 0. If the simplex is a 1-simplex (an edge), then the weight is the distance (defined by our distance function) between those two vertices in teh edge. If the simplex is a higher-dimensional simplex, like a 2-simplex (triangle), then the weight is the weight of the longest edge in that simplex.</p>
 <p>Before we get to computing the VR complex for our "circle" data from earlier, let's just do a sanity check with the simple simplex shown above. We'll embed the vertices in <span class="math">\(\mathbb R^2\)</span> and then attempt to build the neighborhood graph first. </p>
-<div class="highlight"><pre><span></span><code><span class="n">raw_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">1.5</span><span class="p">,</span><span class="o">-</span><span class="mf">3.0</span><span class="p">]])</span> <span class="c1">#embedded 3 vertices in R^2</span>
+<div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mf">1.5</span><span class="p">,</span><span class="o">-</span><span class="mf">3.0</span><span class="p">]])</span> <span class="c1">#embedded 3 vertices in R^2</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">raw_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#plotting just for clarity</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span> <span class="c1">#add labels</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart2_files/TDApart2_8_0.png"></p>
 <p>We'll be representing each vertex in our simplicial complex by the index number in the original data array. For example, the point [0,2] shows up first in our data array, so we reference it in our simplicial complex as simply point [0].</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#Build neighorbood graph</span>
+<div class="highlight"><pre><span></span><span class="c1">#Build neighorbood graph</span>
 <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">raw_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="c1">#initialize node set, reference indices from original data array</span>
 <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#initialize empty edge array</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#initialize weight array, stores the weight (which in this case is the distance) for each edge</span>
@@ -145,15 +148,17 @@ $$</div>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nodes: &quot;</span> <span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Edges: &quot;</span> <span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Weights: &quot;</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>Nodes:  [0, 1, 2, 3]
+
+<div class="highlight"><pre><span></span>Nodes:  [0, 1, 2, 3]
 Edges:  [{0, 1}, {0, 2}, {1, 2}, {2, 3}]
 Weights:  [[0, 2.0], [1, 2.2360679774997898], [2, 2.2360679774997898], [3, 3.0413812651491097]]
-</code></pre></div>
+</pre></div>
+
 
 <p>Perfect. Now we have a node set, edge set, and a weights set that all constitute our neighborhood graph (G,<span class="math">\(w\)</span>). Our next task is to use the neighborhood graph to start building up the higher-dimensional simplices. In this case we'll only have one additional 2-simplex (triangle). We'll need to setup a some basic functions.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">lower_nbrs</span><span class="p">(</span><span class="n">nodeSet</span><span class="p">,</span> <span class="n">edgeSet</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lower_nbrs</span><span class="p">(</span><span class="n">nodeSet</span><span class="p">,</span> <span class="n">edgeSet</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nodeSet</span> <span class="k">if</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span><span class="n">node</span><span class="p">}</span> <span class="ow">in</span> <span class="n">edgeSet</span> <span class="ow">and</span> <span class="n">node</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">}</span>
 
 <span class="k">def</span> <span class="nf">rips</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -167,19 +172,22 @@ Weights:  [[0, 2.0], [1, 2.2360679774997898], [2, 2.2360679774997898], [3, 3.041
             <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
                 <span class="n">VRcomplex</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">simplex</span><span class="p">,{</span><span class="n">nbr</span><span class="p">}))</span>
     <span class="k">return</span> <span class="n">VRcomplex</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Great, let's try it out and see if it works. We're explicitly telling it to find all simplicies up to 3-dimensions.</p>
-<div class="highlight"><pre><span></span><code><span class="n">theComplex</span> <span class="o">=</span> <span class="n">rips</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">theComplex</span> <span class="o">=</span> <span class="n">rips</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">theComplex</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[{0}, {1}, {2}, {3}, {0, 1}, {0, 2}, {1, 2}, {2, 3}, {0, 1, 2}]
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>[{0}, {1}, {2}, {3}, {0, 1}, {0, 2}, {1, 2}, {2, 3}, {0, 1, 2}]
+</pre></div>
+
 
 <p>Awesome, looks perfect.</p>
 <p>Now we want to see what it looks like. I've produced some code that will graph the simplicial complex based on the output from our Vietoris-Rips algorithm from above. This is not crucial to understanding TDA (most of the time we don't try to visualize simplicial complexes as they are too high-dimensional) so I will not attempt to explain the code for graphing.</p>
-<div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">raw_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#plotting just for clarity</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
@@ -198,36 +206,44 @@ Weights:  [[0, 2.0], [1, 2.2360679774997898], [2, 2.2360679774997898], [3, 3.041
     <span class="n">line</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([</span><span class="n">pt1</span><span class="p">,</span><span class="n">pt2</span><span class="p">,</span><span class="n">pt3</span><span class="p">],</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">[ 0.  2.] [ 2.  2.]</span>
+
+<div class="highlight"><pre><span></span><span class="k">[ 0.  2.] [ 2.  2.]</span>
 <span class="k">[ 0.  2.] [ 1.  0.]</span>
 <span class="k">[ 2.  2.] [ 1.  0.]</span>
 <span class="k">[ 1.  0.] [ 1.5 -3. ]</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart2_files/TDApart2_16_1.png"></p>
 <p>Now we have a nice little depiction of our very simple VR complex. Now that we know what to do. We need to learn about <strong>simplicial homology</strong>, which is the study of topological invariants between simplicial complexes. In particular, we're interested in being able to mathematically identify n-dimensional connected components, holes and loops. To aid in this effort, I've repackage the code we've used above as a separate file so we can just import it and use the functions conveniently on our data. You can download the latest code here: &lt; https://github.com/outlace/OpenTDA/blob/master/SimplicialComplex.py &gt;</p>
 <p>Here I will zip our <span class="math">\(x\)</span> and <span class="math">\(y\)</span> coordinates from the (jittered) points we sampled from a circle so we can use it to build a more complicated simplicial complex.</p>
-<div class="highlight"><pre><span></span><code><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">SimplicialComplex</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">SimplicialComplex</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">graph</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="o">=</span><span class="n">graph</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">graph</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="o">=</span><span class="n">graph</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart2_files/TDApart2_22_0.png"></p>
 <p>That's neat! Clearly we have reproduced the circular space from which the points were sampled. Notice that there are 1-simplices and higher-dimensional simplices (the darker blue sections) but it forms a single connected component with a single 1-dimensional hole.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#This is what it looks like if we decrease the Epsilon parameter too much:</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#This is what it looks like if we decrease the Epsilon parameter too much:</span>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart2_files/TDApart2_24_0.png"></p>
 <h4>Homology Groups</h4>

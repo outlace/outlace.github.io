@@ -59,7 +59,7 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 </blockquote>
 <p>Unfortunately, while the coneptual jump is small, the technical jump is more formidable. Especially because we also want to be able to ask which data points in my original data set lie on some particular topological feature.</p>
 <p>Let's revisit the code we used to sample points (with some intentional randomness added) from a circle and build a simplicial complex.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1">#number of points to generate</span>
@@ -75,58 +75,66 @@ See <a href="TDApart1.html">Part 1</a> | <a href="TDApart2.html">Part 2</a> | <a
 <span class="c1">#code to plot the circle for visualization</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_4_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="c1">#add some &quot;jitteriness&quot; to the points</span>
+<div class="highlight"><pre><span></span><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="c1">#add some &quot;jitteriness&quot; to the points</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_5_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
 <span class="kn">import</span> <span class="nn">SimplicialComplex</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span> <span class="c1">#Notice the epsilon parameter is 3.0</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span> <span class="c1">#Notice the epsilon parameter is 3.0</span>
 <span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_7_0.png"></p>
 <p>As you can see, setting <span class="math">\(\epsilon = 3.0\)</span> produces a nice looking simplicial complex that captures the single 1-dimensional "hole" in the original data.</p>
 <p>However, let's play around with <span class="math">\(\epsilon\)</span> to see how it changes our complex.</p>
-<div class="highlight"><pre><span></span><code><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
 <span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_9_0.png"></p>
 <p>We decreased <span class="math">\(\epsilon\)</span> to <span class="math">\(2.0\)</span> and now we have a "break" in our circle. If we calculate the homology and Betti numbers of this complex, we will no longer have a 1-dimensional cycle present. We will only see a single connected component. </p>
 <p>Let's decrease it a little bit more to 1.9</p>
-<div class="highlight"><pre><span></span><code><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
 <span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.9</span><span class="p">)</span>
 <span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_11_0.png"></p>
 <p>Now we have three connected components and no cycles/holes in the complex. Ok, let's go the other direction and increase <span class="math">\(\epsilon\)</span> to 4.0</p>
-<div class="highlight"><pre><span></span><code><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><span class="n">newData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
 <span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">4.0</span><span class="p">)</span>
 <span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_13_0.png"></p>
 <p>Unlike going down by 1, by increasing <span class="math">\(\epsilon\)</span> to 4.0, we haven't changed anything about our homology groups. We still have a single connected component and a single 1-dimensional cycle.</p>
 <p>Let's make an even bigger jump and set <span class="math">\(\epsilon = 7.0\)</span>, an increase of 3.</p>
-<div class="highlight"><pre><span></span><code><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">7.0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">7.0</span><span class="p">)</span>
 <span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">newData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_15_0.png"></p>
 <p>Alas, even though we've gone up by 4 units from our original nice value of 3.0, we still get a complex with the same topological features: a single connected component and a 1-dimensional cycle.</p>
@@ -213,12 +221,13 @@ $$</div>
 <p>When we reduce a filtration boundary matrix into column-echelon form via an algorithm, it tells us the information about when certain topological features at each dimension are formed or "die" (by being subsumed into a larger feature) at various stages in the filtration (i.e. at increasing values of <span class="math">\(\epsilon\)</span>, via our total order implied on the filtration). Hence, once we reduce the boundary matrix, all we need to do is read off the information as intervals when features are born and die, and then we can graph those intervals as a barcode plot.</p>
 <p>The column-echelon form <span class="math">\(C\)</span> is likewise a composition of linear maps such that <span class="math">\(C = VB\)</span> where <span class="math">\(V\)</span> is some matrix that makes the composition work, and <span class="math">\(B\)</span> is a filtration boundary matrix. We will actually keep a copy of <span class="math">\(V\)</span> once we're done reducing <span class="math">\(B\)</span> because <span class="math">\(V\)</span> records the information necessary to dermine which data points lie on interesting topological features.</p>
 <p>The general algorithm for reducing a matrix to column-echelon form is a type of <a src="https://en.wikipedia.org/wiki/Gaussian_elimination">Gaussian elemination</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">n</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">n</span>
     <span class="k">while</span> <span class="n">there</span> <span class="n">exists</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="k">with</span> <span class="n">low</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">low</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> 
         <span class="n">add</span> <span class="n">column</span> <span class="n">i</span> <span class="n">to</span> <span class="n">column</span> <span class="n">j</span>
     <span class="n">end</span> <span class="k">while</span>
 <span class="n">end</span> <span class="k">for</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>The function <code>low</code> accepts a column <code>j</code> and returns the row index with the lowest <span class="math">\(1\)</span>. For example, if we have a column of a matrix: 
 <span class="math">\( j = <div class="math">\begin{pmatrix}  1 \\ 0 \\1 \\1 \\ 0 \\0 \\0 \end{pmatrix}</div> $<br />
@@ -308,19 +317,22 @@ $$</div>
 <p>To record the intervals of birth and death of topological features, we simply scan each column from left to right. If column <code>j</code> has all zeros (i.e. <code>low(j) = -1</code>) then we record this as the birth of a new feature (being whatever column <code>j</code> represents, maybe a single simplex, maybe a group of simplices). </p>
 <p>Otherwise, if a column is not all zeros but has some 1s in it, then we say that the column with index equal to <code>low(j)</code> dies at <code>j</code>, and hence is the end point of the interval for that feature.</p>
 <p>So in our case, all three vertices (the first three columns) are new features that are born (their columns are all zeros, <code>low(j) = -1</code>) so we record 3 new intervals with starting points being their column indices. Since we're scanning sequentially from left to right, we don't yet know if or when these features will die, so we'll just tentatively set the end point as <code>-1</code> to indicate the end or infinity. Here are the first three intervals:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#Remember the start and end points are column indices</span>
+<div class="highlight"><pre><span></span><span class="c1">#Remember the start and end points are column indices</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Then we keep scanning left to right and hit column 4 (index <code>j=3</code>) and we calculate <code>low(3) = 1</code>. So this means the feature that was born in column <code>j=1</code> (column 2) just died at <code>j=3</code>. Now we can go back and update the tentative end point for that interval, our update intervals being:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#updating intervals...</span>
+<div class="highlight"><pre><span></span><span class="c1">#updating intervals...</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>So we just continue this process until the last column and we get all our intervals:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#The final set of intervals</span>
+<div class="highlight"><pre><span></span><span class="c1">#The final set of intervals</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>The first three features are 0-simplices and since they are dimension 0, they represent the connected components of the filtration. The 4th feature is the 1-dimensional cycle since its interval indices refer to a group of 1-simplices.</p>
 <p>Believe it or not, we've just done persistent homology. That's all there is to it. Once we have the intervals, all we need to do is graph them as a barcode. We should convert the start/end points in these intervals to values of <span class="math">\(\epsilon\)</span> by referring back to our set of weights on the edges and assigning an <span class="math">\(\epsilon\)</span> value (the value of <span class="math">\(\epsilon\)</span> the results in the formation of a particular simplex in the filtration) to each simplex. Here's the barcode:</p>
@@ -332,14 +344,16 @@ $$</div>
 <h4>Let's write some code</h4>
 <p>Alright, so we've basically covered the conceptual framework for computing persistent homology. Let's actually write some code to compute persistent homology on (somewhat) realistic data. I'm not going to spend too much effort explaining all the code and how it works since I'm more concerned with explaining in more abstract terms so you can go write your own algorithms. I've tried to add inline comments that should help. Also keep in mind that since this is educational, these algorithms and data structures will <em>not</em> be very efficient, but will be simple. I hope to write a follow up post at some point that demonstrates how we can make efficient versions of these algorithms and data structures.</p>
 <p>Let's start by constructing a simple simplicial complex using the code we wrote in part 4.</p>
-<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c1">#for example... this is with a small epsilon, to illustrate the presence of a 1-dimensional cycle</span>
+
+<div class="highlight"><pre><span></span><span class="c1">#for example... this is with a small epsilon, to illustrate the presence of a 1-dimensional cycle</span>
 <span class="n">graph</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">5.1</span><span class="p">)</span>
 <span class="n">ripsComplex</span> <span class="o">=</span> <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">rips</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">graph</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edges</span><span class="o">=</span><span class="n">graph</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_33_0.png"></p>
 <p>So our simplicial complex is just a box. It obviously has 1 connected component and a 1-dimensional cycle. If we keep increasing <span class="math">\(\epsilon\)</span> then the box will "fill in" and we'll get a maximal simplex with all four points forming a 3-dimensional simplex (tetrahedron).</p>
@@ -350,11 +364,12 @@ $$</div>
 <p>So I'm just going to drop a block of code on you know and describe what each function does. The <code>buildGraph</code> function is the same as before. But we have a several new functions: <code>ripsFiltration</code>, <code>getFilterValue</code>, <code>compare</code> and <code>sortComplex</code>.</p>
 <p>The <code>ripsFiltration</code> function accepts the graph object from <code>buildGraph</code> and maximal dimension <code>k</code> (e.g. up to what dimensional simpices we will bother calculating) and returns a simplicial complex object sorted by filter values. The filter values are determined as described above. We have a <code>sortComplex</code> function that takes a complex and filter values and returns the sorted complex.</p>
 <p>So the only difference between our previous simplicial complex function and the <code>ripsFiltration</code> function is that the latter also generates filter values for each simplex in the complex and imposes a total order on the simplices in the filtration.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">itertools</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">functools</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">euclidianDist</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span> <span class="c1">#this is the default metric we use but you can use whatever distance function you want</span>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">euclidianDist</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span> <span class="c1">#this is the default metric we use but you can use whatever distance function you want</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="c1">#euclidian distance metric</span>
 
 
@@ -434,18 +449,21 @@ $$</div>
     <span class="c1">#then sort &gt;= 1 simplices in each chain group by the arbitrary total order on the vertices</span>
     <span class="n">orderValues</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filterComplex</span><span class="p">))]</span>
     <span class="k">return</span> <span class="n">sortedComplex</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph2</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span> <span class="c1">#epsilon = 9 will build a &quot;maximal complex&quot;</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph2</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span> <span class="c1">#epsilon = 9 will build a &quot;maximal complex&quot;</span>
 <span class="n">ripsComplex2</span> <span class="o">=</span> <span class="n">ripsFiltration</span><span class="p">(</span><span class="n">graph2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">ripsComplex2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_38_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">ripsComplex2</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">ripsComplex2</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[[{0},
+
+<div class="highlight"><pre><span></span>[[{0},
   {1},
   {2},
   {3},
@@ -475,9 +493,10 @@ $$</div>
   5.8309518948453007,
   5.8309518948453007,
   5.8309518948453007]]
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c1">#return the n-simplices and weights in a complex</span>
+
+<div class="highlight"><pre><span></span><span class="c1">#return the n-simplices and weights in a complex</span>
 <span class="k">def</span> <span class="nf">nSimplices</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">filterComplex</span><span class="p">):</span>
     <span class="n">nchain</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">nfilters</span> <span class="o">=</span> <span class="p">[]</span>
@@ -511,13 +530,15 @@ $$</div>
             <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">bmatrix</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">bm</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">ripsComplex2</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">bm</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">ripsComplex2</span><span class="p">)</span>
 <span class="n">bm</span> <span class="c1">#Here is the (non-reduced) boundary matrix</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>array([[0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+
+<div class="highlight"><pre><span></span>array([[0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
@@ -532,10 +553,11 @@ $$</div>
        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-</code></pre></div>
+</pre></div>
+
 
 <p>The following functions are for reducing the boundary matrix as described above (when we did it by hand).</p>
-<div class="highlight"><pre><span></span><code><span class="c1">#returns row index of lowest &quot;1&quot; in a column i in the boundary matrix</span>
+<div class="highlight"><pre><span></span><span class="c1">#returns row index of lowest &quot;1&quot; in a column i in the boundary matrix</span>
 <span class="k">def</span> <span class="nf">low</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
     <span class="n">col</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
     <span class="n">col_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
@@ -570,72 +592,75 @@ $$</div>
         <span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">isReduced</span><span class="p">(</span><span class="n">reduced_matrix</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">reduced_matrix</span><span class="p">,</span> <span class="n">memory</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">z</span> <span class="o">=</span> <span class="n">reduceBoundaryMatrix</span><span class="p">(</span><span class="n">bm</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">reduceBoundaryMatrix</span><span class="p">(</span><span class="n">bm</span><span class="p">)</span>
 <span class="n">z</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code><span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">6</span> <span class="n">to</span> <span class="mi">8</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">7</span> <span class="n">to</span> <span class="mi">8</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">5</span> <span class="n">to</span> <span class="mi">8</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">7</span> <span class="n">to</span> <span class="mi">9</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">5</span> <span class="n">to</span> <span class="mi">9</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">6</span> <span class="n">to</span> <span class="mi">10</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">7</span> <span class="n">to</span> <span class="mi">10</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">11</span> <span class="n">to</span> <span class="mi">13</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">12</span> <span class="n">to</span> <span class="mi">14</span>
-
-<span class="n">Mod</span><span class="o">:</span> <span class="n">add</span> <span class="n">col</span> <span class="mi">13</span> <span class="n">to</span> <span class="mi">14</span>
+</pre></div>
 
 
+<div class="highlight"><pre><span></span><span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">8</span>
 
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">8</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">8</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">9</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">9</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">13</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">14</span>
+
+<span class="n">Mod</span><span class="o">:</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">14</span>
 
 
 
-<span class="o">(</span><span class="n">array</span><span class="o">([[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">]]),</span>
- <span class="n">array</span><span class="o">([[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">],</span>
-        <span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">]]))</span>
-</code></pre></div>
+
+
+
+<span class="o">(</span><span class="n">array</span><span class="o">([[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">]]),</span>
+<span class="w"> </span><span class="n">array</span><span class="o">([[</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">],</span>
+<span class="w">        </span><span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">]]))</span>
+</pre></div>
+
 
 <p>So the <code>reduceBoundaryMatrix</code> function returns two matrices, the reduced boundary matrix and a <em>memory</em> matrix that records all the actions of the reduction algorithm. This is necessary so we can look up what each column in the boundary matrix actually refers to. Once it's reduced each column in the boundary matrix is not necessarily a single simplex but possibly a group of simplices such as some n-dimensional cycle.</p>
 <p>The following functions use the reduced matrix to read the intervals for all the features that are born and die throughout the filtration</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">readIntervals</span><span class="p">(</span><span class="n">reduced_matrix</span><span class="p">,</span> <span class="n">filterValues</span><span class="p">):</span> <span class="c1">#reduced_matrix includes the reduced boundary matrix AND the memory matrix</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">readIntervals</span><span class="p">(</span><span class="n">reduced_matrix</span><span class="p">,</span> <span class="n">filterValues</span><span class="p">):</span> <span class="c1">#reduced_matrix includes the reduced boundary matrix AND the memory matrix</span>
     <span class="c1">#store intervals as a list of 2-element lists, e.g. [2,4] = start at &quot;time&quot; point 2, end at &quot;time&quot; point 4</span>
     <span class="c1">#note the &quot;time&quot; points are actually just the simplex index number for now. we will convert to epsilon value later</span>
     <span class="n">intervals</span> <span class="o">=</span> <span class="p">[]</span>
@@ -674,29 +699,34 @@ $$</div>
         <span class="n">persistence</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">homology_group</span><span class="p">,</span> <span class="p">[</span><span class="n">epsilon_start</span><span class="p">,</span> <span class="n">epsilon_end</span><span class="p">]])</span>
 
     <span class="k">return</span> <span class="n">persistence</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">intervals</span> <span class="o">=</span> <span class="n">readIntervals</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">ripsComplex2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<div class="highlight"><pre><span></span><span class="n">intervals</span> <span class="o">=</span> <span class="n">readIntervals</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">ripsComplex2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">intervals</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[[0, -1], [1, 4], [2, 6], [3, 5], [7, 12]]
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>[[0, -1], [1, 4], [2, 6], [3, 5], [7, 12]]
+</pre></div>
+
 
 <p>So those are all the intervals for the features that arise and die. The <code>readPersistence</code> function will just convert the start/end points from being indices in the boundary matrix to their corresponding <span class="math">\(\epsilon\)</span> value. It will also figure out to which homology group (i.e. which Betti number dimension) each interval belongs.</p>
-<div class="highlight"><pre><span></span><code><span class="n">persist1</span> <span class="o">=</span> <span class="n">readPersistence</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="n">ripsComplex2</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">persist1</span> <span class="o">=</span> <span class="n">readPersistence</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="n">ripsComplex2</span><span class="p">)</span>
 <span class="n">persist1</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[[0, [0, 5.8309518948453007]],
+
+<div class="highlight"><pre><span></span>[[0, [0, 5.8309518948453007]],
  [0, [0, 3.0]],
  [0, [0, 5.0]],
  [0, [0, 3.0]],
  [1, [5.0, 5.8309518948453007]]]
-</code></pre></div>
+</pre></div>
+
 
 <p>This function will just graph the persistence barcode for individual dimensions.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="k">def</span> <span class="nf">graph_barcode</span><span class="p">(</span><span class="n">persistence</span><span class="p">,</span> <span class="n">homology_group</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span> 
     <span class="c1">#this function just produces the barcode graph for each homology group</span>
     <span class="n">xstart</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">persistence</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">homology_group</span><span class="p">]</span>
@@ -710,11 +740,13 @@ $$</div>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;epsilon&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Betti dim </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">homology_group</span><span class="p">,))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_52_0.png"></p>
 <p><img alt="png" src="TDApart5_files/TDApart5_52_1.png"></p>
@@ -724,36 +756,41 @@ $$</div>
 <p>An important feature of persistent homology is being able to find the data points that lie on some interesting topological feature. If all persistent homology could do was give us barcodes and tell us how many connected components and cycles then that would be useful but wanting.</p>
 <p>What we really want to be able to do is say, "hey look, the barcode shows there's a statistically significant 1-dimensional cycle, I wonder which data points form that cycle?"</p>
 <p>To test out this procedure, let's modify our simple "box" simplicial complex a bit and add another edge (giving us another connected component).</p>
-<div class="highlight"><pre><span></span><code><span class="n">data_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">12</span><span class="p">,</span><span class="mf">3.5</span><span class="p">],[</span><span class="mi">12</span><span class="p">,</span><span class="mf">1.5</span><span class="p">]])</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">data_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">12</span><span class="p">,</span><span class="mf">3.5</span><span class="p">],[</span><span class="mi">12</span><span class="p">,</span><span class="mf">1.5</span><span class="p">]])</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph2b</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">data_b</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="c1">#epsilon is set to a high value to create a maximal complex</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph2b</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">data_b</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="c1">#epsilon is set to a high value to create a maximal complex</span>
 <span class="n">rips2b</span> <span class="o">=</span> <span class="n">ripsFiltration</span><span class="p">(</span><span class="n">graph2b</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">data_b</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">rips2b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_55_0.png"></p>
 <p>The depiction shows the maximal complex since we set <span class="math">\(\epsilon\)</span> to be a high value. But I tried to design the data so the "true" features are a box (which is a 1-dim cycle) and an edge off to the right, for a total of two "true" connected components.</p>
 <p>Alright, let's run persistent homology on this data.</p>
-<div class="highlight"><pre><span></span><code><span class="n">bm2b</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">rips2b</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">bm2b</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">rips2b</span><span class="p">)</span>
 <span class="n">rbm2b</span> <span class="o">=</span> <span class="n">reduceBoundaryMatrix</span><span class="p">(</span><span class="n">bm2b</span><span class="p">)</span>
 <span class="n">intervals2b</span> <span class="o">=</span> <span class="n">readIntervals</span><span class="p">(</span><span class="n">rbm2b</span><span class="p">,</span> <span class="n">rips2b</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">persist2b</span> <span class="o">=</span> <span class="n">readPersistence</span><span class="p">(</span><span class="n">intervals2b</span><span class="p">,</span> <span class="n">rips2b</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist2b</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist2b</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist2b</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_58_0.png"></p>
 <p><img alt="png" src="TDApart5_files/TDApart5_58_1.png"></p>
 <p>We can see the two connected components (the two longest bars) in <code>Betti dim 0</code> and we see two bars in <code>Betti dim 1</code>, but one is clearly almost twice as long as the other. The shorter bar is from when the edge on the right forms a cycle with the two left-most vertices on the left-sided box.</p>
 <p>So at this point we're thinking we have one significant 1-dim cycle, but (pretending we can't just plot our data) we don't know which points form this cycle so that we can further analyze that subset of the data if we wish.</p>
 <p>In order to figure that out, we just need to use the <em>memory</em> matrix that our reduction algorithm also returns to us. First we find the interval we want from the <code>intervals2b</code> list, in this case it is the first element, then we get the start point (since that indicates the birth of the feature). The start point is an index value in the boundary array, so we'll just find that column in the memory array and look for the 1s in that column. The rows with 1s in that column are the other simplices in the group (including the column itself).</p>
-<div class="highlight"><pre><span></span><code><span class="n">persist2b</span> 
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">persist2b</span> 
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[[0, [0, 6.5]],
+
+<div class="highlight"><pre><span></span>[[0, [0, 6.5]],
  [0, [0, 3.0]],
  [0, [0, 5.0]],
  [0, [0, 3.0]],
@@ -761,46 +798,55 @@ $$</div>
  [0, [0, 2.0]],
  [1, [5.0, 5.8309518948453007]],
  [1, [6.0207972893961479, 6.5]]]
-</code></pre></div>
+</pre></div>
+
 
 <p>First, look at the intervals in homology group 1, then we want the interval that spans the epsilon range from 5.0 to 5.83. That's index 6 in the persistence list, and is likewise index 6 in the intervals list. The intervals list, rather than epsilon start and end, has index values so we can lookup the simplices in the memory matrix.</p>
-<div class="highlight"><pre><span></span><code><span class="n">cycle1</span> <span class="o">=</span> <span class="n">intervals2b</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="n">cycle1</span> <span class="o">=</span> <span class="n">intervals2b</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
 <span class="n">cycle1</span>
 <span class="c1">#So birth index is 10</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[10, 19]
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">column10</span> <span class="o">=</span> <span class="n">rbm2b</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight"><pre><span></span>[10, 19]
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">column10</span> <span class="o">=</span> <span class="n">rbm2b</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span><span class="mi">10</span><span class="p">]</span>
 <span class="n">column10</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>array([0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+
+<div class="highlight"><pre><span></span>array([0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0])
-</code></pre></div>
+</pre></div>
+
 
 <p>So this is the column in the memory matrix with index=10. So we automatically know that whatever simplex is in index 10 is part of the cycle as well as the rows with 1s in this column.</p>
-<div class="highlight"><pre><span></span><code><span class="n">ptsOnCycle</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">column10</span><span class="p">))</span> <span class="k">if</span> <span class="n">column10</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="n">ptsOnCycle</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">column10</span><span class="p">))</span> <span class="k">if</span> <span class="n">column10</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">ptsOnCycle</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[7, 8, 9, 10]
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c1">#so the simplices with indices 7,8,9,10 lie on our 1-dimensional cycle, let&#39;s find what those simplices are</span>
+<div class="highlight"><pre><span></span>[7, 8, 9, 10]
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#so the simplices with indices 7,8,9,10 lie on our 1-dimensional cycle, let&#39;s find what those simplices are</span>
 <span class="n">rips2b</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">7</span><span class="p">:</span><span class="mi">11</span><span class="p">]</span> <span class="c1">#range [start:stop], but stop is non-inclusive, so put 11 instead of 10</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>[{0, 1}, {2, 3}, {1, 2}, {0, 3}]
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>[{0, 1}, {2, 3}, {1, 2}, {0, 3}]
+</pre></div>
+
 
 <p>Exactly! Now this is the list of 1-simplices that form the 1-dimensional cycle we saw in our barcode. It should be trivial to go from this list to the raw data points so I won't bore you with those details here.</p>
 <p>Alright. Let's try this with a little bit more realistic data. We'll use data sampled from a circle like we did in the beginning of this section. For this example, I've set the parameter <code>k=2</code> in the <code>ripsFiltration</code> function so it will only generate simplices up to 2-simplices. This is just to reduce the memory needed. If you have a fast computer with a lot of memory, you're welcome to set <code>k</code> to 3 or so, but I wouldn't make it much greater than that. Usually we're mostly interested in connected components and 1 or 2 dimensional cycles. The utility of topological features in dimensions higher than that seems to be a diminishing return and the price in memory and algorithm running time is generally not worth it.</p>
 <blockquote>
 <p><strong>NOTE</strong>: The following may take awhile to run, perhaps several minutes. This is because the code written in these tutorials is optimized for clarity and ease, NOT for efficiency or speed. There are a lot of performance optimizations that can and should be made if we wanted to make this anywhere close to a production ready TDA library. I plan to write a follow up post at some point about the most reasonable algorithm and data structure optimizations that we can make because I hope to develop a reasonable efficient open source TDA library in Python in the future and would appreciate any help I can get.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1">#number of points to generate</span>
+<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1">#number of points to generate</span>
 <span class="c1">#generate space of parameter</span>
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> 
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span>
@@ -815,39 +861,46 @@ $$</div>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">yc</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="n">circleData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">yc</span><span class="p">)))</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_68_0.png"></p>
 <p><img alt="png" src="TDApart5_files/TDApart5_68_1.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">graph4</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">circleData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">graph4</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">circleData</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
 <span class="n">rips4</span> <span class="o">=</span> <span class="n">ripsFiltration</span><span class="p">(</span><span class="n">graph4</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">circleData</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">rips4</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_69_0.png"></p>
 <p>Clearly, persistent homology should tell us we have 1 connected component and a single 1-dimensional cycle.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">rips4</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">rips4</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="c1">#On my laptop, a rips filtration with more than about 250 simplices will take &gt;10 mins to compute persistent homology</span>
 <span class="c1">#anything &lt; ~220 only takes a few minutes or less</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="mf">148</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<div class="highlight"><pre><span></span><span class="mf">148</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
 <span class="n">bm4</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">rips4</span><span class="p">)</span>
 <span class="n">rbm4</span> <span class="o">=</span> <span class="n">reduceBoundaryMatrix</span><span class="p">(</span><span class="n">bm4</span><span class="p">)</span>
 <span class="n">intervals4</span> <span class="o">=</span> <span class="n">readIntervals</span><span class="p">(</span><span class="n">rbm4</span><span class="p">,</span> <span class="n">rips4</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">persist4</span> <span class="o">=</span> <span class="n">readPersistence</span><span class="p">(</span><span class="n">intervals4</span><span class="p">,</span> <span class="n">rips4</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>CPU times: user 43.4 s, sys: 199 ms, total: 43.6 s
+
+<div class="highlight"><pre><span></span>CPU times: user 43.4 s, sys: 199 ms, total: 43.6 s
 Wall time: 44.1 s
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_73_0.png"></p>
 <p><img alt="png" src="TDApart5_files/TDApart5_73_1.png"></p>
@@ -855,7 +908,7 @@ Wall time: 44.1 s
 <p>The <code>Betti dim 1</code> barcode is even easier as it only shows a single bar, so we of course have a significant feature here being a 1-dimensional cycle.</p>
 <p>Okay well, as usual, let's make things a little bit tougher to test our algorithms.</p>
 <p>We're going to sample points from a shape called a <strong>lemniscate</strong>, more commonly known as a figure-of-eight, since it looks like the number 8 sideways. As you can tell, it should have 1 connected component and two 1-dimensional cycles.</p>
-<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
+<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
 <span class="c1">#equations for lemniscate</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -863,47 +916,54 @@ Wall time: 44.1 s
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_75_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="c1">#add some &quot;jitteriness&quot; to the points</span>
+<div class="highlight"><pre><span></span><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="c1">#add some &quot;jitteriness&quot; to the points</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_76_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">figure8Data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">figure8Data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)))</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph5</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">figure8Data</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph5</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">figure8Data</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="n">rips5</span> <span class="o">=</span> <span class="n">ripsFiltration</span><span class="p">(</span><span class="n">graph5</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">figure8Data</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">rips5</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_78_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
 <span class="n">bm5</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">rips5</span><span class="p">)</span>
 <span class="n">rbm5</span> <span class="o">=</span> <span class="n">reduceBoundaryMatrix</span><span class="p">(</span><span class="n">bm5</span><span class="p">)</span>
 <span class="n">intervals5</span> <span class="o">=</span> <span class="n">readIntervals</span><span class="p">(</span><span class="n">rbm5</span><span class="p">,</span> <span class="n">rips5</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">persist5</span> <span class="o">=</span> <span class="n">readPersistence</span><span class="p">(</span><span class="n">intervals5</span><span class="p">,</span> <span class="n">rips5</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>CPU times: user 17min 8s, sys: 3.93 s, total: 17min 12s
+
+<div class="highlight"><pre><span></span>CPU times: user 17min 8s, sys: 3.93 s, total: 17min 12s
 Wall time: 17min 24s
-</code></pre></div>
+</pre></div>
+
 
 <p>Yeah... that took 17 minutes. Good thing I still had enough CPU/RAM to watch YouTube.</p>
-<div class="highlight"><pre><span></span><code><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_81_0.png"></p>
 <p><img alt="png" src="TDApart5_files/TDApart5_81_1.png"></p>
 <p>:-) Just as we expected. <code>Betti dim 0</code> shows one significantly longer bar than the others and <code>Betti dim 1</code> shows us two long bars, our two 1-dim cycles.</p>
 <p>Let's add in another component. In this example, I've just added in a small circle in the data. So we should have two connected components and 3 1-dim cycles.</p>
-<div class="highlight"><pre><span></span><code><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> 
+<div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> 
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span>
 <span class="n">x3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 <span class="n">y3</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
@@ -915,35 +975,42 @@ Wall time: 17min 24s
 <span class="n">figure8Data2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x4</span><span class="p">,</span><span class="n">y4</span><span class="p">)))</span>
 <span class="c1"># I didn&#39;t add &quot;jitteriness&quot; this time since that increases the complexity of the subsequent simplicial complex, </span>
 <span class="c1"># which makes the memory and computation requirements much greater</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_83_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">graph6</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">figure8Data2</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.19</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">graph6</span> <span class="o">=</span> <span class="n">buildGraph</span><span class="p">(</span><span class="n">raw_data</span><span class="o">=</span><span class="n">figure8Data2</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.19</span><span class="p">)</span>
 <span class="n">rips6</span> <span class="o">=</span> <span class="n">ripsFiltration</span><span class="p">(</span><span class="n">graph6</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">SimplicialComplex</span><span class="o">.</span><span class="n">drawComplex</span><span class="p">(</span><span class="n">origData</span><span class="o">=</span><span class="n">figure8Data2</span><span class="p">,</span> <span class="n">ripsComplex</span><span class="o">=</span><span class="n">rips6</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_84_0.png"></p>
-<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">rips6</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#reasonable size</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">rips6</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#reasonable size</span>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="mf">220</span>
-</code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<div class="highlight"><pre><span></span><span class="mf">220</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
 <span class="n">bm6</span> <span class="o">=</span> <span class="n">filterBoundaryMatrix</span><span class="p">(</span><span class="n">rips6</span><span class="p">)</span>
 <span class="n">rbm6</span> <span class="o">=</span> <span class="n">reduceBoundaryMatrix</span><span class="p">(</span><span class="n">bm6</span><span class="p">)</span>
 <span class="n">intervals6</span> <span class="o">=</span> <span class="n">readIntervals</span><span class="p">(</span><span class="n">rbm6</span><span class="p">,</span> <span class="n">rips6</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">persist6</span> <span class="o">=</span> <span class="n">readPersistence</span><span class="p">(</span><span class="n">intervals6</span><span class="p">,</span> <span class="n">rips6</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>CPU times: user 4min 2s, sys: 780 ms, total: 4min 2s
+
+<div class="highlight"><pre><span></span>CPU times: user 4min 2s, sys: 780 ms, total: 4min 2s
 Wall time: 4min 4s
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span><span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">graph_barcode</span><span class="p">(</span><span class="n">persist6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><img alt="png" src="TDApart5_files/TDApart5_87_0.png"></p>
 <p><img alt="png" src="TDApart5_files/TDApart5_87_1.png"></p>
